@@ -28,7 +28,7 @@ void main() {
 	while(1){
 		result += a;
 		result += b + c;
-		for(uint32_t idx = 0;idx < 50000;idx++) asm volatile("");
+		// for(uint32_t idx = 0;idx < 50000;idx++) asm volatile("");
 		GPIO_A->OUTPUT = (GPIO_A->OUTPUT & ~0x3F) | ((GPIO_A->OUTPUT + 1) & 0x3F);  //Counter on LED[5:0]
 	}
 }

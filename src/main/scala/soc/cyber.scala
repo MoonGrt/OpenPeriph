@@ -19,8 +19,9 @@ import spinal.lib.system.debugger.{JtagAxi4SharedDebugger, SystemDebuggerConfig}
 import spinal.lib.misc.{InterruptCtrl, Timer, Prescaler}
 
 import periph.ram._
+import periph.gpio._
 
-case class pinsecConfig(
+case class cyberConfig(
     axiFrequency: HertzNumber,
     onChipRamSize: BigInt,
     onChipRamHexFile: String,
@@ -28,9 +29,9 @@ case class pinsecConfig(
     iCache: InstructionCacheConfig
 )
 
-object pinsecConfig {
+object cyberConfig {
   def default = {
-    val config = pinsecConfig(
+    val config = cyberConfig(
       axiFrequency = 100 MHz,
       onChipRamSize = 4 KiB,
       onChipRamHexFile = null,
@@ -68,11 +69,11 @@ object pinsecConfig {
   }
 }
 
-class pinsec(config: pinsecConfig) extends Component {
+class cyber(config: cyberConfig) extends Component {
 
   // Legacy constructor
   def this(axiFrequency: HertzNumber) {
-    this(pinsecConfig.default.copy(axiFrequency = axiFrequency))
+    this(cyberConfig.default.copy(axiFrequency = axiFrequency))
   }
 
   import config._
@@ -88,10 +89,9 @@ class pinsec(config: pinsecConfig) extends Component {
     val jtag = slave(Jtag())
 
     // Peripherals IO
-    val gpioA = master(TriStateArray(32 bits))
-    val gpioB = master(TriStateArray(32 bits))
+    val gpio = master(TriStateArray(32 bits))
     val uart = master(Uart())
-    val timerExternal = in(pinsecTimerCtrlExternal())
+    val timerExternal = in(cyberTimerCtrlExternal())
   }
 
   val resetCtrlClockDomain = ClockDomain(
@@ -143,7 +143,6 @@ class pinsec(config: pinsecConfig) extends Component {
 
   val axi = new ClockingArea(axiClockDomain) {
     val core = coreClockDomain {
-
       new RiscvAxi4(
         coreConfig = config.cpu,
         iCacheConfig = config.iCache,
@@ -174,15 +173,14 @@ class pinsec(config: pinsecConfig) extends Component {
       idWidth = 4
     )
 
-    val gpioACtrl = Apb3Gpio(
-      gpioWidth = 32,
+    val gpioCtrl = Apb3GpioArray(
+      gpioWidth = 16,
+      gpioGroupCnt = 2,
       withReadSync = true
     )
-    val gpioBCtrl = Apb3Gpio(
-      gpioWidth = 32,
-      withReadSync = true
-    )
-    val timerCtrl = pinsecTimerCtrl()
+    gpioCtrl.io.afio := B(0, 32 bits) // 临时接0，等待外部AFIO模块接入
+
+    val timerCtrl = cyberTimerCtrl()
 
     val uartCtrlConfig = UartCtrlMemoryMappedConfig(
       uartCtrlConfig = UartCtrlGenerics(
@@ -228,8 +226,7 @@ class pinsec(config: pinsecConfig) extends Component {
     val apbDecoder = Apb3Decoder(
       master = apbBridge.io.apb,
       slaves = List(
-        gpioACtrl.io.apb -> (0x00000, 4 KiB),
-        gpioBCtrl.io.apb -> (0x01000, 4 KiB),
+        gpioCtrl.io.apb -> (0x00000, 4 KiB),
         uartCtrl.io.apb -> (0x10000, 4 KiB),
         timerCtrl.io.apb -> (0x20000, 4 KiB),
         core.io.debugBus -> (0xf0000, 4 KiB)
@@ -250,29 +247,28 @@ class pinsec(config: pinsecConfig) extends Component {
     }
   }
 
-  io.gpioA <> axi.gpioACtrl.io.gpio
-  io.gpioB <> axi.gpioBCtrl.io.gpio
+  io.gpio <> axi.gpioCtrl.io.gpio
   io.timerExternal <> axi.timerCtrl.io.external
   io.jtag <> axi.jtagCtrl.io.jtag
   io.uart <> axi.uartCtrl.io.uart
 }
 
-object pinsecTimerCtrl {
+object cyberTimerCtrl {
   def getApb3Config() = new Apb3Config(
     addressWidth = 8,
     dataWidth = 32
   )
 }
 
-case class pinsecTimerCtrlExternal() extends Bundle {
+case class cyberTimerCtrlExternal() extends Bundle {
   val clear = Bool()
   val tick = Bool()
 }
 
-case class pinsecTimerCtrl() extends Component {
+case class cyberTimerCtrl() extends Component {
   val io = new Bundle {
-    val apb = slave(Apb3(pinsecTimerCtrl.getApb3Config()))
-    val external = in(pinsecTimerCtrlExternal())
+    val apb = slave(Apb3(cyberTimerCtrl.getApb3Config()))
+    val external = in(cyberTimerCtrlExternal())
     val interrupt = out Bool ()
   }
   val external = BufferCC(io.external)
@@ -313,16 +309,16 @@ case class pinsecTimerCtrl() extends Component {
   io.interrupt := interruptCtrl.io.pendings.orR
 }
 
-object pinsec {
+object cyber {
   def main(args: Array[String]) {
     val config =
       SpinalConfig(verbose = true, targetDirectory = "rtl").dumpWave()
     val report = config.generateVerilog(
       InOutWrapper(
-        new pinsec(
-          pinsecConfig.default.copy(
+        new cyber(
+          cyberConfig.default.copy(
             onChipRamSize = 32 kB,
-            onChipRamHexFile = "test/pinsec/demo.hex"
+            onChipRamHexFile = "test/cyber/demo.hex"
           )
         )
       )
