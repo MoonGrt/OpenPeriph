@@ -17,13 +17,13 @@ void led_breathe(void);
 void main()
 {
     // demo_USART();
+    // demo_GPIO();
     // demo_SysTick();
-    demo_GPIO();
     // demo_I2C();
     // demo_SPI();
     // demo_TIM();
     // demo_PWM();
-    // demo_WDG();
+    demo_WDG();
     // demo_DVP();
 
     // led_flow();
@@ -74,19 +74,19 @@ void demo_SysTick(void)
     while (1)
     {
         GPIO_ResetBits(GPIOA, GPIO_Pin_0);
-        delay_s(1);
+        delay_us(1);  // delay_s(1);
         GPIO_SetBits(GPIOA, GPIO_Pin_0);
-        delay_s(1);
+        delay_us(1);  // delay_s(1);
 
         GPIO_WriteBit(GPIOA, GPIO_Pin_0, Bit_RESET);
-        delay_s(1);
+        delay_us(1);  // delay_s(1);
         GPIO_WriteBit(GPIOA, GPIO_Pin_0, Bit_SET);
-        delay_s(1);
+        delay_us(1);  // delay_s(1);
 
         GPIO_WriteBit(GPIOA, GPIO_Pin_0, (BitAction)0);
-        delay_s(1);
+        delay_us(1);  // delay_s(1);
         GPIO_WriteBit(GPIOA, GPIO_Pin_0, (BitAction)1);
-        delay_s(1);
+        delay_us(1);  // delay_s(1);
     }
 }
 #endif
@@ -133,13 +133,13 @@ void led_flow()
     {
         /* 使用GPIO_Write，同时设置GPIOA所有引脚的高低电平，实现LED流水灯 */
         GPIO_Write(GPIOA, ~0x0001); // 0000 0000 0000 0001，PA0引脚为低电平，其他引脚均为高电平，注意数据有按位取反
-        delay_s(1);
+        delay_us(1);  // delay_s(1);
         GPIO_Write(GPIOA, ~0x0002); // 0000 0000 0000 0010，PA1引脚为低电平，其他引脚均为高电平
-        delay_s(1);
+        delay_us(1);  // delay_s(1);
         GPIO_Write(GPIOA, ~0x0004); // 0000 0000 0000 0100，PA2引脚为低电平，其他引脚均为高电平
-        delay_s(1);
+        delay_us(1);  // delay_s(1);
         GPIO_Write(GPIOA, ~0x0008); // 0000 0000 0000 1000，PA3引脚为低电平，其他引脚均为高电平
-        delay_s(1);
+        delay_us(1);  // delay_s(1);
     }
 }
 #endif
@@ -147,14 +147,14 @@ void led_flow()
 #ifdef CYBER_WDG
 void demo_WDG(void)
 {
-    /*IWDG初始化*/
-    IWDG_WriteAccessCmd(IWDG_WriteAccess_Enable); // 独立看门狗写使能
-    IWDG_SetPrescaler(IWDG_Prescaler_16);         // 设置预分频为16
-    IWDG_SetReload(30);                           // 设置重装值为2499，独立看门狗的超时时间为1000ms
-    IWDG_ReloadCounter();                         // 重装计数器，喂狗
-    IWDG_Enable();                                // 独立看门狗使能
-    /*IWDG喂狗*/
-    IWDG_ReloadCounter(); // 重装计数器，喂狗
+    // /*IWDG初始化*/
+    // IWDG_WriteAccessCmd(IWDG_WriteAccess_Enable); // 独立看门狗写使能
+    // IWDG_SetPrescaler(IWDG_Prescaler_16);         // 设置预分频为16
+    // IWDG_SetReload(30);                           // 设置重装值为2499，独立看门狗的超时时间为1000ms
+    // IWDG_ReloadCounter();                         // 重装计数器，喂狗
+    // IWDG_Enable();                                // 独立看门狗使能
+    // /*IWDG喂狗*/
+    // IWDG_ReloadCounter(); // 重装计数器，喂狗
 
     /*WWDG初始化*/
     WWDG_SetPrescaler(WWDG_Prescaler_8); // 设置预分频为8

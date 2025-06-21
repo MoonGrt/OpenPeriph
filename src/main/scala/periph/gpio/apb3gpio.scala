@@ -33,13 +33,13 @@ case class Apb3Gpio(
   val ctrl = Apb3SlaveFactory(io.apb)
 
   // 寄存器定义
-  val CRL = Reg(UInt(gpioWidth * 2 bits)) init (0)
-  val CRH = Reg(UInt(gpioWidth * 2 bits)) init (0)
-  val IDR = gpioInput.asUInt
-  val ODR = Reg(UInt(gpioWidth bits)) init (0)
-  // val BSRR = Reg(Bits(gpioWidth bits)) init (0)
-  // val BSR = Reg(Bits(gpioWidth bits)) init (0)
-  val LCKR = Reg(UInt(gpioWidth bits)) init (0)
+  val CRL = Reg(UInt(gpioWidth * 2 bits)) init (0) // 0x00
+  val CRH = Reg(UInt(gpioWidth * 2 bits)) init (0) // 0x04
+  val IDR = gpioInput.asUInt // 0x08
+  val ODR = Reg(UInt(gpioWidth bits)) init (0) // 0x0C
+  // val BSRR = Reg(Bits(gpioWidth bits)) init (0) // 0x10
+  // val BSR = Reg(Bits(gpioWidth bits)) init (0) // 0x14
+  val LCKR = Reg(UInt(gpioWidth bits)) init (0) // 0x18
   val LCKK = Reg(Bool()) init(False)
 
   // --- APB 寄存器映射，使用 Apb3SlaveFactory ---
@@ -107,8 +107,8 @@ case class Apb3Gpio(
   val gpioCfg = Vec(GpioCtrl(), gpioWidth)
   for (i <- 0 until gpioWidth) {
     val bits =
-      if (i < 8) CRL(4 * i + 3 downto 4 * i)
-      else CRH(4 * (i - 8) + 3 downto 4 * (i - 8))
+      if (i < 8) CRL(4 * i + 3 downto 4 * i) // 4位
+      else CRH(4 * (i - 8) + 3 downto 4 * (i - 8)) // 4位
     gpioCfg(i).assignFromBits(bits.asBits)
   }
 
@@ -127,22 +127,23 @@ case class Apb3Gpio(
 
 // 顶层：多个 GPIO 组统一在一个 APB3 接口中
 object Apb3GpioArray {
-  def apb3Config(gpioGroupCnt: Int, addressWidth: Int, dataWidth: Int) =
+  def apb3Config(gpioGroupCnt: Int, groupSpace: Int, dataWidth: Int) =
     Apb3Config(
-      addressWidth = log2Up(gpioGroupCnt) + addressWidth,
+      addressWidth = log2Up(gpioGroupCnt) + log2Up(groupSpace),
       dataWidth = dataWidth
     )
 }
 case class Apb3GpioArray(
     gpioWidth: Int,
     gpioGroupCnt: Int,
+    groupSpace: Int = 0x20,
     withReadSync: Boolean,
-    addressWidth: Int = 5,
+    addressWidth: Int = log2Up(0x20),
     dataWidth: Int = 32
 ) extends Component {
   val io = new Bundle {
     val apb = slave(
-      Apb3(Apb3GpioArray.apb3Config(gpioGroupCnt, addressWidth, dataWidth))
+      Apb3(Apb3GpioArray.apb3Config(gpioGroupCnt, groupSpace, dataWidth))
     )
     val gpio = master(TriStateArray(gpioWidth * gpioGroupCnt bits))
     val afio = in(Bits(gpioWidth * gpioGroupCnt bits))
@@ -153,7 +154,7 @@ case class Apb3GpioArray(
     for (i <- 0 until gpioGroupCnt)
       yield new Apb3Gpio(gpioWidth, withReadSync, addressWidth, dataWidth)
   val apbMap = groups.zipWithIndex.map { case (grp, idx) =>
-    val base = idx * 0x20 // 每组预留 32 字节空间
+    val base = idx * groupSpace
     (grp, base)
   }
 
@@ -161,7 +162,7 @@ case class Apb3GpioArray(
   val apbDecoder = Apb3Decoder(
     master = io.apb,
     slaves = apbMap.map { case (grp, base) =>
-      grp.io.apb -> SizeMapping(base, 0x20)
+      grp.io.apb -> SizeMapping(base, groupSpace)
     }
   )
 
@@ -181,13 +182,13 @@ case class Apb3GpioArray(
   gpioVec <> io.gpio
 }
 
-object Apb3GpioGen {
-  def main(args: Array[String]): Unit = {
-    SpinalConfig(targetDirectory = "rtl").generateVerilog(
-      InOutWrapper(Apb3Gpio(gpioWidth = 16, withReadSync = true))
-    )
-  }
-}
+// object Apb3GpioGen {
+//   def main(args: Array[String]): Unit = {
+//     SpinalConfig(targetDirectory = "rtl").generateVerilog(
+//       InOutWrapper(Apb3Gpio(gpioWidth = 16, withReadSync = true))
+//     )
+//   }
+// }
 
 object Apb3GpioArrayGen {
   def main(args: Array[String]): Unit = {

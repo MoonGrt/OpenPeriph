@@ -20,6 +20,8 @@ import spinal.lib.misc.{InterruptCtrl, Timer, Prescaler}
 
 import periph.ram._
 import periph.gpio._
+import periph.wdg._
+import periph.systick._
 
 case class cyberConfig(
     axiFrequency: HertzNumber,
@@ -38,7 +40,7 @@ object cyberConfig {
       cpu = RiscvCoreConfig(
         pcWidth = 32,
         addrWidth = 32,
-        startAddress = 0x00000000,
+        startAddress = BigInt(0x80000000L),
         regFileReadyKind = sync,
         branchPrediction = dynamic,
         bypassExecute0 = true,
@@ -70,8 +72,6 @@ object cyberConfig {
 }
 
 class cyber(config: cyberConfig) extends Component {
-
-  // Legacy constructor
   def this(axiFrequency: HertzNumber) {
     this(cyberConfig.default.copy(axiFrequency = axiFrequency))
   }
@@ -84,10 +84,8 @@ class cyber(config: cyberConfig) extends Component {
     // Clocks / reset
     val asyncReset = in Bool ()
     val axiClk = in Bool ()
-
     // Main components IO
     val jtag = slave(Jtag())
-
     // Peripherals IO
     val gpio = master(TriStateArray(32 bits))
     val uart = master(Uart())
@@ -104,7 +102,6 @@ class cyber(config: cyberConfig) extends Component {
   val resetCtrl = new ClockingArea(resetCtrlClockDomain) {
     val axiResetUnbuffered = False
     val coreResetUnbuffered = False
-
     // Implement an counter to keep the reset axiResetOrder high 64 cycles
     // Also this counter will automaticly do a reset when the system boot.
     val axiResetCounter = Reg(UInt(6 bits)) init (0)
@@ -115,12 +112,10 @@ class cyber(config: cyberConfig) extends Component {
     when(BufferCC(io.asyncReset)) {
       axiResetCounter := 0
     }
-
     // When an axiResetOrder happen, the core reset will as well
     when(axiResetUnbuffered) {
       coreResetUnbuffered := True
     }
-
     // Create all reset used later in the design
     val axiReset = RegNext(axiResetUnbuffered)
     val coreReset = RegNext(coreResetUnbuffered)
@@ -176,9 +171,15 @@ class cyber(config: cyberConfig) extends Component {
     val gpioCtrl = Apb3GpioArray(
       gpioWidth = 16,
       gpioGroupCnt = 2,
+      // groupSpace = 0x400,
+      groupSpace = 0x1000,
       withReadSync = true
     )
     gpioCtrl.io.afio := B(0, 32 bits) // 临时接0，等待外部AFIO模块接入
+
+    val wdgCtrl = coreClockDomain(Apb3Wdg(memSize = 0x1000)) // 看门狗复位信号参与 coreResetUnbuffered 控制
+    resetCtrl.coreResetUnbuffered setWhen (wdgCtrl.io.iwdgRst || wdgCtrl.io.wwdgRst)
+    val systickCtrl = Apb3SysTick()
 
     val timerCtrl = cyberTimerCtrl()
 
@@ -204,7 +205,7 @@ class cyber(config: cyberConfig) extends Component {
     val axiCrossbar = Axi4CrossbarFactory()
 
     axiCrossbar.addSlaves(
-      ram.io.axi -> (0x00000000L, onChipRamSize),
+      ram.io.axi -> (0x80000000L, onChipRamSize),
       apbBridge.io.axi -> (0xf0000000L, 1 MiB)
     )
 
@@ -226,10 +227,12 @@ class cyber(config: cyberConfig) extends Component {
     val apbDecoder = Apb3Decoder(
       master = apbBridge.io.apb,
       slaves = List(
-        gpioCtrl.io.apb -> (0x00000, 4 KiB),
-        uartCtrl.io.apb -> (0x10000, 4 KiB),
-        timerCtrl.io.apb -> (0x20000, 4 KiB),
-        core.io.debugBus -> (0xf0000, 4 KiB)
+        gpioCtrl.io.apb -> (0x00000, 64 KiB),
+        uartCtrl.io.apb -> (0x10000, 64 KiB),
+        timerCtrl.io.apb -> (0x20000, 64 KiB),
+        wdgCtrl.io.apb -> (0x50000, 64 KiB),
+        systickCtrl.io.apb -> (0x60000, 64 KiB),
+        core.io.debugBus -> (0xf0000, 64 KiB)
       )
     )
 
@@ -237,6 +240,7 @@ class cyber(config: cyberConfig) extends Component {
       core.io.interrupt := (
         (0 -> uartCtrl.io.interrupt),
         (1 -> timerCtrl.io.interrupt),
+        (2 -> systickCtrl.io.interrupt),
         (default -> false)
       )
     }
