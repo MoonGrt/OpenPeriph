@@ -150,10 +150,10 @@ case class Apb3GpioArray(
   }
 
   // 生成多个子模块
-  val groups =
+  val GPIO =
     for (i <- 0 until gpioGroupCnt)
       yield new Apb3Gpio(gpioWidth, withReadSync, addressWidth, dataWidth)
-  val apbMap = groups.zipWithIndex.map { case (grp, idx) =>
+  val apbMap = GPIO.zipWithIndex.map { case (grp, idx) =>
     val base = idx * groupSpace
     (grp, base)
   }
@@ -169,7 +169,7 @@ case class Apb3GpioArray(
   // GPIO 与 AFIO 信号连接
   val gpioVec = TriStateArray(gpioWidth * gpioGroupCnt bits)
   val afioVec = io.afio
-  for ((grp, i) <- groups.zipWithIndex) {
+  for ((grp, i) <- GPIO.zipWithIndex) {
     val offset = i * gpioWidth
     // GPIO 连接
     gpioVec.write(offset, gpioWidth bits) := grp.io.gpio.write

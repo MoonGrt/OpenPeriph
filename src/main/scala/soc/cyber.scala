@@ -20,6 +20,8 @@ import spinal.lib.misc.{InterruptCtrl, Timer, Prescaler}
 
 import periph.ram._
 import periph.gpio._
+// import periph.uart._
+import periph.tim._
 import periph.wdg._
 import periph.systick._
 
@@ -40,7 +42,7 @@ object cyberConfig {
       cpu = RiscvCoreConfig(
         pcWidth = 32,
         addrWidth = 32,
-        startAddress = BigInt(0x80000000L),
+        startAddress = 0x00000000,
         regFileReadyKind = sync,
         branchPrediction = dynamic,
         bypassExecute0 = true,
@@ -89,7 +91,6 @@ class cyber(config: cyberConfig) extends Component {
     // Peripherals IO
     val gpio = master(TriStateArray(32 bits))
     val uart = master(Uart())
-    val timerExternal = in(cyberTimerCtrlExternal())
   }
 
   val resetCtrlClockDomain = ClockDomain(
@@ -177,11 +178,11 @@ class cyber(config: cyberConfig) extends Component {
     )
     gpioCtrl.io.afio := B(0, 32 bits) // 临时接0，等待外部AFIO模块接入
 
+    val timCtrl = Apb3TimArray(timCnt = 2, timSpace = 0x1000)
+    val timInterrupt = timCtrl.io.interrupt.asBools.reduce(_ | _) // 逐位“或”
     val wdgCtrl = coreClockDomain(Apb3Wdg(memSize = 0x1000)) // 看门狗复位信号参与 coreResetUnbuffered 控制
     resetCtrl.coreResetUnbuffered setWhen (wdgCtrl.io.iwdgRst || wdgCtrl.io.wwdgRst)
     val systickCtrl = Apb3SysTick()
-
-    val timerCtrl = cyberTimerCtrl()
 
     val uartCtrlConfig = UartCtrlMemoryMappedConfig(
       uartCtrlConfig = UartCtrlGenerics(
@@ -205,7 +206,7 @@ class cyber(config: cyberConfig) extends Component {
     val axiCrossbar = Axi4CrossbarFactory()
 
     axiCrossbar.addSlaves(
-      ram.io.axi -> (0x80000000L, onChipRamSize),
+      ram.io.axi -> (0x00000000L, onChipRamSize),
       apbBridge.io.axi -> (0xf0000000L, 1 MiB)
     )
 
@@ -229,7 +230,7 @@ class cyber(config: cyberConfig) extends Component {
       slaves = List(
         gpioCtrl.io.apb -> (0x00000, 64 KiB),
         uartCtrl.io.apb -> (0x10000, 64 KiB),
-        timerCtrl.io.apb -> (0x20000, 64 KiB),
+        timCtrl.io.apb   -> (0x40000, 64 KiB),
         wdgCtrl.io.apb -> (0x50000, 64 KiB),
         systickCtrl.io.apb -> (0x60000, 64 KiB),
         core.io.debugBus -> (0xf0000, 64 KiB)
@@ -239,7 +240,7 @@ class cyber(config: cyberConfig) extends Component {
     if (interruptCount != 0) {
       core.io.interrupt := (
         (0 -> uartCtrl.io.interrupt),
-        (1 -> timerCtrl.io.interrupt),
+        (1 -> timInterrupt),
         (2 -> systickCtrl.io.interrupt),
         (default -> false)
       )
@@ -252,65 +253,8 @@ class cyber(config: cyberConfig) extends Component {
   }
 
   io.gpio <> axi.gpioCtrl.io.gpio
-  io.timerExternal <> axi.timerCtrl.io.external
   io.jtag <> axi.jtagCtrl.io.jtag
   io.uart <> axi.uartCtrl.io.uart
-}
-
-object cyberTimerCtrl {
-  def getApb3Config() = new Apb3Config(
-    addressWidth = 8,
-    dataWidth = 32
-  )
-}
-
-case class cyberTimerCtrlExternal() extends Bundle {
-  val clear = Bool()
-  val tick = Bool()
-}
-
-case class cyberTimerCtrl() extends Component {
-  val io = new Bundle {
-    val apb = slave(Apb3(cyberTimerCtrl.getApb3Config()))
-    val external = in(cyberTimerCtrlExternal())
-    val interrupt = out Bool ()
-  }
-  val external = BufferCC(io.external)
-
-  val prescaler = Prescaler(16)
-  val timerA = Timer(32)
-  val timerB, timerC, timerD = Timer(16)
-
-  val busCtrl = Apb3SlaveFactory(io.apb)
-  val prescalerBridge = prescaler.driveFrom(busCtrl, 0x00)
-
-  val timerABridge = timerA.driveFrom(busCtrl, 0x40)(
-    ticks = List(True, prescaler.io.overflow),
-    clears = List(timerA.io.full)
-  )
-
-  val timerBBridge = timerB.driveFrom(busCtrl, 0x50)(
-    ticks = List(True, prescaler.io.overflow, external.tick),
-    clears = List(timerB.io.full, external.clear)
-  )
-
-  val timerCBridge = timerC.driveFrom(busCtrl, 0x60)(
-    ticks = List(True, prescaler.io.overflow, external.tick),
-    clears = List(timerC.io.full, external.clear)
-  )
-
-  val timerDBridge = timerD.driveFrom(busCtrl, 0x70)(
-    ticks = List(True, prescaler.io.overflow, external.tick),
-    clears = List(timerD.io.full, external.clear)
-  )
-
-  val interruptCtrl = InterruptCtrl(4)
-  val interruptCtrlBridge = interruptCtrl.driveFrom(busCtrl, 0x10)
-  interruptCtrl.io.inputs(0) := timerA.io.full
-  interruptCtrl.io.inputs(1) := timerB.io.full
-  interruptCtrl.io.inputs(2) := timerC.io.full
-  interruptCtrl.io.inputs(3) := timerD.io.full
-  io.interrupt := interruptCtrl.io.pendings.orR
 }
 
 object cyber {

@@ -49,14 +49,8 @@ trap_entry:
   lw x30,  1*4(sp)
   lw x31,  0*4(sp)
   addi sp,sp,16*4
-  mret
+  .word 0x0000000b // return instruction
   .text
-
-
-
-
-
-
 
 crtInit:
   .option push
@@ -89,10 +83,9 @@ ctors_loop:
   j ctors_loop
 ctors_done:
   addi sp,sp,4
-  li a0, 0x880     //880 enable timer + external interrupts
-  csrw mie,a0
-  li a0, 0x1808     //1808 enable interrupts
-  csrw mstatus,a0
+
+  li x1, 0xF0
+  .word 0x0400800B // write interrupt mask
 
   /* 跳转到 main */
   call main
