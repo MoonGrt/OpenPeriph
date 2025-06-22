@@ -193,9 +193,7 @@ case class Apb3GpioArray(
 object Apb3GpioArrayGen {
   def main(args: Array[String]): Unit = {
     SpinalConfig(targetDirectory = "rtl").generateVerilog(
-      InOutWrapper(
-        Apb3GpioArray(gpioWidth = 16, gpioGroupCnt = 4, withReadSync = true)
-      )
+      InOutWrapper(Apb3GpioArray(gpioWidth = 16, gpioGroupCnt = 4, withReadSync = true))
     )
   }
 }

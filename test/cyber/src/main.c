@@ -411,9 +411,9 @@ void demo_PWM(void)
     /*GPIO初始化*/
     GPIO_InitTypeDef GPIO_InitStructure;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOA, &GPIO_InitStructure); // 将PA8引脚初始化为复用推挽输出
+    GPIO_Init(GPIOA, &GPIO_InitStructure); // 将PA4引脚初始化为复用推挽输出
                                            // 受外设控制的引脚，均需要配置为复用模式
 
     /*配置时钟源*/

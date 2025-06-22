@@ -20,6 +20,7 @@ import spinal.lib.misc.{InterruptCtrl, Timer, Prescaler}
 
 import periph.ram._
 import periph.gpio._
+import periph.afio._
 // import periph.uart._
 import periph.tim._
 import periph.wdg._
@@ -169,6 +170,13 @@ class cyber(config: cyberConfig) extends Component {
       idWidth = 4
     )
 
+    val afioCtrl = Apb3Afio(
+      gpioWidth = 16,
+      gpioGroupCnt = 2,
+      addressWidth = 5,
+      dataWidth = 32
+    )
+
     val gpioCtrl = Apb3GpioArray(
       gpioWidth = 16,
       gpioGroupCnt = 2,
@@ -176,9 +184,12 @@ class cyber(config: cyberConfig) extends Component {
       groupSpace = 0x1000,
       withReadSync = true
     )
-    gpioCtrl.io.afio := B(0, 32 bits) // 临时接0，等待外部AFIO模块接入
+    // gpioCtrl.io.afio := B(0, 32 bits) // 临时接0，等待外部AFIO模块接入
+    gpioCtrl.io.afio := afioCtrl.io.afio.write
+    afioCtrl.io.afio.read := gpioCtrl.io.gpio.read
 
     val timCtrl = Apb3TimArray(timCnt = 2, timSpace = 0x1000)
+    afioCtrl.io.device := timCtrl.io.tim_ch.resize(32) // 临时接0，等待外部AFIO模块接入
     val timInterrupt = timCtrl.io.interrupt.asBools.reduce(_ | _) // 逐位“或”
     val wdgCtrl = coreClockDomain(Apb3Wdg(memSize = 0x1000)) // 看门狗复位信号参与 coreResetUnbuffered 控制
     resetCtrl.coreResetUnbuffered setWhen (wdgCtrl.io.iwdgRst || wdgCtrl.io.wwdgRst)
@@ -233,6 +244,7 @@ class cyber(config: cyberConfig) extends Component {
         timCtrl.io.apb   -> (0x40000, 64 KiB),
         wdgCtrl.io.apb -> (0x50000, 64 KiB),
         systickCtrl.io.apb -> (0x60000, 64 KiB),
+        afioCtrl.io.apb -> (0xe0000, 64 KiB),
         core.io.debugBus -> (0xf0000, 64 KiB)
       )
     )
