@@ -21,6 +21,7 @@ import spinal.lib.misc.{InterruptCtrl, Timer, Prescaler}
 import periph.ram._
 import periph.gpio._
 import periph.afio._
+import periph.exti._
 // import periph.uart._
 import periph.tim._
 import periph.wdg._
@@ -177,6 +178,9 @@ class cyber(config: cyberConfig) extends Component {
       dataWidth = 32
     )
 
+    val extiCtrl = Apb3Exti(extiWidth = 16)
+    extiCtrl.io.exti := afioCtrl.io.afioExti
+
     val gpioCtrl = Apb3GpioArray(
       gpioWidth = 16,
       gpioGroupCnt = 2,
@@ -244,7 +248,8 @@ class cyber(config: cyberConfig) extends Component {
         timCtrl.io.apb   -> (0x40000, 64 KiB),
         wdgCtrl.io.apb -> (0x50000, 64 KiB),
         systickCtrl.io.apb -> (0x60000, 64 KiB),
-        afioCtrl.io.apb -> (0xe0000, 64 KiB),
+        afioCtrl.io.apb -> (0xd0000, 64 KiB),
+        extiCtrl.io.apb -> (0xe0000, 64 KiB),
         core.io.debugBus -> (0xf0000, 64 KiB)
       )
     )

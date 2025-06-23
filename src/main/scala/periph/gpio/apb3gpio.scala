@@ -6,11 +6,6 @@ import spinal.lib.bus.amba3.apb._
 import spinal.lib.io.{InOutWrapper, TriStateArray}
 import spinal.lib.bus.misc.SizeMapping
 
-object Apb3Gpio {
-  def apb3Config(addressWidth: Int, dataWidth: Int) =
-    Apb3Config(addressWidth = addressWidth, dataWidth = dataWidth)
-}
-
 // 单个GPIO模块
 case class Apb3Gpio(
     gpioWidth: Int = 16,
@@ -21,7 +16,7 @@ case class Apb3Gpio(
   require(gpioWidth == 16, "This module assumes 16 GPIO pins")
 
   val io = new Bundle {
-    val apb = slave(Apb3(Apb3Gpio.apb3Config(addressWidth, dataWidth)))
+    val apb = slave(Apb3(Apb3Config(addressWidth, dataWidth)))
     val gpio = master(TriStateArray(gpioWidth bits))
     val afio = in(Bits(gpioWidth bits)) // 复用功能输入
   }

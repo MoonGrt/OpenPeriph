@@ -5,10 +5,6 @@ import spinal.lib._
 import spinal.lib.bus.amba3.apb._
 import spinal.lib.io.{InOutWrapper, TriStateArray}
 
-object Apb3Afio {
-  def apb3Config(addressWidth: Int, dataWidth: Int) =
-    Apb3Config(addressWidth = addressWidth, dataWidth = dataWidth)
-}
 case class Apb3Afio(
     gpioWidth: Int = 16,
     gpioGroupCnt: Int = 4,
