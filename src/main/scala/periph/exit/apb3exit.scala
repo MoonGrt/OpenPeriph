@@ -36,7 +36,12 @@ case class Apb3Exti(
     SWIER := SWIER | sw.asBits
   }
   ctrl.read(SWIER, 0x10)
-  ctrl.readAndWrite(PR, 0x14)
+  ctrl.onWrite(0x14) {
+    val wr = io.apb.PWDATA(extiWidth - 1 downto 0).asBits
+    // 写1清除，对应位清零
+    PR := PR & ~wr
+  }
+  ctrl.read(PR, 0x14)
 
   // 触发逻辑：同步输入边沿检测
   val extiReg = RegNext(io.exti) init (0)

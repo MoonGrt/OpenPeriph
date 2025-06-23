@@ -3,6 +3,8 @@
 
 #define CORE_HZ 50000000
 
+#define CYBER_AFIO
+#define CYBER_EXTI
 #define CYBER_SYSTICK
 #define CYBER_GPIO
 #define CYBER_USART

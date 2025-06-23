@@ -3,6 +3,7 @@
 
 void demo_SysTick(void);
 void demo_GPIO(void);
+void demo_EXTI(void);
 void demo_WDG(void);
 void demo_USART(void);
 void demo_I2C(void);
@@ -18,11 +19,12 @@ void main()
 {
     // demo_USART();
     // demo_GPIO();
+    demo_EXTI();
     // demo_SysTick();
     // demo_I2C();
     // demo_SPI();
-    demo_TIM();
-    demo_PWM();
+    // demo_TIM();
+    // demo_PWM();
     // demo_WDG();
     // demo_DVP();
 
@@ -58,6 +60,18 @@ void irqCallback()
         // USART_SendData(USART1, 'A');                // not "A"
     }
 #endif
+
+#ifdef CYBER_EXTI
+    if (EXTI_GetITStatus(EXTI_Line0) == SET) // 判断是否是外部中断14号线触发的中断
+    {
+        /*如果出现数据乱跳的现象，可再次判断引脚电平，以避免抖动*/
+        if (GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_0) == 0)
+            GPIO_SetBits(GPIOA, GPIO_Pin_0);
+        EXTI_ClearITPendingBit(EXTI_Line0); // 清除外部中断0号线的中断标志位
+                                            // 中断标志位必须清除
+                                            // 否则中断将连续不断地触发，导致主程序卡死
+    }
+#endif
 }
 
 #ifdef CYBER_SYSTICK
@@ -74,19 +88,19 @@ void demo_SysTick(void)
     while (1)
     {
         GPIO_ResetBits(GPIOA, GPIO_Pin_0);
-        delay_us(1);  // delay_s(1);
+        delay_us(1); // delay_s(1);
         GPIO_SetBits(GPIOA, GPIO_Pin_0);
-        delay_us(1);  // delay_s(1);
+        delay_us(1); // delay_s(1);
 
         GPIO_WriteBit(GPIOA, GPIO_Pin_0, Bit_RESET);
-        delay_us(1);  // delay_s(1);
+        delay_us(1); // delay_s(1);
         GPIO_WriteBit(GPIOA, GPIO_Pin_0, Bit_SET);
-        delay_us(1);  // delay_s(1);
+        delay_us(1); // delay_s(1);
 
         GPIO_WriteBit(GPIOA, GPIO_Pin_0, (BitAction)0);
-        delay_us(1);  // delay_s(1);
+        delay_us(1); // delay_s(1);
         GPIO_WriteBit(GPIOA, GPIO_Pin_0, (BitAction)1);
-        delay_us(1);  // delay_s(1);
+        delay_us(1); // delay_s(1);
     }
 }
 #endif
@@ -133,14 +147,55 @@ void led_flow()
     {
         /* 使用GPIO_Write，同时设置GPIOA所有引脚的高低电平，实现LED流水灯 */
         GPIO_Write(GPIOA, ~0x0001); // 0000 0000 0000 0001，PA0引脚为低电平，其他引脚均为高电平，注意数据有按位取反
-        delay_us(1);  // delay_s(1);
+        delay_us(1);                // delay_s(1);
         GPIO_Write(GPIOA, ~0x0002); // 0000 0000 0000 0010，PA1引脚为低电平，其他引脚均为高电平
-        delay_us(1);  // delay_s(1);
+        delay_us(1);                // delay_s(1);
         GPIO_Write(GPIOA, ~0x0004); // 0000 0000 0000 0100，PA2引脚为低电平，其他引脚均为高电平
-        delay_us(1);  // delay_s(1);
+        delay_us(1);                // delay_s(1);
         GPIO_Write(GPIOA, ~0x0008); // 0000 0000 0000 1000，PA3引脚为低电平，其他引脚均为高电平
-        delay_us(1);  // delay_s(1);
+        delay_us(1);                // delay_s(1);
     }
+}
+#endif
+
+#ifdef CYBER_EXTI
+void demo_EXTI(void)
+{
+    /*GPIO初始化*/
+    GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOB, &GPIO_InitStructure); // 将PB0引脚初始化为上拉输入
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
+    GPIO_Init(GPIOA, &GPIO_InitStructure); // 将PA0引脚初始化为推挽输出
+
+    /*AFIO选择中断引脚*/
+    GPIO_EXTILineConfig(GPIO_PortSourceGPIOB, GPIO_PinSource0); // 将外部中断的0号线映射到GPIOB，即选择PB0为外部中断引脚
+
+    /*EXTI初始化*/
+    EXTI_InitTypeDef EXTI_InitStructure;                    // 定义结构体变量
+    EXTI_InitStructure.EXTI_Line = EXTI_Line0;              // 选择配置外部中断的14号线
+    EXTI_InitStructure.EXTI_LineCmd = ENABLE;               // 指定外部中断线使能
+    EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;     // 指定外部中断线为中断模式
+    EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling; // 指定外部中断线为下降沿触发
+    EXTI_Init(&EXTI_InitStructure);                         // 将结构体变量交给EXTI_Init，配置EXTI外设
+
+    // /*NVIC中断分组*/
+    // NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2); // 配置NVIC为分组2
+    //                                                 // 即抢占优先级范围：0~3，响应优先级范围：0~3
+    //                                                 // 此分组配置在整个工程中仅需调用一次
+    //                                                 // 若有多个中断，可以把此代码放在main函数内，while循环之前
+    //                                                 // 若调用多次配置分组的代码，则后执行的配置会覆盖先执行的配置
+
+    // /*NVIC配置*/
+    // NVIC_InitTypeDef NVIC_InitStructure;                      // 定义结构体变量
+    // NVIC_InitStructure.NVIC_IRQChannel = EXTI15_10_IRQn;      // 选择配置NVIC的EXTI15_10线
+    // NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;           // 指定NVIC线路使能
+    // NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1; // 指定NVIC线路的抢占优先级为1
+    // NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;        // 指定NVIC线路的响应优先级为1
+    // NVIC_Init(&NVIC_InitStructure);                           // 将结构体变量交给NVIC_Init，配置NVIC外设
 }
 #endif
 
@@ -376,8 +431,8 @@ void demo_TIM(void)
     TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStructure;              // 定义结构体变量
     TIM_TimeBaseInitStructure.TIM_ClockDivision = TIM_CKD_DIV1;     // 时钟分频，选择不分频，此参数用于配置滤波器时钟，不影响时基单元功能
     TIM_TimeBaseInitStructure.TIM_CounterMode = TIM_CounterMode_Up; // 计数器模式，选择向上计数
-    TIM_TimeBaseInitStructure.TIM_Period = 100 - 1;               // 计数周期，即ARR的值
-    TIM_TimeBaseInitStructure.TIM_Prescaler = 10 - 1;             // 预分频器，即PSC的值
+    TIM_TimeBaseInitStructure.TIM_Period = 100 - 1;                 // 计数周期，即ARR的值
+    TIM_TimeBaseInitStructure.TIM_Prescaler = 10 - 1;               // 预分频器，即PSC的值
     TIM_TimeBaseInitStructure.TIM_RepetitionCounter = 0;            // 重复计数器，高级定时器才会用到
     TIM_TimeBaseInit(TIM1, &TIM_TimeBaseInitStructure);             // 将结构体变量交给TIM_TimeBaseInit，配置TIM2的时基单元
 

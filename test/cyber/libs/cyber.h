@@ -83,6 +83,20 @@ typedef enum{ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 #endif
 
 /*!< APB */
+#ifdef CYBER_AFIO
+/*!< AFIO */
+#include "afio.h"
+#define AFIO_BASE (APBPERIPH_BASE + 0xd0000)
+#define AFIO ((AFIO_TypeDef *)AFIO_BASE) // 0xF00d0000
+#endif
+
+#ifdef CYBER_EXTI
+/*!< EXTI */
+#include "exti.h"
+#define EXTI_BASE (APBPERIPH_BASE + 0xe0000)
+#define EXTI ((EXTI_TypeDef *)EXTI_BASE) // 0xF00e0000
+#endif
+
 #ifdef CYBER_GPIO
 /*!< GPIO */
 #include "gpio.h"
