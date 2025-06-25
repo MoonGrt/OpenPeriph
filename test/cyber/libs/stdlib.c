@@ -22,7 +22,6 @@ char *malloc(int size)
 
 void putchar(char c)
 {
-    // uart_write(UART, c);
     USART_SendData(USART1, c);
 }
 

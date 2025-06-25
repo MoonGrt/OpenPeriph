@@ -4,8 +4,8 @@ import spinal.core._
 import spinal.lib._
 import spinal.lib.bus.amba3.apb._
 import spinal.lib.bus.amba4.axi._
+import spinal.lib.com.uart.{UartCtrlGenerics}
 import spinal.lib.com.jtag.Jtag
-import spinal.lib.com.uart._
 import spinal.lib.cpu.riscv.impl.Utils.BR
 import spinal.lib.cpu.riscv.impl.build.RiscvAxi4
 import spinal.lib.cpu.riscv.impl.extension.{
@@ -22,7 +22,7 @@ import periph.ram._
 import periph.gpio._
 import periph.afio._
 import periph.exti._
-// import periph.uart._
+import periph.uart._
 import periph.tim._
 import periph.wdg._
 import periph.systick._
@@ -82,7 +82,7 @@ class cyber(config: cyberConfig) extends Component {
 
   import config._
   val debug = true
-  val interruptCount = 4
+  val interruptCount = 16
 
   val io = new Bundle {
     // Clocks / reset
@@ -92,7 +92,6 @@ class cyber(config: cyberConfig) extends Component {
     val jtag = slave(Jtag())
     // Peripherals IO
     val gpio = master(TriStateArray(32 bits))
-    val uart = master(Uart())
   }
 
   val resetCtrlClockDomain = ClockDomain(
@@ -185,39 +184,53 @@ class cyber(config: cyberConfig) extends Component {
     val gpioCtrl = Apb3GpioArray(
       gpioWidth = 16,
       gpioGroupCnt = 2,
-      // groupSpace = 0x400,
-      groupSpace = 0x1000,
+      groupSpace = 0x1000, // 0x400
       withReadSync = true
     )
-    // gpioCtrl.io.afio := B(0, 32 bits) // 临时接0，等待外部AFIO模块接入
     gpioCtrl.io.afio := afioCtrl.io.afio.write
     afioCtrl.io.afio.read := gpioCtrl.io.gpio.read
 
     val timCtrl = Apb3TimArray(timCnt = 2, timSpace = 0x1000)
     val timInterrupt = timCtrl.io.interrupt.asBits.orR // 按位“或”
-    afioCtrl.io.device := timCtrl.io.tim_ch.resize(32) // 临时接0，等待外部AFIO模块接入
     val wdgCtrl = coreClockDomain(Apb3Wdg(memSize = 0x1000)) // 看门狗复位信号参与 coreResetUnbuffered 控制
     resetCtrl.coreResetUnbuffered setWhen (wdgCtrl.io.iwdgRst || wdgCtrl.io.wwdgRst)
     val systickCtrl = Apb3SysTick()
+    val systickInterrupt = systickCtrl.io.interrupt.asBits.orR // 按位“或”
 
-    val uartCtrlConfig = UartCtrlMemoryMappedConfig(
-      uartCtrlConfig = UartCtrlGenerics(
-        dataWidthMax = 8,
-        clockDividerWidth = 20,
-        preSamplingSize = 1,
-        samplingSize = 3,
-        postSamplingSize = 1
-      ),
-      initConfig = UartCtrlInitConfig(
-        baudrate = 115200,
-        dataLength = 7, // 7 => 8 bits
-        parity = UartParityType.NONE,
-        stop = UartStopType.ONE
-      ),
-      txFifoDepth = 16,
-      rxFifoDepth = 16
+    val uartCtrl = ApbUartArray(
+        uartCount = 2,
+        groupSpace = 0x1000,
+        uartConfig = ApbUartCtrlConfig(
+          uartCtrlGenerics = UartCtrlGenerics(
+            dataWidthMax = 9,
+            clockDividerWidth = 20,
+            preSamplingSize = 1,
+            samplingSize = 3,
+            postSamplingSize = 1
+          ),
+          txFifoDepth = 16,
+          rxFifoDepth = 16
+        )
+      )
+    uartCtrl.io.uarts(0).rxd := io.gpio.read(17)
+    uartCtrl.io.uarts(1).rxd := io.gpio.read(19)
+    val uartInterrupt = uartCtrl.io.interrupt.asBits.orR // 按位“或”
+
+    afioCtrl.io.device := (
+      (8 -> timCtrl.io.tim_ch(0)),
+      (9 -> timCtrl.io.tim_ch(1)),
+      (10 -> timCtrl.io.tim_ch(2)),
+      (11 -> timCtrl.io.tim_ch(3)),
+      (12 -> timCtrl.io.tim_ch(4)),
+      (13 -> timCtrl.io.tim_ch(5)),
+      (14 -> timCtrl.io.tim_ch(6)),
+      (15 -> timCtrl.io.tim_ch(7)),
+      (16 -> uartCtrl.io.uarts(0).txd),
+      // (17 -> uartCtrl.io.uarts(0).rxd),
+      (18 -> uartCtrl.io.uarts(1).txd),
+      // (19 -> uartCtrl.io.uarts(1).rxd),
+      (default -> false)
     )
-    val uartCtrl = Apb3UartCtrl(uartCtrlConfig)
 
     val axiCrossbar = Axi4CrossbarFactory()
 
@@ -257,9 +270,9 @@ class cyber(config: cyberConfig) extends Component {
 
     if (interruptCount != 0) {
       core.io.interrupt := (
-        (0 -> uartCtrl.io.interrupt),
+        (0 -> uartInterrupt),
         (1 -> timInterrupt),
-        (2 -> systickCtrl.io.interrupt),
+        (2 -> systickInterrupt),
         (3 -> extiInterrupt),
         (default -> false)
       )
@@ -273,7 +286,6 @@ class cyber(config: cyberConfig) extends Component {
 
   io.gpio <> axi.gpioCtrl.io.gpio
   io.jtag <> axi.jtagCtrl.io.jtag
-  io.uart <> axi.uartCtrl.io.uart
 }
 
 object cyber {

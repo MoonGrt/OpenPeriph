@@ -17,9 +17,9 @@ void led_breathe(void);
 
 void main()
 {
-    // demo_USART();
+    demo_USART();
     // demo_GPIO();
-    demo_EXTI();
+    // demo_EXTI();
     // demo_SysTick();
     // demo_I2C();
     // demo_SPI();
@@ -260,7 +260,7 @@ void demo_USART(void)
     /*USART使能*/
     USART_Cmd(USART1, ENABLE); // 使能USART1，串口开始运行
     /*USART发送*/
-    // printf("Cyber USART Test\r\n");
+    printf("Cyber USART Test\r\n");
 }
 #endif
 
@@ -466,9 +466,9 @@ void demo_PWM(void)
     /*GPIO初始化*/
     GPIO_InitTypeDef GPIO_InitStructure;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOA, &GPIO_InitStructure); // 将PA4引脚初始化为复用推挽输出
+    GPIO_Init(GPIOA, &GPIO_InitStructure); // 将PA12引脚初始化为复用推挽输出
                                            // 受外设控制的引脚，均需要配置为复用模式
 
     /*配置时钟源*/
