@@ -173,6 +173,7 @@ class cyber(config: cyberConfig) extends Component {
     val afioCtrl = Apb3Afio(
       gpioWidth = 16,
       gpioGroupCnt = 2,
+      // afioConfig = BigInt("0005FFF00", 16),
       addressWidth = 5,
       dataWidth = 32
     )
@@ -192,45 +193,38 @@ class cyber(config: cyberConfig) extends Component {
 
     val timCtrl = Apb3TimArray(timCnt = 2, timSpace = 0x1000)
     val timInterrupt = timCtrl.io.interrupt.asBits.orR // 按位“或”
-    val wdgCtrl = coreClockDomain(Apb3Wdg(memSize = 0x1000)) // 看门狗复位信号参与 coreResetUnbuffered 控制
+    val wdgCtrl = coreClockDomain(Apb3Wdg(memSize = 0x1000))
     resetCtrl.coreResetUnbuffered setWhen (wdgCtrl.io.iwdgRst || wdgCtrl.io.wwdgRst)
     val systickCtrl = Apb3SysTick()
     val systickInterrupt = systickCtrl.io.interrupt.asBits.orR // 按位“或”
 
     val uartCtrl = ApbUartArray(
-        uartCount = 2,
-        groupSpace = 0x1000,
-        uartConfig = ApbUartCtrlConfig(
-          uartCtrlGenerics = UartCtrlGenerics(
-            dataWidthMax = 9,
-            clockDividerWidth = 20,
-            preSamplingSize = 1,
-            samplingSize = 3,
-            postSamplingSize = 1
-          ),
-          txFifoDepth = 16,
-          rxFifoDepth = 16
-        )
+      uartCount = 2,
+      groupSpace = 0x1000,
+      uartConfig = ApbUartCtrlConfig(
+        uartCtrlGenerics = UartCtrlGenerics(
+          dataWidthMax = 9,
+          clockDividerWidth = 20,
+          preSamplingSize = 1,
+          samplingSize = 3,
+          postSamplingSize = 1
+        ),
+        txFifoDepth = 16,
+        rxFifoDepth = 16
       )
-    uartCtrl.io.uarts(0).rxd := io.gpio.read(17)
-    uartCtrl.io.uarts(1).rxd := io.gpio.read(19)
+    )
     val uartInterrupt = uartCtrl.io.interrupt.asBits.orR // 按位“或”
 
-    afioCtrl.io.device := (
-      (8 -> timCtrl.io.tim_ch(0)),
-      (9 -> timCtrl.io.tim_ch(1)),
-      (10 -> timCtrl.io.tim_ch(2)),
-      (11 -> timCtrl.io.tim_ch(3)),
-      (12 -> timCtrl.io.tim_ch(4)),
-      (13 -> timCtrl.io.tim_ch(5)),
-      (14 -> timCtrl.io.tim_ch(6)),
-      (15 -> timCtrl.io.tim_ch(7)),
-      (16 -> uartCtrl.io.uarts(0).txd),
-      // (17 -> uartCtrl.io.uarts(0).rxd),
-      (18 -> uartCtrl.io.uarts(1).txd),
-      // (19 -> uartCtrl.io.uarts(1).rxd),
-      (default -> false)
-    )
+    afioCtrl.io.device.read := 
+      B(0, 12 bits) ## // 20 - 31: 保留空位
+      False ## // 19
+      uartCtrl.io.uarts(1).txd ## // 18
+      False ## // 17
+      uartCtrl.io.uarts(0).txd ## // 16
+      timCtrl.io.tim_ch ## // 8 - 15: 定时器通道
+      B(0, 8 bits) // 0 - 7: 保留空位
+    uartCtrl.io.uarts(0).rxd := afioCtrl.io.device.write(17)
+    uartCtrl.io.uarts(1).rxd := afioCtrl.io.device.write(19)
 
     val axiCrossbar = Axi4CrossbarFactory()
 
@@ -259,7 +253,7 @@ class cyber(config: cyberConfig) extends Component {
       slaves = List(
         gpioCtrl.io.apb -> (0x00000, 64 KiB),
         uartCtrl.io.apb -> (0x10000, 64 KiB),
-        timCtrl.io.apb   -> (0x40000, 64 KiB),
+        timCtrl.io.apb -> (0x40000, 64 KiB),
         wdgCtrl.io.apb -> (0x50000, 64 KiB),
         systickCtrl.io.apb -> (0x60000, 64 KiB),
         afioCtrl.io.apb -> (0xd0000, 64 KiB),
