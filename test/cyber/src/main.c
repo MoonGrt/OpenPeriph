@@ -25,7 +25,7 @@ void main()
     // demo_SPI();
     // demo_TIM();
     // demo_PWM();
-    demo_WDG();
+    // demo_WDG();
     // demo_DVP();
 
     // led_flow();

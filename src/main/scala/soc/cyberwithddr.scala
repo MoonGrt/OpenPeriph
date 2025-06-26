@@ -29,21 +29,19 @@ import periph.systick._
 import periph.ddr._
 
 class mempll extends BlackBox {
-  val io = new Bundle {
-    val clkout = out Bool()
-    val lock = out Bool()
-    val reset = in Bool()
-    val clkin = in Bool()
-  }
+  setDefinitionName("mempll") // Verilog 中模块名为 mempll，不加 io_
+  val clkout = out Bool ()
+  val lock = out Bool ()
+  val reset = in Bool ()
+  val clkin = in Bool ()
 }
 
 class syspll extends BlackBox {
-  val io = new Bundle {
-    val clkout = out Bool()
-    val lock = out Bool()
-    val reset = in Bool()
-    val clkin = in Bool()
-  }
+  setDefinitionName("syspll") // Verilog 中模块名为 syspll，不加 io_
+  val clkout = out Bool ()
+  val lock = out Bool ()
+  val reset = in Bool ()
+  val clkin = in Bool ()
 }
 
 case class cyberwithddrConfig(
@@ -117,17 +115,15 @@ class cyberwithddr(config: cyberwithddrConfig) extends Component {
   }
 
   val sysclk = new syspll
-  sysclk.io.clkin := io.clk
-  sysclk.io.reset := ~io.rstn
-  val sysClk = sysclk.io.clkout
+  sysclk.clkin := io.clk
+  sysclk.reset := ~io.rstn
 
   val memclk = new mempll
-  memclk.io.clkin := io.clk
-  memclk.io.reset := ~io.rstn
-  val memClk = memclk.io.clkout
+  memclk.clkin := sysclk.clkout
+  memclk.reset := ~io.rstn
 
   val resetCtrlClockDomain = ClockDomain(
-    clock = sysClk,
+    clock = sysclk.clkout,
     config = ClockDomainConfig(
       resetKind = BOOT
     )
@@ -156,18 +152,18 @@ class cyberwithddr(config: cyberwithddrConfig) extends Component {
   }
 
   val axiClockDomain = ClockDomain(
-    clock = sysClk,
+    clock = sysclk.clkout,
     reset = resetCtrl.axiReset,
     frequency = FixedFrequency(axiFrequency)
   )
 
   val coreClockDomain = ClockDomain(
-    clock = sysClk,
+    clock = sysclk.clkout,
     reset = resetCtrl.coreReset
   )
 
   val memClockDomain = ClockDomain(
-    clock = memClk,
+    clock = memclk.clkout,
     reset = resetCtrl.axiReset,
     frequency = FixedFrequency(memFrequency)
   )
@@ -198,7 +194,7 @@ class cyberwithddr(config: cyberwithddrConfig) extends Component {
       axiClockDomain,
       memClockDomain
     )
-    sdramCtrl.io.pll_lock := memclk.io.lock
+    sdramCtrl.io.pll_lock := memclk.lock && sysclk.lock
 
     val jtagCtrl = JtagAxi4SharedDebugger(
       SystemDebuggerConfig(
@@ -259,14 +255,14 @@ class cyberwithddr(config: cyberwithddrConfig) extends Component {
     )
     val uartInterrupt = uartCtrl.io.interrupt.asBits.orR // 按位“或”
 
-    afioCtrl.io.device.read := 
+    afioCtrl.io.device.read :=
       B(0, 12 bits) ## // 20 - 31: 保留空位
-      False ## // 19
-      uartCtrl.io.uarts(1).txd ## // 18
-      False ## // 17
-      uartCtrl.io.uarts(0).txd ## // 16
-      timCtrl.io.tim_ch ## // 8 - 15: 定时器通道
-      B(0, 8 bits) // 0 - 7: 保留空位
+        False ## // 19
+        uartCtrl.io.uarts(1).txd ## // 18
+        False ## // 17
+        uartCtrl.io.uarts(0).txd ## // 16
+        timCtrl.io.tim_ch ## // 8 - 15: 定时器通道
+        B(0, 8 bits) // 0 - 7: 保留空位
     uartCtrl.io.uarts(0).rxd := afioCtrl.io.device.write(17)
     uartCtrl.io.uarts(1).rxd := afioCtrl.io.device.write(19)
 
@@ -279,8 +275,8 @@ class cyberwithddr(config: cyberwithddrConfig) extends Component {
     )
 
     axiCrossbar.addConnections(
-      core.io.i       -> List(ram.io.axi, sdramCtrl.io.axi),
-      core.io.d       -> List(ram.io.axi, sdramCtrl.io.axi, apbBridge.io.axi),
+      core.io.i -> List(ram.io.axi, sdramCtrl.io.axi),
+      core.io.d -> List(ram.io.axi, sdramCtrl.io.axi, apbBridge.io.axi),
       jtagCtrl.io.axi -> List(ram.io.axi, sdramCtrl.io.axi, apbBridge.io.axi)
     )
 
@@ -291,11 +287,11 @@ class cyberwithddr(config: cyberwithddrConfig) extends Component {
       crossbar.readRsp << bridge.readRsp
     })
 
-    axiCrossbar.addPipelining(sdramCtrl.io.axi)((crossbar,ctrl) => {
-      crossbar.sharedCmd.halfPipe()  >>  ctrl.sharedCmd
-      crossbar.writeData            >/-> ctrl.writeData
-      crossbar.writeRsp              <<  ctrl.writeRsp
-      crossbar.readRsp               <<  ctrl.readRsp
+    axiCrossbar.addPipelining(sdramCtrl.io.axi)((crossbar, ctrl) => {
+      crossbar.sharedCmd.halfPipe() >> ctrl.sharedCmd
+      crossbar.writeData >/-> ctrl.writeData
+      crossbar.writeRsp << ctrl.writeRsp
+      crossbar.readRsp << ctrl.readRsp
     })
 
     axiCrossbar.build()
