@@ -1,4 +1,4 @@
-package periph.tim
+package periph
 
 import spinal.core._
 import spinal.lib._
@@ -189,10 +189,10 @@ case class Apb3TimArray(
 //   }
 // }
 
-object Apb3TimArrayGen {
-  def main(args: Array[String]): Unit = {
-    SpinalConfig(targetDirectory = "rtl").generateVerilog(
-      Apb3TimArray(timCnt = 4)
-    )
-  }
-}
+// object Apb3TimArrayGen {
+//   def main(args: Array[String]): Unit = {
+//     SpinalConfig(targetDirectory = "rtl").generateVerilog(
+//       Apb3TimArray(timCnt = 4)
+//     )
+//   }
+// }

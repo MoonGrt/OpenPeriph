@@ -5,22 +5,22 @@
 `timescale 1ns/1ps
 
 module cyber (
-    input  wire clk,
-    input  wire rst_n,
+  input  wire clk,
+  input  wire rst_n,
   input  wire          io_jtag_tms,
   input  wire          io_jtag_tdi,
   output wire          io_jtag_tdo,
   input  wire          io_jtag_tck,
   inout  wire [31:0]   io_gpio
 );
-    wire io_asyncReset = ~rst_n;
-    wire io_axiClk = clk;
-    // wire io_axiClk;
-    // SYS_rPLL SYS_rPLL(
-    //     .clkout(io_axiClk), //output clkout
-    //     .reset(reset), //input reset
-    //     .clkin(clk) //input clkin
-    // );
+  wire io_asyncReset = ~rst_n;
+  // wire io_axiClk = clk;
+  wire io_axiClk;
+  SYS_rPLL SYS_rPLL(
+      .clkout(io_axiClk), //output clkout
+      .reset(reset), //input reset
+      .clkin(clk) //input clkin
+  );
   reg        [3:0]    axi_core_io_interrupt;
   wire       [11:0]   axi_core_io_debugBus_PADDR;
   wire       [4:0]    axi_afioCtrl_io_apb_PADDR;

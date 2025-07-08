@@ -18,7 +18,7 @@ import spinal.lib.io.{TriStateArray, InOutWrapper}
 import spinal.lib.system.debugger.{JtagAxi4SharedDebugger, SystemDebuggerConfig}
 import spinal.lib.misc.{InterruptCtrl, Timer, Prescaler}
 
-import periph.ram._
+import periph.Axi4Ram
 
 case class pinsecConfig(
     axiFrequency: HertzNumber,

@@ -1,4 +1,4 @@
-package periph.uart
+package periph
 
 import spinal.core._
 import spinal.lib._
@@ -182,26 +182,26 @@ case class ApbUartArray(
 //   }
 // }
 
-object Apb3UartArrayGen {
-  def main(args: Array[String]): Unit = {
-    SpinalConfig(targetDirectory = "rtl").generateVerilog(
-      ApbUartArray(
-        uartCount = 4,
-        groupSpace = 0x20,
-        uartConfig = ApbUartCtrlConfig(
-          uartCtrlGenerics = UartCtrlGenerics(
-            dataWidthMax = 9,
-            clockDividerWidth = 20,
-            preSamplingSize = 1,
-            samplingSize = 3,
-            postSamplingSize = 1
-          ),
-          txFifoDepth = 16,
-          rxFifoDepth = 16,
-          ctsGen = false,
-          rtsGen = false
-        )
-      )
-    )
-  }
-}
+// object Apb3UartArrayGen {
+//   def main(args: Array[String]): Unit = {
+//     SpinalConfig(targetDirectory = "rtl").generateVerilog(
+//       ApbUartArray(
+//         uartCount = 4,
+//         groupSpace = 0x20,
+//         uartConfig = ApbUartCtrlConfig(
+//           uartCtrlGenerics = UartCtrlGenerics(
+//             dataWidthMax = 9,
+//             clockDividerWidth = 20,
+//             preSamplingSize = 1,
+//             samplingSize = 3,
+//             postSamplingSize = 1
+//           ),
+//           txFifoDepth = 16,
+//           rxFifoDepth = 16,
+//           ctsGen = false,
+//           rtsGen = false
+//         )
+//       )
+//     )
+//   }
+// }

@@ -1,4 +1,4 @@
-package periph.systick
+package periph
 
 import spinal.core._
 import spinal.lib._
@@ -52,8 +52,8 @@ case class Apb3SysTick(
   io.interrupt := TICKINT && COUNTFLAG
 }
 
-object Apb3SysTickGen {
-  def main(args: Array[String]): Unit = {
-    SpinalConfig(targetDirectory = "rtl").generateVerilog(Apb3SysTick())
-  }
-}
+// object Apb3SysTickGen {
+//   def main(args: Array[String]): Unit = {
+//     SpinalConfig(targetDirectory = "rtl").generateVerilog(Apb3SysTick())
+//   }
+// }

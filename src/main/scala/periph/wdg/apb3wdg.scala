@@ -1,4 +1,4 @@
-package periph.wdg
+package periph
 
 import spinal.core._
 import spinal.lib._
@@ -185,8 +185,8 @@ case class Apb3Wdg(memSize: Int = 0x400) extends Component {
 //   }
 // }
 
-object Apb3WdgGen {
-  def main(args: Array[String]): Unit = {
-    SpinalConfig(targetDirectory = "rtl").generateVerilog(Apb3Wdg())
-  }
-}
+// object Apb3WdgGen {
+//   def main(args: Array[String]): Unit = {
+//     SpinalConfig(targetDirectory = "rtl").generateVerilog(Apb3Wdg())
+//   }
+// }

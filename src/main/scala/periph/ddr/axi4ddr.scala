@@ -1,4 +1,4 @@
-package periph.ddr
+package periph
 
 import spinal.core._
 import spinal.core.sim._
@@ -547,10 +547,10 @@ case class Axi4Ddr(sys_clk: ClockDomain, mem_clk: ClockDomain) extends Component
   }
 }
 
-object Axi4DdrGen {
-  def main(args: Array[String]): Unit = {
-    SpinalConfig(targetDirectory = "rtl").generateVerilog(
-      Axi4Ddr(ClockDomain.external("sys"), ClockDomain.external("mem"))
-    )
-  }
-}
+// object Axi4DdrGen {
+//   def main(args: Array[String]): Unit = {
+//     SpinalConfig(targetDirectory = "rtl").generateVerilog(
+//       Axi4Ddr(ClockDomain.external("sys"), ClockDomain.external("mem"))
+//     )
+//   }
+// }

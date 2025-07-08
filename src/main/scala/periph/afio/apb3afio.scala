@@ -1,4 +1,4 @@
-package periph.afio
+package periph
 
 import spinal.core._
 import spinal.lib._
@@ -68,10 +68,10 @@ case class Apb3Afio(
   // }
 }
 
-object Apb3AfioGen {
-  def main(args: Array[String]): Unit = {
-    SpinalConfig(targetDirectory = "rtl").generateVerilog(
-      InOutWrapper(Apb3Afio(gpioWidth = 16, gpioGroupCnt = 4))
-    )
-  }
-}
+// object Apb3AfioGen {
+//   def main(args: Array[String]): Unit = {
+//     SpinalConfig(targetDirectory = "rtl").generateVerilog(
+//       InOutWrapper(Apb3Afio(gpioWidth = 16, gpioGroupCnt = 4))
+//     )
+//   }
+// }

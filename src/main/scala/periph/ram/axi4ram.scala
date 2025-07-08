@@ -1,4 +1,4 @@
-package periph.ram
+package periph
 
 import spinal.core._
 import spinal.core.fiber._
@@ -17,10 +17,6 @@ object Axi4Ram{
     useProt = false,
     useQos = false
   )
-
-  def main(args: Array[String]) {
-    SpinalVhdl(new Axi4Ram(32,1024,4).setDefinitionName("TopLevel"))
-  }
 }
 
 case class Axi4Ram(dataWidth : Int, byteCount : BigInt, idWidth : Int, arwStage : Boolean = false, onChipRamHexFile : String = null, bigEndian : Boolean = false) extends Component{
@@ -192,3 +188,8 @@ class Axi4RamMultiPort(config: Axi4Config, wordCount: BigInt, portCount: Int) ex
     (io.axis, ports).zipped foreach ((m, s) => m >> s)
 }
 
+// object Axi4RamGen {
+//   def main(args: Array[String]) {
+//     SpinalConfig(targetDirectory = "rtl").generateVerilog(Axi4Ram(32,1024,4))
+//   }
+// }

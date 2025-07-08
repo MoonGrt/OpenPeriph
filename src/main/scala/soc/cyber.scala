@@ -18,14 +18,7 @@ import spinal.lib.io.{TriStateArray, InOutWrapper}
 import spinal.lib.system.debugger.{JtagAxi4SharedDebugger, SystemDebuggerConfig}
 import spinal.lib.misc.{InterruptCtrl, Timer, Prescaler}
 
-import periph.ram._
-import periph.gpio._
-import periph.afio._
-import periph.exti._
-import periph.uart._
-import periph.tim._
-import periph.wdg._
-import periph.systick._
+import periph._
 
 case class cyberConfig(
     axiFrequency: HertzNumber,

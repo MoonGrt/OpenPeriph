@@ -1,4 +1,4 @@
-package periph.exti
+package periph
 
 import spinal.core._
 import spinal.lib._
@@ -59,8 +59,8 @@ case class Apb3Exti(
   io.interrupt := PR & IMR
 }
 
-object Apb3ExtiGen {
-  def main(args: Array[String]): Unit = {
-    SpinalConfig(targetDirectory = "rtl").generateVerilog(Apb3Exti(extiWidth = 16))
-  }
-}
+// object Apb3ExtiGen {
+//   def main(args: Array[String]): Unit = {
+//     SpinalConfig(targetDirectory = "rtl").generateVerilog(Apb3Exti(extiWidth = 16))
+//   }
+// }
