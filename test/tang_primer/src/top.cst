@@ -1,26 +1,20 @@
 // ============ SYS ===============
-//IO_LOC "io_clk" H11;  // 27MHz
-//IO_PORT "io_clk" IO_TYPE=SSTL15 PULL_MODE=NONE BANK_VCCIO=1.5;
-//IO_LOC "io_rstn" C7;
-//IO_PORT "io_rstn" IO_TYPE=SSTL15 PULL_MODE=NONE BANK_VCCIO=1.5;
+IO_LOC "io_clk" H11;  // 27MHz
+IO_PORT "io_clk" IO_TYPE=SSTL15 PULL_MODE=NONE;
+IO_LOC "io_rstn" C7;
+IO_PORT "io_rstn" IO_TYPE=SSTL15 PULL_MODE=NONE;
 
+// ============ JTAG ===============
+IO_LOC "io_jtag_tdi" T8;
+IO_PORT "io_jtag_tdi" IO_TYPE=LVCMOS33 PULL_MODE=NONE;
+IO_LOC "io_jtag_tdo" P8;
+IO_PORT "io_jtag_tdo" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8;
+IO_LOC "io_jtag_tck" P9;
+IO_PORT "io_jtag_tck" IO_TYPE=LVCMOS33 PULL_MODE=NONE;
+IO_LOC "io_jtag_tms" T9;
+IO_PORT "io_jtag_tms" IO_TYPE=LVCMOS33 PULL_MODE=NONE;
 
-IO_LOC "clk" H11;  // 27MHz
-IO_PORT "clk" IO_TYPE=LVCMOS33 PULL_MODE=NONE BANK_VCCIO=3.3;
-IO_LOC "rst_n" C7;
-IO_PORT "rst_n" IO_TYPE=LVCMOS33 PULL_MODE=NONE BANK_VCCIO=3.3;
-
- // ============ JTAG ===============
- IO_LOC "io_jtag_tdi" T8;
- IO_PORT "io_jtag_tdi" IO_TYPE=LVCMOS33 PULL_MODE=NONE;
- IO_LOC "io_jtag_tdo" P8;
- IO_PORT "io_jtag_tdo" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8;
- IO_LOC "io_jtag_tck" P9;
- IO_PORT "io_jtag_tck" IO_TYPE=LVCMOS33 PULL_MODE=NONE;
- IO_LOC "io_jtag_tms" T9;
- IO_PORT "io_jtag_tms" IO_TYPE=LVCMOS33 PULL_MODE=NONE;
-
-// // ============ GPIOA ===============
+// ============ io_gpio ===============
 // IO_LOC "io_gpio[0]" L16;  // LED1
 // IO_PORT "io_gpio[0]" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
 // IO_LOC "io_gpio[1]" L14;  // LED2
@@ -53,11 +47,11 @@ IO_PORT "rst_n" IO_TYPE=LVCMOS33 PULL_MODE=NONE BANK_VCCIO=3.3;
 // IO_PORT "io_gpio[14]" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
 // IO_LOC "io_gpio[15]" C13;  // LED6
 // IO_PORT "io_gpio[15]" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
-// 
-// 
-// // ============ io_gpio ===============
- IO_LOC "io_gpio[16]" M11;  // UART_TX
- IO_PORT "io_gpio[16]" IO_TYPE=LVCMOS33 PULL_MODE=UP DRIVE=8;
+
+
+// ============ io_gpio ===============
+IO_LOC "io_gpio[16]" M11;  // UART_TX
+IO_PORT "io_gpio[16]" IO_TYPE=LVCMOS33 PULL_MODE=UP DRIVE=8;
 // IO_LOC "io_gpio[17]" T13;  // UART_RX
 // IO_PORT "io_gpio[17]" IO_TYPE=SSTL15;
 // IO_LOC "io_gpio[18]" N9;
@@ -89,95 +83,95 @@ IO_PORT "rst_n" IO_TYPE=LVCMOS33 PULL_MODE=NONE BANK_VCCIO=3.3;
 // IO_LOC "io_gpio[31]" E15;
 // IO_PORT "io_gpio[31]" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
 
-//// ============ DDR ===============
-//IO_LOC "io_sdram_O_ddr_ba[2]" H5;
-//IO_PORT "io_sdram_O_ddr_ba[2]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_O_ddr_ba[1]" D3;
-//IO_PORT "io_sdram_O_ddr_ba[1]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_O_ddr_ba[0]" H4;
-//IO_PORT "io_sdram_O_ddr_ba[0]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
-//// IO_LOC "io_sdram_O_ddr_addr[13]" C8;
-//// IO_PORT "io_sdram_O_ddr_addr[13]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_O_ddr_addr[12]" A3;
-//IO_PORT "io_sdram_O_ddr_addr[12]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_O_ddr_addr[11]" B7;
-//IO_PORT "io_sdram_O_ddr_addr[11]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_O_ddr_addr[10]" K3;
-//IO_PORT "io_sdram_O_ddr_addr[10]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_O_ddr_addr[9]" F9;
-//IO_PORT "io_sdram_O_ddr_addr[9]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_O_ddr_addr[8]" A5;
-//IO_PORT "io_sdram_O_ddr_addr[8]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_O_ddr_addr[7]" D8;
-//IO_PORT "io_sdram_O_ddr_addr[7]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_O_ddr_addr[6]" B1;
-//IO_PORT "io_sdram_O_ddr_addr[6]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_O_ddr_addr[5]" E6;
-//IO_PORT "io_sdram_O_ddr_addr[5]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_O_ddr_addr[4]" C4;
-//IO_PORT "io_sdram_O_ddr_addr[4]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_O_ddr_addr[3]" F8;
-//IO_PORT "io_sdram_O_ddr_addr[3]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_O_ddr_addr[2]" D6;
-//IO_PORT "io_sdram_O_ddr_addr[2]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_O_ddr_addr[1]" A4;
-//IO_PORT "io_sdram_O_ddr_addr[1]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_O_ddr_addr[0]" F7;
-//IO_PORT "io_sdram_O_ddr_addr[0]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_O_ddr_odt" R3;
-//IO_PORT "io_sdram_O_ddr_odt" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_O_ddr_cke" J2;
-//IO_PORT "io_sdram_O_ddr_cke" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_O_ddr_we_n" L2;
-//IO_PORT "io_sdram_O_ddr_we_n" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_O_ddr_cas_n" R6;
-//IO_PORT "io_sdram_O_ddr_cas_n" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_O_ddr_ras_n" R4;
-//IO_PORT "io_sdram_O_ddr_ras_n" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_O_ddr_reset_n" B9;
-//IO_PORT "io_sdram_O_ddr_reset_n" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
-//// IO_LOC "io_sdram_O_ddr_ck" J1,J3; // 
-//// IO_PORT "io_sdram_O_ddr_ck" IO_TYPE=SSTL15D PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_O_ddr_dqm[1]" K5;
-//IO_PORT "io_sdram_O_ddr_dqm[1]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_O_ddr_dqm[0]" G1;
-//IO_PORT "io_sdram_O_ddr_dqm[0]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_IO_ddr_dq[15]" M2;
-//IO_PORT "io_sdram_IO_ddr_dq[15]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 VREF=INTERNAL BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_IO_ddr_dq[14]" R1;
-//IO_PORT "io_sdram_IO_ddr_dq[14]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 VREF=INTERNAL BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_IO_ddr_dq[13]" H3;
-//IO_PORT "io_sdram_IO_ddr_dq[13]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 VREF=INTERNAL BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_IO_ddr_dq[12]" P4;
-//IO_PORT "io_sdram_IO_ddr_dq[12]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 VREF=INTERNAL BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_IO_ddr_dq[11]" L1;
-//IO_PORT "io_sdram_IO_ddr_dq[11]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 VREF=INTERNAL BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_IO_ddr_dq[10]" N2;
-//IO_PORT "io_sdram_IO_ddr_dq[10]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 VREF=INTERNAL BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_IO_ddr_dq[9]" K4;
-//IO_PORT "io_sdram_IO_ddr_dq[9]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 VREF=INTERNAL BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_IO_ddr_dq[8]" M3;
-//IO_PORT "io_sdram_IO_ddr_dq[8]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 VREF=INTERNAL BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_IO_ddr_dq[7]" B3;
-//IO_PORT "io_sdram_IO_ddr_dq[7]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 VREF=INTERNAL BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_IO_ddr_dq[6]" E1;
-//IO_PORT "io_sdram_IO_ddr_dq[6]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 VREF=INTERNAL BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_IO_ddr_dq[5]" C1;
-//IO_PORT "io_sdram_IO_ddr_dq[5]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 VREF=INTERNAL BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_IO_ddr_dq[4]" E2;
-//IO_PORT "io_sdram_IO_ddr_dq[4]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 VREF=INTERNAL BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_IO_ddr_dq[3]" F3;
-//IO_PORT "io_sdram_IO_ddr_dq[3]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 VREF=INTERNAL BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_IO_ddr_dq[2]" F4;
-//IO_PORT "io_sdram_IO_ddr_dq[2]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 VREF=INTERNAL BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_IO_ddr_dq[1]" F5;
-//IO_PORT "io_sdram_IO_ddr_dq[1]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 VREF=INTERNAL BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_IO_ddr_dq[0]" G5;
-//IO_PORT "io_sdram_IO_ddr_dq[0]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 VREF=INTERNAL BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_IO_ddr_dqs[1]" J5,K6;
-//IO_PORT "io_sdram_IO_ddr_dqs[1]" IO_TYPE=SSTL15D PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_IO_ddr_dqs[0]" G2,G3;
-//IO_PORT "io_sdram_IO_ddr_dqs[0]" IO_TYPE=SSTL15D PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
-//IO_LOC "io_sdram_O_ddr_cs_n" P5;
-//IO_PORT "io_sdram_O_ddr_cs_n" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
-//
+
+// // ============ DDR ===============
+// IO_LOC "io_sdram_O_ddr_ba[2]" H5;
+// IO_PORT "io_sdram_O_ddr_ba[2]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_O_ddr_ba[1]" D3;
+// IO_PORT "io_sdram_O_ddr_ba[1]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_O_ddr_ba[0]" H4;
+// IO_PORT "io_sdram_O_ddr_ba[0]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
+// // IO_LOC "io_sdram_O_ddr_addr[13]" C8;
+// // IO_PORT "io_sdram_O_ddr_addr[13]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_O_ddr_addr[12]" A3;
+// IO_PORT "io_sdram_O_ddr_addr[12]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_O_ddr_addr[11]" B7;
+// IO_PORT "io_sdram_O_ddr_addr[11]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_O_ddr_addr[10]" K3;
+// IO_PORT "io_sdram_O_ddr_addr[10]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_O_ddr_addr[9]" F9;
+// IO_PORT "io_sdram_O_ddr_addr[9]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_O_ddr_addr[8]" A5;
+// IO_PORT "io_sdram_O_ddr_addr[8]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_O_ddr_addr[7]" D8;
+// IO_PORT "io_sdram_O_ddr_addr[7]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_O_ddr_addr[6]" B1;
+// IO_PORT "io_sdram_O_ddr_addr[6]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_O_ddr_addr[5]" E6;
+// IO_PORT "io_sdram_O_ddr_addr[5]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_O_ddr_addr[4]" C4;
+// IO_PORT "io_sdram_O_ddr_addr[4]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_O_ddr_addr[3]" F8;
+// IO_PORT "io_sdram_O_ddr_addr[3]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_O_ddr_addr[2]" D6;
+// IO_PORT "io_sdram_O_ddr_addr[2]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_O_ddr_addr[1]" A4;
+// IO_PORT "io_sdram_O_ddr_addr[1]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_O_ddr_addr[0]" F7;
+// IO_PORT "io_sdram_O_ddr_addr[0]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_O_ddr_odt" R3;
+// IO_PORT "io_sdram_O_ddr_odt" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_O_ddr_cke" J2;
+// IO_PORT "io_sdram_O_ddr_cke" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_O_ddr_we_n" L2;
+// IO_PORT "io_sdram_O_ddr_we_n" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_O_ddr_cas_n" R6;
+// IO_PORT "io_sdram_O_ddr_cas_n" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_O_ddr_ras_n" R4;
+// IO_PORT "io_sdram_O_ddr_ras_n" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_O_ddr_reset_n" B9;
+// IO_PORT "io_sdram_O_ddr_reset_n" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
+// // IO_LOC "io_sdram_O_ddr_ck" J1,J3; // 
+// // IO_PORT "io_sdram_O_ddr_ck" IO_TYPE=SSTL15D PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_O_ddr_dqm[1]" K5;
+// IO_PORT "io_sdram_O_ddr_dqm[1]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_O_ddr_dqm[0]" G1;
+// IO_PORT "io_sdram_O_ddr_dqm[0]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_IO_ddr_dq[15]" M2;
+// IO_PORT "io_sdram_IO_ddr_dq[15]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 VREF=INTERNAL BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_IO_ddr_dq[14]" R1;
+// IO_PORT "io_sdram_IO_ddr_dq[14]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 VREF=INTERNAL BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_IO_ddr_dq[13]" H3;
+// IO_PORT "io_sdram_IO_ddr_dq[13]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 VREF=INTERNAL BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_IO_ddr_dq[12]" P4;
+// IO_PORT "io_sdram_IO_ddr_dq[12]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 VREF=INTERNAL BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_IO_ddr_dq[11]" L1;
+// IO_PORT "io_sdram_IO_ddr_dq[11]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 VREF=INTERNAL BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_IO_ddr_dq[10]" N2;
+// IO_PORT "io_sdram_IO_ddr_dq[10]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 VREF=INTERNAL BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_IO_ddr_dq[9]" K4;
+// IO_PORT "io_sdram_IO_ddr_dq[9]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 VREF=INTERNAL BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_IO_ddr_dq[8]" M3;
+// IO_PORT "io_sdram_IO_ddr_dq[8]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 VREF=INTERNAL BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_IO_ddr_dq[7]" B3;
+// IO_PORT "io_sdram_IO_ddr_dq[7]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 VREF=INTERNAL BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_IO_ddr_dq[6]" E1;
+// IO_PORT "io_sdram_IO_ddr_dq[6]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 VREF=INTERNAL BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_IO_ddr_dq[5]" C1;
+// IO_PORT "io_sdram_IO_ddr_dq[5]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 VREF=INTERNAL BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_IO_ddr_dq[4]" E2;
+// IO_PORT "io_sdram_IO_ddr_dq[4]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 VREF=INTERNAL BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_IO_ddr_dq[3]" F3;
+// IO_PORT "io_sdram_IO_ddr_dq[3]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 VREF=INTERNAL BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_IO_ddr_dq[2]" F4;
+// IO_PORT "io_sdram_IO_ddr_dq[2]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 VREF=INTERNAL BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_IO_ddr_dq[1]" F5;
+// IO_PORT "io_sdram_IO_ddr_dq[1]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 VREF=INTERNAL BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_IO_ddr_dq[0]" G5;
+// IO_PORT "io_sdram_IO_ddr_dq[0]" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 VREF=INTERNAL BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_IO_ddr_dqs[1]" J5,K6;
+// IO_PORT "io_sdram_IO_ddr_dqs[1]" IO_TYPE=SSTL15D PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_IO_ddr_dqs[0]" G2,G3;
+// IO_PORT "io_sdram_IO_ddr_dqs[0]" IO_TYPE=SSTL15D PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
+// IO_LOC "io_sdram_O_ddr_cs_n" P5;
+// IO_PORT "io_sdram_O_ddr_cs_n" IO_TYPE=SSTL15 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;

@@ -168,7 +168,8 @@ class cyberwithddr(config: cyberwithddrConfig) extends Component {
     val core = coreClockDomain {
       new RiscvAxi4(
         coreConfig = config.cpu,
-        iCacheConfig = config.iCache,
+        // iCacheConfig = config.iCache, // 目前上板有问题，仿真正常
+        iCacheConfig = null,
         dCacheConfig = null,
         debug = debug,
         interruptCount = interruptCount
