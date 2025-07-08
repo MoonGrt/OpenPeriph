@@ -2,7 +2,7 @@
 module tb_top;
 
     // top Parameters
-    parameter T = 20;
+    parameter T = 37.037;  // 时钟周期
     parameter USE_TPG = "true";
 
     // top Inputs
@@ -24,8 +24,8 @@ module tb_top;
     end
 
     cyber cyber (
-        .clk    (clk),
-        .rst_n  (rst_n)
+        .io_clk   (clk),
+        .io_rstn  (rst_n)
     );
 
     // 模拟 UART 发送波形

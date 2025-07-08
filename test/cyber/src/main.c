@@ -17,6 +17,9 @@ void led_breathe(void);
 
 void main()
 {
+    delay_init();
+    delay_ms(1000); // 等待系统稳定
+
     demo_USART();
     // demo_GPIO();
     // demo_EXTI();
@@ -77,8 +80,6 @@ void irqCallback()
 #ifdef CYBER_SYSTICK
 void demo_SysTick(void)
 {
-    delay_init();
-
     GPIO_InitTypeDef GPIO_InitStructure;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;

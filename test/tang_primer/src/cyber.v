@@ -19,7 +19,7 @@ module cyber (
   syspll syspll(
     .clkout(io_axiClk), //output clkout
     .lock(lock), //output lock
-    .reset(reset), //input reset
+    .reset(~io_rstn), //input reset
     .clkin(io_clk) //input clkin
   );
 
