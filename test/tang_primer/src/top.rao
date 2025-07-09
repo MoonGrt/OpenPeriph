@@ -2,86 +2,65 @@
 <GAO_CONFIG>
     <Version>3.0</Version>
     <Mode>Standard</Mode>
-    <AoCore index="0" sample_clock="io_axiClk" trig_type="0" storage_depth="1024" window_num="1" capture_amount="1024" implementation="0" trigger_pos="0" module_name="cyber" force_trigger_by_falling_edge="false" capture_init_data_enabled="false">
+    <AoCore index="0" sample_clock="io_clk" trig_type="0" storage_depth="1024" window_num="1" capture_amount="1024" implementation="0" trigger_pos="32" module_name="cyberwithddr" force_trigger_by_falling_edge="false" capture_init_data_enabled="false">
         <SignalList>
-            <Signal capture_enable="true">axi_core/io_i_ar_valid</Signal>
-            <Signal capture_enable="true">axi_core/io_i_ar_ready</Signal>
-            <Bus capture_enable="true" name="axi_core/io_i_ar_payload_addr[31:0]">
-                <Signal>axi_core/io_i_ar_payload_addr[31]</Signal>
-                <Signal>axi_core/io_i_ar_payload_addr[30]</Signal>
-                <Signal>axi_core/io_i_ar_payload_addr[29]</Signal>
-                <Signal>axi_core/io_i_ar_payload_addr[28]</Signal>
-                <Signal>axi_core/io_i_ar_payload_addr[27]</Signal>
-                <Signal>axi_core/io_i_ar_payload_addr[26]</Signal>
-                <Signal>axi_core/io_i_ar_payload_addr[25]</Signal>
-                <Signal>axi_core/io_i_ar_payload_addr[24]</Signal>
-                <Signal>axi_core/io_i_ar_payload_addr[23]</Signal>
-                <Signal>axi_core/io_i_ar_payload_addr[22]</Signal>
-                <Signal>axi_core/io_i_ar_payload_addr[21]</Signal>
-                <Signal>axi_core/io_i_ar_payload_addr[20]</Signal>
-                <Signal>axi_core/io_i_ar_payload_addr[19]</Signal>
-                <Signal>axi_core/io_i_ar_payload_addr[18]</Signal>
-                <Signal>axi_core/io_i_ar_payload_addr[17]</Signal>
-                <Signal>axi_core/io_i_ar_payload_addr[16]</Signal>
-                <Signal>axi_core/io_i_ar_payload_addr[15]</Signal>
-                <Signal>axi_core/io_i_ar_payload_addr[14]</Signal>
-                <Signal>axi_core/io_i_ar_payload_addr[13]</Signal>
-                <Signal>axi_core/io_i_ar_payload_addr[12]</Signal>
-                <Signal>axi_core/io_i_ar_payload_addr[11]</Signal>
-                <Signal>axi_core/io_i_ar_payload_addr[10]</Signal>
-                <Signal>axi_core/io_i_ar_payload_addr[9]</Signal>
-                <Signal>axi_core/io_i_ar_payload_addr[8]</Signal>
-                <Signal>axi_core/io_i_ar_payload_addr[7]</Signal>
-                <Signal>axi_core/io_i_ar_payload_addr[6]</Signal>
-                <Signal>axi_core/io_i_ar_payload_addr[5]</Signal>
-                <Signal>axi_core/io_i_ar_payload_addr[4]</Signal>
-                <Signal>axi_core/io_i_ar_payload_addr[3]</Signal>
-                <Signal>axi_core/io_i_ar_payload_addr[2]</Signal>
-                <Signal>axi_core/io_i_ar_payload_addr[1]</Signal>
-                <Signal>axi_core/io_i_ar_payload_addr[0]</Signal>
+            <Signal capture_enable="true">io_rstn</Signal>
+            <Bus capture_enable="true" name="axi_ram/ram_spinal_port0[31:0]">
+                <Signal>axi_ram/ram_spinal_port0[31]</Signal>
+                <Signal>axi_ram/ram_spinal_port0[30]</Signal>
+                <Signal>axi_ram/ram_spinal_port0[29]</Signal>
+                <Signal>axi_ram/ram_spinal_port0[28]</Signal>
+                <Signal>axi_ram/ram_spinal_port0[27]</Signal>
+                <Signal>axi_ram/ram_spinal_port0[26]</Signal>
+                <Signal>axi_ram/ram_spinal_port0[25]</Signal>
+                <Signal>axi_ram/ram_spinal_port0[24]</Signal>
+                <Signal>axi_ram/ram_spinal_port0[23]</Signal>
+                <Signal>axi_ram/ram_spinal_port0[22]</Signal>
+                <Signal>axi_ram/ram_spinal_port0[21]</Signal>
+                <Signal>axi_ram/ram_spinal_port0[20]</Signal>
+                <Signal>axi_ram/ram_spinal_port0[19]</Signal>
+                <Signal>axi_ram/ram_spinal_port0[18]</Signal>
+                <Signal>axi_ram/ram_spinal_port0[17]</Signal>
+                <Signal>axi_ram/ram_spinal_port0[16]</Signal>
+                <Signal>axi_ram/ram_spinal_port0[15]</Signal>
+                <Signal>axi_ram/ram_spinal_port0[14]</Signal>
+                <Signal>axi_ram/ram_spinal_port0[13]</Signal>
+                <Signal>axi_ram/ram_spinal_port0[12]</Signal>
+                <Signal>axi_ram/ram_spinal_port0[11]</Signal>
+                <Signal>axi_ram/ram_spinal_port0[10]</Signal>
+                <Signal>axi_ram/ram_spinal_port0[9]</Signal>
+                <Signal>axi_ram/ram_spinal_port0[8]</Signal>
+                <Signal>axi_ram/ram_spinal_port0[7]</Signal>
+                <Signal>axi_ram/ram_spinal_port0[6]</Signal>
+                <Signal>axi_ram/ram_spinal_port0[5]</Signal>
+                <Signal>axi_ram/ram_spinal_port0[4]</Signal>
+                <Signal>axi_ram/ram_spinal_port0[3]</Signal>
+                <Signal>axi_ram/ram_spinal_port0[2]</Signal>
+                <Signal>axi_ram/ram_spinal_port0[1]</Signal>
+                <Signal>axi_ram/ram_spinal_port0[0]</Signal>
             </Bus>
-            <Signal capture_enable="true">axi_core/io_i_r_valid</Signal>
-            <Signal capture_enable="true">axi_core/io_i_r_ready</Signal>
-            <Bus capture_enable="true" name="axi_core/io_i_r_payload_data[31:0]">
-                <Signal>axi_core/io_i_r_payload_data[31]</Signal>
-                <Signal>axi_core/io_i_r_payload_data[30]</Signal>
-                <Signal>axi_core/io_i_r_payload_data[29]</Signal>
-                <Signal>axi_core/io_i_r_payload_data[28]</Signal>
-                <Signal>axi_core/io_i_r_payload_data[27]</Signal>
-                <Signal>axi_core/io_i_r_payload_data[26]</Signal>
-                <Signal>axi_core/io_i_r_payload_data[25]</Signal>
-                <Signal>axi_core/io_i_r_payload_data[24]</Signal>
-                <Signal>axi_core/io_i_r_payload_data[23]</Signal>
-                <Signal>axi_core/io_i_r_payload_data[22]</Signal>
-                <Signal>axi_core/io_i_r_payload_data[21]</Signal>
-                <Signal>axi_core/io_i_r_payload_data[20]</Signal>
-                <Signal>axi_core/io_i_r_payload_data[19]</Signal>
-                <Signal>axi_core/io_i_r_payload_data[18]</Signal>
-                <Signal>axi_core/io_i_r_payload_data[17]</Signal>
-                <Signal>axi_core/io_i_r_payload_data[16]</Signal>
-                <Signal>axi_core/io_i_r_payload_data[15]</Signal>
-                <Signal>axi_core/io_i_r_payload_data[14]</Signal>
-                <Signal>axi_core/io_i_r_payload_data[13]</Signal>
-                <Signal>axi_core/io_i_r_payload_data[12]</Signal>
-                <Signal>axi_core/io_i_r_payload_data[11]</Signal>
-                <Signal>axi_core/io_i_r_payload_data[10]</Signal>
-                <Signal>axi_core/io_i_r_payload_data[9]</Signal>
-                <Signal>axi_core/io_i_r_payload_data[8]</Signal>
-                <Signal>axi_core/io_i_r_payload_data[7]</Signal>
-                <Signal>axi_core/io_i_r_payload_data[6]</Signal>
-                <Signal>axi_core/io_i_r_payload_data[5]</Signal>
-                <Signal>axi_core/io_i_r_payload_data[4]</Signal>
-                <Signal>axi_core/io_i_r_payload_data[3]</Signal>
-                <Signal>axi_core/io_i_r_payload_data[2]</Signal>
-                <Signal>axi_core/io_i_r_payload_data[1]</Signal>
-                <Signal>axi_core/io_i_r_payload_data[0]</Signal>
+            <Bus capture_enable="true" name="axi_ram/stage0_payload_fragment_addr[14:0]">
+                <Signal>axi_ram/stage0_payload_fragment_addr[14]</Signal>
+                <Signal>axi_ram/stage0_payload_fragment_addr[13]</Signal>
+                <Signal>axi_ram/stage0_payload_fragment_addr[12]</Signal>
+                <Signal>axi_ram/stage0_payload_fragment_addr[11]</Signal>
+                <Signal>axi_ram/stage0_payload_fragment_addr[10]</Signal>
+                <Signal>axi_ram/stage0_payload_fragment_addr[9]</Signal>
+                <Signal>axi_ram/stage0_payload_fragment_addr[8]</Signal>
+                <Signal>axi_ram/stage0_payload_fragment_addr[7]</Signal>
+                <Signal>axi_ram/stage0_payload_fragment_addr[6]</Signal>
+                <Signal>axi_ram/stage0_payload_fragment_addr[5]</Signal>
+                <Signal>axi_ram/stage0_payload_fragment_addr[4]</Signal>
+                <Signal>axi_ram/stage0_payload_fragment_addr[3]</Signal>
+                <Signal>axi_ram/stage0_payload_fragment_addr[2]</Signal>
+                <Signal>axi_ram/stage0_payload_fragment_addr[1]</Signal>
+                <Signal>axi_ram/stage0_payload_fragment_addr[0]</Signal>
             </Bus>
-            <Signal capture_enable="true">axi_core/io_i_r_payload_last</Signal>
         </SignalList>
         <Triggers>
             <Trigger index="0">
                 <SignalList>
-                    <Signal>io_asyncReset</Signal>
+                    <Signal>io_rstn</Signal>
                 </SignalList>
             </Trigger>
             <Trigger index="1"/>
@@ -101,8 +80,8 @@
             <Trigger index="15"/>
         </Triggers>
         <MatchUnits>
-            <MatchUnit index="0" enabled="1" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="0" value1="0" trigger="0"/>
-            <MatchUnit index="1" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="0" enabled="1" match_type="1" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="1" value1="0" trigger="0"/>
+            <MatchUnit index="1" enabled="0" match_type="1" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="0" value1="0" trigger="1"/>
             <MatchUnit index="2" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
             <MatchUnit index="3" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
             <MatchUnit index="4" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
@@ -122,5 +101,5 @@
             <Expression>M0</Expression>
         </Expressions>
     </AoCore>
-    <GAO_ID>1101111011000000</GAO_ID>
+    <GAO_ID>1001001111101010</GAO_ID>
 </GAO_CONFIG>

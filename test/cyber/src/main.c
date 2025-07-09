@@ -18,7 +18,7 @@ void led_breathe(void);
 void main()
 {
     delay_init();
-    delay_ms(1000); // 等待系统稳定
+    delay_ms(10); // 等待系统稳定
 
     demo_USART();
     // demo_GPIO();

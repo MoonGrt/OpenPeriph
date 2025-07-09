@@ -131,7 +131,7 @@ class cyberwithddr(config: cyberwithddrConfig) extends Component {
       axiResetCounter := axiResetCounter + 1
       axiResetUnbuffered := True
     }
-    when(BufferCC(io.rstn)) {
+    when(BufferCC(~io.rstn)) {
       axiResetCounter := 0
     }
     // When an axiResetOrder happen, the core reset will as well

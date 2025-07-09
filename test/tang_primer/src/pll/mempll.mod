@@ -15,13 +15,13 @@
 -dyn_idiv_sel false
 -idiv_sel 1
 -dyn_fbdiv_sel false
--fbdiv_sel 4
+-fbdiv_sel 8
 -dyn_odiv_sel false
 -odiv_sel 2
 -dyn_da_en true
 -rst_sig true
 -rst_sig_p false
--fclkin 100
+-fclkin 50
 -clkfb_sel 0
 -en_lock true
 -clkout_bypass false
