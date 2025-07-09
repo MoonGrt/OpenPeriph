@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.12.0    git head : 1aa7d7b5732f11cca2dd83bacc2a4cb92ca8e5c9
 // Component : cyberwithddr
-// Git hash  : 255a16c3543df105323ddade4cde863d054ec045
+// Git hash  : 669cdd911d8e33f3793aee3f4f97a39bd72b5a73
 
 `timescale 1ns/1ps
 `define SYNTHESIS
@@ -11,7 +11,7 @@ module cyberwithddr (
   input  wire          io_jtag_tdi,
   output wire          io_jtag_tdo,
   input  wire          io_jtag_tck,
-  output wire [12:0]   io_sdram_O_ddr_addr,
+  output wire [13:0]   io_sdram_O_ddr_addr,
   output wire [2:0]    io_sdram_O_ddr_ba,
   output wire          io_sdram_O_ddr_cs_n,
   output wire          io_sdram_O_ddr_ras_n,
@@ -29,8 +29,6 @@ module cyberwithddr (
   inout  wire [31:0]   io_gpio
 );
 
-  wire                sysclk_reset;
-  wire                memclk_reset;
   wire                bufferCC_12_io_dataIn;
   reg        [3:0]    axi_core_io_interrupt;
   wire       [11:0]   axi_core_io_debugBus_PADDR;
@@ -102,7 +100,7 @@ module cyberwithddr (
   wire       [3:0]    axi_sdramCtrl_io_axi_r_payload_id;
   wire       [1:0]    axi_sdramCtrl_io_axi_r_payload_resp;
   wire                axi_sdramCtrl_io_axi_r_payload_last;
-  wire       [12:0]   axi_sdramCtrl_io_ddr_iface_O_ddr_addr;
+  wire       [13:0]   axi_sdramCtrl_io_ddr_iface_O_ddr_addr;
   wire       [2:0]    axi_sdramCtrl_io_ddr_iface_O_ddr_ba;
   wire                axi_sdramCtrl_io_ddr_iface_O_ddr_cs_n;
   wire                axi_sdramCtrl_io_ddr_iface_O_ddr_ras_n;
@@ -469,14 +467,14 @@ module cyberwithddr (
   reg                 resetCtrl_axiResetUnbuffered;
   reg                 resetCtrl_coreResetUnbuffered;
   reg        [5:0]    resetCtrl_axiResetCounter;
-  wire       [5:0]    _zz_when_cyberwithddr_l130;
-  wire                when_cyberwithddr_l130;
-  wire                when_cyberwithddr_l134;
+  wire       [5:0]    _zz_when_cyberwithddr_l132;
+  wire                when_cyberwithddr_l132;
+  wire                when_cyberwithddr_l136;
   reg                 resetCtrl_axiReset;
   reg                 resetCtrl_coreReset;
   wire                axi_extiInterrupt;
   wire                axi_timInterrupt;
-  wire                when_cyberwithddr_l230;
+  wire                when_cyberwithddr_l232;
   wire                axi_systickInterrupt;
   wire                axi_uartInterrupt;
   wire                io_outputs_0_ar_validPipe_valid;
@@ -657,13 +655,13 @@ module cyberwithddr (
   syspll sysclk (
     .clkout (sysclk_clkout), //o
     .lock   (sysclk_lock  ), //o
-    .reset  (sysclk_reset ), //i
+    .reset  (1'b0         ), //i
     .clkin  (io_clk       )  //i
   );
   mempll memclk (
     .clkout (memclk_clkout), //o
     .lock   (memclk_lock  ), //o
-    .reset  (memclk_reset ), //i
+    .reset  (1'b0         ), //i
     .clkin  (sysclk_clkout)  //i
   );
   (* keep_hierarchy = "TRUE" *) BufferCC_11 bufferCC_12 (
@@ -768,7 +766,7 @@ module cyberwithddr (
     .io_axi_r_payload_id        (axi_sdramCtrl_io_axi_r_payload_id[3:0]        ), //o
     .io_axi_r_payload_resp      (axi_sdramCtrl_io_axi_r_payload_resp[1:0]      ), //o
     .io_axi_r_payload_last      (axi_sdramCtrl_io_axi_r_payload_last           ), //o
-    .io_ddr_iface_O_ddr_addr    (axi_sdramCtrl_io_ddr_iface_O_ddr_addr[12:0]   ), //o
+    .io_ddr_iface_O_ddr_addr    (axi_sdramCtrl_io_ddr_iface_O_ddr_addr[13:0]   ), //o
     .io_ddr_iface_O_ddr_ba      (axi_sdramCtrl_io_ddr_iface_O_ddr_ba[2:0]      ), //o
     .io_ddr_iface_O_ddr_cs_n    (axi_sdramCtrl_io_ddr_iface_O_ddr_cs_n         ), //o
     .io_ddr_iface_O_ddr_ras_n   (axi_sdramCtrl_io_ddr_iface_O_ddr_ras_n        ), //o
@@ -1724,11 +1722,9 @@ module cyberwithddr (
     end
   end
 
-  assign sysclk_reset = (! io_rstn);
-  assign memclk_reset = (! io_rstn);
   always @(*) begin
     resetCtrl_axiResetUnbuffered = 1'b0;
-    if(when_cyberwithddr_l130) begin
+    if(when_cyberwithddr_l132) begin
       resetCtrl_axiResetUnbuffered = 1'b1;
     end
   end
@@ -1738,7 +1734,7 @@ module cyberwithddr (
     if(resetCtrl_axiResetUnbuffered) begin
       resetCtrl_coreResetUnbuffered = 1'b1;
     end
-    if(when_cyberwithddr_l230) begin
+    if(when_cyberwithddr_l232) begin
       resetCtrl_coreResetUnbuffered = 1'b1;
     end
     if(axi_core_io_debugResetOut) begin
@@ -1746,14 +1742,14 @@ module cyberwithddr (
     end
   end
 
-  assign _zz_when_cyberwithddr_l130[5 : 0] = 6'h3f;
-  assign when_cyberwithddr_l130 = (resetCtrl_axiResetCounter != _zz_when_cyberwithddr_l130);
+  assign _zz_when_cyberwithddr_l132[5 : 0] = 6'h3f;
+  assign when_cyberwithddr_l132 = (resetCtrl_axiResetCounter != _zz_when_cyberwithddr_l132);
   assign bufferCC_12_io_dataIn = (! io_rstn);
-  assign when_cyberwithddr_l134 = bufferCC_12_io_dataOut;
+  assign when_cyberwithddr_l136 = bufferCC_12_io_dataOut;
   assign axi_sdramCtrl_io_pll_lock = (memclk_lock && sysclk_lock);
   assign axi_extiInterrupt = (|axi_extiCtrl_io_interrupt);
   assign axi_timInterrupt = (|axi_timCtrl_io_interrupt);
-  assign when_cyberwithddr_l230 = (axi_wdgCtrl_io_iwdgRst || axi_wdgCtrl_io_wwdgRst);
+  assign when_cyberwithddr_l232 = (axi_wdgCtrl_io_iwdgRst || axi_wdgCtrl_io_wwdgRst);
   assign axi_systickInterrupt = (|axi_systickCtrl_io_interrupt);
   assign axi_uartInterrupt = (|axi_uartCtrl_io_interrupt);
   assign axi_afioCtrl_io_device_read = {{{{{{12'h0,1'b0},axi_uartCtrl_io_uarts_1_txd},1'b0},axi_uartCtrl_io_uarts_0_txd},axi_timCtrl_io_tim_ch},8'h0};
@@ -1983,10 +1979,10 @@ module cyberwithddr (
   assign _zz_io_gpio_33 = _zz_io_gpio_32;
   assign _zz_io_gpio_read = _zz_io_gpio_read_1;
   always @(posedge sysclk_clkout) begin
-    if(when_cyberwithddr_l130) begin
+    if(when_cyberwithddr_l132) begin
       resetCtrl_axiResetCounter <= (resetCtrl_axiResetCounter + 6'h01);
     end
-    if(when_cyberwithddr_l134) begin
+    if(when_cyberwithddr_l136) begin
       resetCtrl_axiResetCounter <= 6'h0;
     end
   end
@@ -3869,7 +3865,7 @@ module Axi4SharedDecoder_1 (
 
   assign when_Utils_l753 = ((! pendingDataCounter_incrementIt) && pendingDataCounter_decrementIt);
   assign pendingDataCounter_valueNext = (pendingDataCounter_value + pendingDataCounter_finalIncrement);
-  assign decodedCmdSels = {((io_input_arw_payload_addr & (~ 32'h000fffff)) == 32'hf0000000),{((io_input_arw_payload_addr & (~ 32'h1fffffff)) == 32'h40000000),((io_input_arw_payload_addr & (~ 32'h00007fff)) == 32'h0)}};
+  assign decodedCmdSels = {((io_input_arw_payload_addr & (~ 32'h000fffff)) == 32'hf0000000),{((io_input_arw_payload_addr & (~ 32'h07ffffff)) == 32'h40000000),((io_input_arw_payload_addr & (~ 32'h00007fff)) == 32'h0)}};
   assign decodedCmdError = (decodedCmdSels == 3'b000);
   assign allowCmd = ((pendingCmdCounter == 3'b000) || ((pendingCmdCounter != 3'b111) && (pendingSels == decodedCmdSels)));
   assign allowData = (pendingDataCounter_value != 3'b000);
@@ -4190,7 +4186,7 @@ module Axi4SharedDecoder (
 
   assign when_Utils_l753 = ((! pendingDataCounter_incrementIt) && pendingDataCounter_decrementIt);
   assign pendingDataCounter_valueNext = (pendingDataCounter_value + pendingDataCounter_finalIncrement);
-  assign decodedCmdSels = {((io_input_arw_payload_addr & (~ 32'h000fffff)) == 32'hf0000000),{((io_input_arw_payload_addr & (~ 32'h1fffffff)) == 32'h40000000),((io_input_arw_payload_addr & (~ 32'h00007fff)) == 32'h0)}};
+  assign decodedCmdSels = {((io_input_arw_payload_addr & (~ 32'h000fffff)) == 32'hf0000000),{((io_input_arw_payload_addr & (~ 32'h07ffffff)) == 32'h40000000),((io_input_arw_payload_addr & (~ 32'h00007fff)) == 32'h0)}};
   assign decodedCmdError = (decodedCmdSels == 3'b000);
   assign allowCmd = ((pendingCmdCounter == 3'b000) || ((pendingCmdCounter != 3'b111) && (pendingSels == decodedCmdSels)));
   assign allowData = (pendingDataCounter_value != 3'b000);
@@ -4396,7 +4392,7 @@ module Axi4ReadOnlyDecoder (
 
   assign when_Utils_l753 = ((! pendingCmdCounter_incrementIt) && pendingCmdCounter_decrementIt);
   assign pendingCmdCounter_valueNext = (pendingCmdCounter_value + pendingCmdCounter_finalIncrement);
-  assign decodedCmdSels = {(((io_input_ar_payload_addr & (~ 32'h1fffffff)) == 32'h40000000) && io_input_ar_valid),(((io_input_ar_payload_addr & (~ 32'h00007fff)) == 32'h0) && io_input_ar_valid)};
+  assign decodedCmdSels = {(((io_input_ar_payload_addr & (~ 32'h07ffffff)) == 32'h40000000) && io_input_ar_valid),(((io_input_ar_payload_addr & (~ 32'h00007fff)) == 32'h0) && io_input_ar_valid)};
   assign decodedCmdError = (decodedCmdSels == 2'b00);
   assign allowCmd = ((pendingCmdCounter_value == 3'b000) || ((pendingCmdCounter_value != 3'b111) && (pendingSels == decodedCmdSels)));
   assign io_input_ar_ready = (((|(decodedCmdSels & {io_outputs_1_ar_ready,io_outputs_0_ar_ready})) || (decodedCmdError && errorSlave_io_axi_ar_ready)) && allowCmd);
@@ -6173,7 +6169,7 @@ module Axi4Ddr (
   output wire [3:0]    io_axi_r_payload_id,
   output wire [1:0]    io_axi_r_payload_resp,
   output wire          io_axi_r_payload_last,
-  output wire [12:0]   io_ddr_iface_O_ddr_addr,
+  output wire [13:0]   io_ddr_iface_O_ddr_addr,
   output wire [2:0]    io_ddr_iface_O_ddr_ba,
   output wire          io_ddr_iface_O_ddr_cs_n,
   output wire          io_ddr_iface_O_ddr_ras_n,
@@ -6203,7 +6199,7 @@ module Axi4Ddr (
   wire                gowin_DDR3_init_calib_complete;
   wire                gowin_DDR3_clk_out;
   wire                gowin_DDR3_ddr_rst;
-  wire       [12:0]   gowin_DDR3_O_ddr_addr;
+  wire       [13:0]   gowin_DDR3_O_ddr_addr;
   wire       [2:0]    gowin_DDR3_O_ddr_ba;
   wire                gowin_DDR3_O_ddr_cs_n;
   wire                gowin_DDR3_O_ddr_ras_n;
@@ -6271,7 +6267,7 @@ module Axi4Ddr (
     .clk_out             (gowin_DDR3_clk_out                 ), //o
     .ddr_rst             (gowin_DDR3_ddr_rst                 ), //o
     .burst               (1'b1                               ), //i
-    .O_ddr_addr          (gowin_DDR3_O_ddr_addr[12:0]        ), //o
+    .O_ddr_addr          (gowin_DDR3_O_ddr_addr[13:0]        ), //o
     .O_ddr_ba            (gowin_DDR3_O_ddr_ba[2:0]           ), //o
     .O_ddr_cs_n          (gowin_DDR3_O_ddr_cs_n              ), //o
     .O_ddr_ras_n         (gowin_DDR3_O_ddr_ras_n             ), //o
@@ -6510,10 +6506,10 @@ module Axi4Ram (
   assign _zz_Axi4Incr_result_11 = Axi4Incr_base[11 : 6];
   assign _zz_Axi4Incr_result_12 = Axi4Incr_baseIncr[5 : 0];
   initial begin
-    $readmemh("G:/VM/share/OpenPeriph/test/cyber/demo0.hex",ram_symbol0);
-    $readmemh("G:/VM/share/OpenPeriph/test/cyber/demo1.hex",ram_symbol1);
-    $readmemh("G:/VM/share/OpenPeriph/test/cyber/demo2.hex",ram_symbol2);
-    $readmemh("G:/VM/share/OpenPeriph/test/cyber/demo3.hex",ram_symbol3);
+    $readmemh("G:/VM/share/OpenPeriph/test/cyberwithddr/demo0.hex",ram_symbol0);
+    $readmemh("G:/VM/share/OpenPeriph/test/cyberwithddr/demo1.hex",ram_symbol1);
+    $readmemh("G:/VM/share/OpenPeriph/test/cyberwithddr/demo2.hex",ram_symbol2);
+    $readmemh("G:/VM/share/OpenPeriph/test/cyberwithddr/demo3.hex",ram_symbol3);
   end
   always @(*) begin
     ram_spinal_port0 = {_zz_ramsymbol_read_3, _zz_ramsymbol_read_2, _zz_ramsymbol_read_1, _zz_ramsymbol_read};
@@ -10361,9 +10357,9 @@ module Axi4Ddr14_Controller (
   wire       [0:0]    rsp_fifo_io_pop_payload_context;
   wire       [2:0]    rsp_fifo_io_pushOccupancy;
   wire       [2:0]    rsp_fifo_io_popOccupancy;
-  wire       [6:0]    _zz_when_axi4ddr_l258;
-  wire       [6:0]    _zz_when_axi4ddr_l258_1;
-  wire       [1:0]    _zz_when_axi4ddr_l258_2;
+  wire       [6:0]    _zz_when_axi4ddr_l254;
+  wire       [6:0]    _zz_when_axi4ddr_l254_1;
+  wire       [1:0]    _zz_when_axi4ddr_l254_2;
   wire       [6:0]    _zz_io_wr_data_en;
   wire       [6:0]    _zz_io_wr_data_en_1;
   wire       [1:0]    _zz_io_wr_data_en_2;
@@ -10380,18 +10376,18 @@ module Axi4Ddr14_Controller (
   reg        [127:0]  ddr_control_area_cmd_wr_data;
   reg        [15:0]   ddr_control_area_cmd_wr_mask;
   reg        [0:0]    ddr_control_area_cmd_context;
-  wire                when_axi4ddr_l258;
-  wire                when_axi4ddr_l259;
-  wire                when_axi4ddr_l267;
+  wire                when_axi4ddr_l254;
+  wire                when_axi4ddr_l255;
+  wire                when_axi4ddr_l263;
   `ifndef SYNTHESIS
   reg [39:0] io_ddr_cmd_payload_cmdtype_string;
   reg [39:0] ddr_control_area_cmd_cmdtype_string;
   `endif
 
 
-  assign _zz_when_axi4ddr_l258 = ({1'b0,ddr_control_area_cmd_burst_cnt} + _zz_when_axi4ddr_l258_1);
-  assign _zz_when_axi4ddr_l258_2 = {1'b0,1'b1};
-  assign _zz_when_axi4ddr_l258_1 = {5'd0, _zz_when_axi4ddr_l258_2};
+  assign _zz_when_axi4ddr_l254 = ({1'b0,ddr_control_area_cmd_burst_cnt} + _zz_when_axi4ddr_l254_1);
+  assign _zz_when_axi4ddr_l254_2 = {1'b0,1'b1};
+  assign _zz_when_axi4ddr_l254_1 = {5'd0, _zz_when_axi4ddr_l254_2};
   assign _zz_io_wr_data_en = ({1'b0,ddr_control_area_cmd_burst_cnt} + _zz_io_wr_data_en_1);
   assign _zz_io_wr_data_en_2 = {1'b0,1'b1};
   assign _zz_io_wr_data_en_1 = {5'd0, _zz_io_wr_data_en_2};
@@ -10458,16 +10454,16 @@ module Axi4Ddr14_Controller (
   assign ddr_control_area_data_fire = (io_rd_data_valid || ddr_control_area_wr_fire);
   assign cmd_fifo_io_pop_ready = (ddr_control_area_cmd_free && ddr_control_area_cmd_can_send);
   assign cmd_fifo_io_pop_fire = (cmd_fifo_io_pop_valid && cmd_fifo_io_pop_ready);
-  assign when_axi4ddr_l258 = (ddr_control_area_burst_cnt == _zz_when_axi4ddr_l258);
-  assign when_axi4ddr_l259 = (ddr_control_area_cmd_free == 1'b0);
+  assign when_axi4ddr_l254 = (ddr_control_area_burst_cnt == _zz_when_axi4ddr_l254);
+  assign when_axi4ddr_l255 = (ddr_control_area_cmd_free == 1'b0);
   assign io_cmd_en = ddr_control_area_cmd_trigger;
   assign io_app_burst_number = ddr_control_area_cmd_burst_cnt;
   assign io_addr = ddr_control_area_cmd_addr;
   assign io_wr_data = ddr_control_area_cmd_wr_data;
   assign io_wr_data_mask = ddr_control_area_cmd_wr_mask;
-  assign when_axi4ddr_l267 = (ddr_control_area_cmd_cmdtype == Axi4Ddr_CMDTYPE_read);
+  assign when_axi4ddr_l263 = (ddr_control_area_cmd_cmdtype == Axi4Ddr_CMDTYPE_read);
   always @(*) begin
-    if(when_axi4ddr_l267) begin
+    if(when_axi4ddr_l263) begin
       io_cmd = 3'b001;
     end else begin
       io_cmd = 3'b000;
@@ -10475,7 +10471,7 @@ module Axi4Ddr14_Controller (
   end
 
   always @(*) begin
-    if(when_axi4ddr_l267) begin
+    if(when_axi4ddr_l263) begin
       io_wr_data_en = 1'b0;
     end else begin
       io_wr_data_en = ((ddr_control_area_burst_cnt != _zz_io_wr_data_en) && io_wr_data_rdy);
@@ -10505,8 +10501,8 @@ module Axi4Ddr14_Controller (
       if(cmd_fifo_io_pop_fire) begin
         ddr_control_area_cmd_burst_cnt <= cmd_fifo_io_pop_payload_burst_cnt;
       end
-      if(when_axi4ddr_l258) begin
-        if(when_axi4ddr_l259) begin
+      if(when_axi4ddr_l254) begin
+        if(when_axi4ddr_l255) begin
           ddr_control_area_cmd_free <= 1'b1;
         end
       end
@@ -10639,29 +10635,29 @@ module Axi4DdrWithCache (
   reg                 sys_area_write_response_valid;
   reg                 sys_area_read_response_valid;
   wire                sys_area_pageNotSame;
-  wire                when_axi4ddr_l367;
+  wire                when_axi4ddr_l363;
   wire                io_ddr_cmd_fire;
-  wire                when_axi4ddr_l385;
+  wire                when_axi4ddr_l381;
   wire                io_axi_w_fire;
-  wire       [1:0]    switch_axi4ddr_l387;
-  wire                when_axi4ddr_l393;
-  wire                when_axi4ddr_l393_1;
-  wire                when_axi4ddr_l393_2;
-  wire                when_axi4ddr_l393_3;
-  wire                when_axi4ddr_l408;
-  wire                when_axi4ddr_l408_1;
-  wire                when_axi4ddr_l408_2;
-  wire                when_axi4ddr_l408_3;
-  wire                when_axi4ddr_l423;
-  wire                when_axi4ddr_l423_1;
-  wire                when_axi4ddr_l423_2;
-  wire                when_axi4ddr_l423_3;
-  wire                when_axi4ddr_l438;
-  wire                when_axi4ddr_l438_1;
-  wire                when_axi4ddr_l438_2;
-  wire                when_axi4ddr_l438_3;
+  wire       [1:0]    switch_axi4ddr_l383;
+  wire                when_axi4ddr_l389;
+  wire                when_axi4ddr_l389_1;
+  wire                when_axi4ddr_l389_2;
+  wire                when_axi4ddr_l389_3;
+  wire                when_axi4ddr_l404;
+  wire                when_axi4ddr_l404_1;
+  wire                when_axi4ddr_l404_2;
+  wire                when_axi4ddr_l404_3;
+  wire                when_axi4ddr_l419;
+  wire                when_axi4ddr_l419_1;
+  wire                when_axi4ddr_l419_2;
+  wire                when_axi4ddr_l419_3;
+  wire                when_axi4ddr_l434;
+  wire                when_axi4ddr_l434_1;
+  wire                when_axi4ddr_l434_2;
+  wire                when_axi4ddr_l434_3;
   wire                io_axi_b_fire;
-  wire       [1:0]    switch_axi4ddr_l460;
+  wire       [1:0]    switch_axi4ddr_l456;
   wire                io_axi_r_fire;
   wire                io_ddr_rsp_fire;
   `ifndef SYNTHESIS
@@ -10842,7 +10838,7 @@ module Axi4DdrWithCache (
   assign sys_area_pageNotSame = (sys_area_cache_addr[26 : 4] != sys_area_arwcmd_fragment_addr[26 : 4]);
   always @(*) begin
     sys_area_ddr_cmd_payload_addr = 27'h0;
-    if(when_axi4ddr_l367) begin
+    if(when_axi4ddr_l363) begin
       if(sys_area_pageNotSame) begin
         if(sys_area_pageDirty_Trigger) begin
           sys_area_ddr_cmd_payload_addr = {sys_area_cache_addr[26 : 4],4'b0000};
@@ -10857,7 +10853,7 @@ module Axi4DdrWithCache (
 
   always @(*) begin
     sys_area_ddr_cmd_payload_cmdtype = Axi4Ddr_CMDTYPE_write;
-    if(when_axi4ddr_l367) begin
+    if(when_axi4ddr_l363) begin
       if(sys_area_pageNotSame) begin
         if(sys_area_pageDirty_Trigger) begin
           sys_area_ddr_cmd_payload_cmdtype = Axi4Ddr_CMDTYPE_write;
@@ -10876,10 +10872,10 @@ module Axi4DdrWithCache (
   assign sys_area_ddr_cmd_payload_context = 1'b0;
   always @(*) begin
     io_axi_r_payload_data = 32'h0;
-    if(when_axi4ddr_l367) begin
+    if(when_axi4ddr_l363) begin
       if(!sys_area_pageNotSame) begin
-        if(!when_axi4ddr_l385) begin
-          case(switch_axi4ddr_l460)
+        if(!when_axi4ddr_l381) begin
+          case(switch_axi4ddr_l456)
             2'b00 : begin
               io_axi_r_payload_data = sys_area_cache_data[31 : 0];
             end
@@ -10898,29 +10894,29 @@ module Axi4DdrWithCache (
     end
   end
 
-  assign when_axi4ddr_l367 = (sys_area_arwcmd_free == 1'b0);
+  assign when_axi4ddr_l363 = (sys_area_arwcmd_free == 1'b0);
   assign io_ddr_cmd_fire = (io_ddr_cmd_valid && io_ddr_cmd_ready);
-  assign when_axi4ddr_l385 = (sys_area_arwcmd_fragment_write == 1'b1);
+  assign when_axi4ddr_l381 = (sys_area_arwcmd_fragment_write == 1'b1);
   assign io_axi_w_fire = (io_axi_w_valid && io_axi_w_ready);
-  assign switch_axi4ddr_l387 = sys_area_arwcmd_fragment_addr[3 : 2];
-  assign when_axi4ddr_l393 = io_axi_w_payload_strb[0];
-  assign when_axi4ddr_l393_1 = io_axi_w_payload_strb[1];
-  assign when_axi4ddr_l393_2 = io_axi_w_payload_strb[2];
-  assign when_axi4ddr_l393_3 = io_axi_w_payload_strb[3];
-  assign when_axi4ddr_l408 = io_axi_w_payload_strb[0];
-  assign when_axi4ddr_l408_1 = io_axi_w_payload_strb[1];
-  assign when_axi4ddr_l408_2 = io_axi_w_payload_strb[2];
-  assign when_axi4ddr_l408_3 = io_axi_w_payload_strb[3];
-  assign when_axi4ddr_l423 = io_axi_w_payload_strb[0];
-  assign when_axi4ddr_l423_1 = io_axi_w_payload_strb[1];
-  assign when_axi4ddr_l423_2 = io_axi_w_payload_strb[2];
-  assign when_axi4ddr_l423_3 = io_axi_w_payload_strb[3];
-  assign when_axi4ddr_l438 = io_axi_w_payload_strb[0];
-  assign when_axi4ddr_l438_1 = io_axi_w_payload_strb[1];
-  assign when_axi4ddr_l438_2 = io_axi_w_payload_strb[2];
-  assign when_axi4ddr_l438_3 = io_axi_w_payload_strb[3];
+  assign switch_axi4ddr_l383 = sys_area_arwcmd_fragment_addr[3 : 2];
+  assign when_axi4ddr_l389 = io_axi_w_payload_strb[0];
+  assign when_axi4ddr_l389_1 = io_axi_w_payload_strb[1];
+  assign when_axi4ddr_l389_2 = io_axi_w_payload_strb[2];
+  assign when_axi4ddr_l389_3 = io_axi_w_payload_strb[3];
+  assign when_axi4ddr_l404 = io_axi_w_payload_strb[0];
+  assign when_axi4ddr_l404_1 = io_axi_w_payload_strb[1];
+  assign when_axi4ddr_l404_2 = io_axi_w_payload_strb[2];
+  assign when_axi4ddr_l404_3 = io_axi_w_payload_strb[3];
+  assign when_axi4ddr_l419 = io_axi_w_payload_strb[0];
+  assign when_axi4ddr_l419_1 = io_axi_w_payload_strb[1];
+  assign when_axi4ddr_l419_2 = io_axi_w_payload_strb[2];
+  assign when_axi4ddr_l419_3 = io_axi_w_payload_strb[3];
+  assign when_axi4ddr_l434 = io_axi_w_payload_strb[0];
+  assign when_axi4ddr_l434_1 = io_axi_w_payload_strb[1];
+  assign when_axi4ddr_l434_2 = io_axi_w_payload_strb[2];
+  assign when_axi4ddr_l434_3 = io_axi_w_payload_strb[3];
   assign io_axi_b_fire = (io_axi_b_valid && io_axi_b_ready);
-  assign switch_axi4ddr_l460 = sys_area_arwcmd_fragment_addr[3 : 2];
+  assign switch_axi4ddr_l456 = sys_area_arwcmd_fragment_addr[3 : 2];
   assign io_axi_r_fire = (io_axi_r_valid && io_axi_r_ready);
   assign io_ddr_rsp_fire = (io_ddr_rsp_valid && io_ddr_rsp_ready);
   always @(posedge clkout or posedge resetCtrl_axiReset) begin
@@ -10954,7 +10950,7 @@ module Axi4DdrWithCache (
         sys_area_pageNotSame_Trigger <= 1'b1;
         sys_area_pageDirty_Trigger <= sys_area_pageDirty;
       end
-      if(when_axi4ddr_l367) begin
+      if(when_axi4ddr_l363) begin
         if(sys_area_pageNotSame) begin
           if(sys_area_pageDirty_Trigger) begin
             sys_area_ddr_cmd_valid <= (! io_ddr_cmd_fire);
@@ -10970,77 +10966,77 @@ module Axi4DdrWithCache (
             end
           end
         end else begin
-          if(when_axi4ddr_l385) begin
+          if(when_axi4ddr_l381) begin
             if(io_axi_w_fire) begin
-              case(switch_axi4ddr_l387)
+              case(switch_axi4ddr_l383)
                 2'b00 : begin
-                  if(when_axi4ddr_l393) begin
+                  if(when_axi4ddr_l389) begin
                     sys_area_cache_data[7 : 0] <= io_axi_w_payload_data[7 : 0];
                     sys_area_cache_dirty_bit[0] <= 1'b0;
                   end
-                  if(when_axi4ddr_l393_1) begin
+                  if(when_axi4ddr_l389_1) begin
                     sys_area_cache_data[15 : 8] <= io_axi_w_payload_data[15 : 8];
                     sys_area_cache_dirty_bit[1] <= 1'b0;
                   end
-                  if(when_axi4ddr_l393_2) begin
+                  if(when_axi4ddr_l389_2) begin
                     sys_area_cache_data[23 : 16] <= io_axi_w_payload_data[23 : 16];
                     sys_area_cache_dirty_bit[2] <= 1'b0;
                   end
-                  if(when_axi4ddr_l393_3) begin
+                  if(when_axi4ddr_l389_3) begin
                     sys_area_cache_data[31 : 24] <= io_axi_w_payload_data[31 : 24];
                     sys_area_cache_dirty_bit[3] <= 1'b0;
                   end
                 end
                 2'b01 : begin
-                  if(when_axi4ddr_l408) begin
+                  if(when_axi4ddr_l404) begin
                     sys_area_cache_data[39 : 32] <= io_axi_w_payload_data[7 : 0];
                     sys_area_cache_dirty_bit[4] <= 1'b0;
                   end
-                  if(when_axi4ddr_l408_1) begin
+                  if(when_axi4ddr_l404_1) begin
                     sys_area_cache_data[47 : 40] <= io_axi_w_payload_data[15 : 8];
                     sys_area_cache_dirty_bit[5] <= 1'b0;
                   end
-                  if(when_axi4ddr_l408_2) begin
+                  if(when_axi4ddr_l404_2) begin
                     sys_area_cache_data[55 : 48] <= io_axi_w_payload_data[23 : 16];
                     sys_area_cache_dirty_bit[6] <= 1'b0;
                   end
-                  if(when_axi4ddr_l408_3) begin
+                  if(when_axi4ddr_l404_3) begin
                     sys_area_cache_data[63 : 56] <= io_axi_w_payload_data[31 : 24];
                     sys_area_cache_dirty_bit[7] <= 1'b0;
                   end
                 end
                 2'b10 : begin
-                  if(when_axi4ddr_l423) begin
+                  if(when_axi4ddr_l419) begin
                     sys_area_cache_data[71 : 64] <= io_axi_w_payload_data[7 : 0];
                     sys_area_cache_dirty_bit[8] <= 1'b0;
                   end
-                  if(when_axi4ddr_l423_1) begin
+                  if(when_axi4ddr_l419_1) begin
                     sys_area_cache_data[79 : 72] <= io_axi_w_payload_data[15 : 8];
                     sys_area_cache_dirty_bit[9] <= 1'b0;
                   end
-                  if(when_axi4ddr_l423_2) begin
+                  if(when_axi4ddr_l419_2) begin
                     sys_area_cache_data[87 : 80] <= io_axi_w_payload_data[23 : 16];
                     sys_area_cache_dirty_bit[10] <= 1'b0;
                   end
-                  if(when_axi4ddr_l423_3) begin
+                  if(when_axi4ddr_l419_3) begin
                     sys_area_cache_data[95 : 88] <= io_axi_w_payload_data[31 : 24];
                     sys_area_cache_dirty_bit[11] <= 1'b0;
                   end
                 end
                 default : begin
-                  if(when_axi4ddr_l438) begin
+                  if(when_axi4ddr_l434) begin
                     sys_area_cache_data[103 : 96] <= io_axi_w_payload_data[7 : 0];
                     sys_area_cache_dirty_bit[12] <= 1'b0;
                   end
-                  if(when_axi4ddr_l438_1) begin
+                  if(when_axi4ddr_l434_1) begin
                     sys_area_cache_data[111 : 104] <= io_axi_w_payload_data[15 : 8];
                     sys_area_cache_dirty_bit[13] <= 1'b0;
                   end
-                  if(when_axi4ddr_l438_2) begin
+                  if(when_axi4ddr_l434_2) begin
                     sys_area_cache_data[119 : 112] <= io_axi_w_payload_data[23 : 16];
                     sys_area_cache_dirty_bit[14] <= 1'b0;
                   end
-                  if(when_axi4ddr_l438_3) begin
+                  if(when_axi4ddr_l434_3) begin
                     sys_area_cache_data[127 : 120] <= io_axi_w_payload_data[31 : 24];
                     sys_area_cache_dirty_bit[15] <= 1'b0;
                   end

@@ -6,7 +6,7 @@ import spinal.lib.{Stream, StreamFifoCC, master, slave, IMasterSlave}
 import spinal.lib.bus.amba4.axi.{Axi4Arw, Axi4Config, Axi4Shared}
 
 case class DDR3_Interface() extends Bundle with IMasterSlave {
-  val O_ddr_addr = Bits(13 bits)
+  val O_ddr_addr = Bits(14 bits)
   val O_ddr_ba = Bits(3 bits)
   val O_ddr_cs_n = Bool()
   val O_ddr_ras_n = Bool()
@@ -56,7 +56,7 @@ case class Gowin_DDR3(sysclk: ClockDomain, memclk: ClockDomain) extends BlackBox
 		.clk_out(clk_out_o), //output clk_out
 		.ddr_rst(ddr_rst_o), //output ddr_rst
 		.burst(burst_i), //input burst
-		.O_ddr_addr(O_ddr_addr_o), //output [12:0] O_ddr_addr
+		.O_ddr_addr(O_ddr_addr_o), //output [13:0] O_ddr_addr
 		.O_ddr_ba(O_ddr_ba_o), //output [2:0] O_ddr_ba
 		.O_ddr_cs_n(O_ddr_cs_n_o), //output O_ddr_cs_n
 		.O_ddr_ras_n(O_ddr_ras_n_o), //output O_ddr_ras_n
@@ -71,7 +71,7 @@ case class Gowin_DDR3(sysclk: ClockDomain, memclk: ClockDomain) extends BlackBox
 		.IO_ddr_dq(IO_ddr_dq_io), //inout [15:0] IO_ddr_dq
 		.IO_ddr_dqs(IO_ddr_dqs_io), //inout [1:0] IO_ddr_dqs
 		.IO_ddr_dqs_n(IO_ddr_dqs_n_io) //inout [1:0] IO_ddr_dqs_n
-     */
+    */
     val memory_clk = in Bool ()
     val clk = in Bool ()
     val pll_lock = in Bool ()
@@ -98,7 +98,7 @@ case class Gowin_DDR3(sysclk: ClockDomain, memclk: ClockDomain) extends BlackBox
     val ddr_rst = out Bool ()
     val burst = in Bool ()
 
-    val O_ddr_addr = out Bits (13 bits)
+    val O_ddr_addr = out Bits (14 bits)
     val O_ddr_ba = out Bits (3 bits)
     val O_ddr_cs_n = out Bool ()
     val O_ddr_ras_n = out Bool ()
@@ -113,8 +113,6 @@ case class Gowin_DDR3(sysclk: ClockDomain, memclk: ClockDomain) extends BlackBox
     val IO_ddr_dq = inout(Analog(Bits(16 bits)))
     val IO_ddr_dqs = inout(Analog(Bits(2 bits)))
     val IO_ddr_dqs_n = inout(Analog(Bits(2 bits)))
-
-    // val ddr_iface = master(DDR3_Interface())
   }
 
   def connectDDR3Interface(iface: DDR3_Interface): Unit = {
@@ -151,7 +149,6 @@ case class Gowin_DDR3(sysclk: ClockDomain, memclk: ClockDomain) extends BlackBox
     config = ClockDomainConfig(resetKind = ASYNC, resetActiveLevel = HIGH),
     frequency = FixedFrequency(150 MHz)
   )
-
 }
 
 object Axi4Ddr_CMDTYPE extends SpinalEnum {
@@ -184,7 +181,6 @@ case class Axi4Ddr14_Controller[T <: Data](
     fifo_length: Int = 32,
     contextType: T
 ) extends Component {
-
   val sys_clk_inst = sys_clk
   val ddr_ref_clk_inst = ddr_ref_clk
 
@@ -490,18 +486,10 @@ case class Axi4DdrWithCache(
 }
 
 case class Axi4Ddr(sys_clk: ClockDomain, mem_clk: ClockDomain) extends Component {
-  val gowin_DDR3 = Gowin_DDR3(
-    sys_clk,
-    mem_clk
-  )
+  val gowin_DDR3 = Gowin_DDR3(sys_clk, mem_clk)
   val ddr_ref_clk = gowin_DDR3.clk_out
 
-  val axiController = Axi4DdrWithCache(
-    sys_clk,
-    32,
-    27,
-    4
-  )
+  val axiController = Axi4DdrWithCache(sys_clk, 32, 27, 4)
 
   val controller = Axi4Ddr14_Controller(
     sys_clk,

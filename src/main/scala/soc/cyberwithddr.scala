@@ -108,11 +108,13 @@ class cyberwithddr(config: cyberwithddrConfig) extends Component {
 
   val sysclk = new syspll
   sysclk.clkin := io.clk
-  sysclk.reset := ~io.rstn
+  // sysclk.reset := ~io.rstn
+  sysclk.reset := False
 
   val memclk = new mempll
   memclk.clkin := sysclk.clkout
-  memclk.reset := ~io.rstn
+  // memclk.reset := ~io.rstn
+  memclk.reset := False
 
   val resetCtrlClockDomain = ClockDomain(
     clock = sysclk.clkout,
@@ -263,7 +265,7 @@ class cyberwithddr(config: cyberwithddrConfig) extends Component {
 
     axiCrossbar.addSlaves(
       ram.io.axi -> (0x00000000L, onChipRamSize),
-      sdramCtrl.io.axi -> (0x40000000L, 512 MiB),
+      sdramCtrl.io.axi -> (0x40000000L, 128 MiB),
       apbBridge.io.axi -> (0xf0000000L, 1 MiB)
     )
 
