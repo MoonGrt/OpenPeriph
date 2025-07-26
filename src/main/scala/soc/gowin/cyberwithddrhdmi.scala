@@ -1,4 +1,8 @@
-package soc
+package soc.gowin
+
+import periph._
+import graphic.hdmi._
+import soc.gowin.tangprimer._
 
 import spinal.core._
 import spinal.lib._
@@ -17,26 +21,31 @@ import spinal.lib.cpu.riscv.impl._
 import spinal.lib.io.{TriStateArray, InOutWrapper}
 import spinal.lib.system.debugger.{JtagAxi4SharedDebugger, SystemDebuggerConfig}
 import spinal.lib.misc.{InterruptCtrl, Timer, Prescaler}
+import spinal.lib.graphic.RgbConfig
+import spinal.lib.graphic.vga.{Axi4VgaCtrl, Axi4VgaCtrlGenerics, Vga}
+import spinal.lib.graphic.hdmi.VgaToHdmiEcp5
 
-import periph._
 
-class mempll extends BlackBox {
-  setDefinitionName("mempll") // Verilog 中模块名为 mempll，不加 io_
-  val clkout = out Bool ()
-  val lock = out Bool ()
-  val reset = in Bool ()
-  val clkin = in Bool ()
+class DivideByN(n: Int) extends Component {
+  val io = new Bundle {
+    val clk_out = out Bool()
+  }
+
+  require(n >= 2, "Divider must be >= 2")
+
+  val counter = Reg(UInt(log2Up(n) bits)) init(0)
+  val clk_reg = Reg(Bool()) init(False)
+
+  counter := counter + 1
+  when(counter === (n / 2 - 1)) {
+    clk_reg := ~clk_reg
+    counter := 0
+  }
+
+  io.clk_out := clk_reg
 }
 
-class syspll extends BlackBox {
-  setDefinitionName("syspll") // Verilog 中模块名为 syspll，不加 io_
-  val clkout = out Bool ()
-  val lock = out Bool ()
-  val reset = in Bool ()
-  val clkin = in Bool ()
-}
-
-case class cyberwithddrConfig(
+case class cyberwithddrhdmiConfig(
     axiFrequency: HertzNumber,
     memFrequency: HertzNumber,
     onChipRamSize: BigInt,
@@ -45,9 +54,9 @@ case class cyberwithddrConfig(
     iCache: InstructionCacheConfig
 )
 
-object cyberwithddrConfig {
+object cyberwithddrhdmiConfig {
   def default = {
-    val config = cyberwithddrConfig(
+    val config = cyberwithddrhdmiConfig(
       axiFrequency = 100 MHz,
       memFrequency = 400 MHz,
       onChipRamSize = 4 KiB,
@@ -86,14 +95,15 @@ object cyberwithddrConfig {
   }
 }
 
-class cyberwithddr(config: cyberwithddrConfig) extends Component {
+class cyberwithddrhdmi(config: cyberwithddrhdmiConfig) extends Component {
   def this(axiFrequency: HertzNumber) {
-    this(cyberwithddrConfig.default.copy(axiFrequency = axiFrequency))
+    this(cyberwithddrhdmiConfig.default.copy(axiFrequency = axiFrequency))
   }
 
   import config._
   val debug = true
   val interruptCount = 16
+  def vgaRgbConfig = RgbConfig(5, 6, 5)
 
   val io = new Bundle {
     // Clocks / reset
@@ -104,6 +114,8 @@ class cyberwithddr(config: cyberwithddrConfig) extends Component {
     val sdram = master(DDR3_Interface())
     // Peripherals IO
     val gpio = master(TriStateArray(32 bits))
+    // Graphics IO
+    val hdmi = master(Hdmi())
   }
 
   val sysclk = new syspll
@@ -115,6 +127,15 @@ class cyberwithddr(config: cyberwithddrConfig) extends Component {
   memclk.clkin := sysclk.clkout
   // memclk.reset := ~io.rstn
   memclk.reset := False
+
+  val hdmiclk = new hdmipll
+  hdmiclk.clkin := sysclk.clkout
+  // hdmiclk.reset := ~io.rstn
+  hdmiclk.reset := False
+  val CLKDIV = new CLKDIV
+  CLKDIV.RESETN := io.rstn
+  CLKDIV.CALIB := True
+  CLKDIV.HCLKIN := hdmiclk.clkout
 
   val resetCtrlClockDomain = ClockDomain(
     clock = sysclk.clkout,
@@ -160,6 +181,16 @@ class cyberwithddr(config: cyberwithddrConfig) extends Component {
     clock = memclk.clkout,
     reset = resetCtrl.axiReset,
     frequency = FixedFrequency(memFrequency)
+  )
+
+  val hdmiClockDomain = ClockDomain(
+    clock = hdmiclk.clkout,
+    reset = resetCtrl.axiReset
+  )
+
+  val vgaClockDomain = ClockDomain(
+    clock = CLKDIV.CLKOUT,
+    reset = resetCtrl.axiReset
   )
 
   val jtagClockDomain = ClockDomain(
@@ -261,6 +292,20 @@ class cyberwithddr(config: cyberwithddrConfig) extends Component {
     uartCtrl.io.uarts(0).rxd := afioCtrl.io.device.write(17)
     uartCtrl.io.uarts(1).rxd := afioCtrl.io.device.write(19)
 
+    val vgaCtrlConfig = Axi4VgaCtrlGenerics(
+      axiAddressWidth = 32,
+      axiDataWidth = 32,
+      burstLength = 8,
+      frameSizeMax = 2048 * 1512 * 2,
+      fifoSize = 512,
+      rgbConfig = vgaRgbConfig,
+      vgaClock = vgaClockDomain
+    )
+    val vgaCtrl = Axi4VgaCtrl(vgaCtrlConfig)
+
+    val vgatohdmi = VgaToHdmiGowin(vgaClockDomain, hdmiClockDomain, vgaRgbConfig)
+    vgatohdmi.io.vga <> vgaCtrl.io.vga
+
     val axiCrossbar = Axi4CrossbarFactory()
 
     axiCrossbar.addSlaves(
@@ -272,7 +317,8 @@ class cyberwithddr(config: cyberwithddrConfig) extends Component {
     axiCrossbar.addConnections(
       core.io.i -> List(ram.io.axi, sdramCtrl.io.axi),
       core.io.d -> List(ram.io.axi, sdramCtrl.io.axi, apbBridge.io.axi),
-      jtagCtrl.io.axi -> List(ram.io.axi, sdramCtrl.io.axi, apbBridge.io.axi)
+      jtagCtrl.io.axi -> List(ram.io.axi, sdramCtrl.io.axi, apbBridge.io.axi),
+      vgaCtrl.io.axi -> List(sdramCtrl.io.axi)
     )
 
     axiCrossbar.addPipelining(apbBridge.io.axi)((crossbar, bridge) => {
@@ -299,6 +345,7 @@ class cyberwithddr(config: cyberwithddrConfig) extends Component {
         timCtrl.io.apb -> (0x40000, 64 KiB),
         wdgCtrl.io.apb -> (0x50000, 64 KiB),
         systickCtrl.io.apb -> (0x60000, 64 KiB),
+        vgaCtrl.io.apb -> (0x70000, 64 KiB),
         afioCtrl.io.apb -> (0xd0000, 64 KiB),
         extiCtrl.io.apb -> (0xe0000, 64 KiB),
         core.io.debugBus -> (0xf0000, 64 KiB)
@@ -324,16 +371,17 @@ class cyberwithddr(config: cyberwithddrConfig) extends Component {
   io.gpio <> axi.gpioCtrl.io.gpio
   io.jtag <> axi.jtagCtrl.io.jtag
   io.sdram <> axi.sdramCtrl.io.ddr_iface
+  io.hdmi <> axi.vgatohdmi.io.hdmi
 }
 
-object cyberwithddr {
+object cyberwithddrhdmi {
   def main(args: Array[String]) {
     val config =
       SpinalConfig(verbose = true, targetDirectory = "rtl").dumpWave()
     val report = config.generateVerilog(
       InOutWrapper(
-        new cyberwithddr(
-          cyberwithddrConfig.default.copy(
+        new cyberwithddrhdmi(
+          cyberwithddrhdmiConfig.default.copy(
             onChipRamSize = 32 kB,
             onChipRamHexFile = "test/cyber/demo.hex"
           )

@@ -1,5 +1,7 @@
 package soc
 
+import periph._
+
 import spinal.core._
 import spinal.lib._
 import spinal.lib.bus.amba3.apb._
@@ -18,7 +20,6 @@ import spinal.lib.io.{TriStateArray, InOutWrapper}
 import spinal.lib.system.debugger.{JtagAxi4SharedDebugger, SystemDebuggerConfig}
 import spinal.lib.misc.{InterruptCtrl, Timer, Prescaler}
 
-import periph._
 
 case class cyberConfig(
     axiFrequency: HertzNumber,

@@ -1,3 +1,5 @@
+// Gowin DDR3 Interface
+
 package periph
 
 import spinal.core._

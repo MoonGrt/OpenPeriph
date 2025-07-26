@@ -1,4 +1,4 @@
-package spinal.lib.graphic
+package graphic.algorithm
 
 import spinal.core._
 

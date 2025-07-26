@@ -1,4 +1,4 @@
-package spinal.lib.graphic
+package graphic.algorithm
 
 import spinal.core._
 import spinal.lib.misc.pipeline._

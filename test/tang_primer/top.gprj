@@ -6,8 +6,9 @@
     <Device name="GW2A-18C" pn="GW2A-LV18PG256C8/I7">gw2a18c-011</Device>
     <FileList>
         <File path="src/cyber.v" type="file.verilog" enable="1"/>
-        <File path="src/cyberwithddr.v" type="file.verilog" enable="1"/>
         <File path="src/ddr3_memory_interface/ddr3_memory_interface.v" type="file.verilog" enable="1"/>
+        <File path="src/dvi_tx/DVI_TX_Top.v" type="file.verilog" enable="1"/>
+        <File path="src/pll/hdmipll.v" type="file.verilog" enable="1"/>
         <File path="src/pll/mempll.v" type="file.verilog" enable="1"/>
         <File path="src/pll/syspll.v" type="file.verilog" enable="1"/>
         <File path="src/top.cst" type="file.cst" enable="1"/>
