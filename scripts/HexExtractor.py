@@ -78,8 +78,10 @@ def save_bytes_to_files(instructions, output_dir):
 
 
 if __name__ == '__main__':
-    input_file_path = 'test/cyber/build/demo.hex'
-    output_file_path = 'test/cyber/demo'
+    # input_file_path = 'test/cyber/build/demo.hex'
+    # output_file_path = 'test/cyber/demo'
+    input_file_path = 'test/cyberwithddr/build/demo.hex'
+    output_file_path = 'test/cyberwithddr/demo'
     instructions = extract_code(input_file_path)
 
     # 将每个字节保存到不同的文件中

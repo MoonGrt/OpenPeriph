@@ -1,7 +1,5 @@
-#ifndef __VGA_H_
-#define __VGA_H_
-
-#include <stdint.h>
+#ifndef __GRAPHICS_H_
+#define __GRAPHICS_H_
 
 typedef struct
 {
@@ -49,23 +47,23 @@ typedef struct
     volatile uint32_t FRAME_BASE;
     volatile uint32_t DUMMY0[13];
     volatile Vga_Timing TIMING;
-} Vga_Reg;
+} GRAPHICS_TypeDef;
 
-static uint32_t vga_isBusy(Vga_Reg *reg)
+static uint32_t vga_isBusy(GRAPHICS_TypeDef *reg)
 {
     return (reg->STATUS & 2) != 0;
 }
 
-static void vga_run(Vga_Reg *reg)
+static void vga_run(GRAPHICS_TypeDef *reg)
 {
     reg->STATUS = 1;
 }
 
-static void vga_stop(Vga_Reg *reg)
+static void vga_stop(GRAPHICS_TypeDef *reg)
 {
     reg->STATUS = 0;
     while (vga_isBusy(reg))
         ;
 }
 
-#endif /* __VGA_H_ */
+#endif /* __GRAPHICS_H_ */

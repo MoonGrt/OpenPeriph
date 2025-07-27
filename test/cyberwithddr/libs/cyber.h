@@ -166,7 +166,14 @@ typedef enum{ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 /*!< SYSTICK */
 #include "systick.h"
 #define SysTick_BASE (APBPERIPH_BASE + 0x60000)
-#define SysTick ((SysTick_Type *)SysTick_BASE) // 0xF0060000
+#define SysTick ((SysTick_TypeDef *)SysTick_BASE) // 0xF0060000
+#endif
+
+#ifdef CYBER_GRAPHICS
+/*!< GRAPHICS */
+#include "graphics.h"
+#define GRAPHICS_BASE (APBPERIPH_BASE + 0x70000)
+#define GRAPHICS ((GRAPHICS_TypeDef *)GRAPHICS_BASE) // 0xF0070000
 #endif
 
 /* Exported macro ------------------------------------------------------------*/

@@ -17,5 +17,6 @@
 #define CYBER_IWDG
 #define CYBER_WDG
 #define CYBER_DVP
+#define CYBER_GRAPHICS
 
 #endif /* __CONFIG_H_ */
