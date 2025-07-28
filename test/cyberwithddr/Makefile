@@ -68,7 +68,6 @@ else
 endif
 
 
-
 RISCV_OBJCOPY = $(RISCV_PATH)/bin/$(RISCV_NAME)-objcopy
 RISCV_OBJDUMP = $(RISCV_PATH)/bin/$(RISCV_NAME)-objdump
 RISCV_CC=$(RISCV_PATH)/bin/$(RISCV_NAME)-gcc
@@ -102,11 +101,6 @@ all: $(OBJDIR)/$(PROJ_NAME).elf $(OBJDIR)/$(PROJ_NAME).hex $(OBJDIR)/$(PROJ_NAME
 $(OBJDIR):
 	mkdir -p $@
 
-$(OBJDIR)/%.elf: $(OBJS) | $(OBJDIR)
-	@echo "\n---------\n"
-	$(RISCV_CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(LIBS)
-	@echo "\n---------\n"
-
 $(OBJDIR)/%.o: %.c
 	mkdir -p $(dir $@)
 	$(RISCV_CC) -c $(CFLAGS) $(INC) -o $@ $^
@@ -119,6 +113,10 @@ $(OBJDIR)/%.o: %.S
 	mkdir -p $(dir $@)
 	$(RISCV_CC) -c $(CFLAGS) -o $@ $^ -D__ASSEMBLY__=1
 
+$(OBJDIR)/%.elf: $(OBJS) | $(OBJDIR)
+	@echo "\n--------- Linking ---------\n"
+	$(RISCV_CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+	@echo "\n---------------------------\n"
 
 
 clean:

@@ -11,4 +11,8 @@ class CLKDIV extends BlackBox {
   val HCLKIN = in Bool ()
   // Outputs
   val CLKOUT = out Bool ()
+
+  // 定义 defparam 参数
+  addGeneric("DIV_MODE", "5")
+  addGeneric("GSREN", "false")
 }

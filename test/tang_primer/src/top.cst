@@ -15,14 +15,14 @@ IO_LOC "io_jtag_tms" T9;
 IO_PORT "io_jtag_tms" IO_TYPE=LVCMOS18 PULL_MODE=NONE;
 
 //============ HDMI ===============
-IO_LOC "io_hdmi_O_tmds_clk_p" G16,H15;
-IO_PORT "io_hdmi_O_tmds_clk_p" PULL_MODE=NONE DRIVE=3.5;
-IO_LOC "io_hdmi_O_tmds_data_p[0]" H14,H16;
-IO_PORT "io_hdmi_O_tmds_data_p[0]" PULL_MODE=NONE DRIVE=3.5;
-IO_LOC "io_hdmi_O_tmds_data_p[1]" J15,K16;
-IO_PORT "io_hdmi_O_tmds_data_p[1]" PULL_MODE=NONE DRIVE=3.5;
-IO_LOC "io_hdmi_O_tmds_data_p[2]" K14,K15;
-IO_PORT "io_hdmi_O_tmds_data_p[2]" PULL_MODE=NONE DRIVE=3.5;
+//IO_LOC "io_hdmi_O_tmds_clk_p" G16,H15;
+//IO_PORT "io_hdmi_O_tmds_clk_p" PULL_MODE=NONE DRIVE=3.5;
+//IO_LOC "io_hdmi_O_tmds_data_p[0]" H14,H16;
+//IO_PORT "io_hdmi_O_tmds_data_p[0]" PULL_MODE=NONE DRIVE=3.5;
+//IO_LOC "io_hdmi_O_tmds_data_p[1]" J15,K16;
+//IO_PORT "io_hdmi_O_tmds_data_p[1]" PULL_MODE=NONE DRIVE=3.5;
+//IO_LOC "io_hdmi_O_tmds_data_p[2]" K14,K15;
+//IO_PORT "io_hdmi_O_tmds_data_p[2]" PULL_MODE=NONE DRIVE=3.5;
 
 // ============ io_gpio ===============
 IO_LOC "io_gpio[0]" L16;  // LED1

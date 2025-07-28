@@ -171,10 +171,7 @@ class cyberwithddr(config: cyberwithddrConfig) extends Component {
       onChipRamHexFile = onChipRamHexFile
     )
 
-    val sdramCtrl = Axi4Ddr(
-      axiClockDomain,
-      memClockDomain
-    )
+    val sdramCtrl = Axi4Ddr(axiClockDomain, memClockDomain)
     sdramCtrl.io.pll_lock := memclk.lock && sysclk.lock
 
     val jtagCtrl = JtagAxi4SharedDebugger(
@@ -215,7 +212,7 @@ class cyberwithddr(config: cyberwithddrConfig) extends Component {
     val timCtrl = Apb3TimArray(timCnt = 2, timSpace = 0x1000)
     val timInterrupt = timCtrl.io.interrupt.asBits.orR // 按位“或”
     val wdgCtrl = coreClockDomain(Apb3Wdg(memSize = 0x1000))
-    resetCtrl.coreResetUnbuffered setWhen (wdgCtrl.io.iwdgRst || wdgCtrl.io.wwdgRst)
+    resetCtrl.coreResetUnbuffered setWhen (wdgCtrl.io.iwdgRst || wdgCtrl.io.wwdgRst || ~sdramCtrl.io.init_calib_complete)
     val systickCtrl = Apb3SysTick()
     val systickInterrupt = systickCtrl.io.interrupt.asBits.orR // 按位“或”
 

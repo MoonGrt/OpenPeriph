@@ -6,70 +6,6 @@ import spinal.lib._
 import spinal.lib.bus.amba4.axi._
 import spinal.lib.misc.HexTools
 
-object Axi4Ram{
-  def getAxiConfig(dataWidth : Int,byteCount : BigInt,idWidth : Int) = Axi4Config(
-    addressWidth = log2Up(byteCount),
-    dataWidth = dataWidth,
-    idWidth = idWidth,
-    useLock = false,
-    useRegion = false,
-    useCache = false,
-    useProt = false,
-    useQos = false
-  )
-}
-
-case class Axi4Ram(dataWidth : Int, byteCount : BigInt, idWidth : Int, arwStage : Boolean = false, onChipRamHexFile : String = null, bigEndian : Boolean = false) extends Component{
-  val axiConfig = Axi4Ram.getAxiConfig(dataWidth,byteCount,idWidth)
-
-  val io = new Bundle {
-    val axi = slave(Axi4Shared(axiConfig))
-  }
-
-  val wordCount = byteCount / axiConfig.bytePerWord
-  val ram = Mem(axiConfig.dataType,wordCount.toInt)
-  val wordRange = log2Up(wordCount) + log2Up(axiConfig.bytePerWord)-1 downto log2Up(axiConfig.bytePerWord)
-
-  if(onChipRamHexFile != null){
-    HexTools.initRam(ram, onChipRamHexFile, 0x80000000l)
-    if(bigEndian)
-      // HexTools.initRam (incorrectly) assumes little endian byte ordering
-      for((word, wordIndex) <- ram.initialContent.zipWithIndex)
-        ram.initialContent(wordIndex) =
-          ((word & 0xffl)       << 24) |
-          ((word & 0xff00l)     << 8)  |
-          ((word & 0xff0000l)   >> 8)  |
-          ((word & 0xff000000l) >> 24)
-  }
-
-  val arw = if(arwStage) io.axi.arw.s2mPipe().unburstify.m2sPipe() else io.axi.arw.unburstify
-  val stage0 = arw.haltWhen(arw.write && !io.axi.writeData.valid)
-  io.axi.readRsp.data := ram.readWriteSync(
-    address = stage0.addr(axiConfig.wordRange).resized,
-    data = io.axi.writeData.data,
-    enable = stage0.fire,
-    write = stage0.write,
-    mask = io.axi.writeData.strb
-  )
-  io.axi.writeData.ready :=  arw.valid && arw.write  && stage0.ready
-
-  val stage1 = stage0.stage()
-  stage1.ready := (io.axi.readRsp.ready && !stage1.write) || ((io.axi.writeRsp.ready || ! stage1.last) && stage1.write)
-
-  io.axi.readRsp.valid  := stage1.valid && !stage1.write
-  io.axi.readRsp.id  := stage1.id
-  io.axi.readRsp.last := stage1.last
-  io.axi.readRsp.setOKAY()
-  if(axiConfig.useRUser) io.axi.readRsp.user  := stage1.user
-
-  io.axi.writeRsp.valid := stage1.valid &&  stage1.write && stage1.last
-  io.axi.writeRsp.setOKAY()
-  io.axi.writeRsp.id := stage1.id
-  if(axiConfig.useBUser) io.axi.writeRsp.user := stage1.user
-
-  io.axi.arw.ready.noBackendCombMerge //Verilator perf
-}
-
 
 object Axi4RamPort {
     def apply(config: Axi4Config, ram: Mem[Bits]) = {
@@ -89,7 +25,7 @@ object Axi4RamPort {
 }
 
 case class Axi4RamPort(config: Axi4Config) extends ImplicitArea[Axi4Shared] {
-    val axi                                = Axi4Shared(config)
+    val axi = Axi4Shared(config)
     override def implicitValue: Axi4Shared = this.axi
 
     val ram = Handle[Mem[Bits]]
@@ -186,6 +122,70 @@ class Axi4RamMultiPort(config: Axi4Config, wordCount: BigInt, portCount: Int) ex
     val ram   = Mem(config.dataType, wordCount.toInt)
     val ports = Array.fill(portCount)(Axi4RamPort(config, ram))
     (io.axis, ports).zipped foreach ((m, s) => m >> s)
+}
+
+object Axi4Ram{
+  def getAxiConfig(dataWidth : Int,byteCount : BigInt,idWidth : Int) = Axi4Config(
+    addressWidth = log2Up(byteCount),
+    dataWidth = dataWidth,
+    idWidth = idWidth,
+    useLock = false,
+    useRegion = false,
+    useCache = false,
+    useProt = false,
+    useQos = false
+  )
+}
+
+case class Axi4Ram(dataWidth : Int, byteCount : BigInt, idWidth : Int, arwStage : Boolean = false, onChipRamHexFile : String = null, bigEndian : Boolean = false) extends Component{
+  val axiConfig = Axi4Ram.getAxiConfig(dataWidth, byteCount, idWidth)
+
+  val io = new Bundle {
+    val axi = slave(Axi4Shared(axiConfig))
+  }
+
+  val wordCount = byteCount / axiConfig.bytePerWord
+  val ram = Mem(axiConfig.dataType,wordCount.toInt)
+  val wordRange = log2Up(wordCount) + log2Up(axiConfig.bytePerWord)-1 downto log2Up(axiConfig.bytePerWord)
+
+  if(onChipRamHexFile != null){
+    HexTools.initRam(ram, onChipRamHexFile, 0x80000000l)
+    if(bigEndian)
+      // HexTools.initRam (incorrectly) assumes little endian byte ordering
+      for((word, wordIndex) <- ram.initialContent.zipWithIndex)
+        ram.initialContent(wordIndex) =
+          ((word & 0xffl)       << 24) |
+          ((word & 0xff00l)     << 8)  |
+          ((word & 0xff0000l)   >> 8)  |
+          ((word & 0xff000000l) >> 24)
+  }
+
+  val arw = if(arwStage) io.axi.arw.s2mPipe().unburstify.m2sPipe() else io.axi.arw.unburstify
+  val stage0 = arw.haltWhen(arw.write && !io.axi.writeData.valid)
+  io.axi.readRsp.data := ram.readWriteSync(
+    address = stage0.addr(axiConfig.wordRange).resized,
+    data = io.axi.writeData.data,
+    enable = stage0.fire,
+    write = stage0.write,
+    mask = io.axi.writeData.strb
+  )
+  io.axi.writeData.ready :=  arw.valid && arw.write  && stage0.ready
+
+  val stage1 = stage0.stage()
+  stage1.ready := (io.axi.readRsp.ready && !stage1.write) || ((io.axi.writeRsp.ready || ! stage1.last) && stage1.write)
+
+  io.axi.readRsp.valid  := stage1.valid && !stage1.write
+  io.axi.readRsp.id  := stage1.id
+  io.axi.readRsp.last := stage1.last
+  io.axi.readRsp.setOKAY()
+  if(axiConfig.useRUser) io.axi.readRsp.user  := stage1.user
+
+  io.axi.writeRsp.valid := stage1.valid &&  stage1.write && stage1.last
+  io.axi.writeRsp.setOKAY()
+  io.axi.writeRsp.id := stage1.id
+  if(axiConfig.useBUser) io.axi.writeRsp.user := stage1.user
+
+  io.axi.arw.ready.noBackendCombMerge //Verilator perf
 }
 
 // object Axi4RamGen {

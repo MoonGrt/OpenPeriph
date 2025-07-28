@@ -129,7 +129,7 @@ class cyberwithddrhdmi(config: cyberwithddrhdmiConfig) extends Component {
   memclk.reset := False
 
   val hdmiclk = new hdmipll
-  hdmiclk.clkin := sysclk.clkout
+  hdmiclk.clkin := io.clk
   // hdmiclk.reset := ~io.rstn
   hdmiclk.reset := False
   val CLKDIV = new CLKDIV
@@ -216,10 +216,7 @@ class cyberwithddrhdmi(config: cyberwithddrhdmiConfig) extends Component {
       onChipRamHexFile = onChipRamHexFile
     )
 
-    val sdramCtrl = Axi4Ddr(
-      axiClockDomain,
-      memClockDomain
-    )
+    val sdramCtrl = Axi4Ddr(axiClockDomain, memClockDomain)
     sdramCtrl.io.pll_lock := memclk.lock && sysclk.lock
 
     val jtagCtrl = JtagAxi4SharedDebugger(
@@ -383,7 +380,7 @@ object cyberwithddrhdmi {
         new cyberwithddrhdmi(
           cyberwithddrhdmiConfig.default.copy(
             onChipRamSize = 32 kB,
-            onChipRamHexFile = "test/cyber/demo.hex"
+            onChipRamHexFile = "test/cyberwithddr/demo.hex"
           )
         )
       )

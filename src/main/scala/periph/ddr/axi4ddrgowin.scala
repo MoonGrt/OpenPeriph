@@ -5,7 +5,7 @@ package periph
 import spinal.core._
 import spinal.core.sim._
 import spinal.lib.{Stream, StreamFifoCC, master, slave, IMasterSlave}
-import spinal.lib.bus.amba4.axi.{Axi4Arw, Axi4Config, Axi4Shared}
+import spinal.lib.bus.amba4.axi.{Axi4, Axi4SpecRenamer, Axi4Arw, Axi4Config, Axi4Shared, Axi4ToAxi4Shared}
 
 case class DDR3_Interface() extends Bundle with IMasterSlave {
   val O_ddr_addr = Bits(14 bits)
@@ -82,7 +82,7 @@ case class Gowin_DDR3(sysclk: ClockDomain, memclk: ClockDomain) extends BlackBox
     val cmd_ready = out Bool ()
     val cmd = in Bits (3 bits)
     val cmd_en = in Bool ()
-    val addr = in UInt (27 bits)
+    val addr = in UInt (28 bits)
     val wr_data_rdy = out Bool ()
     val wr_data = in Bits (128 bits)
     val wr_data_en = in Bool ()
@@ -136,12 +136,7 @@ case class Gowin_DDR3(sysclk: ClockDomain, memclk: ClockDomain) extends BlackBox
   }
 
   noIoPrefix()
-  mapClockDomain(
-    sysclk,
-    clock = io.clk,
-    reset = io.rst_n,
-    resetActiveLevel = LOW
-  )
+  mapClockDomain(sysclk, clock = io.clk, reset = io.rst_n, resetActiveLevel = LOW)
   mapClockDomain(memclk, clock = io.memory_clk)
   setDefinitionName("DDR3_Memory_Interface_Top")
 
@@ -149,7 +144,7 @@ case class Gowin_DDR3(sysclk: ClockDomain, memclk: ClockDomain) extends BlackBox
     clock = io.clk_out,
     reset = io.ddr_rst,
     config = ClockDomainConfig(resetKind = ASYNC, resetActiveLevel = HIGH),
-    frequency = FixedFrequency(150 MHz)
+    frequency = FixedFrequency(200 MHz)
   )
 }
 
@@ -175,10 +170,10 @@ case class Axi4Ddr_PayloadRSP[T <: Data](contextType: T) extends Bundle {
   val context = cloneOf(contextType)
 }
 
-case class Axi4Ddr14_Controller[T <: Data](
+case class Axi4Ddr_Controller[T <: Data](
     sys_clk: ClockDomain,
     ddr_ref_clk: ClockDomain,
-    addrlen: Int = 27,
+    addrlen: Int = 28,
     burstlen: Int = 6,
     fifo_length: Int = 32,
     contextType: T
@@ -202,9 +197,7 @@ case class Axi4Ddr14_Controller[T <: Data](
     // val rd_data_end = in Bool() // not use due to 1:4 mode
     val init_calib_complete = in Bool ()
 
-    val ddr_cmd = slave(
-      Stream(Axi4Ddr_PayloadCMD(addrlen, burstlen, contextType))
-    )
+    val ddr_cmd = slave(Stream(Axi4Ddr_PayloadCMD(addrlen, burstlen, contextType)))
     val ddr_rsp = master(Stream(Axi4Ddr_PayloadRSP(contextType)))
   }
 
@@ -281,7 +274,7 @@ case class Axi4DdrWithCache(
     dataWidth: Int,
     axiaddrlen: Int,
     idWidth: Int,
-    addrlen: Int = 27,
+    addrlen: Int = 28,
     burstlen: Int = 6
 ) extends Component {
   val sys_clk_inst = sys_clk
@@ -301,20 +294,15 @@ case class Axi4DdrWithCache(
 
   val io = new Bundle() {
     val axi = slave(Axi4Shared(axiConfig))
-
-    val ddr_cmd = master(
-      Stream(Axi4Ddr_PayloadCMD(addrlen, burstlen, context_type))
-    )
+    val ddr_cmd = master(Stream(Axi4Ddr_PayloadCMD(addrlen, burstlen, context_type)))
     val ddr_rsp = slave(Stream(Axi4Ddr_PayloadRSP(context_type)))
   }
 
   val sys_area = new ClockingArea(sys_clk) {
     val ddr_cmd_valid = Reg(Bool()) init False
-    val ddr_cmd_payload =
-      Axi4Ddr_PayloadCMD(addrlen, burstlen, context_type)
+    val ddr_cmd_payload = Axi4Ddr_PayloadCMD(addrlen, burstlen, context_type)
     io.ddr_cmd.valid := ddr_cmd_valid
     io.ddr_cmd.payload := ddr_cmd_payload
-
     io.ddr_rsp.ready := True
 
     val cache_addr = Reg(UInt(addrlen bits)) init 0
@@ -365,16 +353,12 @@ case class Axi4DdrWithCache(
     when(arwcmd_free === False) {
       when(pageNotSame) {
         when(pageDirty_Trigger) {
-          ddr_cmd_payload.addr := (cache_addr(
-            (addrlen - 1) downto 4
-          ).asBits ## B"0000").asUInt
+          ddr_cmd_payload.addr := (cache_addr((addrlen - 1) downto 4).asBits ## B"0000").asUInt
           ddr_cmd_valid := ~io.ddr_cmd.fire
           ddr_cmd_payload.cmdtype := Axi4Ddr_CMDTYPE.write
           pageDirty_Trigger.clearWhen(io.ddr_cmd.fire)
         }.elsewhen(pageNotSame_Trigger) {
-          ddr_cmd_payload.addr := (arwcmd
-            .addr((addrlen - 1) downto 4)
-            .asBits ## B"0000").asUInt
+          ddr_cmd_payload.addr := (arwcmd.addr((addrlen - 1) downto 4).asBits ## B"0000").asUInt
           ddr_cmd_valid := ~io.ddr_cmd.fire
           ddr_cmd_payload.cmdtype := Axi4Ddr_CMDTYPE.read
           pageNotSame_Trigger.clearWhen(io.ddr_cmd.fire)
@@ -478,33 +462,127 @@ case class Axi4DdrWithCache(
     }
 
     when(io.ddr_rsp.fire) {
-      cache_addr := (arwcmd
-        .addr((addrlen - 1) downto 4)
-        .asBits ## B"0000").asUInt
+      cache_addr := (arwcmd.addr((addrlen - 1) downto 4).asBits ## B"0000").asUInt
       cache_data := io.ddr_rsp.payload.rsp_data
       cache_dirty_bit := 0
     }
   }
 }
 
+case class Axi4Ddr_Bus[T <: Data](addrlen: Int = 28, burstlen: Int = 6, contextType : T) extends Bundle {
+  val cmd = master(Stream(Axi4Ddr_PayloadCMD(addrlen, burstlen, contextType)))
+  val rsp = slave(Stream(Axi4Ddr_PayloadRSP(contextType)))
+}
+
+case class Axi4Ddr_Bus_Device[T <: Data](addrlen: Int = 28, burstlen: Int = 6, contextType : T) extends Bundle {
+  val cmd = slave(Stream(Axi4Ddr_PayloadCMD(addrlen, burstlen, contextType)))
+  val rsp = master(Stream(Axi4Ddr_PayloadRSP(contextType)))
+}
+
+case class Axi4Ddr_BusArbiter_Context[T <: Data](contextType : T) extends Bundle {
+  val devid = UInt(1 bits)
+  val other = cloneOf(contextType)
+}
+
+case class Axi4Ddr_BusArbiter[T <: Data](sys_clk: ClockDomain, addrlen: Int = 28, burstlen: Int = 6, contextType : T) extends Component{
+  val bus_context = Axi4Ddr_BusArbiter_Context(contextType)
+  val io = new Bundle {
+    val bus_ddr = Axi4Ddr_Bus(addrlen, burstlen, bus_context)
+    val bus_device_1 = Axi4Ddr_Bus_Device(addrlen, burstlen, contextType)
+    val bus_device_2 = Axi4Ddr_Bus_Device(addrlen, burstlen, contextType)
+  }
+
+  val DEVID_BUS_1 = 0
+  val DEVID_BUS_2 = 1
+
+  val area = new ClockingArea(sys_clk) {
+    val device1_ready = Reg(Bool) init(False)
+    val device1_cmd_payload = Reg(Axi4Ddr_PayloadCMD(addrlen, burstlen, contextType))
+    val device2_ready = Reg(Bool) init(False)
+    val device2_cmd_payload = Reg(Axi4Ddr_PayloadCMD(addrlen, burstlen, contextType))
+
+    when(io.bus_device_1.cmd.fire) {
+      device1_ready := True
+      device1_cmd_payload := io.bus_device_1.cmd.payload
+    }
+    when(io.bus_device_2.cmd.fire) {
+      device2_ready := True
+      device2_cmd_payload := io.bus_device_2.cmd.payload
+    }
+
+    io.bus_device_1.cmd.ready := ~device1_ready
+    io.bus_device_2.cmd.ready := ~device2_ready
+
+    val bus_ddr_valid = Reg(Bool) init(False)
+    when(device1_ready) {
+      io.bus_ddr.cmd.payload.cmdtype := device1_cmd_payload.cmdtype
+      io.bus_ddr.cmd.payload.addr := device1_cmd_payload.addr
+      io.bus_ddr.cmd.payload.burst_cnt := device1_cmd_payload.burst_cnt
+      io.bus_ddr.cmd.payload.wr_mask := device1_cmd_payload.wr_mask
+      io.bus_ddr.cmd.payload.wr_data := device1_cmd_payload.wr_data
+      io.bus_ddr.cmd.payload.context.devid := DEVID_BUS_1
+      io.bus_ddr.cmd.payload.context.other := device1_cmd_payload.context
+    }.otherwise {
+      io.bus_ddr.cmd.payload.cmdtype := device2_cmd_payload.cmdtype
+      io.bus_ddr.cmd.payload.addr := device2_cmd_payload.addr
+      io.bus_ddr.cmd.payload.burst_cnt := device2_cmd_payload.burst_cnt
+      io.bus_ddr.cmd.payload.wr_mask := device2_cmd_payload.wr_mask
+      io.bus_ddr.cmd.payload.wr_data := device2_cmd_payload.wr_data
+      io.bus_ddr.cmd.payload.context.devid := DEVID_BUS_2
+      io.bus_ddr.cmd.payload.context.other := device2_cmd_payload.context
+    }
+
+    when(device1_ready || device2_ready) {
+      bus_ddr_valid := ~io.bus_ddr.cmd.fire
+    }
+    when(device1_ready) {
+      when(io.bus_ddr.cmd.fire) {
+        device1_ready := False
+      }
+    }.elsewhen(device2_ready) {
+      when(io.bus_ddr.cmd.fire) {
+        device2_ready := False
+      }
+    }
+
+    io.bus_ddr.cmd.valid := bus_ddr_valid
+    io.bus_device_1.rsp.payload.rsp_data := io.bus_ddr.rsp.payload.rsp_data
+    io.bus_device_1.rsp.payload.context := io.bus_ddr.rsp.payload.context.other
+    io.bus_device_2.rsp.payload.rsp_data := io.bus_ddr.rsp.payload.rsp_data
+    io.bus_device_2.rsp.payload.context := io.bus_ddr.rsp.payload.context.other
+    switch(io.bus_ddr.rsp.payload.context.devid) {
+      is(DEVID_BUS_1) {
+        io.bus_device_1.rsp.valid := io.bus_ddr.rsp.valid
+        io.bus_ddr.rsp.ready := io.bus_device_1.rsp.ready
+        io.bus_device_2.rsp.valid := False
+      }
+      is(DEVID_BUS_2) {
+        io.bus_device_2.rsp.valid := io.bus_ddr.rsp.valid
+        io.bus_ddr.rsp.ready := io.bus_device_2.rsp.ready
+        io.bus_device_1.rsp.valid := False
+      }
+    }
+  }
+}
+
 case class Axi4Ddr(sys_clk: ClockDomain, mem_clk: ClockDomain) extends Component {
+  val axiController = Axi4DdrWithCache(sys_clk, 32, 28, 4)
+  val io = new Bundle() {
+    val pll_lock = in Bool ()
+    val axi = slave(Axi4Shared(axiController.axiConfig))
+    val ddr_iface = master(DDR3_Interface())
+    val init_calib_complete = out Bool()
+  }
+
   val gowin_DDR3 = Gowin_DDR3(sys_clk, mem_clk)
   val ddr_ref_clk = gowin_DDR3.clk_out
-
-  val axiController = Axi4DdrWithCache(sys_clk, 32, 27, 4)
-
-  val controller = Axi4Ddr14_Controller(
+  val controller = Axi4Ddr_Controller(
     sys_clk,
     ddr_ref_clk,
     contextType = axiController.context_type,
     fifo_length = 4
   )
-
-  val io = new Bundle() {
-    val pll_lock = in Bool ()
-    val axi = slave(Axi4Shared(axiController.axiConfig))
-    val ddr_iface = master(DDR3_Interface())
-  }
+  io.init_calib_complete := gowin_DDR3.io.init_calib_complete
 
   val sys_area = new ClockingArea(sys_clk) {
     axiController.io.ddr_cmd >> controller.io.ddr_cmd
@@ -514,6 +592,85 @@ case class Axi4Ddr(sys_clk: ClockDomain, mem_clk: ClockDomain) extends Component
     io.axi.writeData >> axiController.io.axi.writeData
     io.axi.writeRsp << axiController.io.axi.writeRsp
     io.axi.readRsp << axiController.io.axi.readRsp
+
+    gowin_DDR3.io.sr_req := False
+    gowin_DDR3.io.ref_req := False
+    gowin_DDR3.io.burst := True
+    gowin_DDR3.io.pll_lock := io.pll_lock
+    gowin_DDR3.io.app_burst_number := controller.io.app_burst_number
+    gowin_DDR3.io.cmd := controller.io.cmd
+    gowin_DDR3.io.cmd_en := controller.io.cmd_en
+    gowin_DDR3.io.addr := controller.io.addr
+    gowin_DDR3.io.wr_data := controller.io.wr_data
+    gowin_DDR3.io.wr_data_en := controller.io.wr_data_en
+    gowin_DDR3.io.wr_data_end := controller.io.wr_data_en
+    gowin_DDR3.io.wr_data_mask := controller.io.wr_data_mask
+
+    controller.io.cmd_ready := gowin_DDR3.io.cmd_ready
+    controller.io.wr_data_rdy := gowin_DDR3.io.wr_data_rdy
+    controller.io.rd_data := gowin_DDR3.io.rd_data
+    controller.io.rd_data_valid := gowin_DDR3.io.rd_data_valid
+    controller.io.init_calib_complete := gowin_DDR3.io.init_calib_complete
+
+    gowin_DDR3.connectDDR3Interface(io.ddr_iface)
+  }
+}
+
+case class Axi4DdrCtrl(sys_clk: ClockDomain, mem_clk: ClockDomain) extends Component{
+  val inst = Axi4Ddr(sys_clk, mem_clk)
+  val axiConfig = inst.axiController.axiConfig
+
+  val io = new Bundle() {
+    val pll_lock = in Bool()
+    val axi = slave(Axi4(axiConfig))
+    val ddr_iface = master(DDR3_Interface())
+  }
+
+  Axi4SpecRenamer(io.axi)
+
+  val sys_area = new ClockingArea(sys_clk) {
+    inst.io.pll_lock := io.pll_lock
+    inst.io.axi << Axi4ToAxi4Shared(io.axi)
+    io.ddr_iface := inst.io.ddr_iface
+  }
+}
+
+case class Axi4DdrWithDMA(sys_clk: ClockDomain, mem_clk: ClockDomain) extends Component{
+  val axiController = Axi4DdrWithCache(sys_clk, 32, 28, 4)
+  val io = new Bundle() {
+    val pll_lock = in Bool()
+    val axi = slave(Axi4Shared(axiController.axiConfig))
+    val ddr_dma_bus = Axi4Ddr_Bus_Device(contextType = axiController.context_type)
+    val ddr_iface = master(DDR3_Interface())
+  }
+
+  val gowin_DDR3 = Gowin_DDR3(sys_clk, mem_clk)
+  val ddr_ref_clk = gowin_DDR3.clk_out
+  val busArbiter = Axi4Ddr_BusArbiter(
+    sys_clk,
+    contextType = axiController.context_type
+  )
+  val controller = Axi4Ddr_Controller(
+    sys_clk,
+    ddr_ref_clk,
+    contextType = busArbiter.bus_context,
+    fifo_length = 4
+  )
+
+  val sys_area = new ClockingArea(sys_clk) {
+    busArbiter.io.bus_ddr.cmd >/-> controller.io.ddr_cmd
+    busArbiter.io.bus_ddr.rsp <-/< controller.io.ddr_rsp
+
+    io.ddr_dma_bus.cmd >/-> busArbiter.io.bus_device_1.cmd
+    io.ddr_dma_bus.rsp <-/< busArbiter.io.bus_device_1.rsp
+
+    axiController.io.ddr_cmd >/-> busArbiter.io.bus_device_2.cmd
+    axiController.io.ddr_rsp <-/< busArbiter.io.bus_device_2.rsp
+
+    io.axi.sharedCmd >> axiController.io.axi.sharedCmd
+    io.axi.writeData >> axiController.io.axi.writeData
+    io.axi.writeRsp << axiController.io.axi.writeRsp
+    io.axi.readRsp  << axiController.io.axi.readRsp
 
     gowin_DDR3.io.sr_req := False
     gowin_DDR3.io.ref_req := False
@@ -537,10 +694,45 @@ case class Axi4Ddr(sys_clk: ClockDomain, mem_clk: ClockDomain) extends Component
   }
 }
 
+case class Axi4DdrWithDMACtrl(sys_clk: ClockDomain, mem_clk: ClockDomain) extends Component{
+  val inst = Axi4DdrWithDMA(sys_clk, mem_clk)
+  val axiConfig = inst.axiController.axiConfig
+  val context_type = inst.axiController.context_type
+
+  val io = new Bundle() {
+    val pll_lock = in Bool()
+    val axi = slave(Axi4(axiConfig))
+    val ddr_dma_bus = Axi4Ddr_Bus_Device(contextType = context_type)
+    val ddr_iface = master(DDR3_Interface())
+  }
+
+  Axi4SpecRenamer(io.axi)
+
+  val sys_area = new ClockingArea(sys_clk) {
+    inst.io.pll_lock := io.pll_lock
+    inst.io.axi << Axi4ToAxi4Shared(io.axi)
+    io.ddr_dma_bus <> inst.io.ddr_dma_bus
+    io.ddr_iface := inst.io.ddr_iface
+  }
+}
+
+
 // object Axi4DdrGen {
 //   def main(args: Array[String]): Unit = {
-//     SpinalConfig(targetDirectory = "rtl").generateVerilog(
-//       Axi4Ddr(ClockDomain.external("sys"), ClockDomain.external("mem"))
+//     SpinalConfig(targetDirectory = "rtl").generateVerilog(Axi4DdrCtrl(
+//         ClockDomain.external("sysclk", config = ClockDomainConfig(resetKind = ASYNC, resetActiveLevel = LOW)),
+//         ClockDomain.external("memclk", config = ClockDomainConfig(resetKind = ASYNC, resetActiveLevel = LOW))
+//       )
+//     )
+//   }
+// }
+
+// object Axi4DdrWithDMAGen {
+//   def main(args: Array[String]): Unit = {
+//     SpinalConfig(targetDirectory = "rtl").generateVerilog(Axi4DdrWithDMACtrl(
+//         ClockDomain.external("sysclk", config = ClockDomainConfig(resetKind = ASYNC, resetActiveLevel = LOW)),
+//         ClockDomain.external("memclk", config = ClockDomainConfig(resetKind = ASYNC, resetActiveLevel = LOW))
+//       )
 //     )
 //   }
 // }

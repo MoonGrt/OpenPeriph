@@ -6,3 +6,4 @@
 create_clock -name clk -period 37.037 -waveform {0 18.518} [get_ports {io_clk}]
 create_clock -name sysclk -period 20 -waveform {0 10} [get_nets {sysclk_clkout}]
 create_clock -name memclk -period 2.5 -waveform {0 1.25} [get_nets {memclk_clkout}]
+set_clock_groups -asynchronous -group [get_clocks {clk}] -group [get_clocks {sysclk}] -group [get_clocks {memclk}]

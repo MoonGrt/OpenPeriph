@@ -18,10 +18,11 @@ void led_breathe(void);
 
 void main()
 {
-    // delay_init();
-    // delay_ms(10); // 等待系统稳定
+    delay_init();
+    delay_ms(1000); // 等待系统稳定
 
     demo_USART();
+    for (uint16_t i = 0;; printf("cnt: %u\r\n", i++), delay_ms(1000));
     // demo_GPIO();
     // demo_EXTI();
     // demo_SysTick();
@@ -639,7 +640,7 @@ void demo_DVP(void)
 #define RES_X 640
 #define RES_Y 480
 
-__attribute__ ((section (".noinit"))) __attribute__ ((aligned (4*8))) uint16_t vgaFramebuffer[RES_Y][RES_X];
+__attribute__((section(".noinit"))) __attribute__((aligned(4 * 8))) uint16_t vgaFramebuffer[RES_Y][RES_X];
 extern void flushDataCache(uint32_t dummy);
 
 void demo_GRAPHICS(void)
