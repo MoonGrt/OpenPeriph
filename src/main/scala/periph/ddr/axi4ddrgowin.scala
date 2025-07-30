@@ -464,7 +464,7 @@ case class Axi4DdrWithCache(
     when(io.ddr_rsp.fire) {
       cache_addr := (arwcmd.addr((addrlen - 1) downto 4).asBits ## B"0000").asUInt
       cache_data := io.ddr_rsp.payload.rsp_data
-      cache_dirty_bit := 0
+      cache_dirty_bit := B"16'xFFFF"
     }
   }
 }

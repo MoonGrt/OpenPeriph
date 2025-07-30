@@ -54,6 +54,19 @@ static void printf_d(int val)
         printf_c(*(--p));
 }
 
+static void printf_u(unsigned int val)
+{
+    char buffer[32];
+    char *p = buffer;
+    while (val || p == buffer)
+    {
+        *(p++) = '0' + val % 10;
+        val = val / 10;
+    }
+    while (p != buffer)
+        printf_c(*(--p));
+}
+
 int printf(const char *format, ...)
 {
     int i;
@@ -81,6 +94,11 @@ int printf(const char *format, ...)
                     printf_d(va_arg(ap, int));
                     break;
                 }
+                if (format[i] == 'u')
+                {
+                    printf_u(va_arg(ap, unsigned int));
+                    break;
+                }
             }
         }
         else
@@ -100,4 +118,4 @@ int puts(char *s)
     return 0;
 }
 
-#endif /* CYBER_USART */
+#endif

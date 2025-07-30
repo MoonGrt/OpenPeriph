@@ -1,23 +1,27 @@
 # make clean && make -j $(nproc)
 
+DDR_TEST = no
 PROJ_NAME = demo
 DEBUG = yes
 BENCH = no
 FUNC_OPT = yes
 MULDIV = yes
 
-SRCS = $(wildcard libs/*.c) \
-       $(wildcard libs/*.S) \
-       $(wildcard src/*.c) \
-       $(wildcard src/*.S) \
-       $(wildcard src/ov5640/*.c) \
-
-INC += -I./libs -I./src -I./src/ov5640
-LDSCRIPT = linker.ld
+ifeq ($(DDR_TEST),yes)
+    LDSCRIPT = linker.ld
+    SRCS = $(wildcard src/ddr_test.S)
+else
+    INC += -I./libs -I./src -I./src/ov5640
+    LDSCRIPT = linker.ld
+    SRCS = $(wildcard libs/*.c) \
+           $(wildcard libs/*.S) \
+           $(wildcard src/*.c) \
+           $(wildcard src/*.S) \
+           $(wildcard src/ov5640/*.c)
+endif
 
 # Set it to yes if you are using the sifive precompiled GCC pack
 SIFIVE_GCC_PACK ?= yes
-
 ifeq ($(SIFIVE_GCC_PACK),yes)
     RISCV_NAME ?= riscv64-unknown-elf
     RISCV_PATH ?= /opt/riscv
@@ -44,27 +48,27 @@ CFLAGS += -march=$(MARCH) -mabi=$(MABI)
 
 
 ifeq ($(DEBUG), yes)
-	CFLAGS += -g3 -O0
+    CFLAGS += -g3 -O0
 else
-	CFLAGS += -g -O3
+    CFLAGS += -g -O3
 endif
 
 ifeq ($(BENCH), yes)
-	CFLAGS += -fno-inline
+    CFLAGS += -fno-inline
 endif
 
 # 控制函数优化的选项
 ifeq ($(FUNC_OPT), yes)
-	CFLAGS += -ffunction-sections -fdata-sections
-	LDFLAGS += -Wl,--gc-sections
+    CFLAGS += -ffunction-sections -fdata-sections
+    LDFLAGS += -Wl,--gc-sections
 else
-	CFLAGS += -fno-function-sections -fno-data-sections
+    CFLAGS += -fno-function-sections -fno-data-sections
 endif
 
 ifeq ($(SIFIVE_GCC_PACK), yes)
-	RISCV_CLIB=$(RISCV_PATH)/$(RISCV_NAME)/lib/$(MARCH)/$(MABI)/
+    RISCV_CLIB=$(RISCV_PATH)/$(RISCV_NAME)/lib/$(MARCH)/$(MABI)/
 else
-	RISCV_CLIB=$(RISCV_PATH)/$(RISCV_NAME)/lib/
+    RISCV_CLIB=$(RISCV_PATH)/$(RISCV_NAME)/lib/
 endif
 
 

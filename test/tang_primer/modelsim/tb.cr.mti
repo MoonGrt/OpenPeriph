@@ -1,9 +1,16 @@
-G:/VM/share/OpenPeriph/test/tang_primer/modelsim/tb_top.v {1 {vlog -work work -vopt -stats=none {G:\VM\share\OpenPeriph\test\tang_primer\modelsim\tb_top.v}
+G:/VM/share/OpenPeriph/test/tang_primer/src/pll/mempll.v {1 {vlog -work work -vopt -stats=none G:/VM/share/OpenPeriph/test/tang_primer/src/pll/mempll.v
 Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
--- Compiling module tb_top
+-- Compiling module mempll
 
 Top level modules:
-	tb_top
+	mempll
+
+} {} {}} G:/VM/share/OpenPeriph/test/tang_primer/src/pll/syspll.v {1 {vlog -work work -vopt -stats=none G:/VM/share/OpenPeriph/test/tang_primer/src/pll/syspll.v
+Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+-- Compiling module syspll
+
+Top level modules:
+	syspll
 
 } {} {}} G:/VM/share/OpenPeriph/test/tang_primer/modelsim/prim_sim.v {1 {vlog -work work -vopt -stats=none G:/VM/share/OpenPeriph/test/tang_primer/modelsim/prim_sim.v
 Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
@@ -301,26 +308,12 @@ Top level modules:
 	MIPI_IBUF
 	I3C_IOBUF
 
-} {} {}} G:/VM/share/OpenPeriph/test/tang_primer/src/pll/syspll.v {1 {vlog -work work -vopt -stats=none G:/VM/share/OpenPeriph/test/tang_primer/src/pll/syspll.v
+} {} {}} G:/VM/share/OpenPeriph/test/tang_primer/modelsim/tb_top.v {1 {vlog -work work -vopt -stats=none {G:\VM\share\OpenPeriph\test\tang_primer\modelsim\tb_top.v}
 Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
--- Compiling module syspll
+-- Compiling module tb_top
 
 Top level modules:
-	syspll
-
-} {} {}} G:/VM/share/OpenPeriph/test/tang_primer/src/pll/mempll.v {1 {vlog -work work -vopt -stats=none G:/VM/share/OpenPeriph/test/tang_primer/src/pll/mempll.v
-Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
--- Compiling module mempll
-
-Top level modules:
-	mempll
-
-} {} {}} G:/VM/share/OpenPeriph/test/tang_primer/src/dvi_tx/DVI_TX_Top.vo {1 {vlog -work work -vopt -stats=none G:/VM/share/OpenPeriph/test/tang_primer/src/dvi_tx/DVI_TX_Top.vo
-Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
--- Compiling module DVI_TX_Top
-
-Top level modules:
-	DVI_TX_Top
+	tb_top
 
 } {} {}} G:/VM/share/OpenPeriph/test/tang_primer/src/ddr3_memory_interface/ddr3_memory_interface.vo {1 {vlog -work work -vopt -stats=none G:/VM/share/OpenPeriph/test/tang_primer/src/ddr3_memory_interface/ddr3_memory_interface.vo
 Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
@@ -328,6 +321,13 @@ Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
 
 Top level modules:
 	DDR3_Memory_Interface_Top
+
+} {} {}} G:/VM/share/OpenPeriph/test/tang_primer/src/dvi_tx/DVI_TX_Top.vo {1 {vlog -work work -vopt -stats=none G:/VM/share/OpenPeriph/test/tang_primer/src/dvi_tx/DVI_TX_Top.vo
+Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+-- Compiling module DVI_TX_Top
+
+Top level modules:
+	DVI_TX_Top
 
 } {} {}} G:/VM/share/OpenPeriph/test/tang_primer/src/pll/hdmipll.v {1 {vlog -work work -vopt -stats=none G:/VM/share/OpenPeriph/test/tang_primer/src/pll/hdmipll.v
 Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020

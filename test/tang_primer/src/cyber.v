@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.12.0    git head : 1aa7d7b5732f11cca2dd83bacc2a4cb92ca8e5c9
 // Component : cyberwithddr
-// Git hash  : 642d1e77d9cab61944c164c11826c4f0b9bcace5
+// Git hash  : 826ba3dd56b84b17098bef405dbb2efea705a153
 
 `timescale 1ns/1ps
 `define SYNTHESIS
@@ -11067,7 +11067,7 @@ module Axi4DdrWithCache (
       if(io_ddr_rsp_fire) begin
         sys_area_cache_addr <= {sys_area_arwcmd_fragment_addr[27 : 4],4'b0000};
         sys_area_cache_data <= io_ddr_rsp_payload_rsp_data;
-        sys_area_cache_dirty_bit <= 16'h0;
+        sys_area_cache_dirty_bit <= 16'hffff;
       end
     end
   end

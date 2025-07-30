@@ -13,19 +13,20 @@ _heap_size = DEFINED(_heap_size) ? _heap_size : 0;
 SECTIONS {
   .vector : {
     *init.o(.text);
+    *ddr_test.o(.text);
   } > onChipRam
 
   .memory : {
     *(.text);
     end = .;
-  } > sdram
+  } > onChipRam
 
   .rodata         :
   {
     *(.rdata)
     *(.rodata .rodata.*)
     *(.gnu.linkonce.r.*)
-  } > sdram
+  } > onChipRam
 
   .ctors          :
   {
