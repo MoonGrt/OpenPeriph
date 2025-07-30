@@ -45,11 +45,11 @@ case class dvi_tx (vgaCd : ClockDomain, hdmiCd : ClockDomain) extends BlackBox {
     iface.O_tmds_data_n := io.O_tmds_data_n
   }
   noIoPrefix()
-  mapClockDomain(vgaCd, clock = io.I_rgb_clk, reset = io.I_rst_n)
+  mapClockDomain(vgaCd, clock = io.I_rgb_clk, reset = io.I_rst_n, resetActiveLevel = LOW)
   mapClockDomain(hdmiCd, clock = io.I_serial_clk)
 }
 
-case class VgaToHdmiGowin(vgaCd : ClockDomain, hdmiCd : ClockDomain, rgbConfig: RgbConfig) extends Component {
+case class VgaToHdmiGowin(vgaCd: ClockDomain, hdmiCd: ClockDomain, rgbConfig: RgbConfig) extends Component {
   val io = new Bundle {
     val vga  = slave(Vga(rgbConfig))   // VGA 输入信号
     val hdmi = master(Hdmi())          // HDMI 输出信号
@@ -59,13 +59,13 @@ case class VgaToHdmiGowin(vgaCd : ClockDomain, hdmiCd : ClockDomain, rgbConfig: 
   val dvi_tx = new dvi_tx(vgaCd, hdmiCd)
   // ------- 信号连接 -------
   // VGA 同步信号
-  dvi_tx.io.I_rgb_vs := io.vga.vSync
-  dvi_tx.io.I_rgb_hs := io.vga.hSync
+  dvi_tx.io.I_rgb_vs := ~io.vga.vSync
+  dvi_tx.io.I_rgb_hs := ~io.vga.hSync
   dvi_tx.io.I_rgb_de := io.vga.colorEn
   // RGB 数据
-  dvi_tx.io.I_rgb_r := io.vga.color.r.resize(8).asBits
-  dvi_tx.io.I_rgb_g := io.vga.color.g.resize(8).asBits
-  dvi_tx.io.I_rgb_b := io.vga.color.b.resize(8).asBits
+  dvi_tx.io.I_rgb_r := (io.vga.color.r ## B"3'b000")
+  dvi_tx.io.I_rgb_g := (io.vga.color.g ## B"2'b00")
+  dvi_tx.io.I_rgb_b := (io.vga.color.b ## B"3'b000")
   // TMDS 输出
   dvi_tx.connectHdmiInterface(io.hdmi)
 }

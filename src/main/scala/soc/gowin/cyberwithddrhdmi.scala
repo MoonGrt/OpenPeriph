@@ -26,25 +26,6 @@ import spinal.lib.graphic.vga.{Axi4VgaCtrl, Axi4VgaCtrlGenerics, Vga}
 import spinal.lib.graphic.hdmi.VgaToHdmiEcp5
 
 
-class DivideByN(n: Int) extends Component {
-  val io = new Bundle {
-    val clk_out = out Bool()
-  }
-
-  require(n >= 2, "Divider must be >= 2")
-
-  val counter = Reg(UInt(log2Up(n) bits)) init(0)
-  val clk_reg = Reg(Bool()) init(False)
-
-  counter := counter + 1
-  when(counter === (n / 2 - 1)) {
-    clk_reg := ~clk_reg
-    counter := 0
-  }
-
-  io.clk_out := clk_reg
-}
-
 case class cyberwithddrhdmiConfig(
     axiFrequency: HertzNumber,
     memFrequency: HertzNumber,

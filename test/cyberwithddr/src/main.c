@@ -19,10 +19,10 @@ void led_breathe(void);
 void main()
 {
     delay_init();
-    delay_ms(10); // 等待系统稳定
+    // delay_ms(10); // 等待系统稳定
 
     demo_USART();
-    for (uint16_t i = 0;; printf("time: %us\r\n", i++), delay_ms(1000));
+    // for (uint16_t i = 0;; printf("time: %us\r\n", i++), delay_ms(1000));
     // demo_GPIO();
     // demo_EXTI();
     // demo_SysTick();
@@ -32,7 +32,7 @@ void main()
     // demo_PWM();
     // demo_WDG();
     // demo_DVP();
-    // demo_GRAPHICS();
+    demo_GRAPHICS();
 
     // led_flow();
     // led_breathe();
@@ -637,8 +637,8 @@ void demo_DVP(void)
 
 #ifdef CYBER_GRAPHICS
 
-#define RES_X 640
-#define RES_Y 480
+#define RES_X 1280
+#define RES_Y 720
 
 __attribute__((section(".noinit"))) __attribute__((aligned(4 * 8))) uint16_t vgaFramebuffer[RES_Y][RES_X];
 extern void flushDataCache(uint32_t dummy);
@@ -646,7 +646,7 @@ extern void flushDataCache(uint32_t dummy);
 void demo_GRAPHICS(void)
 {
     vga_stop(GRAPHICS);
-    GRAPHICS->TIMING = vga_h640_v480_r60;
+    GRAPHICS->TIMING = vga_h1280_v720_r60;
     GRAPHICS->FRAME_SIZE = RES_X * RES_Y * 2 - 1;
     GRAPHICS->FRAME_BASE = (uint32_t)vgaFramebuffer;
     vga_run(GRAPHICS);

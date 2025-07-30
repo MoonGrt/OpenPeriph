@@ -10,6 +10,16 @@ typedef struct
     uint32_t vColorStart, vColorEnd;
 } Vga_Timing;
 
+static const Vga_Timing vga_h1280_v720_r60 = {
+    .hSyncStart = 40 - 1,
+    .hSyncEnd = 1650 - 1,
+    .hColorStart = 260 - 1,
+    .hColorEnd = 1540 - 1,
+    .vSyncStart = 5 - 1,
+    .vSyncEnd = 750 - 1,
+    .vColorStart = 25 - 1,
+    .vColorEnd = 745 - 1};
+
 static const Vga_Timing vga_h640_v480_r60 = {
     .hSyncStart = 96,
     .hSyncEnd = 800,

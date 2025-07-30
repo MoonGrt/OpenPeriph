@@ -1,18 +1,4 @@
-G:/VM/share/OpenPeriph/test/tang_primer/src/pll/mempll.v {1 {vlog -work work -vopt -stats=none G:/VM/share/OpenPeriph/test/tang_primer/src/pll/mempll.v
-Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
--- Compiling module mempll
-
-Top level modules:
-	mempll
-
-} {} {}} G:/VM/share/OpenPeriph/test/tang_primer/src/pll/syspll.v {1 {vlog -work work -vopt -stats=none G:/VM/share/OpenPeriph/test/tang_primer/src/pll/syspll.v
-Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
--- Compiling module syspll
-
-Top level modules:
-	syspll
-
-} {} {}} G:/VM/share/OpenPeriph/test/tang_primer/modelsim/prim_sim.v {1 {vlog -work work -vopt -stats=none G:/VM/share/OpenPeriph/test/tang_primer/modelsim/prim_sim.v
+G:/VM/share/OpenPeriph/test/tang_primer/modelsim/prim_sim.v {1 {vlog -work work -vopt -stats=none {G:\VM\share\OpenPeriph\test\tang_primer\modelsim\prim_sim.v}
 Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
 -- Compiling UDP mux2
 -- Compiling module MUX2
@@ -315,12 +301,19 @@ Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
 Top level modules:
 	tb_top
 
-} {} {}} G:/VM/share/OpenPeriph/test/tang_primer/src/ddr3_memory_interface/ddr3_memory_interface.vo {1 {vlog -work work -vopt -stats=none G:/VM/share/OpenPeriph/test/tang_primer/src/ddr3_memory_interface/ddr3_memory_interface.vo
+} {} {}} G:/VM/share/OpenPeriph/test/tang_primer/src/pll/syspll.v {1 {vlog -work work -vopt -stats=none G:/VM/share/OpenPeriph/test/tang_primer/src/pll/syspll.v
 Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
--- Compiling module DDR3_Memory_Interface_Top
+-- Compiling module syspll
 
 Top level modules:
-	DDR3_Memory_Interface_Top
+	syspll
+
+} {} {}} G:/VM/share/OpenPeriph/test/tang_primer/src/pll/mempll.v {1 {vlog -work work -vopt -stats=none G:/VM/share/OpenPeriph/test/tang_primer/src/pll/mempll.v
+Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+-- Compiling module mempll
+
+Top level modules:
+	mempll
 
 } {} {}} G:/VM/share/OpenPeriph/test/tang_primer/src/dvi_tx/DVI_TX_Top.vo {1 {vlog -work work -vopt -stats=none G:/VM/share/OpenPeriph/test/tang_primer/src/dvi_tx/DVI_TX_Top.vo
 Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
@@ -328,6 +321,95 @@ Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
 
 Top level modules:
 	DVI_TX_Top
+
+} {} {}} G:/VM/share/OpenPeriph/test/tang_primer/src/ddr3_memory_interface/ddr3_memory_interface.vo {1 {vlog -work work -vopt -stats=none G:/VM/share/OpenPeriph/test/tang_primer/src/ddr3_memory_interface/ddr3_memory_interface.vo
+Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+-- Compiling module DDR3_Memory_Interface_Top
+
+Top level modules:
+	DDR3_Memory_Interface_Top
+
+} {} {}} G:/VM/share/OpenPeriph/test/tang_primer/src/cyber.v {1 {vlog -work work -vopt -stats=none {G:\VM\share\OpenPeriph\test\tang_primer\src\cyber.v}
+Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+-- Compiling module cyberwithddrhdmi
+-- Compiling module Apb3Router_4
+-- Compiling module Apb3Decoder_4
+-- Compiling module Axi4SharedArbiter_2
+-- Compiling module Axi4SharedArbiter_1
+-- Compiling module Axi4SharedArbiter
+-- Compiling module Axi4ReadOnlyDecoder_1
+-- Compiling module Axi4SharedDecoder_1
+-- Compiling module Axi4SharedDecoder
+-- Compiling module Axi4ReadOnlyDecoder
+-- Compiling module VgaToHdmiGowin
+-- Compiling module Axi4VgaCtrl
+-- Compiling module ApbUartArray
+-- Compiling module Apb3SysTick
+-- Compiling module Apb3Wdg
+-- Compiling module Apb3TimArray
+-- Compiling module Apb3GpioArray
+-- Compiling module Apb3Exti
+-- Compiling module Apb3Afio
+-- Compiling module Axi4SharedToApb3Bridge
+-- Compiling module JtagAxi4SharedDebugger
+-- Compiling module Axi4Ddr
+-- Compiling module Axi4Ram
+-- Compiling module RiscvAxi4
+-- Compiling module BufferCC_18
+-- Compiling module StreamArbiter_2
+-- Compiling module StreamArbiter_1
+-- Compiling module StreamFifoLowLatency
+-- Compiling module StreamArbiter
+-- Compiling module Axi4ReadOnlyErrorSlave_1
+-- Compiling module Axi4SharedErrorSlave_1
+-- Compiling module Axi4SharedErrorSlave
+-- Compiling module Axi4ReadOnlyErrorSlave
+-- Compiling module PulseCCByToggle
+-- Compiling module VgaCtrl
+-- Compiling module BufferCC_17
+-- Compiling module VideoDma
+-- Compiling module ApbUart
+-- Compiling module Apb3Router_2
+-- Compiling module Apb3Wwdg
+-- Compiling module Apb3Iwdg
+-- Compiling module Apb3Tim
+-- Compiling module Apb3Router
+-- Compiling module Apb3Decoder
+-- Compiling module Apb3Gpio
+-- Compiling module SystemDebugger
+-- Compiling module JtagBridge
+-- Compiling module Axi4Ddr_Controller
+-- Compiling module Axi4DdrWithCache
+-- Compiling module RiscvCore
+-- Compiling module StreamFifo_4
+-- Compiling module BufferCC_16
+-- Compiling module BufferCC_15
+-- Compiling module BufferCC_14
+-- Compiling module StreamFifoCC_2
+-- Compiling module StreamFifo
+-- Compiling module UartCtrlRx
+-- Compiling module UartCtrlTx
+-- Compiling module BufferCC_7
+-- Compiling module FlowCCUnsafeByToggle
+-- Compiling module StreamFifoCC_1
+-- Compiling module StreamFifoCC
+-- Compiling module MixedDivider
+-- Compiling module Alu_1
+-- Compiling module BufferCC_13
+-- Compiling module BufferCC_12
+-- Compiling module BufferCC_11
+-- Compiling module BufferCC_9
+-- Compiling module BufferCC_6
+-- Compiling module BufferCC_5
+-- Compiling module BufferCC_4
+-- Compiling module BufferCC_3
+-- Compiling module BufferCC_2
+-- Compiling module BufferCC_1
+-- Compiling module BufferCC
+-- Compiling module UnsignedDivider
+
+Top level modules:
+	cyberwithddrhdmi
 
 } {} {}} G:/VM/share/OpenPeriph/test/tang_primer/src/pll/hdmipll.v {1 {vlog -work work -vopt -stats=none G:/VM/share/OpenPeriph/test/tang_primer/src/pll/hdmipll.v
 Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
