@@ -245,7 +245,7 @@ case class Axi4Ddr_Controller[T <: Data](
       cmd_trigger.clear()
     }
     val cmd = RegNextWhen(cmd_fifo.io.pop.payload, cmd_fifo.io.pop.fire)
-    cmd.burst_cnt init 1
+    cmd.burst_cnt init 0
     when(burst_cnt === cmd.burst_cnt +^ 1) {
       cmd_free.setWhen(cmd_free === False)
     }
@@ -309,14 +309,13 @@ case class Axi4DdrWithCache(
     val cache_data = Reg(Bits(128 bits)) init 0
     val cache_dirty_bit = Reg(Bits(16 bits)) init B"16'xFFFF"
 
-    val pageNotSame_Trigger = Reg(Bool()) init False
-    val pageDirty_Trigger = Reg(Bool()) init False
-    val pageDirty = cache_dirty_bit =/= B"16'xFFFF"
-
     val axi_unburst = io.axi.sharedCmd.unburstify
-
     val arwcmd_free = Reg(Bool()) init True
     val arwcmd = RegNextWhen(axi_unburst.payload, axi_unburst.fire)
+    val pageDirty = cache_dirty_bit =/= B"16'xFFFF"
+    val pageNotSame = cache_addr((addrlen - 1) downto 4) =/= arwcmd.addr((addrlen - 1) downto 4)
+    val pageDirty_Trigger = Reg(Bool()) init False
+    val pageNotSame_Trigger = Reg(Bool()) init False
     when(axi_unburst.fire) {
       arwcmd_free.clear()
       pageNotSame_Trigger.set()
@@ -331,15 +330,11 @@ case class Axi4DdrWithCache(
     io.axi.readRsp.payload.last := arwcmd.last
     io.axi.readRsp.payload.setOKAY()
     io.axi.readRsp.valid := read_response_valid
-
+    io.axi.readRsp.payload.data := 0
     io.axi.writeRsp.valid := write_response_valid
     io.axi.writeRsp.payload.id := arwcmd.id
     io.axi.writeRsp.payload.setOKAY()
-
     io.axi.writeData.ready := write_data_ready
-
-    val pageNotSame =
-      cache_addr((addrlen - 1) downto 4) =/= arwcmd.addr((addrlen - 1) downto 4)
 
     ddr_cmd_payload.addr := 0
     ddr_cmd_payload.cmdtype := Axi4Ddr_CMDTYPE.write
@@ -348,8 +343,11 @@ case class Axi4DdrWithCache(
     ddr_cmd_payload.wr_mask := cache_dirty_bit
     ddr_cmd_payload.context := 0
 
-    io.axi.readRsp.payload.data := 0
-
+    when(io.ddr_rsp.fire) {
+      cache_addr := (arwcmd.addr((addrlen - 1) downto 4).asBits ## B"0000").asUInt
+      cache_data := io.ddr_rsp.payload.rsp_data
+      cache_dirty_bit := B"16'xFFFF"
+    }
     when(arwcmd_free === False) {
       when(pageNotSame) {
         when(pageDirty_Trigger) {
@@ -459,12 +457,6 @@ case class Axi4DdrWithCache(
           }
         }
       }
-    }
-
-    when(io.ddr_rsp.fire) {
-      cache_addr := (arwcmd.addr((addrlen - 1) downto 4).asBits ## B"0000").asUInt
-      cache_data := io.ddr_rsp.payload.rsp_data
-      cache_dirty_bit := B"16'xFFFF"
     }
   }
 }
@@ -582,7 +574,6 @@ case class Axi4Ddr(sys_clk: ClockDomain, mem_clk: ClockDomain) extends Component
     contextType = axiController.context_type,
     fifo_length = 4
   )
-  io.init_calib_complete := gowin_DDR3.io.init_calib_complete
 
   val sys_area = new ClockingArea(sys_clk) {
     axiController.io.ddr_cmd >> controller.io.ddr_cmd
@@ -614,6 +605,7 @@ case class Axi4Ddr(sys_clk: ClockDomain, mem_clk: ClockDomain) extends Component
 
     gowin_DDR3.connectDDR3Interface(io.ddr_iface)
   }
+  io.init_calib_complete := gowin_DDR3.io.init_calib_complete
 }
 
 case class Axi4DdrCtrl(sys_clk: ClockDomain, mem_clk: ClockDomain) extends Component{
@@ -624,6 +616,7 @@ case class Axi4DdrCtrl(sys_clk: ClockDomain, mem_clk: ClockDomain) extends Compo
     val pll_lock = in Bool()
     val axi = slave(Axi4(axiConfig))
     val ddr_iface = master(DDR3_Interface())
+    val init_calib_complete = out Bool()
   }
 
   Axi4SpecRenamer(io.axi)
@@ -632,6 +625,7 @@ case class Axi4DdrCtrl(sys_clk: ClockDomain, mem_clk: ClockDomain) extends Compo
     inst.io.pll_lock := io.pll_lock
     inst.io.axi << Axi4ToAxi4Shared(io.axi)
     io.ddr_iface := inst.io.ddr_iface
+    io.init_calib_complete := inst.io.init_calib_complete
   }
 }
 
@@ -642,6 +636,7 @@ case class Axi4DdrWithDMA(sys_clk: ClockDomain, mem_clk: ClockDomain) extends Co
     val axi = slave(Axi4Shared(axiController.axiConfig))
     val ddr_dma_bus = Axi4Ddr_Bus_Device(contextType = axiController.context_type)
     val ddr_iface = master(DDR3_Interface())
+    val init_calib_complete = out Bool()
   }
 
   val gowin_DDR3 = Gowin_DDR3(sys_clk, mem_clk)
@@ -692,6 +687,7 @@ case class Axi4DdrWithDMA(sys_clk: ClockDomain, mem_clk: ClockDomain) extends Co
 
     gowin_DDR3.connectDDR3Interface(io.ddr_iface)
   }
+  io.init_calib_complete := gowin_DDR3.io.init_calib_complete
 }
 
 case class Axi4DdrWithDMACtrl(sys_clk: ClockDomain, mem_clk: ClockDomain) extends Component{
@@ -704,6 +700,7 @@ case class Axi4DdrWithDMACtrl(sys_clk: ClockDomain, mem_clk: ClockDomain) extend
     val axi = slave(Axi4(axiConfig))
     val ddr_dma_bus = Axi4Ddr_Bus_Device(contextType = context_type)
     val ddr_iface = master(DDR3_Interface())
+    val init_calib_complete = out Bool()
   }
 
   Axi4SpecRenamer(io.axi)
@@ -713,6 +710,7 @@ case class Axi4DdrWithDMACtrl(sys_clk: ClockDomain, mem_clk: ClockDomain) extend
     inst.io.axi << Axi4ToAxi4Shared(io.axi)
     io.ddr_dma_bus <> inst.io.ddr_dma_bus
     io.ddr_iface := inst.io.ddr_iface
+    io.init_calib_complete := inst.io.init_calib_complete
   }
 }
 

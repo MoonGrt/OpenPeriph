@@ -5,7 +5,7 @@
 //Part Number: GW2A-LV18PG256C8/I7
 //Device: GW2A-18
 //Device Version: C
-//Created Time: Wed Jul  9 18:59:54 2025
+//Created Time: Fri Aug  1 14:34:54 2025
 
 module mempll (clkout, lock, reset, clkin);
 

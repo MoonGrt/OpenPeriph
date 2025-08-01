@@ -2,49 +2,31 @@
 <GAO_CONFIG>
     <Version>3.0</Version>
     <Mode>Standard</Mode>
-    <AoCore index="0" sample_clock="sysclk_clkout" trig_type="0" storage_depth="1024" window_num="1" capture_amount="1024" implementation="0" trigger_pos="256" module_name="cyberwithddrhdmi" force_trigger_by_falling_edge="false" capture_init_data_enabled="false">
+    <AoCore index="0" sample_clock="axi_sdramCtrl/gowin_DDR3/clk_out" trig_type="0" storage_depth="2048" window_num="1" capture_amount="2048" implementation="0" trigger_pos="128" module_name="cyberwithddrhdmi" force_trigger_by_falling_edge="false" capture_init_data_enabled="false">
         <SignalList>
-            <Signal capture_enable="true">axi_vgatohdmi/dvi_tx_I_rst_n</Signal>
-            <Signal capture_enable="true">axi_vgatohdmi/dvi_tx_I_rgb_vs</Signal>
-            <Signal capture_enable="true">axi_vgatohdmi/dvi_tx_I_rgb_hs</Signal>
-            <Bus capture_enable="true" name="axi_vgatohdmi/dvi_tx_I_rgb_r[7:0]">
-                <Signal>axi_vgatohdmi/dvi_tx_I_rgb_r[7]</Signal>
-                <Signal>axi_vgatohdmi/dvi_tx_I_rgb_r[6]</Signal>
-                <Signal>axi_vgatohdmi/dvi_tx_I_rgb_r[5]</Signal>
-                <Signal>axi_vgatohdmi/dvi_tx_I_rgb_r[4]</Signal>
-                <Signal>axi_vgatohdmi/dvi_tx_I_rgb_r[3]</Signal>
-                <Signal>axi_vgatohdmi/dvi_tx_I_rgb_r[2]</Signal>
-                <Signal>axi_vgatohdmi/dvi_tx_I_rgb_r[1]</Signal>
-                <Signal>axi_vgatohdmi/dvi_tx_I_rgb_r[0]</Signal>
+            <Signal capture_enable="true">axi_vgaCtrl/io_axi_ar_valid</Signal>
+            <Signal capture_enable="true">axi_vgaCtrl/io_axi_ar_ready</Signal>
+            <Signal capture_enable="true">axi_vgaCtrl/io_axi_r_valid</Signal>
+            <Bus capture_enable="true" name="axi_sdramCtrl/gowin_DDR3/cmd[2:0]">
+                <Signal>axi_sdramCtrl/gowin_DDR3/cmd[2]</Signal>
+                <Signal>axi_sdramCtrl/gowin_DDR3/cmd[1]</Signal>
+                <Signal>axi_sdramCtrl/gowin_DDR3/cmd[0]</Signal>
             </Bus>
-            <Bus capture_enable="true" name="axi_vgatohdmi/dvi_tx_I_rgb_g[7:0]">
-                <Signal>axi_vgatohdmi/dvi_tx_I_rgb_g[7]</Signal>
-                <Signal>axi_vgatohdmi/dvi_tx_I_rgb_g[6]</Signal>
-                <Signal>axi_vgatohdmi/dvi_tx_I_rgb_g[5]</Signal>
-                <Signal>axi_vgatohdmi/dvi_tx_I_rgb_g[4]</Signal>
-                <Signal>axi_vgatohdmi/dvi_tx_I_rgb_g[3]</Signal>
-                <Signal>axi_vgatohdmi/dvi_tx_I_rgb_g[2]</Signal>
-                <Signal>axi_vgatohdmi/dvi_tx_I_rgb_g[1]</Signal>
-                <Signal>axi_vgatohdmi/dvi_tx_I_rgb_g[0]</Signal>
+            <Signal capture_enable="true">axi_sdramCtrl/gowin_DDR3/cmd_en</Signal>
+            <Bus capture_enable="true" name="axi_sdramCtrl/gowin_DDR3/app_burst_number[5:0]">
+                <Signal>axi_sdramCtrl/gowin_DDR3/app_burst_number[5]</Signal>
+                <Signal>axi_sdramCtrl/gowin_DDR3/app_burst_number[4]</Signal>
+                <Signal>axi_sdramCtrl/gowin_DDR3/app_burst_number[3]</Signal>
+                <Signal>axi_sdramCtrl/gowin_DDR3/app_burst_number[2]</Signal>
+                <Signal>axi_sdramCtrl/gowin_DDR3/app_burst_number[1]</Signal>
+                <Signal>axi_sdramCtrl/gowin_DDR3/app_burst_number[0]</Signal>
             </Bus>
-            <Bus capture_enable="true" name="axi_vgatohdmi/dvi_tx_I_rgb_b[7:0]">
-                <Signal>axi_vgatohdmi/dvi_tx_I_rgb_b[7]</Signal>
-                <Signal>axi_vgatohdmi/dvi_tx_I_rgb_b[6]</Signal>
-                <Signal>axi_vgatohdmi/dvi_tx_I_rgb_b[5]</Signal>
-                <Signal>axi_vgatohdmi/dvi_tx_I_rgb_b[4]</Signal>
-                <Signal>axi_vgatohdmi/dvi_tx_I_rgb_b[3]</Signal>
-                <Signal>axi_vgatohdmi/dvi_tx_I_rgb_b[2]</Signal>
-                <Signal>axi_vgatohdmi/dvi_tx_I_rgb_b[1]</Signal>
-                <Signal>axi_vgatohdmi/dvi_tx_I_rgb_b[0]</Signal>
-            </Bus>
-            <Signal capture_enable="true">axi_vgatohdmi/io_vga_vSync</Signal>
-            <Signal capture_enable="true">axi_vgatohdmi/io_vga_hSync</Signal>
-            <Signal capture_enable="true">axi_vgatohdmi/io_vga_colorEn</Signal>
+            <Signal capture_enable="true">axi_sdramCtrl/gowin_DDR3/rd_data_valid</Signal>
         </SignalList>
         <Triggers>
             <Trigger index="0">
                 <SignalList>
-                    <Signal>axi_vgaCtrl/vga_ctrl/h_colorEn</Signal>
+                    <Signal>axi_vgaCtrl/io_vga_colorEn</Signal>
                 </SignalList>
             </Trigger>
             <Trigger index="1"/>
@@ -85,5 +67,5 @@
             <Expression>M0</Expression>
         </Expressions>
     </AoCore>
-    <GAO_ID>1011110101110000</GAO_ID>
+    <GAO_ID>1011001000001000</GAO_ID>
 </GAO_CONFIG>

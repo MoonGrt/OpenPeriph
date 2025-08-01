@@ -19,7 +19,7 @@ void led_breathe(void);
 void main()
 {
     delay_init();
-    // delay_ms(10); // 等待系统稳定
+    delay_ms(10); // 等待系统稳定
 
     demo_USART();
     // for (uint16_t i = 0;; printf("time: %us\r\n", i++), delay_ms(1000));
@@ -649,25 +649,37 @@ void demo_GRAPHICS(void)
     GRAPHICS->TIMING = vga_h1280_v720_r60;
     GRAPHICS->FRAME_SIZE = RES_X * RES_Y * 2 - 1;
     GRAPHICS->FRAME_BASE = (uint32_t)vgaFramebuffer;
-    vga_run(GRAPHICS);
+    // vga_run(GRAPHICS);
 
-    uint16_t offset = 0;
-    while (1)
-    {
-        printf("offset: %d\r\n", offset);
-        uint16_t *ptr = &vgaFramebuffer[0][0];
-        for (uint32_t y = 0; y < RES_Y; y++)
-        {
-            uint16_t c = (((y + offset) & 0x1F) << 6);
-            for (uint32_t x = 0; x < RES_X; x++)
-            {
-                *ptr = ((uint16_t)(x & 0x1F)) + c;
-                ptr++;
-            }
-        }
-        offset += 4;
-        flushDataCache(0);
-    }
+    // uint16_t offset = 0;
+    // while (1)
+    // {
+    //     printf("offset: %d\r\n", offset);
+    //     uint16_t *ptr = &vgaFramebuffer[0][0];
+    //     for (uint32_t y = 0; y < RES_Y; y++)
+    //     {
+    //         uint16_t c = (((y + offset) & 0x1F) << 6);
+    //         for (uint32_t x = 0; x < RES_X; x++)
+    //         {
+    //             *ptr = ((uint16_t)(x & 0x1F)) + c;
+    //             ptr++;
+    //         }
+    //     }
+    //     offset += 4;
+    //     flushDataCache(0);
+    // }
+
+    const uint16_t colors[8] = {
+        0xFFFF, 0xFFE0, 0x07FF, 0x07E0,
+        0xF81F, 0xF800, 0x001F, 0x0000
+    };
+    uint16_t *ptr = &vgaFramebuffer[0][0];
+    for (uint32_t y = 0; y < RES_Y; y++)
+        for (uint32_t x = 0; x < RES_X; x++)
+            *ptr++ = colors[x / (RES_X / 8)];
+    flushDataCache(0);
+
+    vga_run(GRAPHICS);
 }
 
 #endif

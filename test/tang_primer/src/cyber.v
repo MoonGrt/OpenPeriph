@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.12.0    git head : 1aa7d7b5732f11cca2dd83bacc2a4cb92ca8e5c9
 // Component : cyberwithddrhdmi
-// Git hash  : 3e22c638a954281abef615a44dbb3ddf2da2fb76
+// Git hash  : 322fa9ce86699fcb972838e5aa812395fa706c2c
 
 `timescale 1ns/1ps
 `define SYNTHESIS
@@ -7156,7 +7156,6 @@ module Axi4Ddr (
     .resetCtrl_axiReset           (resetCtrl_axiReset                             )  //i
   );
   assign gowin_DDR3_rst_n = (! resetCtrl_axiReset);
-  assign io_init_calib_complete = gowin_DDR3_init_calib_complete;
   assign io_axi_arw_ready = axiController_io_axi_arw_ready;
   assign io_axi_w_ready = axiController_io_axi_w_ready;
   assign io_axi_b_valid = axiController_io_axi_b_valid;
@@ -7179,6 +7178,7 @@ module Axi4Ddr (
   assign io_ddr_iface_O_ddr_odt = gowin_DDR3_O_ddr_odt;
   assign io_ddr_iface_O_ddr_reset_n = gowin_DDR3_O_ddr_reset_n;
   assign io_ddr_iface_O_ddr_dqm = gowin_DDR3_O_ddr_dqm;
+  assign io_init_calib_complete = gowin_DDR3_init_calib_complete;
 
 endmodule
 
@@ -7310,10 +7310,10 @@ module Axi4Ram (
   assign _zz_Axi4Incr_result_11 = Axi4Incr_base[11 : 6];
   assign _zz_Axi4Incr_result_12 = Axi4Incr_baseIncr[5 : 0];
   initial begin
-    $readmemh("G:/VM/share/OpenPeriph/test/cyberwithddr/demo0.hex",ram_symbol0);
-    $readmemh("G:/VM/share/OpenPeriph/test/cyberwithddr/demo1.hex",ram_symbol1);
-    $readmemh("G:/VM/share/OpenPeriph/test/cyberwithddr/demo2.hex",ram_symbol2);
-    $readmemh("G:/VM/share/OpenPeriph/test/cyberwithddr/demo3.hex",ram_symbol3);
+    $readmemb("G:/VM/share/OpenPeriph/test/cyberwithddr/demo0.bin",ram_symbol0);
+    $readmemb("G:/VM/share/OpenPeriph/test/cyberwithddr/demo1.bin",ram_symbol1);
+    $readmemb("G:/VM/share/OpenPeriph/test/cyberwithddr/demo2.bin",ram_symbol2);
+    $readmemb("G:/VM/share/OpenPeriph/test/cyberwithddr/demo3.bin",ram_symbol3);
   end
   always @(*) begin
     ram_spinal_port0 = {_zz_ramsymbol_read_3, _zz_ramsymbol_read_2, _zz_ramsymbol_read_1, _zz_ramsymbol_read};
@@ -12060,7 +12060,7 @@ module Axi4Ddr_Controller (
       ddr_control_area_cmd_can_send <= 1'b0;
       ddr_control_area_cmd_trigger <= 1'b0;
       ddr_control_area_burst_cnt <= 7'h0;
-      ddr_control_area_cmd_burst_cnt <= 6'h01;
+      ddr_control_area_cmd_burst_cnt <= 6'h0;
     end else begin
       ddr_control_area_cmd_can_send <= ((io_cmd_ready && io_wr_data_rdy) && io_init_calib_complete);
       if(cmd_fifo_io_pop_fire) begin
@@ -12168,9 +12168,6 @@ module Axi4DdrWithCache (
   reg        [27:0]   sys_area_cache_addr;
   reg        [127:0]  sys_area_cache_data;
   reg        [15:0]   sys_area_cache_dirty_bit;
-  reg                 sys_area_pageNotSame_Trigger;
-  reg                 sys_area_pageDirty_Trigger;
-  wire                sys_area_pageDirty;
   reg                 unburstify_result_valid;
   wire                unburstify_result_ready;
   reg                 unburstify_result_payload_last;
@@ -12207,35 +12204,38 @@ module Axi4DdrWithCache (
   reg        [2:0]    sys_area_arwcmd_fragment_size;
   reg        [1:0]    sys_area_arwcmd_fragment_burst;
   reg                 sys_area_arwcmd_fragment_write;
+  wire                sys_area_pageDirty;
+  wire                sys_area_pageNotSame;
+  reg                 sys_area_pageDirty_Trigger;
+  reg                 sys_area_pageNotSame_Trigger;
   reg                 sys_area_write_data_ready;
   reg                 sys_area_write_response_valid;
   reg                 sys_area_read_response_valid;
-  wire                sys_area_pageNotSame;
-  wire                when_axi4ddrgowin_l353;
-  wire                io_ddr_cmd_fire;
-  wire                when_axi4ddrgowin_l367;
-  wire                io_axi_w_fire;
-  wire       [1:0]    switch_axi4ddrgowin_l369;
-  wire                when_axi4ddrgowin_l375;
-  wire                when_axi4ddrgowin_l375_1;
-  wire                when_axi4ddrgowin_l375_2;
-  wire                when_axi4ddrgowin_l375_3;
-  wire                when_axi4ddrgowin_l390;
-  wire                when_axi4ddrgowin_l390_1;
-  wire                when_axi4ddrgowin_l390_2;
-  wire                when_axi4ddrgowin_l390_3;
-  wire                when_axi4ddrgowin_l405;
-  wire                when_axi4ddrgowin_l405_1;
-  wire                when_axi4ddrgowin_l405_2;
-  wire                when_axi4ddrgowin_l405_3;
-  wire                when_axi4ddrgowin_l420;
-  wire                when_axi4ddrgowin_l420_1;
-  wire                when_axi4ddrgowin_l420_2;
-  wire                when_axi4ddrgowin_l420_3;
-  wire                io_axi_b_fire;
-  wire       [1:0]    switch_axi4ddrgowin_l442;
-  wire                io_axi_r_fire;
   wire                io_ddr_rsp_fire;
+  wire                when_axi4ddrgowin_l351;
+  wire                io_ddr_cmd_fire;
+  wire                when_axi4ddrgowin_l365;
+  wire                io_axi_w_fire;
+  wire       [1:0]    switch_axi4ddrgowin_l367;
+  wire                when_axi4ddrgowin_l373;
+  wire                when_axi4ddrgowin_l373_1;
+  wire                when_axi4ddrgowin_l373_2;
+  wire                when_axi4ddrgowin_l373_3;
+  wire                when_axi4ddrgowin_l388;
+  wire                when_axi4ddrgowin_l388_1;
+  wire                when_axi4ddrgowin_l388_2;
+  wire                when_axi4ddrgowin_l388_3;
+  wire                when_axi4ddrgowin_l403;
+  wire                when_axi4ddrgowin_l403_1;
+  wire                when_axi4ddrgowin_l403_2;
+  wire                when_axi4ddrgowin_l403_3;
+  wire                when_axi4ddrgowin_l418;
+  wire                when_axi4ddrgowin_l418_1;
+  wire                when_axi4ddrgowin_l418_2;
+  wire                when_axi4ddrgowin_l418_3;
+  wire                io_axi_b_fire;
+  wire       [1:0]    switch_axi4ddrgowin_l440;
+  wire                io_axi_r_fire;
   `ifndef SYNTHESIS
   reg [39:0] io_ddr_cmd_payload_cmdtype_string;
   reg [39:0] sys_area_ddr_cmd_payload_cmdtype_string;
@@ -12294,7 +12294,6 @@ module Axi4DdrWithCache (
   assign io_ddr_cmd_payload_wr_mask = sys_area_ddr_cmd_payload_wr_mask;
   assign io_ddr_cmd_payload_context = sys_area_ddr_cmd_payload_context;
   assign io_ddr_rsp_ready = 1'b1;
-  assign sys_area_pageDirty = (sys_area_cache_dirty_bit != 16'hffff);
   assign unburstify_buffer_last = (unburstify_buffer_beat == 8'h01);
   assign Axi4Incr_validSize = unburstify_buffer_transaction_size[1 : 0];
   assign Axi4Incr_highCat = unburstify_buffer_transaction_addr[27 : 12];
@@ -12402,56 +12401,19 @@ module Axi4DdrWithCache (
 
   assign when_Axi4Channel_l323 = (io_axi_arw_payload_len != 8'h0);
   assign unburstify_result_fire = (unburstify_result_valid && unburstify_result_ready);
+  assign sys_area_pageDirty = (sys_area_cache_dirty_bit != 16'hffff);
+  assign sys_area_pageNotSame = (sys_area_cache_addr[27 : 4] != sys_area_arwcmd_fragment_addr[27 : 4]);
   assign unburstify_result_ready = sys_area_arwcmd_free;
   assign io_axi_r_payload_id = sys_area_arwcmd_fragment_id;
   assign io_axi_r_payload_last = sys_area_arwcmd_last;
   assign io_axi_r_payload_resp = 2'b00;
   assign io_axi_r_valid = sys_area_read_response_valid;
-  assign io_axi_b_valid = sys_area_write_response_valid;
-  assign io_axi_b_payload_id = sys_area_arwcmd_fragment_id;
-  assign io_axi_b_payload_resp = 2'b00;
-  assign io_axi_w_ready = sys_area_write_data_ready;
-  assign sys_area_pageNotSame = (sys_area_cache_addr[27 : 4] != sys_area_arwcmd_fragment_addr[27 : 4]);
-  always @(*) begin
-    sys_area_ddr_cmd_payload_addr = 28'h0;
-    if(when_axi4ddrgowin_l353) begin
-      if(sys_area_pageNotSame) begin
-        if(sys_area_pageDirty_Trigger) begin
-          sys_area_ddr_cmd_payload_addr = {sys_area_cache_addr[27 : 4],4'b0000};
-        end else begin
-          if(sys_area_pageNotSame_Trigger) begin
-            sys_area_ddr_cmd_payload_addr = {sys_area_arwcmd_fragment_addr[27 : 4],4'b0000};
-          end
-        end
-      end
-    end
-  end
-
-  always @(*) begin
-    sys_area_ddr_cmd_payload_cmdtype = Axi4Ddr_CMDTYPE_write;
-    if(when_axi4ddrgowin_l353) begin
-      if(sys_area_pageNotSame) begin
-        if(sys_area_pageDirty_Trigger) begin
-          sys_area_ddr_cmd_payload_cmdtype = Axi4Ddr_CMDTYPE_write;
-        end else begin
-          if(sys_area_pageNotSame_Trigger) begin
-            sys_area_ddr_cmd_payload_cmdtype = Axi4Ddr_CMDTYPE_read;
-          end
-        end
-      end
-    end
-  end
-
-  assign sys_area_ddr_cmd_payload_burst_cnt = 6'h0;
-  assign sys_area_ddr_cmd_payload_wr_data = sys_area_cache_data;
-  assign sys_area_ddr_cmd_payload_wr_mask = sys_area_cache_dirty_bit;
-  assign sys_area_ddr_cmd_payload_context = 1'b0;
   always @(*) begin
     io_axi_r_payload_data = 32'h0;
-    if(when_axi4ddrgowin_l353) begin
+    if(when_axi4ddrgowin_l351) begin
       if(!sys_area_pageNotSame) begin
-        if(!when_axi4ddrgowin_l367) begin
-          case(switch_axi4ddrgowin_l442)
+        if(!when_axi4ddrgowin_l365) begin
+          case(switch_axi4ddrgowin_l440)
             2'b00 : begin
               io_axi_r_payload_data = sys_area_cache_data[31 : 0];
             end
@@ -12470,41 +12432,79 @@ module Axi4DdrWithCache (
     end
   end
 
-  assign when_axi4ddrgowin_l353 = (sys_area_arwcmd_free == 1'b0);
-  assign io_ddr_cmd_fire = (io_ddr_cmd_valid && io_ddr_cmd_ready);
-  assign when_axi4ddrgowin_l367 = (sys_area_arwcmd_fragment_write == 1'b1);
-  assign io_axi_w_fire = (io_axi_w_valid && io_axi_w_ready);
-  assign switch_axi4ddrgowin_l369 = sys_area_arwcmd_fragment_addr[3 : 2];
-  assign when_axi4ddrgowin_l375 = io_axi_w_payload_strb[0];
-  assign when_axi4ddrgowin_l375_1 = io_axi_w_payload_strb[1];
-  assign when_axi4ddrgowin_l375_2 = io_axi_w_payload_strb[2];
-  assign when_axi4ddrgowin_l375_3 = io_axi_w_payload_strb[3];
-  assign when_axi4ddrgowin_l390 = io_axi_w_payload_strb[0];
-  assign when_axi4ddrgowin_l390_1 = io_axi_w_payload_strb[1];
-  assign when_axi4ddrgowin_l390_2 = io_axi_w_payload_strb[2];
-  assign when_axi4ddrgowin_l390_3 = io_axi_w_payload_strb[3];
-  assign when_axi4ddrgowin_l405 = io_axi_w_payload_strb[0];
-  assign when_axi4ddrgowin_l405_1 = io_axi_w_payload_strb[1];
-  assign when_axi4ddrgowin_l405_2 = io_axi_w_payload_strb[2];
-  assign when_axi4ddrgowin_l405_3 = io_axi_w_payload_strb[3];
-  assign when_axi4ddrgowin_l420 = io_axi_w_payload_strb[0];
-  assign when_axi4ddrgowin_l420_1 = io_axi_w_payload_strb[1];
-  assign when_axi4ddrgowin_l420_2 = io_axi_w_payload_strb[2];
-  assign when_axi4ddrgowin_l420_3 = io_axi_w_payload_strb[3];
-  assign io_axi_b_fire = (io_axi_b_valid && io_axi_b_ready);
-  assign switch_axi4ddrgowin_l442 = sys_area_arwcmd_fragment_addr[3 : 2];
-  assign io_axi_r_fire = (io_axi_r_valid && io_axi_r_ready);
+  assign io_axi_b_valid = sys_area_write_response_valid;
+  assign io_axi_b_payload_id = sys_area_arwcmd_fragment_id;
+  assign io_axi_b_payload_resp = 2'b00;
+  assign io_axi_w_ready = sys_area_write_data_ready;
+  always @(*) begin
+    sys_area_ddr_cmd_payload_addr = 28'h0;
+    if(when_axi4ddrgowin_l351) begin
+      if(sys_area_pageNotSame) begin
+        if(sys_area_pageDirty_Trigger) begin
+          sys_area_ddr_cmd_payload_addr = {sys_area_cache_addr[27 : 4],4'b0000};
+        end else begin
+          if(sys_area_pageNotSame_Trigger) begin
+            sys_area_ddr_cmd_payload_addr = {sys_area_arwcmd_fragment_addr[27 : 4],4'b0000};
+          end
+        end
+      end
+    end
+  end
+
+  always @(*) begin
+    sys_area_ddr_cmd_payload_cmdtype = Axi4Ddr_CMDTYPE_write;
+    if(when_axi4ddrgowin_l351) begin
+      if(sys_area_pageNotSame) begin
+        if(sys_area_pageDirty_Trigger) begin
+          sys_area_ddr_cmd_payload_cmdtype = Axi4Ddr_CMDTYPE_write;
+        end else begin
+          if(sys_area_pageNotSame_Trigger) begin
+            sys_area_ddr_cmd_payload_cmdtype = Axi4Ddr_CMDTYPE_read;
+          end
+        end
+      end
+    end
+  end
+
+  assign sys_area_ddr_cmd_payload_burst_cnt = 6'h0;
+  assign sys_area_ddr_cmd_payload_wr_data = sys_area_cache_data;
+  assign sys_area_ddr_cmd_payload_wr_mask = sys_area_cache_dirty_bit;
+  assign sys_area_ddr_cmd_payload_context = 1'b0;
   assign io_ddr_rsp_fire = (io_ddr_rsp_valid && io_ddr_rsp_ready);
+  assign when_axi4ddrgowin_l351 = (sys_area_arwcmd_free == 1'b0);
+  assign io_ddr_cmd_fire = (io_ddr_cmd_valid && io_ddr_cmd_ready);
+  assign when_axi4ddrgowin_l365 = (sys_area_arwcmd_fragment_write == 1'b1);
+  assign io_axi_w_fire = (io_axi_w_valid && io_axi_w_ready);
+  assign switch_axi4ddrgowin_l367 = sys_area_arwcmd_fragment_addr[3 : 2];
+  assign when_axi4ddrgowin_l373 = io_axi_w_payload_strb[0];
+  assign when_axi4ddrgowin_l373_1 = io_axi_w_payload_strb[1];
+  assign when_axi4ddrgowin_l373_2 = io_axi_w_payload_strb[2];
+  assign when_axi4ddrgowin_l373_3 = io_axi_w_payload_strb[3];
+  assign when_axi4ddrgowin_l388 = io_axi_w_payload_strb[0];
+  assign when_axi4ddrgowin_l388_1 = io_axi_w_payload_strb[1];
+  assign when_axi4ddrgowin_l388_2 = io_axi_w_payload_strb[2];
+  assign when_axi4ddrgowin_l388_3 = io_axi_w_payload_strb[3];
+  assign when_axi4ddrgowin_l403 = io_axi_w_payload_strb[0];
+  assign when_axi4ddrgowin_l403_1 = io_axi_w_payload_strb[1];
+  assign when_axi4ddrgowin_l403_2 = io_axi_w_payload_strb[2];
+  assign when_axi4ddrgowin_l403_3 = io_axi_w_payload_strb[3];
+  assign when_axi4ddrgowin_l418 = io_axi_w_payload_strb[0];
+  assign when_axi4ddrgowin_l418_1 = io_axi_w_payload_strb[1];
+  assign when_axi4ddrgowin_l418_2 = io_axi_w_payload_strb[2];
+  assign when_axi4ddrgowin_l418_3 = io_axi_w_payload_strb[3];
+  assign io_axi_b_fire = (io_axi_b_valid && io_axi_b_ready);
+  assign switch_axi4ddrgowin_l440 = sys_area_arwcmd_fragment_addr[3 : 2];
+  assign io_axi_r_fire = (io_axi_r_valid && io_axi_r_ready);
   always @(posedge clkout or posedge resetCtrl_axiReset) begin
     if(resetCtrl_axiReset) begin
       sys_area_ddr_cmd_valid <= 1'b0;
       sys_area_cache_addr <= 28'h0;
       sys_area_cache_data <= 128'h0;
       sys_area_cache_dirty_bit <= 16'hffff;
-      sys_area_pageNotSame_Trigger <= 1'b0;
-      sys_area_pageDirty_Trigger <= 1'b0;
       unburstify_buffer_valid <= 1'b0;
       sys_area_arwcmd_free <= 1'b1;
+      sys_area_pageDirty_Trigger <= 1'b0;
+      sys_area_pageNotSame_Trigger <= 1'b0;
       sys_area_write_data_ready <= 1'b0;
       sys_area_write_response_valid <= 1'b0;
       sys_area_read_response_valid <= 1'b0;
@@ -12526,7 +12526,12 @@ module Axi4DdrWithCache (
         sys_area_pageNotSame_Trigger <= 1'b1;
         sys_area_pageDirty_Trigger <= sys_area_pageDirty;
       end
-      if(when_axi4ddrgowin_l353) begin
+      if(io_ddr_rsp_fire) begin
+        sys_area_cache_addr <= {sys_area_arwcmd_fragment_addr[27 : 4],4'b0000};
+        sys_area_cache_data <= io_ddr_rsp_payload_rsp_data;
+        sys_area_cache_dirty_bit <= 16'hffff;
+      end
+      if(when_axi4ddrgowin_l351) begin
         if(sys_area_pageNotSame) begin
           if(sys_area_pageDirty_Trigger) begin
             sys_area_ddr_cmd_valid <= (! io_ddr_cmd_fire);
@@ -12542,77 +12547,77 @@ module Axi4DdrWithCache (
             end
           end
         end else begin
-          if(when_axi4ddrgowin_l367) begin
+          if(when_axi4ddrgowin_l365) begin
             if(io_axi_w_fire) begin
-              case(switch_axi4ddrgowin_l369)
+              case(switch_axi4ddrgowin_l367)
                 2'b00 : begin
-                  if(when_axi4ddrgowin_l375) begin
+                  if(when_axi4ddrgowin_l373) begin
                     sys_area_cache_data[7 : 0] <= io_axi_w_payload_data[7 : 0];
                     sys_area_cache_dirty_bit[0] <= 1'b0;
                   end
-                  if(when_axi4ddrgowin_l375_1) begin
+                  if(when_axi4ddrgowin_l373_1) begin
                     sys_area_cache_data[15 : 8] <= io_axi_w_payload_data[15 : 8];
                     sys_area_cache_dirty_bit[1] <= 1'b0;
                   end
-                  if(when_axi4ddrgowin_l375_2) begin
+                  if(when_axi4ddrgowin_l373_2) begin
                     sys_area_cache_data[23 : 16] <= io_axi_w_payload_data[23 : 16];
                     sys_area_cache_dirty_bit[2] <= 1'b0;
                   end
-                  if(when_axi4ddrgowin_l375_3) begin
+                  if(when_axi4ddrgowin_l373_3) begin
                     sys_area_cache_data[31 : 24] <= io_axi_w_payload_data[31 : 24];
                     sys_area_cache_dirty_bit[3] <= 1'b0;
                   end
                 end
                 2'b01 : begin
-                  if(when_axi4ddrgowin_l390) begin
+                  if(when_axi4ddrgowin_l388) begin
                     sys_area_cache_data[39 : 32] <= io_axi_w_payload_data[7 : 0];
                     sys_area_cache_dirty_bit[4] <= 1'b0;
                   end
-                  if(when_axi4ddrgowin_l390_1) begin
+                  if(when_axi4ddrgowin_l388_1) begin
                     sys_area_cache_data[47 : 40] <= io_axi_w_payload_data[15 : 8];
                     sys_area_cache_dirty_bit[5] <= 1'b0;
                   end
-                  if(when_axi4ddrgowin_l390_2) begin
+                  if(when_axi4ddrgowin_l388_2) begin
                     sys_area_cache_data[55 : 48] <= io_axi_w_payload_data[23 : 16];
                     sys_area_cache_dirty_bit[6] <= 1'b0;
                   end
-                  if(when_axi4ddrgowin_l390_3) begin
+                  if(when_axi4ddrgowin_l388_3) begin
                     sys_area_cache_data[63 : 56] <= io_axi_w_payload_data[31 : 24];
                     sys_area_cache_dirty_bit[7] <= 1'b0;
                   end
                 end
                 2'b10 : begin
-                  if(when_axi4ddrgowin_l405) begin
+                  if(when_axi4ddrgowin_l403) begin
                     sys_area_cache_data[71 : 64] <= io_axi_w_payload_data[7 : 0];
                     sys_area_cache_dirty_bit[8] <= 1'b0;
                   end
-                  if(when_axi4ddrgowin_l405_1) begin
+                  if(when_axi4ddrgowin_l403_1) begin
                     sys_area_cache_data[79 : 72] <= io_axi_w_payload_data[15 : 8];
                     sys_area_cache_dirty_bit[9] <= 1'b0;
                   end
-                  if(when_axi4ddrgowin_l405_2) begin
+                  if(when_axi4ddrgowin_l403_2) begin
                     sys_area_cache_data[87 : 80] <= io_axi_w_payload_data[23 : 16];
                     sys_area_cache_dirty_bit[10] <= 1'b0;
                   end
-                  if(when_axi4ddrgowin_l405_3) begin
+                  if(when_axi4ddrgowin_l403_3) begin
                     sys_area_cache_data[95 : 88] <= io_axi_w_payload_data[31 : 24];
                     sys_area_cache_dirty_bit[11] <= 1'b0;
                   end
                 end
                 default : begin
-                  if(when_axi4ddrgowin_l420) begin
+                  if(when_axi4ddrgowin_l418) begin
                     sys_area_cache_data[103 : 96] <= io_axi_w_payload_data[7 : 0];
                     sys_area_cache_dirty_bit[12] <= 1'b0;
                   end
-                  if(when_axi4ddrgowin_l420_1) begin
+                  if(when_axi4ddrgowin_l418_1) begin
                     sys_area_cache_data[111 : 104] <= io_axi_w_payload_data[15 : 8];
                     sys_area_cache_dirty_bit[13] <= 1'b0;
                   end
-                  if(when_axi4ddrgowin_l420_2) begin
+                  if(when_axi4ddrgowin_l418_2) begin
                     sys_area_cache_data[119 : 112] <= io_axi_w_payload_data[23 : 16];
                     sys_area_cache_dirty_bit[14] <= 1'b0;
                   end
-                  if(when_axi4ddrgowin_l420_3) begin
+                  if(when_axi4ddrgowin_l418_3) begin
                     sys_area_cache_data[127 : 120] <= io_axi_w_payload_data[31 : 24];
                     sys_area_cache_dirty_bit[15] <= 1'b0;
                   end
@@ -12635,11 +12640,6 @@ module Axi4DdrWithCache (
             end
           end
         end
-      end
-      if(io_ddr_rsp_fire) begin
-        sys_area_cache_addr <= {sys_area_arwcmd_fragment_addr[27 : 4],4'b0000};
-        sys_area_cache_data <= io_ddr_rsp_payload_rsp_data;
-        sys_area_cache_dirty_bit <= 16'hffff;
       end
     end
   end
