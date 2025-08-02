@@ -275,10 +275,13 @@ case class Axi4DdrWithCache(
     idWidth: Int,
     addrlen: Int = 28,
     burstlen: Int = 6,
-    pagezsie: Int = 128,
+    pagesize: Int = 128,
     pagecnt: Int = 4
 ) extends Component {
-  require(pagezsie % 128 == 0, s"pagezsie must be a multiple of 128, but got $pagezsie")
+  require(pagesize % 128 == 0, s"pagesize must be a multiple of 128, but got $pagesize")
+  val pageBytes = pagesize / 8
+  val pageWords = pagesize / 32
+  val pageBlocks = pagesize / 128
 
   val sys_clk_inst = sys_clk
   val context_type = UInt(1 bits)
@@ -302,8 +305,8 @@ case class Axi4DdrWithCache(
 
   val sys_area = new ClockingArea(sys_clk) {
     val cache_addr  = Vec(Reg(UInt(addrlen bits)) init 0, pagecnt)
-    val cache_data  = Vec(Reg(Bits(pagezsie bits)) init 0, pagecnt)
-    val cache_dirty = Vec(Reg(Bits(pagezsie/8 bits)) init B"16'xFFFF", pagecnt)
+    val cache_data  = Vec(Reg(Bits(pagesize bits)) init 0, pagecnt)
+    val cache_dirty = Vec(Reg(Bool()) init False, pagecnt)  // 标记页是否被修改。可以使用ddr控制器的mask，使得控制更精确，但此处无必要。
     val cache_valid = Vec(Reg(Bool()) init False, pagecnt)
 
     val lru_counter = Reg(UInt(log2Up(pagecnt) bits)) init 0
@@ -319,9 +322,10 @@ case class Axi4DdrWithCache(
     axi_unburst.ready := arwcmd_free
 
     // hit/miss 检测
-    val current_page_tag = arwcmd.addr((addrlen - 1) downto 4)
+    val pageOffsetBits = log2Up(pageBytes)
+    val current_page_tag = arwcmd.addr((addrlen - 1) downto pageOffsetBits)
     val page_hit_vec = Vec.tabulate(pagecnt)(i =>
-      cache_valid(i) && (cache_addr(i)((addrlen - 1) downto 4) === current_page_tag)
+      cache_valid(i) && (cache_addr(i)((addrlen - 1) downto pageOffsetBits) === current_page_tag)
     )
     val hit_any = page_hit_vec.orR
     val hit_index = OHToUInt(page_hit_vec)
@@ -345,21 +349,20 @@ case class Axi4DdrWithCache(
     // 初始化 cmd
     ddr_cmd_payload.addr := 0
     ddr_cmd_payload.cmdtype := Axi4Ddr_CMDTYPE.write
-    ddr_cmd_payload.burst_cnt := 0
+    ddr_cmd_payload.burst_cnt := pageBlocks - 1
     ddr_cmd_payload.wr_data := 0
     ddr_cmd_payload.wr_mask := 0
     ddr_cmd_payload.context := 0
 
     // 处理未命中时的数据替换
     when(arwcmd_free === False && miss) {
-      val dirty = cache_dirty(replace_index) =/= B"16'xFFFF"
+      val dirty = cache_dirty(replace_index)
       when(dirty && !ddr_write_pending) {
         // 写回旧页
-        ddr_cmd_payload.addr := (cache_addr(replace_index)((addrlen - 1) downto 4) ## B"0000").asUInt
+        ddr_cmd_payload.addr := (cache_addr(replace_index)((addrlen - 1) downto pageOffsetBits) ## U(0, pageOffsetBits bits)).asUInt
         ddr_cmd_payload.cmdtype := Axi4Ddr_CMDTYPE.write
         ddr_cmd_payload.wr_data := cache_data(replace_index)
-        ddr_cmd_payload.wr_mask := cache_dirty(replace_index)
-        // io.ddr_cmd.valid := True
+        ddr_cmd_payload.wr_mask := Mux(dirty, B"16'x0000", B"16'xFFFF")
         ddr_cmd_valid := ~io.ddr_cmd.fire
         when(io.ddr_cmd.fire) {
           ddr_write_pending := True
@@ -367,14 +370,13 @@ case class Axi4DdrWithCache(
         }
       }.elsewhen(!ddr_read_pending) {
         // 读取新页
-        ddr_cmd_payload.addr := (arwcmd.addr((addrlen - 1) downto 4) ## B"0000").asUInt
+        ddr_cmd_payload.addr := (arwcmd.addr((addrlen - 1) downto pageOffsetBits) ## U(0, pageOffsetBits bits)).asUInt
         ddr_cmd_payload.cmdtype := Axi4Ddr_CMDTYPE.read
-        // io.ddr_cmd.valid := True
         ddr_cmd_valid := ~io.ddr_cmd.fire
         when(io.ddr_cmd.fire) {
           ddr_read_pending := True
           ddr_read_page := replace_index
-          cache_addr(replace_index) := (arwcmd.addr((addrlen - 1) downto 4) ## B"0000").asUInt
+          cache_addr(replace_index) := (arwcmd.addr((addrlen - 1) downto pageOffsetBits) ## U(0, pageOffsetBits bits)).asUInt
           cache_valid(replace_index) := True
         }
       }
@@ -383,7 +385,7 @@ case class Axi4DdrWithCache(
     // 接收DDR读返回
     when(io.ddr_rsp.fire && ddr_read_pending) {
       cache_data(ddr_read_page) := io.ddr_rsp.payload.rsp_data
-      cache_dirty(ddr_read_page) := B"16'xFFFF"
+      cache_dirty(ddr_read_page) := False
       ddr_read_pending := False
       lru_counter := lru_counter + 1
     }
@@ -404,38 +406,12 @@ case class Axi4DdrWithCache(
     when(hit_any && arwcmd.write && arwcmd_free === False) {
       val strb = io.axi.writeData.payload.strb
       val wdata = io.axi.writeData.payload.data
-      when(io.axi.writeData.fire) {
-        switch(arwcmd.addr(3 downto 2)) {
-          is(0x0) {
-            for (i <- 0 until 4) {
-              when(strb(i)) {
-                cache_data(hit_index)((i * 8 + 7) downto (i * 8)) := wdata((i * 8 + 7) downto (i * 8))
-                cache_dirty(hit_index)(i) := False
-              }
-            }
-          }
-          is(0x1) {
-            for (i <- 0 until 4) {
-              when(strb(i)) {
-                cache_data(hit_index)((i * 8 + 7 + 32) downto (i * 8 + 32)) := wdata((i * 8 + 7) downto (i * 8))
-                cache_dirty(hit_index)(i + 4) := False
-              }
-            }
-          }
-          is(0x2) {
-            for (i <- 0 until 4) {
-              when(strb(i)) {
-                cache_data(hit_index)((i * 8 + 7 + 64) downto (i * 8 + 64)) := wdata((i * 8 + 7) downto (i * 8))
-                cache_dirty(hit_index)(i + 8) := False
-              }
-            }
-          }
-          default {
-            for (i <- 0 until 4) {
-              when(strb(i)) {
-                cache_data(hit_index)((i * 8 + 7 + 96) downto (i * 8 + 96)) := wdata((i * 8 + 7) downto (i * 8))
-                cache_dirty(hit_index)(i + 12) := False
-              }
+      cache_dirty(hit_index) := True
+      for (i <- 0 until pageWords) {
+        when(arwcmd.addr(pageOffsetBits - 1 downto 2) === i) {
+          for (j <- 0 until 4) {
+            when(strb(j) && io.axi.writeData.fire) {
+              cache_data(hit_index)((i*32+j*8+7) downto (i*32+j*8)) := wdata((j*8+7) downto (j*8))
             }
           }
         }
@@ -461,18 +437,9 @@ case class Axi4DdrWithCache(
     io.axi.readRsp.payload.data := 0
 
     when(hit_any && !arwcmd.write && arwcmd_free === False) {
-      switch(arwcmd.addr(3 downto 2)) {
-        is(0x0) {
-          io.axi.readRsp.payload.data := cache_data(hit_index)(31 downto 0)
-        }
-        is(0x1) {
-          io.axi.readRsp.payload.data := cache_data(hit_index)(63 downto 32)
-        }
-        is(0x2) {
-          io.axi.readRsp.payload.data := cache_data(hit_index)(95 downto 64)
-        }
-        default {
-          io.axi.readRsp.payload.data := cache_data(hit_index)(127 downto 96)
+      for (i <- 0 until pageWords) {
+        when(arwcmd.addr(pageOffsetBits - 1 downto 2) === i) {
+          io.axi.readRsp.payload.data := cache_data(hit_index)((i*32+31) downto (i*32))
         }
       }
       read_response_valid := ~io.axi.readRsp.fire
