@@ -123,7 +123,7 @@ clean:
 	rm -rf $(OBJDIR)/*
 
 mem: $(OBJDIR)/$(PROJ_NAME).hex
-	@echo "Generating .mem from .hex..."
-	@../../scripts/InstExtractor.sh $< $(OBJDIR)/$(PROJ_NAME) 8192 "hex" "true"
+	@echo "\nGenerating .mem from .hex..."
+	@../../scripts/InstExtractor.sh $< $(OBJDIR)/$(PROJ_NAME) 8192
 
 .SECONDARY: $(OBJS)
