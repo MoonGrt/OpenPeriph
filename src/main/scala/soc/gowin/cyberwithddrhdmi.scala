@@ -361,7 +361,7 @@ object cyberwithddrhdmi {
         new cyberwithddrhdmi(
           cyberwithddrhdmiConfig.default.copy(
             onChipRamSize = 32 kB,
-            onChipRamHexFile = "test/cyberwithddr/demo.hex"
+            onChipRamHexFile = "test/cyber/build/mem/demo.bin"
           )
         )
       )

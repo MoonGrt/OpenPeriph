@@ -274,9 +274,14 @@ case class Axi4DdrWithCache(
     axiaddrlen: Int,
     idWidth: Int,
     addrlen: Int = 28,
-    burstlen: Int = 6
+    burstlen: Int = 6,
+    pagezsie: Int = 128,
+    pagecnt: Int = 4
 ) extends Component {
+  require(pagezsie % 128 == 0, s"pagezsie must be a multiple of 128, but got $pagezsie")
+
   val sys_clk_inst = sys_clk
+  val context_type = UInt(1 bits)
 
   val axiConfig = Axi4Config(
     addressWidth = axiaddrlen,
@@ -289,8 +294,6 @@ case class Axi4DdrWithCache(
     useQos = false
   )
 
-  val context_type = UInt(1 bits)
-
   val io = new Bundle() {
     val axi = slave(Axi4Shared(axiConfig))
     val ddr_cmd = master(Stream(Axi4Ddr_PayloadCMD(addrlen, burstlen, context_type)))
@@ -298,179 +301,183 @@ case class Axi4DdrWithCache(
   }
 
   val sys_area = new ClockingArea(sys_clk) {
-    val ddr_cmd_valid = Reg(Bool()) init False
-    val ddr_cmd_payload = Axi4Ddr_PayloadCMD(addrlen, burstlen, context_type)
-    io.ddr_cmd.valid := ddr_cmd_valid
-    io.ddr_cmd.payload := ddr_cmd_payload
-    io.ddr_rsp.ready := True
+    val cache_addr  = Vec(Reg(UInt(addrlen bits)) init 0, pagecnt)
+    val cache_data  = Vec(Reg(Bits(pagezsie bits)) init 0, pagecnt)
+    val cache_dirty = Vec(Reg(Bits(pagezsie/8 bits)) init B"16'xFFFF", pagecnt)
+    val cache_valid = Vec(Reg(Bool()) init False, pagecnt)
 
-    val cache_addr = Reg(UInt(addrlen bits)) init 0
-    val cache_data = Reg(Bits(128 bits)) init 0
-    val cache_dirty_bit = Reg(Bits(16 bits)) init B"16'xFFFF"
+    val lru_counter = Reg(UInt(log2Up(pagecnt) bits)) init 0
 
-    val axi_burst_read = (io.axi.arw.len =/= 0) && (!io.axi.w.valid)
+    // AXI unburst 化
     val axi_unburst = io.axi.sharedCmd.unburstify
     val arwcmd_free = Reg(Bool()) init True
     val arwcmd = RegNextWhen(axi_unburst.payload, axi_unburst.fire)
-    val pageDirty = cache_dirty_bit =/= B"16'xFFFF"
-    val pageNotSame = cache_addr((addrlen - 1) downto 4) =/= arwcmd.addr((addrlen - 1) downto 4)
-    val pageDirty_Trigger = Reg(Bool()) init False
-    val pageNotSame_Trigger = Reg(Bool()) init False
+    // 捕捉新的命令
     when(axi_unburst.fire) {
       arwcmd_free.clear()
-      pageNotSame_Trigger.set()
-      pageDirty_Trigger := pageDirty
     }
     axi_unburst.ready := arwcmd_free
 
-    val write_data_ready = Reg(Bool()) init False
-    val write_response_valid = Reg(Bool()) init False
-    val read_response_valid = Reg(Bool()) init False
-    io.axi.readRsp.payload.id := arwcmd.id
-    io.axi.readRsp.payload.last := arwcmd.last
-    io.axi.readRsp.payload.setOKAY()
-    io.axi.readRsp.valid := read_response_valid
-    io.axi.readRsp.payload.data := 0
-    io.axi.writeRsp.valid := write_response_valid
-    io.axi.writeRsp.payload.id := arwcmd.id
-    io.axi.writeRsp.payload.setOKAY()
-    io.axi.writeData.ready := write_data_ready
+    // hit/miss 检测
+    val current_page_tag = arwcmd.addr((addrlen - 1) downto 4)
+    val page_hit_vec = Vec.tabulate(pagecnt)(i =>
+      cache_valid(i) && (cache_addr(i)((addrlen - 1) downto 4) === current_page_tag)
+    )
+    val hit_any = page_hit_vec.orR
+    val hit_index = OHToUInt(page_hit_vec)
+    val miss = !hit_any
 
+    // 选出要替换的页索引
+    val replace_index = lru_counter
+
+    // DDR 相关
+    val ddr_write_pending = Reg(Bool()) init False
+    val ddr_read_pending  = Reg(Bool()) init False
+    val ddr_write_page = Reg(UInt(log2Up(pagecnt) bits))
+    val ddr_read_page  = Reg(UInt(log2Up(pagecnt) bits))
+
+    val ddr_cmd_valid = Reg(Bool()) init False
+    val ddr_cmd_payload = Axi4Ddr_PayloadCMD(addrlen, burstlen, context_type)
+    io.ddr_cmd.payload := ddr_cmd_payload
+    io.ddr_cmd.valid := ddr_cmd_valid
+    io.ddr_rsp.ready := True
+
+    // 初始化 cmd
     ddr_cmd_payload.addr := 0
     ddr_cmd_payload.cmdtype := Axi4Ddr_CMDTYPE.write
     ddr_cmd_payload.burst_cnt := 0
-    ddr_cmd_payload.wr_data := cache_data
-    ddr_cmd_payload.wr_mask := cache_dirty_bit
+    ddr_cmd_payload.wr_data := 0
+    ddr_cmd_payload.wr_mask := 0
     ddr_cmd_payload.context := 0
 
-
-
-
-
-
-    var fifoSize = 1 << burstlen
-    val fifoPop = Stream(Fragment(Bits(128 bits)))
-    val fifoPopData = Stream(Fragment(Bits(dataWidth bits)))
-    val fifo = new StreamFifoCC(Fragment(Bits(dataWidth bit)), fifoSize, pushClock = ClockDomain.current, popClock = ClockDomain.current)
-
-    // fifo.io.push << memRsp.toStream
-    // fifo.io.pop >> fifoPop
-    StreamFragmentWidthAdapter(fifoPop, fifoPopData)
-
-
-    when(io.ddr_rsp.fire) {
-      cache_addr := (arwcmd.addr((addrlen - 1) downto 4).asBits ## B"0000").asUInt
-      cache_data := io.ddr_rsp.payload.rsp_data
-      cache_dirty_bit := B"16'xFFFF"
+    // 处理未命中时的数据替换
+    when(arwcmd_free === False && miss) {
+      val dirty = cache_dirty(replace_index) =/= B"16'xFFFF"
+      when(dirty && !ddr_write_pending) {
+        // 写回旧页
+        ddr_cmd_payload.addr := (cache_addr(replace_index)((addrlen - 1) downto 4) ## B"0000").asUInt
+        ddr_cmd_payload.cmdtype := Axi4Ddr_CMDTYPE.write
+        ddr_cmd_payload.wr_data := cache_data(replace_index)
+        ddr_cmd_payload.wr_mask := cache_dirty(replace_index)
+        // io.ddr_cmd.valid := True
+        ddr_cmd_valid := ~io.ddr_cmd.fire
+        when(io.ddr_cmd.fire) {
+          ddr_write_pending := True
+          ddr_write_page := replace_index
+        }
+      }.elsewhen(!ddr_read_pending) {
+        // 读取新页
+        ddr_cmd_payload.addr := (arwcmd.addr((addrlen - 1) downto 4) ## B"0000").asUInt
+        ddr_cmd_payload.cmdtype := Axi4Ddr_CMDTYPE.read
+        // io.ddr_cmd.valid := True
+        ddr_cmd_valid := ~io.ddr_cmd.fire
+        when(io.ddr_cmd.fire) {
+          ddr_read_pending := True
+          ddr_read_page := replace_index
+          cache_addr(replace_index) := (arwcmd.addr((addrlen - 1) downto 4) ## B"0000").asUInt
+          cache_valid(replace_index) := True
+        }
+      }
     }
-    when(arwcmd_free === False) {
-      when(pageNotSame) {
-        when(pageDirty_Trigger) {
-          ddr_cmd_payload.addr := (cache_addr((addrlen - 1) downto 4).asBits ## B"0000").asUInt
-          ddr_cmd_valid := ~io.ddr_cmd.fire
-          ddr_cmd_payload.cmdtype := Axi4Ddr_CMDTYPE.write
-          pageDirty_Trigger.clearWhen(io.ddr_cmd.fire)
-        }.elsewhen(pageNotSame_Trigger) {
-          ddr_cmd_payload.addr := (arwcmd.addr((addrlen - 1) downto 4).asBits ## B"0000").asUInt
-          ddr_cmd_valid := ~io.ddr_cmd.fire
-          ddr_cmd_payload.cmdtype := Axi4Ddr_CMDTYPE.read
-          pageNotSame_Trigger.clearWhen(io.ddr_cmd.fire)
-        }
-      }.otherwise {
-        when(arwcmd.write === True) {
-          when(io.axi.writeData.fire) {
-            switch(arwcmd.addr(3 downto 2)) {
-              is(0x0) {
-                var startbit = 0
-                var startbit2 = 0
-                var i = 0
-                for (i <- 0 to 3) {
-                  when(io.axi.writeData.payload.strb(i)) {
-                    cache_data(
-                      (i * 8 + 7 + startbit) downto (i * 8 + startbit)
-                    ) := io.axi.writeData.payload.data(
-                      (i * 8 + 7) downto (i * 8)
-                    )
-                    cache_dirty_bit(i + startbit2) := False
-                  }
-                }
-              }
-              is(0x1) {
-                var startbit = 32
-                var startbit2 = 4
-                var i = 0
-                for (i <- 0 to 3) {
-                  when(io.axi.writeData.payload.strb(i)) {
-                    cache_data(
-                      (i * 8 + 7 + startbit) downto (i * 8 + startbit)
-                    ) := io.axi.writeData.payload.data(
-                      (i * 8 + 7) downto (i * 8)
-                    )
-                    cache_dirty_bit(i + startbit2) := False
-                  }
-                }
-              }
-              is(0x2) {
-                var startbit = 64
-                var startbit2 = 8
-                var i = 0
-                for (i <- 0 to 3) {
-                  when(io.axi.writeData.payload.strb(i)) {
-                    cache_data(
-                      (i * 8 + 7 + startbit) downto (i * 8 + startbit)
-                    ) := io.axi.writeData.payload.data(
-                      (i * 8 + 7) downto (i * 8)
-                    )
-                    cache_dirty_bit(i + startbit2) := False
-                  }
-                }
-              }
-              default { // 0x3
-                var startbit = 96
-                var startbit2 = 12
-                var i = 0
-                for (i <- 0 to 3) {
-                  when(io.axi.writeData.payload.strb(i)) {
-                    cache_data(
-                      (i * 8 + 7 + startbit) downto (i * 8 + startbit)
-                    ) := io.axi.writeData.payload.data(
-                      (i * 8 + 7) downto (i * 8)
-                    )
-                    cache_dirty_bit(i + startbit2) := False
-                  }
-                }
+
+    // 接收DDR读返回
+    when(io.ddr_rsp.fire && ddr_read_pending) {
+      cache_data(ddr_read_page) := io.ddr_rsp.payload.rsp_data
+      cache_dirty(ddr_read_page) := B"16'xFFFF"
+      ddr_read_pending := False
+      lru_counter := lru_counter + 1
+    }
+
+    // 接收DDR写回完成
+    when(io.ddr_cmd.fire && ddr_write_pending) {
+      ddr_write_pending := False
+    }
+
+    // AXI写命中处理
+    val write_data_ready = Reg(Bool()) init False
+    val write_response_valid = Reg(Bool()) init False
+    io.axi.writeData.ready := write_data_ready
+    io.axi.writeRsp.valid := write_response_valid
+    io.axi.writeRsp.payload.id := arwcmd.id
+    io.axi.writeRsp.payload.setOKAY()
+
+    when(hit_any && arwcmd.write && arwcmd_free === False) {
+      val strb = io.axi.writeData.payload.strb
+      val wdata = io.axi.writeData.payload.data
+      when(io.axi.writeData.fire) {
+        switch(arwcmd.addr(3 downto 2)) {
+          is(0x0) {
+            for (i <- 0 until 4) {
+              when(strb(i)) {
+                cache_data(hit_index)((i * 8 + 7) downto (i * 8)) := wdata((i * 8 + 7) downto (i * 8))
+                cache_dirty(hit_index)(i) := False
               }
             }
           }
-          write_data_ready := ~write_response_valid
-          when(io.axi.writeData.fire) {
-            write_data_ready := False
-            write_response_valid := True
-          }
-          when(io.axi.writeRsp.fire) {
-            write_response_valid := False
-            arwcmd_free.set()
-          }
-        }.otherwise { // read
-          switch(arwcmd.addr(3 downto 2)) {
-            is(0x0) {
-              io.axi.readRsp.payload.data := cache_data(31 downto 0)
-            }
-            is(0x1) {
-              io.axi.readRsp.payload.data := cache_data(63 downto 32)
-            }
-            is(0x2) {
-              io.axi.readRsp.payload.data := cache_data(95 downto 64)
-            }
-            default { // 0x3
-              io.axi.readRsp.payload.data := cache_data(127 downto 96)
+          is(0x1) {
+            for (i <- 0 until 4) {
+              when(strb(i)) {
+                cache_data(hit_index)((i * 8 + 7 + 32) downto (i * 8 + 32)) := wdata((i * 8 + 7) downto (i * 8))
+                cache_dirty(hit_index)(i + 4) := False
+              }
             }
           }
-          read_response_valid := ~io.axi.readRsp.fire
-          when(io.axi.readRsp.fire) {
-            arwcmd_free.set()
+          is(0x2) {
+            for (i <- 0 until 4) {
+              when(strb(i)) {
+                cache_data(hit_index)((i * 8 + 7 + 64) downto (i * 8 + 64)) := wdata((i * 8 + 7) downto (i * 8))
+                cache_dirty(hit_index)(i + 8) := False
+              }
+            }
+          }
+          default {
+            for (i <- 0 until 4) {
+              when(strb(i)) {
+                cache_data(hit_index)((i * 8 + 7 + 96) downto (i * 8 + 96)) := wdata((i * 8 + 7) downto (i * 8))
+                cache_dirty(hit_index)(i + 12) := False
+              }
+            }
           }
         }
+      }
+      write_data_ready := ~write_response_valid
+      when(io.axi.writeData.fire) {
+        write_data_ready := False
+        write_response_valid := True
+      }
+      when(io.axi.writeRsp.fire) {
+        write_response_valid := False
+        arwcmd_free := True
+      }
+    }
+
+
+    // AXI读命中处理
+    val read_response_valid = Reg(Bool()) init False
+    io.axi.readRsp.valid := read_response_valid
+    io.axi.readRsp.payload.id := arwcmd.id
+    io.axi.readRsp.payload.last := arwcmd.last
+    io.axi.readRsp.payload.setOKAY()
+    io.axi.readRsp.payload.data := 0
+
+    when(hit_any && !arwcmd.write && arwcmd_free === False) {
+      switch(arwcmd.addr(3 downto 2)) {
+        is(0x0) {
+          io.axi.readRsp.payload.data := cache_data(hit_index)(31 downto 0)
+        }
+        is(0x1) {
+          io.axi.readRsp.payload.data := cache_data(hit_index)(63 downto 32)
+        }
+        is(0x2) {
+          io.axi.readRsp.payload.data := cache_data(hit_index)(95 downto 64)
+        }
+        default {
+          io.axi.readRsp.payload.data := cache_data(hit_index)(127 downto 96)
+        }
+      }
+      read_response_valid := ~io.axi.readRsp.fire
+      when(io.axi.readRsp.fire) {
+        arwcmd_free.set()
       }
     }
   }
