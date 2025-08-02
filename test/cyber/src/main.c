@@ -21,6 +21,7 @@ void main()
     delay_ms(10); // 等待系统稳定
 
     demo_USART();
+    for (uint16_t i = 0;; printf("time: %us\r\n", i++), delay_ms(1000));
     // demo_GPIO();
     // demo_EXTI();
     // demo_SysTick();

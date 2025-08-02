@@ -3,9 +3,8 @@
 package periph
 
 import spinal.core._
-import spinal.core.sim._
-import spinal.lib.{Stream, StreamFifoCC, master, slave, IMasterSlave}
-import spinal.lib.bus.amba4.axi.{Axi4, Axi4SpecRenamer, Axi4Arw, Axi4Config, Axi4Shared, Axi4ToAxi4Shared}
+import spinal.lib._
+import spinal.lib.bus.amba4.axi._
 
 case class DDR3_Interface() extends Bundle with IMasterSlave {
   val O_ddr_addr = Bits(14 bits)
@@ -309,6 +308,7 @@ case class Axi4DdrWithCache(
     val cache_data = Reg(Bits(128 bits)) init 0
     val cache_dirty_bit = Reg(Bits(16 bits)) init B"16'xFFFF"
 
+    val axi_burst_read = (io.axi.arw.len =/= 0) && (!io.axi.w.valid)
     val axi_unburst = io.axi.sharedCmd.unburstify
     val arwcmd_free = Reg(Bool()) init True
     val arwcmd = RegNextWhen(axi_unburst.payload, axi_unburst.fire)
@@ -342,6 +342,21 @@ case class Axi4DdrWithCache(
     ddr_cmd_payload.wr_data := cache_data
     ddr_cmd_payload.wr_mask := cache_dirty_bit
     ddr_cmd_payload.context := 0
+
+
+
+
+
+
+    var fifoSize = 1 << burstlen
+    val fifoPop = Stream(Fragment(Bits(128 bits)))
+    val fifoPopData = Stream(Fragment(Bits(dataWidth bits)))
+    val fifo = new StreamFifoCC(Fragment(Bits(dataWidth bit)), fifoSize, pushClock = ClockDomain.current, popClock = ClockDomain.current)
+
+    // fifo.io.push << memRsp.toStream
+    // fifo.io.pop >> fifoPop
+    StreamFragmentWidthAdapter(fifoPop, fifoPopData)
+
 
     when(io.ddr_rsp.fire) {
       cache_addr := (arwcmd.addr((addrlen - 1) downto 4).asBits ## B"0000").asUInt

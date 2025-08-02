@@ -27,7 +27,7 @@ void delay_us(uint32_t nus)
         temp = SysTick->CTRL;
     } while (temp & 0x01 && !(temp & (1 << 16))); // 等待时间到达
     SysTick->CTRL = 0x00; // 关闭计数器
-    SysTick->VAL = 0X00;  // 清空计数器
+    SysTick->VAL = 0x00;  // 清空计数器
 }
 
 // 延时nms
@@ -45,7 +45,7 @@ void delay_ms(uint16_t nms)
         temp = SysTick->CTRL;
     } while (temp & 0x01 && !(temp & (1 << 16))); // 等待时间到达
     SysTick->CTRL = 0x00; // 关闭计数器
-    SysTick->VAL = 0X00;  // 清空计数器
+    SysTick->VAL = 0x00;  // 清空计数器
 }
 
 // 延时ns
@@ -63,5 +63,5 @@ void delay_s(uint16_t ns)
         temp = SysTick->CTRL;
     } while (temp & 0x01 && !(temp & (1 << 16))); // 等待时间到达
     SysTick->CTRL = 0x00; // 关闭计数器
-    SysTick->VAL = 0X00;  // 清空计数器
+    SysTick->VAL = 0x00;  // 清空计数器
 }

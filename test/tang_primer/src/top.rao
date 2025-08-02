@@ -2,31 +2,133 @@
 <GAO_CONFIG>
     <Version>3.0</Version>
     <Mode>Standard</Mode>
-    <AoCore index="0" sample_clock="axi_sdramCtrl/gowin_DDR3/clk_out" trig_type="0" storage_depth="2048" window_num="1" capture_amount="2048" implementation="0" trigger_pos="128" module_name="cyberwithddrhdmi" force_trigger_by_falling_edge="false" capture_init_data_enabled="false">
+    <AoCore index="0" sample_clock="sysclk_clkout" trig_type="0" storage_depth="2048" window_num="1" capture_amount="2048" implementation="0" trigger_pos="128" module_name="cyberwithddrhdmi" force_trigger_by_falling_edge="false" capture_init_data_enabled="false">
         <SignalList>
-            <Signal capture_enable="true">axi_vgaCtrl/io_axi_ar_valid</Signal>
-            <Signal capture_enable="true">axi_vgaCtrl/io_axi_ar_ready</Signal>
-            <Signal capture_enable="true">axi_vgaCtrl/io_axi_r_valid</Signal>
-            <Bus capture_enable="true" name="axi_sdramCtrl/gowin_DDR3/cmd[2:0]">
-                <Signal>axi_sdramCtrl/gowin_DDR3/cmd[2]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/cmd[1]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/cmd[0]</Signal>
+            <Signal capture_enable="true">axi_sdramCtrl/io_axi_arw_valid</Signal>
+            <Signal capture_enable="true">axi_sdramCtrl/io_axi_arw_ready</Signal>
+            <Bus capture_enable="true" name="axi_sdramCtrl/io_axi_arw_payload_addr[27:0]">
+                <Signal>axi_sdramCtrl/io_axi_arw_payload_addr[27]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_arw_payload_addr[26]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_arw_payload_addr[25]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_arw_payload_addr[24]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_arw_payload_addr[23]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_arw_payload_addr[22]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_arw_payload_addr[21]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_arw_payload_addr[20]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_arw_payload_addr[19]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_arw_payload_addr[18]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_arw_payload_addr[17]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_arw_payload_addr[16]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_arw_payload_addr[15]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_arw_payload_addr[14]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_arw_payload_addr[13]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_arw_payload_addr[12]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_arw_payload_addr[11]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_arw_payload_addr[10]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_arw_payload_addr[9]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_arw_payload_addr[8]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_arw_payload_addr[7]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_arw_payload_addr[6]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_arw_payload_addr[5]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_arw_payload_addr[4]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_arw_payload_addr[3]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_arw_payload_addr[2]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_arw_payload_addr[1]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_arw_payload_addr[0]</Signal>
             </Bus>
-            <Signal capture_enable="true">axi_sdramCtrl/gowin_DDR3/cmd_en</Signal>
-            <Bus capture_enable="true" name="axi_sdramCtrl/gowin_DDR3/app_burst_number[5:0]">
-                <Signal>axi_sdramCtrl/gowin_DDR3/app_burst_number[5]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/app_burst_number[4]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/app_burst_number[3]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/app_burst_number[2]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/app_burst_number[1]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/app_burst_number[0]</Signal>
+            <Bus capture_enable="true" name="axi_sdramCtrl/io_axi_arw_payload_len[7:0]">
+                <Signal>axi_sdramCtrl/io_axi_arw_payload_len[7]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_arw_payload_len[6]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_arw_payload_len[5]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_arw_payload_len[4]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_arw_payload_len[3]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_arw_payload_len[2]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_arw_payload_len[1]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_arw_payload_len[0]</Signal>
             </Bus>
-            <Signal capture_enable="true">axi_sdramCtrl/gowin_DDR3/rd_data_valid</Signal>
+            <Signal capture_enable="true">axi_sdramCtrl/io_axi_w_valid</Signal>
+            <Signal capture_enable="true">axi_sdramCtrl/io_axi_w_ready</Signal>
+            <Bus capture_enable="true" name="axi_sdramCtrl/io_axi_w_payload_data[31:0]">
+                <Signal>axi_sdramCtrl/io_axi_w_payload_data[31]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_w_payload_data[30]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_w_payload_data[29]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_w_payload_data[28]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_w_payload_data[27]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_w_payload_data[26]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_w_payload_data[25]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_w_payload_data[24]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_w_payload_data[23]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_w_payload_data[22]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_w_payload_data[21]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_w_payload_data[20]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_w_payload_data[19]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_w_payload_data[18]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_w_payload_data[17]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_w_payload_data[16]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_w_payload_data[15]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_w_payload_data[14]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_w_payload_data[13]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_w_payload_data[12]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_w_payload_data[11]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_w_payload_data[10]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_w_payload_data[9]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_w_payload_data[8]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_w_payload_data[7]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_w_payload_data[6]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_w_payload_data[5]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_w_payload_data[4]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_w_payload_data[3]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_w_payload_data[2]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_w_payload_data[1]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_w_payload_data[0]</Signal>
+            </Bus>
+            <Bus capture_enable="true" name="axi_sdramCtrl/io_axi_w_payload_strb[3:0]">
+                <Signal>axi_sdramCtrl/io_axi_w_payload_strb[3]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_w_payload_strb[2]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_w_payload_strb[1]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_w_payload_strb[0]</Signal>
+            </Bus>
+            <Signal capture_enable="true">axi_sdramCtrl/io_axi_r_valid</Signal>
+            <Signal capture_enable="true">axi_sdramCtrl/io_axi_r_ready</Signal>
+            <Bus capture_enable="true" name="axi_sdramCtrl/io_axi_r_payload_data[31:0]">
+                <Signal>axi_sdramCtrl/io_axi_r_payload_data[31]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_r_payload_data[30]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_r_payload_data[29]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_r_payload_data[28]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_r_payload_data[27]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_r_payload_data[26]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_r_payload_data[25]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_r_payload_data[24]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_r_payload_data[23]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_r_payload_data[22]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_r_payload_data[21]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_r_payload_data[20]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_r_payload_data[19]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_r_payload_data[18]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_r_payload_data[17]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_r_payload_data[16]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_r_payload_data[15]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_r_payload_data[14]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_r_payload_data[13]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_r_payload_data[12]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_r_payload_data[11]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_r_payload_data[10]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_r_payload_data[9]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_r_payload_data[8]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_r_payload_data[7]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_r_payload_data[6]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_r_payload_data[5]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_r_payload_data[4]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_r_payload_data[3]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_r_payload_data[2]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_r_payload_data[1]</Signal>
+                <Signal>axi_sdramCtrl/io_axi_r_payload_data[0]</Signal>
+            </Bus>
         </SignalList>
         <Triggers>
             <Trigger index="0">
                 <SignalList>
-                    <Signal>axi_vgaCtrl/io_vga_colorEn</Signal>
+                    <Signal>axi_sdramCtrl/io_axi_arw_valid</Signal>
                 </SignalList>
             </Trigger>
             <Trigger index="1"/>
@@ -67,5 +169,5 @@
             <Expression>M0</Expression>
         </Expressions>
     </AoCore>
-    <GAO_ID>1011001000001000</GAO_ID>
+    <GAO_ID>1000000101000110</GAO_ID>
 </GAO_CONFIG>
