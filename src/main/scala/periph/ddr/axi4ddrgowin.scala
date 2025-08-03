@@ -275,7 +275,7 @@ case class Axi4DdrWithCache(
     idWidth: Int,
     addrlen: Int = 28,
     burstlen: Int = 6,
-    pagesize: Int = 128,
+    pagesize: Int = 256,
     pagecnt: Int = 4
 ) extends Component {
   require(pagesize % 128 == 0, s"pagesize must be a multiple of 128, but got $pagesize")
@@ -355,18 +355,29 @@ case class Axi4DdrWithCache(
     ddr_cmd_payload.context := 0
 
     // 处理未命中时的数据替换
+    val dirty = cache_dirty(replace_index)
+    val write_burst_counter = Reg(UInt(log2Up(pageBlocks) bits)) init 0
+    val read_burst_counter = Reg(UInt(log2Up(pageBlocks) bits)) init 0
     when(arwcmd_free === False && miss) {
-      val dirty = cache_dirty(replace_index)
       when(dirty && !ddr_write_pending) {
         // 写回旧页
+        for (i <- 0 until pageBlocks) {
+          when (i === write_burst_counter) {
+            ddr_cmd_payload.wr_data := cache_data(ddr_read_page)(i*128+127 downto i*128)
+          }
+        }
         ddr_cmd_payload.addr := (cache_addr(replace_index)((addrlen - 1) downto pageOffsetBits) ## U(0, pageOffsetBits bits)).asUInt
         ddr_cmd_payload.cmdtype := Axi4Ddr_CMDTYPE.write
-        ddr_cmd_payload.wr_data := cache_data(replace_index)
         ddr_cmd_payload.wr_mask := Mux(dirty, B"16'x0000", B"16'xFFFF")
         ddr_cmd_valid := ~io.ddr_cmd.fire
         when(io.ddr_cmd.fire) {
-          ddr_write_pending := True
-          ddr_write_page := replace_index
+          when(write_burst_counter === pageBlocks - 1) {
+            ddr_write_pending := True
+            ddr_write_page := replace_index
+            write_burst_counter := 0
+          } otherwise {
+            write_burst_counter := write_burst_counter + 1
+          }
         }
       }.elsewhen(!ddr_read_pending) {
         // 读取新页
@@ -384,10 +395,18 @@ case class Axi4DdrWithCache(
 
     // 接收DDR读返回
     when(io.ddr_rsp.fire && ddr_read_pending) {
-      cache_data(ddr_read_page) := io.ddr_rsp.payload.rsp_data
-      cache_dirty(ddr_read_page) := False
-      ddr_read_pending := False
-      lru_counter := lru_counter + 1
+      for (i <- 0 until pageBlocks) {
+        when (i === read_burst_counter) {
+          cache_data(ddr_read_page)(i*128+127 downto i*128) := io.ddr_rsp.payload.rsp_data
+        }
+      }
+      read_burst_counter := read_burst_counter + 1
+      when(read_burst_counter === pageBlocks - 1) {
+        cache_dirty(ddr_read_page) := False
+        ddr_read_pending := False
+        read_burst_counter := 0
+        lru_counter := lru_counter + 1
+      }
     }
 
     // 接收DDR写回完成

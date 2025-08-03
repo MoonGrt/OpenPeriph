@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.12.0    git head : 1aa7d7b5732f11cca2dd83bacc2a4cb92ca8e5c9
 // Component : cyberwithddrhdmi
-// Git hash  : 2b23680fbd8cbea54f4cf829b9024513cacb486b
+// Git hash  : f198f94118af9d048a91ad18a573818450e11f70
 
 `timescale 1ns/1ps
 `define SYNTHESIS
@@ -9110,9 +9110,9 @@ module VideoDma (
   wire                rspArea_fifo_io_pop_valid;
   wire                rspArea_fifo_io_pop_payload_last;
   wire       [31:0]   rspArea_fifo_io_pop_payload_fragment;
-  wire       [9:0]    rspArea_fifo_io_pushOccupancy;
-  wire       [9:0]    rspArea_fifo_io_popOccupancy;
-  wire       [6:0]    rspArea_frameClockArea_popCmdGray_buffercc_io_dataOut;
+  wire       [10:0]   rspArea_fifo_io_pushOccupancy;
+  wire       [10:0]   rspArea_fifo_io_popOccupancy;
+  wire       [7:0]    rspArea_frameClockArea_popCmdGray_buffercc_io_dataOut;
   wire       [26:0]   _zz_io_mem_cmd_payload;
   wire       [2:0]    _zz_rspArea_frameClockArea_popBeatCounter_valueNext;
   wire       [0:0]    _zz_rspArea_frameClockArea_popBeatCounter_valueNext_1;
@@ -9164,15 +9164,16 @@ module VideoDma (
   wire                rspArea_frameClockArea_popBeatCounter_willOverflowIfInc;
   wire                rspArea_frameClockArea_popBeatCounter_willOverflow;
   wire                rspArea_fifo_io_pop_fire;
-  reg        [6:0]    rspArea_frameClockArea_popCmdGray;
+  reg        [7:0]    rspArea_frameClockArea_popCmdGray;
   reg                 _zz_when_Utils_l452;
-  wire       [6:0]    _zz_when_Utils_l452_1;
+  wire       [7:0]    _zz_when_Utils_l452_1;
   reg                 _zz_when_Utils_l452_2;
   reg                 _zz_when_Utils_l452_3;
   reg                 _zz_when_Utils_l452_4;
   reg                 _zz_when_Utils_l452_5;
   reg                 _zz_when_Utils_l452_6;
   reg                 _zz_when_Utils_l452_7;
+  reg                 _zz_when_Utils_l452_8;
   wire                when_Utils_l452;
   wire                when_Utils_l452_1;
   wire                when_Utils_l452_2;
@@ -9180,23 +9181,26 @@ module VideoDma (
   wire                when_Utils_l452_4;
   wire                when_Utils_l452_5;
   wire                when_Utils_l452_6;
-  wire       [6:0]    rspArea_popCmdGray;
-  reg        [6:0]    rspArea_pushCmdGray;
-  reg                 _zz_when_Utils_l452_8;
-  wire       [6:0]    _zz_when_Utils_l452_9;
-  reg                 _zz_when_Utils_l452_10;
+  wire                when_Utils_l452_7;
+  wire       [7:0]    rspArea_popCmdGray;
+  reg        [7:0]    rspArea_pushCmdGray;
+  reg                 _zz_when_Utils_l452_9;
+  wire       [7:0]    _zz_when_Utils_l452_10;
   reg                 _zz_when_Utils_l452_11;
   reg                 _zz_when_Utils_l452_12;
   reg                 _zz_when_Utils_l452_13;
   reg                 _zz_when_Utils_l452_14;
   reg                 _zz_when_Utils_l452_15;
-  wire                when_Utils_l452_7;
+  reg                 _zz_when_Utils_l452_16;
+  reg                 _zz_when_Utils_l452_17;
   wire                when_Utils_l452_8;
   wire                when_Utils_l452_9;
   wire                when_Utils_l452_10;
   wire                when_Utils_l452_11;
   wire                when_Utils_l452_12;
   wire                when_Utils_l452_13;
+  wire                when_Utils_l452_14;
+  wire                when_Utils_l452_15;
   wire                io_frame_fire;
   reg                 fifoPop_widthAdapter_counter_willIncrement;
   wire                fifoPop_widthAdapter_counter_willClear;
@@ -9219,15 +9223,15 @@ module VideoDma (
     .io_pop_ready             (fifoPop_ready                             ), //i
     .io_pop_payload_last      (rspArea_fifo_io_pop_payload_last          ), //o
     .io_pop_payload_fragment  (rspArea_fifo_io_pop_payload_fragment[31:0]), //o
-    .io_pushOccupancy         (rspArea_fifo_io_pushOccupancy[9:0]        ), //o
-    .io_popOccupancy          (rspArea_fifo_io_popOccupancy[9:0]         ), //o
+    .io_pushOccupancy         (rspArea_fifo_io_pushOccupancy[10:0]       ), //o
+    .io_popOccupancy          (rspArea_fifo_io_popOccupancy[10:0]        ), //o
     .clkout                   (clkout                                    ), //i
     .resetCtrl_axiReset       (resetCtrl_axiReset                        ), //i
     .CLKOUT_1                 (CLKOUT_1                                  )  //i
   );
   (* keep_hierarchy = "TRUE" *) BufferCC_14 rspArea_frameClockArea_popCmdGray_buffercc (
-    .io_dataIn          (rspArea_frameClockArea_popCmdGray[6:0]                    ), //i
-    .io_dataOut         (rspArea_frameClockArea_popCmdGray_buffercc_io_dataOut[6:0]), //o
+    .io_dataIn          (rspArea_frameClockArea_popCmdGray[7:0]                    ), //i
+    .io_dataOut         (rspArea_frameClockArea_popCmdGray_buffercc_io_dataOut[7:0]), //o
     .clkout             (clkout                                                    ), //i
     .resetCtrl_axiReset (resetCtrl_axiReset                                        )  //i
   );
@@ -9337,108 +9341,124 @@ module VideoDma (
   end
 
   assign rspArea_fifo_io_pop_fire = (rspArea_fifo_io_pop_valid && fifoPop_ready);
-  assign _zz_when_Utils_l452_1 = {1'b1,{rspArea_frameClockArea_popCmdGray[4 : 0],_zz_when_Utils_l452}};
+  assign _zz_when_Utils_l452_1 = {1'b1,{rspArea_frameClockArea_popCmdGray[5 : 0],_zz_when_Utils_l452}};
   always @(*) begin
     _zz_when_Utils_l452_2 = _zz_when_Utils_l452_3;
-    if(when_Utils_l452_5) begin
+    if(when_Utils_l452_6) begin
       _zz_when_Utils_l452_2 = 1'b1;
     end
   end
 
   always @(*) begin
     _zz_when_Utils_l452_3 = _zz_when_Utils_l452_4;
-    if(when_Utils_l452_4) begin
+    if(when_Utils_l452_5) begin
       _zz_when_Utils_l452_3 = 1'b1;
     end
   end
 
   always @(*) begin
     _zz_when_Utils_l452_4 = _zz_when_Utils_l452_5;
-    if(when_Utils_l452_3) begin
+    if(when_Utils_l452_4) begin
       _zz_when_Utils_l452_4 = 1'b1;
     end
   end
 
   always @(*) begin
     _zz_when_Utils_l452_5 = _zz_when_Utils_l452_6;
-    if(when_Utils_l452_2) begin
+    if(when_Utils_l452_3) begin
       _zz_when_Utils_l452_5 = 1'b1;
     end
   end
 
   always @(*) begin
     _zz_when_Utils_l452_6 = _zz_when_Utils_l452_7;
-    if(when_Utils_l452_1) begin
+    if(when_Utils_l452_2) begin
       _zz_when_Utils_l452_6 = 1'b1;
     end
   end
 
   always @(*) begin
-    _zz_when_Utils_l452_7 = 1'b0;
-    if(when_Utils_l452) begin
+    _zz_when_Utils_l452_7 = _zz_when_Utils_l452_8;
+    if(when_Utils_l452_1) begin
       _zz_when_Utils_l452_7 = 1'b1;
     end
   end
 
-  assign when_Utils_l452 = (_zz_when_Utils_l452_1[0] && (! 1'b0));
-  assign when_Utils_l452_1 = (_zz_when_Utils_l452_1[1] && (! _zz_when_Utils_l452_7));
-  assign when_Utils_l452_2 = (_zz_when_Utils_l452_1[2] && (! _zz_when_Utils_l452_6));
-  assign when_Utils_l452_3 = (_zz_when_Utils_l452_1[3] && (! _zz_when_Utils_l452_5));
-  assign when_Utils_l452_4 = (_zz_when_Utils_l452_1[4] && (! _zz_when_Utils_l452_4));
-  assign when_Utils_l452_5 = (_zz_when_Utils_l452_1[5] && (! _zz_when_Utils_l452_3));
-  assign when_Utils_l452_6 = (_zz_when_Utils_l452_1[6] && (! _zz_when_Utils_l452_2));
-  assign rspArea_popCmdGray = rspArea_frameClockArea_popCmdGray_buffercc_io_dataOut;
-  assign _zz_when_Utils_l452_9 = {1'b1,{rspArea_pushCmdGray[4 : 0],_zz_when_Utils_l452_8}};
   always @(*) begin
-    _zz_when_Utils_l452_10 = _zz_when_Utils_l452_11;
-    if(when_Utils_l452_12) begin
-      _zz_when_Utils_l452_10 = 1'b1;
+    _zz_when_Utils_l452_8 = 1'b0;
+    if(when_Utils_l452) begin
+      _zz_when_Utils_l452_8 = 1'b1;
     end
   end
 
+  assign when_Utils_l452 = (_zz_when_Utils_l452_1[0] && (! 1'b0));
+  assign when_Utils_l452_1 = (_zz_when_Utils_l452_1[1] && (! _zz_when_Utils_l452_8));
+  assign when_Utils_l452_2 = (_zz_when_Utils_l452_1[2] && (! _zz_when_Utils_l452_7));
+  assign when_Utils_l452_3 = (_zz_when_Utils_l452_1[3] && (! _zz_when_Utils_l452_6));
+  assign when_Utils_l452_4 = (_zz_when_Utils_l452_1[4] && (! _zz_when_Utils_l452_5));
+  assign when_Utils_l452_5 = (_zz_when_Utils_l452_1[5] && (! _zz_when_Utils_l452_4));
+  assign when_Utils_l452_6 = (_zz_when_Utils_l452_1[6] && (! _zz_when_Utils_l452_3));
+  assign when_Utils_l452_7 = (_zz_when_Utils_l452_1[7] && (! _zz_when_Utils_l452_2));
+  assign rspArea_popCmdGray = rspArea_frameClockArea_popCmdGray_buffercc_io_dataOut;
+  assign _zz_when_Utils_l452_10 = {1'b1,{rspArea_pushCmdGray[5 : 0],_zz_when_Utils_l452_9}};
   always @(*) begin
     _zz_when_Utils_l452_11 = _zz_when_Utils_l452_12;
-    if(when_Utils_l452_11) begin
+    if(when_Utils_l452_14) begin
       _zz_when_Utils_l452_11 = 1'b1;
     end
   end
 
   always @(*) begin
     _zz_when_Utils_l452_12 = _zz_when_Utils_l452_13;
-    if(when_Utils_l452_10) begin
+    if(when_Utils_l452_13) begin
       _zz_when_Utils_l452_12 = 1'b1;
     end
   end
 
   always @(*) begin
     _zz_when_Utils_l452_13 = _zz_when_Utils_l452_14;
-    if(when_Utils_l452_9) begin
+    if(when_Utils_l452_12) begin
       _zz_when_Utils_l452_13 = 1'b1;
     end
   end
 
   always @(*) begin
     _zz_when_Utils_l452_14 = _zz_when_Utils_l452_15;
-    if(when_Utils_l452_8) begin
+    if(when_Utils_l452_11) begin
       _zz_when_Utils_l452_14 = 1'b1;
     end
   end
 
   always @(*) begin
-    _zz_when_Utils_l452_15 = 1'b0;
-    if(when_Utils_l452_7) begin
+    _zz_when_Utils_l452_15 = _zz_when_Utils_l452_16;
+    if(when_Utils_l452_10) begin
       _zz_when_Utils_l452_15 = 1'b1;
     end
   end
 
-  assign when_Utils_l452_7 = (_zz_when_Utils_l452_9[0] && (! 1'b0));
-  assign when_Utils_l452_8 = (_zz_when_Utils_l452_9[1] && (! _zz_when_Utils_l452_15));
-  assign when_Utils_l452_9 = (_zz_when_Utils_l452_9[2] && (! _zz_when_Utils_l452_14));
-  assign when_Utils_l452_10 = (_zz_when_Utils_l452_9[3] && (! _zz_when_Utils_l452_13));
-  assign when_Utils_l452_11 = (_zz_when_Utils_l452_9[4] && (! _zz_when_Utils_l452_12));
-  assign when_Utils_l452_12 = (_zz_when_Utils_l452_9[5] && (! _zz_when_Utils_l452_11));
-  assign when_Utils_l452_13 = (_zz_when_Utils_l452_9[6] && (! _zz_when_Utils_l452_10));
-  assign toManyPendingRsp = ((rspArea_pushCmdGray[6 : 5] == (~ rspArea_popCmdGray[6 : 5])) && (rspArea_pushCmdGray[4 : 0] == rspArea_popCmdGray[4 : 0]));
+  always @(*) begin
+    _zz_when_Utils_l452_16 = _zz_when_Utils_l452_17;
+    if(when_Utils_l452_9) begin
+      _zz_when_Utils_l452_16 = 1'b1;
+    end
+  end
+
+  always @(*) begin
+    _zz_when_Utils_l452_17 = 1'b0;
+    if(when_Utils_l452_8) begin
+      _zz_when_Utils_l452_17 = 1'b1;
+    end
+  end
+
+  assign when_Utils_l452_8 = (_zz_when_Utils_l452_10[0] && (! 1'b0));
+  assign when_Utils_l452_9 = (_zz_when_Utils_l452_10[1] && (! _zz_when_Utils_l452_17));
+  assign when_Utils_l452_10 = (_zz_when_Utils_l452_10[2] && (! _zz_when_Utils_l452_16));
+  assign when_Utils_l452_11 = (_zz_when_Utils_l452_10[3] && (! _zz_when_Utils_l452_15));
+  assign when_Utils_l452_12 = (_zz_when_Utils_l452_10[4] && (! _zz_when_Utils_l452_14));
+  assign when_Utils_l452_13 = (_zz_when_Utils_l452_10[5] && (! _zz_when_Utils_l452_13));
+  assign when_Utils_l452_14 = (_zz_when_Utils_l452_10[6] && (! _zz_when_Utils_l452_12));
+  assign when_Utils_l452_15 = (_zz_when_Utils_l452_10[7] && (! _zz_when_Utils_l452_11));
+  assign toManyPendingRsp = ((rspArea_pushCmdGray[7 : 6] == (~ rspArea_popCmdGray[7 : 6])) && (rspArea_pushCmdGray[5 : 0] == rspArea_popCmdGray[5 : 0]));
   assign io_frame_fire = (io_frame_valid && io_frame_ready);
   always @(*) begin
     fifoPop_widthAdapter_counter_willIncrement = 1'b0;
@@ -9471,8 +9491,8 @@ module VideoDma (
       pendingMemRsp <= 6'h0;
       isActive <= 1'b0;
       cmdActive <= 1'b0;
-      rspArea_pushCmdGray <= 7'h0;
-      _zz_when_Utils_l452_8 <= 1'b1;
+      rspArea_pushCmdGray <= 8'h0;
+      _zz_when_Utils_l452_9 <= 1'b1;
     end else begin
       pendingMemCmd_value <= pendingMemCmd_valueNext;
       pendingMemRsp <= _zz_pendingMemRsp;
@@ -9495,28 +9515,31 @@ module VideoDma (
         end
       end
       if(io_mem_cmd_fire) begin
-        if(when_Utils_l452_7) begin
+        if(when_Utils_l452_8) begin
           rspArea_pushCmdGray[0] <= (! rspArea_pushCmdGray[0]);
         end
-        if(when_Utils_l452_8) begin
+        if(when_Utils_l452_9) begin
           rspArea_pushCmdGray[1] <= (! rspArea_pushCmdGray[1]);
         end
-        if(when_Utils_l452_9) begin
+        if(when_Utils_l452_10) begin
           rspArea_pushCmdGray[2] <= (! rspArea_pushCmdGray[2]);
         end
-        if(when_Utils_l452_10) begin
+        if(when_Utils_l452_11) begin
           rspArea_pushCmdGray[3] <= (! rspArea_pushCmdGray[3]);
         end
-        if(when_Utils_l452_11) begin
+        if(when_Utils_l452_12) begin
           rspArea_pushCmdGray[4] <= (! rspArea_pushCmdGray[4]);
         end
-        if(when_Utils_l452_12) begin
+        if(when_Utils_l452_13) begin
           rspArea_pushCmdGray[5] <= (! rspArea_pushCmdGray[5]);
         end
-        if(when_Utils_l452_13) begin
+        if(when_Utils_l452_14) begin
           rspArea_pushCmdGray[6] <= (! rspArea_pushCmdGray[6]);
         end
-        _zz_when_Utils_l452_8 <= (! _zz_when_Utils_l452_8);
+        if(when_Utils_l452_15) begin
+          rspArea_pushCmdGray[7] <= (! rspArea_pushCmdGray[7]);
+        end
+        _zz_when_Utils_l452_9 <= (! _zz_when_Utils_l452_9);
       end
     end
   end
@@ -9535,7 +9558,7 @@ module VideoDma (
   always @(posedge CLKOUT_1 or posedge resetCtrl_axiReset) begin
     if(resetCtrl_axiReset) begin
       rspArea_frameClockArea_popBeatCounter_value <= 3'b000;
-      rspArea_frameClockArea_popCmdGray <= 7'h0;
+      rspArea_frameClockArea_popCmdGray <= 8'h0;
       _zz_when_Utils_l452 <= 1'b1;
       fifoPop_widthAdapter_counter_value <= 1'b0;
     end else begin
@@ -9561,6 +9584,9 @@ module VideoDma (
         end
         if(when_Utils_l452_6) begin
           rspArea_frameClockArea_popCmdGray[6] <= (! rspArea_frameClockArea_popCmdGray[6]);
+        end
+        if(when_Utils_l452_7) begin
+          rspArea_frameClockArea_popCmdGray[7] <= (! rspArea_frameClockArea_popCmdGray[7]);
         end
         _zz_when_Utils_l452 <= (! _zz_when_Utils_l452);
       end
@@ -12157,19 +12183,19 @@ module Axi4DdrWithCache (
   wire       [4:0]    _zz_Axi4Incr_result_10;
   wire       [5:0]    _zz_Axi4Incr_result_11;
   wire       [5:0]    _zz_Axi4Incr_result_12;
-  reg                 _zz__zz_sys_area_ddr_cmd_payload_wr_mask;
+  reg                 _zz_sys_area_dirty;
+  reg        [255:0]  _zz__zz_sys_area_ddr_cmd_payload_wr_data;
   reg        [27:0]   _zz_sys_area_ddr_cmd_payload_addr;
-  reg        [127:0]  _zz_sys_area_ddr_cmd_payload_wr_data;
-  reg        [127:0]  _zz__zz_io_axi_r_payload_data;
+  reg        [255:0]  _zz__zz_io_axi_r_payload_data;
   wire       [0:0]    context_type;
   reg        [27:0]   sys_area_cache_addr_0;
   reg        [27:0]   sys_area_cache_addr_1;
   reg        [27:0]   sys_area_cache_addr_2;
   reg        [27:0]   sys_area_cache_addr_3;
-  reg        [127:0]  sys_area_cache_data_0;
-  reg        [127:0]  sys_area_cache_data_1;
-  reg        [127:0]  sys_area_cache_data_2;
-  reg        [127:0]  sys_area_cache_data_3;
+  reg        [255:0]  sys_area_cache_data_0;
+  reg        [255:0]  sys_area_cache_data_1;
+  reg        [255:0]  sys_area_cache_data_2;
+  reg        [255:0]  sys_area_cache_data_3;
   reg                 sys_area_cache_dirty_0;
   reg                 sys_area_cache_dirty_1;
   reg                 sys_area_cache_dirty_2;
@@ -12215,7 +12241,7 @@ module Axi4DdrWithCache (
   reg        [2:0]    sys_area_arwcmd_fragment_size;
   reg        [1:0]    sys_area_arwcmd_fragment_burst;
   reg                 sys_area_arwcmd_fragment_write;
-  wire       [23:0]   sys_area_current_page_tag;
+  wire       [22:0]   sys_area_current_page_tag;
   wire                sys_area_page_hit_vec_0;
   wire                sys_area_page_hit_vec_1;
   wire                sys_area_page_hit_vec_2;
@@ -12236,73 +12262,126 @@ module Axi4DdrWithCache (
   reg        [127:0]  sys_area_ddr_cmd_payload_wr_data;
   reg        [15:0]   sys_area_ddr_cmd_payload_wr_mask;
   wire       [0:0]    sys_area_ddr_cmd_payload_context;
-  wire                when_axi4ddrgowin_l358;
-  wire                _zz_sys_area_ddr_cmd_payload_wr_mask;
-  wire                when_axi4ddrgowin_l360;
+  wire                sys_area_dirty;
+  reg        [0:0]    sys_area_write_burst_counter;
+  reg        [0:0]    sys_area_read_burst_counter;
+  wire                when_axi4ddrgowin_l361;
+  wire                when_axi4ddrgowin_l362;
+  wire                when_axi4ddrgowin_l365;
+  wire       [255:0]  _zz_sys_area_ddr_cmd_payload_wr_data;
   wire       [3:0]    _zz_1;
+  wire                _zz_2;
+  wire                _zz_3;
+  wire                _zz_4;
+  wire                _zz_5;
+  wire                when_axi4ddrgowin_l365_1;
+  wire       [3:0]    _zz_6;
   wire                io_ddr_cmd_fire;
+  wire                when_axi4ddrgowin_l374;
   wire       [27:0]   _zz_sys_area_cache_addr_0;
-  wire       [3:0]    _zz_2;
-  wire                when_axi4ddrgowin_l371;
+  wire       [3:0]    _zz_7;
+  wire                when_axi4ddrgowin_l382;
   wire                io_ddr_rsp_fire;
-  wire                when_axi4ddrgowin_l386;
-  wire       [3:0]    _zz_3;
-  wire       [3:0]    _zz_4;
-  wire                when_axi4ddrgowin_l394;
+  wire                when_axi4ddrgowin_l397;
+  wire                when_axi4ddrgowin_l399;
+  wire                when_axi4ddrgowin_l399_1;
+  wire                when_axi4ddrgowin_l404;
+  wire       [3:0]    _zz_8;
+  wire                when_axi4ddrgowin_l413;
   reg                 sys_area_write_data_ready;
   reg                 sys_area_write_response_valid;
-  wire                when_axi4ddrgowin_l406;
-  wire       [3:0]    _zz_5;
-  wire                when_axi4ddrgowin_l411;
+  wire                when_axi4ddrgowin_l425;
+  wire       [3:0]    _zz_9;
+  wire                when_axi4ddrgowin_l430;
   wire                io_axi_w_fire;
-  wire                when_axi4ddrgowin_l413;
-  wire       [127:0]  _zz_io_axi_r_payload_data;
-  wire       [3:0]    _zz_6;
-  wire                _zz_7;
-  wire                _zz_8;
-  wire                _zz_9;
-  wire                _zz_10;
+  wire                when_axi4ddrgowin_l432;
+  wire       [255:0]  _zz_io_axi_r_payload_data;
+  wire       [3:0]    _zz_10;
+  wire                _zz_11;
+  wire                _zz_12;
+  wire                _zz_13;
+  wire                _zz_14;
   wire       [7:0]    _zz_sys_area_cache_data_0;
-  wire                when_axi4ddrgowin_l413_1;
+  wire                when_axi4ddrgowin_l432_1;
   wire       [7:0]    _zz_sys_area_cache_data_0_1;
-  wire                when_axi4ddrgowin_l413_2;
+  wire                when_axi4ddrgowin_l432_2;
   wire       [7:0]    _zz_sys_area_cache_data_0_2;
-  wire                when_axi4ddrgowin_l413_3;
+  wire                when_axi4ddrgowin_l432_3;
   wire       [7:0]    _zz_sys_area_cache_data_0_3;
-  wire                when_axi4ddrgowin_l411_1;
-  wire                when_axi4ddrgowin_l413_4;
+  wire                when_axi4ddrgowin_l430_1;
+  wire                when_axi4ddrgowin_l432_4;
   wire       [7:0]    _zz_sys_area_cache_data_0_4;
-  wire                when_axi4ddrgowin_l413_5;
+  wire                when_axi4ddrgowin_l432_5;
   wire       [7:0]    _zz_sys_area_cache_data_0_5;
-  wire                when_axi4ddrgowin_l413_6;
+  wire                when_axi4ddrgowin_l432_6;
   wire       [7:0]    _zz_sys_area_cache_data_0_6;
-  wire                when_axi4ddrgowin_l413_7;
+  wire                when_axi4ddrgowin_l432_7;
   wire       [7:0]    _zz_sys_area_cache_data_0_7;
-  wire                when_axi4ddrgowin_l411_2;
-  wire                when_axi4ddrgowin_l413_8;
+  wire                when_axi4ddrgowin_l430_2;
+  wire                when_axi4ddrgowin_l432_8;
   wire       [7:0]    _zz_sys_area_cache_data_0_8;
-  wire                when_axi4ddrgowin_l413_9;
+  wire                when_axi4ddrgowin_l432_9;
   wire       [7:0]    _zz_sys_area_cache_data_0_9;
-  wire                when_axi4ddrgowin_l413_10;
+  wire                when_axi4ddrgowin_l432_10;
   wire       [7:0]    _zz_sys_area_cache_data_0_10;
-  wire                when_axi4ddrgowin_l413_11;
+  wire                when_axi4ddrgowin_l432_11;
   wire       [7:0]    _zz_sys_area_cache_data_0_11;
-  wire                when_axi4ddrgowin_l411_3;
-  wire                when_axi4ddrgowin_l413_12;
+  wire                when_axi4ddrgowin_l430_3;
+  wire                when_axi4ddrgowin_l432_12;
   wire       [7:0]    _zz_sys_area_cache_data_0_12;
-  wire                when_axi4ddrgowin_l413_13;
+  wire                when_axi4ddrgowin_l432_13;
   wire       [7:0]    _zz_sys_area_cache_data_0_13;
-  wire                when_axi4ddrgowin_l413_14;
+  wire                when_axi4ddrgowin_l432_14;
   wire       [7:0]    _zz_sys_area_cache_data_0_14;
-  wire                when_axi4ddrgowin_l413_15;
+  wire                when_axi4ddrgowin_l432_15;
   wire       [7:0]    _zz_sys_area_cache_data_0_15;
+  wire                when_axi4ddrgowin_l430_4;
+  wire                when_axi4ddrgowin_l432_16;
+  wire       [7:0]    _zz_sys_area_cache_data_0_16;
+  wire                when_axi4ddrgowin_l432_17;
+  wire       [7:0]    _zz_sys_area_cache_data_0_17;
+  wire                when_axi4ddrgowin_l432_18;
+  wire       [7:0]    _zz_sys_area_cache_data_0_18;
+  wire                when_axi4ddrgowin_l432_19;
+  wire       [7:0]    _zz_sys_area_cache_data_0_19;
+  wire                when_axi4ddrgowin_l430_5;
+  wire                when_axi4ddrgowin_l432_20;
+  wire       [7:0]    _zz_sys_area_cache_data_0_20;
+  wire                when_axi4ddrgowin_l432_21;
+  wire       [7:0]    _zz_sys_area_cache_data_0_21;
+  wire                when_axi4ddrgowin_l432_22;
+  wire       [7:0]    _zz_sys_area_cache_data_0_22;
+  wire                when_axi4ddrgowin_l432_23;
+  wire       [7:0]    _zz_sys_area_cache_data_0_23;
+  wire                when_axi4ddrgowin_l430_6;
+  wire                when_axi4ddrgowin_l432_24;
+  wire       [7:0]    _zz_sys_area_cache_data_0_24;
+  wire                when_axi4ddrgowin_l432_25;
+  wire       [7:0]    _zz_sys_area_cache_data_0_25;
+  wire                when_axi4ddrgowin_l432_26;
+  wire       [7:0]    _zz_sys_area_cache_data_0_26;
+  wire                when_axi4ddrgowin_l432_27;
+  wire       [7:0]    _zz_sys_area_cache_data_0_27;
+  wire                when_axi4ddrgowin_l430_7;
+  wire                when_axi4ddrgowin_l432_28;
+  wire       [7:0]    _zz_sys_area_cache_data_0_28;
+  wire                when_axi4ddrgowin_l432_29;
+  wire       [7:0]    _zz_sys_area_cache_data_0_29;
+  wire                when_axi4ddrgowin_l432_30;
+  wire       [7:0]    _zz_sys_area_cache_data_0_30;
+  wire                when_axi4ddrgowin_l432_31;
+  wire       [7:0]    _zz_sys_area_cache_data_0_31;
   wire                io_axi_b_fire;
   reg                 sys_area_read_response_valid;
-  wire                when_axi4ddrgowin_l439;
-  wire                when_axi4ddrgowin_l441;
-  wire                when_axi4ddrgowin_l441_1;
-  wire                when_axi4ddrgowin_l441_2;
-  wire                when_axi4ddrgowin_l441_3;
+  wire                when_axi4ddrgowin_l458;
+  wire                when_axi4ddrgowin_l460;
+  wire                when_axi4ddrgowin_l460_1;
+  wire                when_axi4ddrgowin_l460_2;
+  wire                when_axi4ddrgowin_l460_3;
+  wire                when_axi4ddrgowin_l460_4;
+  wire                when_axi4ddrgowin_l460_5;
+  wire                when_axi4ddrgowin_l460_6;
+  wire                when_axi4ddrgowin_l460_7;
   wire                io_axi_r_fire;
   `ifndef SYNTHESIS
   reg [39:0] io_ddr_cmd_payload_cmdtype_string;
@@ -12340,25 +12419,30 @@ module Axi4DdrWithCache (
   always @(*) begin
     case(sys_area_lru_counter)
       2'b00 : begin
-        _zz__zz_sys_area_ddr_cmd_payload_wr_mask = sys_area_cache_dirty_0;
+        _zz_sys_area_dirty = sys_area_cache_dirty_0;
         _zz_sys_area_ddr_cmd_payload_addr = sys_area_cache_addr_0;
-        _zz_sys_area_ddr_cmd_payload_wr_data = sys_area_cache_data_0;
       end
       2'b01 : begin
-        _zz__zz_sys_area_ddr_cmd_payload_wr_mask = sys_area_cache_dirty_1;
+        _zz_sys_area_dirty = sys_area_cache_dirty_1;
         _zz_sys_area_ddr_cmd_payload_addr = sys_area_cache_addr_1;
-        _zz_sys_area_ddr_cmd_payload_wr_data = sys_area_cache_data_1;
       end
       2'b10 : begin
-        _zz__zz_sys_area_ddr_cmd_payload_wr_mask = sys_area_cache_dirty_2;
+        _zz_sys_area_dirty = sys_area_cache_dirty_2;
         _zz_sys_area_ddr_cmd_payload_addr = sys_area_cache_addr_2;
-        _zz_sys_area_ddr_cmd_payload_wr_data = sys_area_cache_data_2;
       end
       default : begin
-        _zz__zz_sys_area_ddr_cmd_payload_wr_mask = sys_area_cache_dirty_3;
+        _zz_sys_area_dirty = sys_area_cache_dirty_3;
         _zz_sys_area_ddr_cmd_payload_addr = sys_area_cache_addr_3;
-        _zz_sys_area_ddr_cmd_payload_wr_data = sys_area_cache_data_3;
       end
+    endcase
+  end
+
+  always @(*) begin
+    case(sys_area_ddr_read_page)
+      2'b00 : _zz__zz_sys_area_ddr_cmd_payload_wr_data = sys_area_cache_data_0;
+      2'b01 : _zz__zz_sys_area_ddr_cmd_payload_wr_data = sys_area_cache_data_1;
+      2'b10 : _zz__zz_sys_area_ddr_cmd_payload_wr_data = sys_area_cache_data_2;
+      default : _zz__zz_sys_area_ddr_cmd_payload_wr_data = sys_area_cache_data_3;
     endcase
   end
 
@@ -12496,11 +12580,11 @@ module Axi4DdrWithCache (
   assign when_Axi4Channel_l323 = (io_axi_arw_payload_len != 8'h0);
   assign unburstify_result_fire = (unburstify_result_valid && unburstify_result_ready);
   assign unburstify_result_ready = sys_area_arwcmd_free;
-  assign sys_area_current_page_tag = sys_area_arwcmd_fragment_addr[27 : 4];
-  assign sys_area_page_hit_vec_0 = (sys_area_cache_valid_0 && (sys_area_cache_addr_0[27 : 4] == sys_area_current_page_tag));
-  assign sys_area_page_hit_vec_1 = (sys_area_cache_valid_1 && (sys_area_cache_addr_1[27 : 4] == sys_area_current_page_tag));
-  assign sys_area_page_hit_vec_2 = (sys_area_cache_valid_2 && (sys_area_cache_addr_2[27 : 4] == sys_area_current_page_tag));
-  assign sys_area_page_hit_vec_3 = (sys_area_cache_valid_3 && (sys_area_cache_addr_3[27 : 4] == sys_area_current_page_tag));
+  assign sys_area_current_page_tag = sys_area_arwcmd_fragment_addr[27 : 5];
+  assign sys_area_page_hit_vec_0 = (sys_area_cache_valid_0 && (sys_area_cache_addr_0[27 : 5] == sys_area_current_page_tag));
+  assign sys_area_page_hit_vec_1 = (sys_area_cache_valid_1 && (sys_area_cache_addr_1[27 : 5] == sys_area_current_page_tag));
+  assign sys_area_page_hit_vec_2 = (sys_area_cache_valid_2 && (sys_area_cache_addr_2[27 : 5] == sys_area_current_page_tag));
+  assign sys_area_page_hit_vec_3 = (sys_area_cache_valid_3 && (sys_area_cache_addr_3[27 : 5] == sys_area_current_page_tag));
   assign sys_area_hit_any = (|{sys_area_page_hit_vec_3,{sys_area_page_hit_vec_2,{sys_area_page_hit_vec_1,sys_area_page_hit_vec_0}}});
   assign _zz_sys_area_hit_index = (sys_area_page_hit_vec_1 || sys_area_page_hit_vec_3);
   assign _zz_sys_area_hit_index_1 = (sys_area_page_hit_vec_2 || sys_area_page_hit_vec_3);
@@ -12516,12 +12600,12 @@ module Axi4DdrWithCache (
   assign io_ddr_rsp_ready = 1'b1;
   always @(*) begin
     sys_area_ddr_cmd_payload_addr = 28'h0;
-    if(when_axi4ddrgowin_l358) begin
-      if(when_axi4ddrgowin_l360) begin
-        sys_area_ddr_cmd_payload_addr = {_zz_sys_area_ddr_cmd_payload_addr[27 : 4],4'b0000};
+    if(when_axi4ddrgowin_l361) begin
+      if(when_axi4ddrgowin_l362) begin
+        sys_area_ddr_cmd_payload_addr = {_zz_sys_area_ddr_cmd_payload_addr[27 : 5],5'h0};
       end else begin
-        if(when_axi4ddrgowin_l371) begin
-          sys_area_ddr_cmd_payload_addr = {sys_area_arwcmd_fragment_addr[27 : 4],4'b0000};
+        if(when_axi4ddrgowin_l382) begin
+          sys_area_ddr_cmd_payload_addr = {sys_area_arwcmd_fragment_addr[27 : 5],5'h0};
         end
       end
     end
@@ -12529,99 +12613,151 @@ module Axi4DdrWithCache (
 
   always @(*) begin
     sys_area_ddr_cmd_payload_cmdtype = Axi4Ddr_CMDTYPE_write;
-    if(when_axi4ddrgowin_l358) begin
-      if(when_axi4ddrgowin_l360) begin
+    if(when_axi4ddrgowin_l361) begin
+      if(when_axi4ddrgowin_l362) begin
         sys_area_ddr_cmd_payload_cmdtype = Axi4Ddr_CMDTYPE_write;
       end else begin
-        if(when_axi4ddrgowin_l371) begin
+        if(when_axi4ddrgowin_l382) begin
           sys_area_ddr_cmd_payload_cmdtype = Axi4Ddr_CMDTYPE_read;
         end
       end
     end
   end
 
-  assign sys_area_ddr_cmd_payload_burst_cnt = 6'h0;
+  assign sys_area_ddr_cmd_payload_burst_cnt = 6'h01;
   always @(*) begin
     sys_area_ddr_cmd_payload_wr_data = 128'h0;
-    if(when_axi4ddrgowin_l358) begin
-      if(when_axi4ddrgowin_l360) begin
-        sys_area_ddr_cmd_payload_wr_data = _zz_sys_area_ddr_cmd_payload_wr_data;
+    if(when_axi4ddrgowin_l361) begin
+      if(when_axi4ddrgowin_l362) begin
+        if(when_axi4ddrgowin_l365) begin
+          sys_area_ddr_cmd_payload_wr_data = _zz_sys_area_ddr_cmd_payload_wr_data[127 : 0];
+        end
+        if(when_axi4ddrgowin_l365_1) begin
+          sys_area_ddr_cmd_payload_wr_data = _zz_sys_area_ddr_cmd_payload_wr_data[255 : 128];
+        end
       end
     end
   end
 
   always @(*) begin
     sys_area_ddr_cmd_payload_wr_mask = 16'h0;
-    if(when_axi4ddrgowin_l358) begin
-      if(when_axi4ddrgowin_l360) begin
-        sys_area_ddr_cmd_payload_wr_mask = (_zz_sys_area_ddr_cmd_payload_wr_mask ? 16'h0 : 16'hffff);
+    if(when_axi4ddrgowin_l361) begin
+      if(when_axi4ddrgowin_l362) begin
+        sys_area_ddr_cmd_payload_wr_mask = (sys_area_dirty ? 16'h0 : 16'hffff);
       end
     end
   end
 
   assign sys_area_ddr_cmd_payload_context = 1'b0;
-  assign when_axi4ddrgowin_l358 = ((sys_area_arwcmd_free == 1'b0) && sys_area_miss);
-  assign _zz_sys_area_ddr_cmd_payload_wr_mask = _zz__zz_sys_area_ddr_cmd_payload_wr_mask;
-  assign when_axi4ddrgowin_l360 = (_zz_sys_area_ddr_cmd_payload_wr_mask && (! sys_area_ddr_write_pending));
-  assign _zz_1 = ({3'd0,1'b1} <<< sys_area_lru_counter);
+  assign sys_area_dirty = _zz_sys_area_dirty;
+  assign when_axi4ddrgowin_l361 = ((sys_area_arwcmd_free == 1'b0) && sys_area_miss);
+  assign when_axi4ddrgowin_l362 = (sys_area_dirty && (! sys_area_ddr_write_pending));
+  assign when_axi4ddrgowin_l365 = (1'b0 == sys_area_write_burst_counter);
+  assign _zz_sys_area_ddr_cmd_payload_wr_data = _zz__zz_sys_area_ddr_cmd_payload_wr_data;
+  assign _zz_1 = ({3'd0,1'b1} <<< sys_area_ddr_read_page);
+  assign _zz_2 = _zz_1[0];
+  assign _zz_3 = _zz_1[1];
+  assign _zz_4 = _zz_1[2];
+  assign _zz_5 = _zz_1[3];
+  assign when_axi4ddrgowin_l365_1 = (1'b1 == sys_area_write_burst_counter);
+  assign _zz_6 = ({3'd0,1'b1} <<< sys_area_lru_counter);
   assign io_ddr_cmd_fire = (io_ddr_cmd_valid && io_ddr_cmd_ready);
-  assign _zz_sys_area_cache_addr_0 = {sys_area_arwcmd_fragment_addr[27 : 4],4'b0000};
-  assign _zz_2 = ({3'd0,1'b1} <<< sys_area_lru_counter);
-  assign when_axi4ddrgowin_l371 = (! sys_area_ddr_read_pending);
+  assign when_axi4ddrgowin_l374 = (sys_area_write_burst_counter == 1'b1);
+  assign _zz_sys_area_cache_addr_0 = {sys_area_arwcmd_fragment_addr[27 : 5],5'h0};
+  assign _zz_7 = ({3'd0,1'b1} <<< sys_area_lru_counter);
+  assign when_axi4ddrgowin_l382 = (! sys_area_ddr_read_pending);
   assign io_ddr_rsp_fire = (io_ddr_rsp_valid && io_ddr_rsp_ready);
-  assign when_axi4ddrgowin_l386 = (io_ddr_rsp_fire && sys_area_ddr_read_pending);
-  assign _zz_3 = ({3'd0,1'b1} <<< sys_area_ddr_read_page);
-  assign _zz_4 = ({3'd0,1'b1} <<< sys_area_ddr_read_page);
-  assign when_axi4ddrgowin_l394 = (io_ddr_cmd_fire && sys_area_ddr_write_pending);
+  assign when_axi4ddrgowin_l397 = (io_ddr_rsp_fire && sys_area_ddr_read_pending);
+  assign when_axi4ddrgowin_l399 = (1'b0 == sys_area_read_burst_counter);
+  assign when_axi4ddrgowin_l399_1 = (1'b1 == sys_area_read_burst_counter);
+  assign when_axi4ddrgowin_l404 = (sys_area_read_burst_counter == 1'b1);
+  assign _zz_8 = ({3'd0,1'b1} <<< sys_area_ddr_read_page);
+  assign when_axi4ddrgowin_l413 = (io_ddr_cmd_fire && sys_area_ddr_write_pending);
   assign io_axi_w_ready = sys_area_write_data_ready;
   assign io_axi_b_valid = sys_area_write_response_valid;
   assign io_axi_b_payload_id = sys_area_arwcmd_fragment_id;
   assign io_axi_b_payload_resp = 2'b00;
-  assign when_axi4ddrgowin_l406 = ((sys_area_hit_any && sys_area_arwcmd_fragment_write) && (sys_area_arwcmd_free == 1'b0));
-  assign _zz_5 = ({3'd0,1'b1} <<< sys_area_hit_index);
-  assign when_axi4ddrgowin_l411 = (sys_area_arwcmd_fragment_addr[3 : 2] == 2'b00);
+  assign when_axi4ddrgowin_l425 = ((sys_area_hit_any && sys_area_arwcmd_fragment_write) && (sys_area_arwcmd_free == 1'b0));
+  assign _zz_9 = ({3'd0,1'b1} <<< sys_area_hit_index);
+  assign when_axi4ddrgowin_l430 = (sys_area_arwcmd_fragment_addr[4 : 2] == 3'b000);
   assign io_axi_w_fire = (io_axi_w_valid && io_axi_w_ready);
-  assign when_axi4ddrgowin_l413 = (io_axi_w_payload_strb[0] && io_axi_w_fire);
+  assign when_axi4ddrgowin_l432 = (io_axi_w_payload_strb[0] && io_axi_w_fire);
   assign _zz_io_axi_r_payload_data = _zz__zz_io_axi_r_payload_data;
-  assign _zz_6 = ({3'd0,1'b1} <<< sys_area_hit_index);
-  assign _zz_7 = _zz_6[0];
-  assign _zz_8 = _zz_6[1];
-  assign _zz_9 = _zz_6[2];
-  assign _zz_10 = _zz_6[3];
+  assign _zz_10 = ({3'd0,1'b1} <<< sys_area_hit_index);
+  assign _zz_11 = _zz_10[0];
+  assign _zz_12 = _zz_10[1];
+  assign _zz_13 = _zz_10[2];
+  assign _zz_14 = _zz_10[3];
   assign _zz_sys_area_cache_data_0 = io_axi_w_payload_data[7 : 0];
-  assign when_axi4ddrgowin_l413_1 = (io_axi_w_payload_strb[1] && io_axi_w_fire);
+  assign when_axi4ddrgowin_l432_1 = (io_axi_w_payload_strb[1] && io_axi_w_fire);
   assign _zz_sys_area_cache_data_0_1 = io_axi_w_payload_data[15 : 8];
-  assign when_axi4ddrgowin_l413_2 = (io_axi_w_payload_strb[2] && io_axi_w_fire);
+  assign when_axi4ddrgowin_l432_2 = (io_axi_w_payload_strb[2] && io_axi_w_fire);
   assign _zz_sys_area_cache_data_0_2 = io_axi_w_payload_data[23 : 16];
-  assign when_axi4ddrgowin_l413_3 = (io_axi_w_payload_strb[3] && io_axi_w_fire);
+  assign when_axi4ddrgowin_l432_3 = (io_axi_w_payload_strb[3] && io_axi_w_fire);
   assign _zz_sys_area_cache_data_0_3 = io_axi_w_payload_data[31 : 24];
-  assign when_axi4ddrgowin_l411_1 = (sys_area_arwcmd_fragment_addr[3 : 2] == 2'b01);
-  assign when_axi4ddrgowin_l413_4 = (io_axi_w_payload_strb[0] && io_axi_w_fire);
+  assign when_axi4ddrgowin_l430_1 = (sys_area_arwcmd_fragment_addr[4 : 2] == 3'b001);
+  assign when_axi4ddrgowin_l432_4 = (io_axi_w_payload_strb[0] && io_axi_w_fire);
   assign _zz_sys_area_cache_data_0_4 = io_axi_w_payload_data[7 : 0];
-  assign when_axi4ddrgowin_l413_5 = (io_axi_w_payload_strb[1] && io_axi_w_fire);
+  assign when_axi4ddrgowin_l432_5 = (io_axi_w_payload_strb[1] && io_axi_w_fire);
   assign _zz_sys_area_cache_data_0_5 = io_axi_w_payload_data[15 : 8];
-  assign when_axi4ddrgowin_l413_6 = (io_axi_w_payload_strb[2] && io_axi_w_fire);
+  assign when_axi4ddrgowin_l432_6 = (io_axi_w_payload_strb[2] && io_axi_w_fire);
   assign _zz_sys_area_cache_data_0_6 = io_axi_w_payload_data[23 : 16];
-  assign when_axi4ddrgowin_l413_7 = (io_axi_w_payload_strb[3] && io_axi_w_fire);
+  assign when_axi4ddrgowin_l432_7 = (io_axi_w_payload_strb[3] && io_axi_w_fire);
   assign _zz_sys_area_cache_data_0_7 = io_axi_w_payload_data[31 : 24];
-  assign when_axi4ddrgowin_l411_2 = (sys_area_arwcmd_fragment_addr[3 : 2] == 2'b10);
-  assign when_axi4ddrgowin_l413_8 = (io_axi_w_payload_strb[0] && io_axi_w_fire);
+  assign when_axi4ddrgowin_l430_2 = (sys_area_arwcmd_fragment_addr[4 : 2] == 3'b010);
+  assign when_axi4ddrgowin_l432_8 = (io_axi_w_payload_strb[0] && io_axi_w_fire);
   assign _zz_sys_area_cache_data_0_8 = io_axi_w_payload_data[7 : 0];
-  assign when_axi4ddrgowin_l413_9 = (io_axi_w_payload_strb[1] && io_axi_w_fire);
+  assign when_axi4ddrgowin_l432_9 = (io_axi_w_payload_strb[1] && io_axi_w_fire);
   assign _zz_sys_area_cache_data_0_9 = io_axi_w_payload_data[15 : 8];
-  assign when_axi4ddrgowin_l413_10 = (io_axi_w_payload_strb[2] && io_axi_w_fire);
+  assign when_axi4ddrgowin_l432_10 = (io_axi_w_payload_strb[2] && io_axi_w_fire);
   assign _zz_sys_area_cache_data_0_10 = io_axi_w_payload_data[23 : 16];
-  assign when_axi4ddrgowin_l413_11 = (io_axi_w_payload_strb[3] && io_axi_w_fire);
+  assign when_axi4ddrgowin_l432_11 = (io_axi_w_payload_strb[3] && io_axi_w_fire);
   assign _zz_sys_area_cache_data_0_11 = io_axi_w_payload_data[31 : 24];
-  assign when_axi4ddrgowin_l411_3 = (sys_area_arwcmd_fragment_addr[3 : 2] == 2'b11);
-  assign when_axi4ddrgowin_l413_12 = (io_axi_w_payload_strb[0] && io_axi_w_fire);
+  assign when_axi4ddrgowin_l430_3 = (sys_area_arwcmd_fragment_addr[4 : 2] == 3'b011);
+  assign when_axi4ddrgowin_l432_12 = (io_axi_w_payload_strb[0] && io_axi_w_fire);
   assign _zz_sys_area_cache_data_0_12 = io_axi_w_payload_data[7 : 0];
-  assign when_axi4ddrgowin_l413_13 = (io_axi_w_payload_strb[1] && io_axi_w_fire);
+  assign when_axi4ddrgowin_l432_13 = (io_axi_w_payload_strb[1] && io_axi_w_fire);
   assign _zz_sys_area_cache_data_0_13 = io_axi_w_payload_data[15 : 8];
-  assign when_axi4ddrgowin_l413_14 = (io_axi_w_payload_strb[2] && io_axi_w_fire);
+  assign when_axi4ddrgowin_l432_14 = (io_axi_w_payload_strb[2] && io_axi_w_fire);
   assign _zz_sys_area_cache_data_0_14 = io_axi_w_payload_data[23 : 16];
-  assign when_axi4ddrgowin_l413_15 = (io_axi_w_payload_strb[3] && io_axi_w_fire);
+  assign when_axi4ddrgowin_l432_15 = (io_axi_w_payload_strb[3] && io_axi_w_fire);
   assign _zz_sys_area_cache_data_0_15 = io_axi_w_payload_data[31 : 24];
+  assign when_axi4ddrgowin_l430_4 = (sys_area_arwcmd_fragment_addr[4 : 2] == 3'b100);
+  assign when_axi4ddrgowin_l432_16 = (io_axi_w_payload_strb[0] && io_axi_w_fire);
+  assign _zz_sys_area_cache_data_0_16 = io_axi_w_payload_data[7 : 0];
+  assign when_axi4ddrgowin_l432_17 = (io_axi_w_payload_strb[1] && io_axi_w_fire);
+  assign _zz_sys_area_cache_data_0_17 = io_axi_w_payload_data[15 : 8];
+  assign when_axi4ddrgowin_l432_18 = (io_axi_w_payload_strb[2] && io_axi_w_fire);
+  assign _zz_sys_area_cache_data_0_18 = io_axi_w_payload_data[23 : 16];
+  assign when_axi4ddrgowin_l432_19 = (io_axi_w_payload_strb[3] && io_axi_w_fire);
+  assign _zz_sys_area_cache_data_0_19 = io_axi_w_payload_data[31 : 24];
+  assign when_axi4ddrgowin_l430_5 = (sys_area_arwcmd_fragment_addr[4 : 2] == 3'b101);
+  assign when_axi4ddrgowin_l432_20 = (io_axi_w_payload_strb[0] && io_axi_w_fire);
+  assign _zz_sys_area_cache_data_0_20 = io_axi_w_payload_data[7 : 0];
+  assign when_axi4ddrgowin_l432_21 = (io_axi_w_payload_strb[1] && io_axi_w_fire);
+  assign _zz_sys_area_cache_data_0_21 = io_axi_w_payload_data[15 : 8];
+  assign when_axi4ddrgowin_l432_22 = (io_axi_w_payload_strb[2] && io_axi_w_fire);
+  assign _zz_sys_area_cache_data_0_22 = io_axi_w_payload_data[23 : 16];
+  assign when_axi4ddrgowin_l432_23 = (io_axi_w_payload_strb[3] && io_axi_w_fire);
+  assign _zz_sys_area_cache_data_0_23 = io_axi_w_payload_data[31 : 24];
+  assign when_axi4ddrgowin_l430_6 = (sys_area_arwcmd_fragment_addr[4 : 2] == 3'b110);
+  assign when_axi4ddrgowin_l432_24 = (io_axi_w_payload_strb[0] && io_axi_w_fire);
+  assign _zz_sys_area_cache_data_0_24 = io_axi_w_payload_data[7 : 0];
+  assign when_axi4ddrgowin_l432_25 = (io_axi_w_payload_strb[1] && io_axi_w_fire);
+  assign _zz_sys_area_cache_data_0_25 = io_axi_w_payload_data[15 : 8];
+  assign when_axi4ddrgowin_l432_26 = (io_axi_w_payload_strb[2] && io_axi_w_fire);
+  assign _zz_sys_area_cache_data_0_26 = io_axi_w_payload_data[23 : 16];
+  assign when_axi4ddrgowin_l432_27 = (io_axi_w_payload_strb[3] && io_axi_w_fire);
+  assign _zz_sys_area_cache_data_0_27 = io_axi_w_payload_data[31 : 24];
+  assign when_axi4ddrgowin_l430_7 = (sys_area_arwcmd_fragment_addr[4 : 2] == 3'b111);
+  assign when_axi4ddrgowin_l432_28 = (io_axi_w_payload_strb[0] && io_axi_w_fire);
+  assign _zz_sys_area_cache_data_0_28 = io_axi_w_payload_data[7 : 0];
+  assign when_axi4ddrgowin_l432_29 = (io_axi_w_payload_strb[1] && io_axi_w_fire);
+  assign _zz_sys_area_cache_data_0_29 = io_axi_w_payload_data[15 : 8];
+  assign when_axi4ddrgowin_l432_30 = (io_axi_w_payload_strb[2] && io_axi_w_fire);
+  assign _zz_sys_area_cache_data_0_30 = io_axi_w_payload_data[23 : 16];
+  assign when_axi4ddrgowin_l432_31 = (io_axi_w_payload_strb[3] && io_axi_w_fire);
+  assign _zz_sys_area_cache_data_0_31 = io_axi_w_payload_data[31 : 24];
   assign io_axi_b_fire = (io_axi_b_valid && io_axi_b_ready);
   assign io_axi_r_valid = sys_area_read_response_valid;
   assign io_axi_r_payload_id = sys_area_arwcmd_fragment_id;
@@ -12629,27 +12765,43 @@ module Axi4DdrWithCache (
   assign io_axi_r_payload_resp = 2'b00;
   always @(*) begin
     io_axi_r_payload_data = 32'h0;
-    if(when_axi4ddrgowin_l439) begin
-      if(when_axi4ddrgowin_l441) begin
+    if(when_axi4ddrgowin_l458) begin
+      if(when_axi4ddrgowin_l460) begin
         io_axi_r_payload_data = _zz_io_axi_r_payload_data[31 : 0];
       end
-      if(when_axi4ddrgowin_l441_1) begin
+      if(when_axi4ddrgowin_l460_1) begin
         io_axi_r_payload_data = _zz_io_axi_r_payload_data[63 : 32];
       end
-      if(when_axi4ddrgowin_l441_2) begin
+      if(when_axi4ddrgowin_l460_2) begin
         io_axi_r_payload_data = _zz_io_axi_r_payload_data[95 : 64];
       end
-      if(when_axi4ddrgowin_l441_3) begin
+      if(when_axi4ddrgowin_l460_3) begin
         io_axi_r_payload_data = _zz_io_axi_r_payload_data[127 : 96];
+      end
+      if(when_axi4ddrgowin_l460_4) begin
+        io_axi_r_payload_data = _zz_io_axi_r_payload_data[159 : 128];
+      end
+      if(when_axi4ddrgowin_l460_5) begin
+        io_axi_r_payload_data = _zz_io_axi_r_payload_data[191 : 160];
+      end
+      if(when_axi4ddrgowin_l460_6) begin
+        io_axi_r_payload_data = _zz_io_axi_r_payload_data[223 : 192];
+      end
+      if(when_axi4ddrgowin_l460_7) begin
+        io_axi_r_payload_data = _zz_io_axi_r_payload_data[255 : 224];
       end
     end
   end
 
-  assign when_axi4ddrgowin_l439 = ((sys_area_hit_any && (! sys_area_arwcmd_fragment_write)) && (sys_area_arwcmd_free == 1'b0));
-  assign when_axi4ddrgowin_l441 = (sys_area_arwcmd_fragment_addr[3 : 2] == 2'b00);
-  assign when_axi4ddrgowin_l441_1 = (sys_area_arwcmd_fragment_addr[3 : 2] == 2'b01);
-  assign when_axi4ddrgowin_l441_2 = (sys_area_arwcmd_fragment_addr[3 : 2] == 2'b10);
-  assign when_axi4ddrgowin_l441_3 = (sys_area_arwcmd_fragment_addr[3 : 2] == 2'b11);
+  assign when_axi4ddrgowin_l458 = ((sys_area_hit_any && (! sys_area_arwcmd_fragment_write)) && (sys_area_arwcmd_free == 1'b0));
+  assign when_axi4ddrgowin_l460 = (sys_area_arwcmd_fragment_addr[4 : 2] == 3'b000);
+  assign when_axi4ddrgowin_l460_1 = (sys_area_arwcmd_fragment_addr[4 : 2] == 3'b001);
+  assign when_axi4ddrgowin_l460_2 = (sys_area_arwcmd_fragment_addr[4 : 2] == 3'b010);
+  assign when_axi4ddrgowin_l460_3 = (sys_area_arwcmd_fragment_addr[4 : 2] == 3'b011);
+  assign when_axi4ddrgowin_l460_4 = (sys_area_arwcmd_fragment_addr[4 : 2] == 3'b100);
+  assign when_axi4ddrgowin_l460_5 = (sys_area_arwcmd_fragment_addr[4 : 2] == 3'b101);
+  assign when_axi4ddrgowin_l460_6 = (sys_area_arwcmd_fragment_addr[4 : 2] == 3'b110);
+  assign when_axi4ddrgowin_l460_7 = (sys_area_arwcmd_fragment_addr[4 : 2] == 3'b111);
   assign io_axi_r_fire = (io_axi_r_valid && io_axi_r_ready);
   always @(posedge clkout or posedge resetCtrl_axiReset) begin
     if(resetCtrl_axiReset) begin
@@ -12657,10 +12809,10 @@ module Axi4DdrWithCache (
       sys_area_cache_addr_1 <= 28'h0;
       sys_area_cache_addr_2 <= 28'h0;
       sys_area_cache_addr_3 <= 28'h0;
-      sys_area_cache_data_0 <= 128'h0;
-      sys_area_cache_data_1 <= 128'h0;
-      sys_area_cache_data_2 <= 128'h0;
-      sys_area_cache_data_3 <= 128'h0;
+      sys_area_cache_data_0 <= 256'h0;
+      sys_area_cache_data_1 <= 256'h0;
+      sys_area_cache_data_2 <= 256'h0;
+      sys_area_cache_data_3 <= 256'h0;
       sys_area_cache_dirty_0 <= 1'b0;
       sys_area_cache_dirty_1 <= 1'b0;
       sys_area_cache_dirty_2 <= 1'b0;
@@ -12675,6 +12827,8 @@ module Axi4DdrWithCache (
       sys_area_ddr_write_pending <= 1'b0;
       sys_area_ddr_read_pending <= 1'b0;
       sys_area_ddr_cmd_valid <= 1'b0;
+      sys_area_write_burst_counter <= 1'b0;
+      sys_area_read_burst_counter <= 1'b0;
       sys_area_write_data_ready <= 1'b0;
       sys_area_write_response_valid <= 1'b0;
       sys_area_read_response_valid <= 1'b0;
@@ -12694,318 +12848,575 @@ module Axi4DdrWithCache (
       if(unburstify_result_fire) begin
         sys_area_arwcmd_free <= 1'b0;
       end
-      if(when_axi4ddrgowin_l358) begin
-        if(when_axi4ddrgowin_l360) begin
+      if(when_axi4ddrgowin_l361) begin
+        if(when_axi4ddrgowin_l362) begin
           sys_area_ddr_cmd_valid <= (! io_ddr_cmd_fire);
           if(io_ddr_cmd_fire) begin
-            sys_area_ddr_write_pending <= 1'b1;
+            if(when_axi4ddrgowin_l374) begin
+              sys_area_ddr_write_pending <= 1'b1;
+              sys_area_write_burst_counter <= 1'b0;
+            end else begin
+              sys_area_write_burst_counter <= (sys_area_write_burst_counter + 1'b1);
+            end
           end
         end else begin
-          if(when_axi4ddrgowin_l371) begin
+          if(when_axi4ddrgowin_l382) begin
             sys_area_ddr_cmd_valid <= (! io_ddr_cmd_fire);
             if(io_ddr_cmd_fire) begin
               sys_area_ddr_read_pending <= 1'b1;
-              if(_zz_1[0]) begin
+              if(_zz_6[0]) begin
                 sys_area_cache_addr_0 <= _zz_sys_area_cache_addr_0;
               end
-              if(_zz_1[1]) begin
+              if(_zz_6[1]) begin
                 sys_area_cache_addr_1 <= _zz_sys_area_cache_addr_0;
               end
-              if(_zz_1[2]) begin
+              if(_zz_6[2]) begin
                 sys_area_cache_addr_2 <= _zz_sys_area_cache_addr_0;
               end
-              if(_zz_1[3]) begin
+              if(_zz_6[3]) begin
                 sys_area_cache_addr_3 <= _zz_sys_area_cache_addr_0;
               end
-              if(_zz_2[0]) begin
+              if(_zz_7[0]) begin
                 sys_area_cache_valid_0 <= 1'b1;
               end
-              if(_zz_2[1]) begin
+              if(_zz_7[1]) begin
                 sys_area_cache_valid_1 <= 1'b1;
               end
-              if(_zz_2[2]) begin
+              if(_zz_7[2]) begin
                 sys_area_cache_valid_2 <= 1'b1;
               end
-              if(_zz_2[3]) begin
+              if(_zz_7[3]) begin
                 sys_area_cache_valid_3 <= 1'b1;
               end
             end
           end
         end
       end
-      if(when_axi4ddrgowin_l386) begin
-        if(_zz_3[0]) begin
-          sys_area_cache_data_0 <= io_ddr_rsp_payload_rsp_data;
+      if(when_axi4ddrgowin_l397) begin
+        if(when_axi4ddrgowin_l399) begin
+          if(_zz_2) begin
+            sys_area_cache_data_0[127 : 0] <= io_ddr_rsp_payload_rsp_data;
+          end
+          if(_zz_3) begin
+            sys_area_cache_data_1[127 : 0] <= io_ddr_rsp_payload_rsp_data;
+          end
+          if(_zz_4) begin
+            sys_area_cache_data_2[127 : 0] <= io_ddr_rsp_payload_rsp_data;
+          end
+          if(_zz_5) begin
+            sys_area_cache_data_3[127 : 0] <= io_ddr_rsp_payload_rsp_data;
+          end
         end
-        if(_zz_3[1]) begin
-          sys_area_cache_data_1 <= io_ddr_rsp_payload_rsp_data;
+        if(when_axi4ddrgowin_l399_1) begin
+          if(_zz_2) begin
+            sys_area_cache_data_0[255 : 128] <= io_ddr_rsp_payload_rsp_data;
+          end
+          if(_zz_3) begin
+            sys_area_cache_data_1[255 : 128] <= io_ddr_rsp_payload_rsp_data;
+          end
+          if(_zz_4) begin
+            sys_area_cache_data_2[255 : 128] <= io_ddr_rsp_payload_rsp_data;
+          end
+          if(_zz_5) begin
+            sys_area_cache_data_3[255 : 128] <= io_ddr_rsp_payload_rsp_data;
+          end
         end
-        if(_zz_3[2]) begin
-          sys_area_cache_data_2 <= io_ddr_rsp_payload_rsp_data;
+        sys_area_read_burst_counter <= (sys_area_read_burst_counter + 1'b1);
+        if(when_axi4ddrgowin_l404) begin
+          if(_zz_8[0]) begin
+            sys_area_cache_dirty_0 <= 1'b0;
+          end
+          if(_zz_8[1]) begin
+            sys_area_cache_dirty_1 <= 1'b0;
+          end
+          if(_zz_8[2]) begin
+            sys_area_cache_dirty_2 <= 1'b0;
+          end
+          if(_zz_8[3]) begin
+            sys_area_cache_dirty_3 <= 1'b0;
+          end
+          sys_area_ddr_read_pending <= 1'b0;
+          sys_area_read_burst_counter <= 1'b0;
+          sys_area_lru_counter <= (sys_area_lru_counter + 2'b01);
         end
-        if(_zz_3[3]) begin
-          sys_area_cache_data_3 <= io_ddr_rsp_payload_rsp_data;
-        end
-        if(_zz_4[0]) begin
-          sys_area_cache_dirty_0 <= 1'b0;
-        end
-        if(_zz_4[1]) begin
-          sys_area_cache_dirty_1 <= 1'b0;
-        end
-        if(_zz_4[2]) begin
-          sys_area_cache_dirty_2 <= 1'b0;
-        end
-        if(_zz_4[3]) begin
-          sys_area_cache_dirty_3 <= 1'b0;
-        end
-        sys_area_ddr_read_pending <= 1'b0;
-        sys_area_lru_counter <= (sys_area_lru_counter + 2'b01);
       end
-      if(when_axi4ddrgowin_l394) begin
+      if(when_axi4ddrgowin_l413) begin
         sys_area_ddr_write_pending <= 1'b0;
       end
-      if(when_axi4ddrgowin_l406) begin
-        if(_zz_5[0]) begin
+      if(when_axi4ddrgowin_l425) begin
+        if(_zz_9[0]) begin
           sys_area_cache_dirty_0 <= 1'b1;
         end
-        if(_zz_5[1]) begin
+        if(_zz_9[1]) begin
           sys_area_cache_dirty_1 <= 1'b1;
         end
-        if(_zz_5[2]) begin
+        if(_zz_9[2]) begin
           sys_area_cache_dirty_2 <= 1'b1;
         end
-        if(_zz_5[3]) begin
+        if(_zz_9[3]) begin
           sys_area_cache_dirty_3 <= 1'b1;
         end
-        if(when_axi4ddrgowin_l411) begin
-          if(when_axi4ddrgowin_l413) begin
-            if(_zz_7) begin
+        if(when_axi4ddrgowin_l430) begin
+          if(when_axi4ddrgowin_l432) begin
+            if(_zz_11) begin
               sys_area_cache_data_0[7 : 0] <= _zz_sys_area_cache_data_0;
             end
-            if(_zz_8) begin
+            if(_zz_12) begin
               sys_area_cache_data_1[7 : 0] <= _zz_sys_area_cache_data_0;
             end
-            if(_zz_9) begin
+            if(_zz_13) begin
               sys_area_cache_data_2[7 : 0] <= _zz_sys_area_cache_data_0;
             end
-            if(_zz_10) begin
+            if(_zz_14) begin
               sys_area_cache_data_3[7 : 0] <= _zz_sys_area_cache_data_0;
             end
           end
-          if(when_axi4ddrgowin_l413_1) begin
-            if(_zz_7) begin
+          if(when_axi4ddrgowin_l432_1) begin
+            if(_zz_11) begin
               sys_area_cache_data_0[15 : 8] <= _zz_sys_area_cache_data_0_1;
             end
-            if(_zz_8) begin
+            if(_zz_12) begin
               sys_area_cache_data_1[15 : 8] <= _zz_sys_area_cache_data_0_1;
             end
-            if(_zz_9) begin
+            if(_zz_13) begin
               sys_area_cache_data_2[15 : 8] <= _zz_sys_area_cache_data_0_1;
             end
-            if(_zz_10) begin
+            if(_zz_14) begin
               sys_area_cache_data_3[15 : 8] <= _zz_sys_area_cache_data_0_1;
             end
           end
-          if(when_axi4ddrgowin_l413_2) begin
-            if(_zz_7) begin
+          if(when_axi4ddrgowin_l432_2) begin
+            if(_zz_11) begin
               sys_area_cache_data_0[23 : 16] <= _zz_sys_area_cache_data_0_2;
             end
-            if(_zz_8) begin
+            if(_zz_12) begin
               sys_area_cache_data_1[23 : 16] <= _zz_sys_area_cache_data_0_2;
             end
-            if(_zz_9) begin
+            if(_zz_13) begin
               sys_area_cache_data_2[23 : 16] <= _zz_sys_area_cache_data_0_2;
             end
-            if(_zz_10) begin
+            if(_zz_14) begin
               sys_area_cache_data_3[23 : 16] <= _zz_sys_area_cache_data_0_2;
             end
           end
-          if(when_axi4ddrgowin_l413_3) begin
-            if(_zz_7) begin
+          if(when_axi4ddrgowin_l432_3) begin
+            if(_zz_11) begin
               sys_area_cache_data_0[31 : 24] <= _zz_sys_area_cache_data_0_3;
             end
-            if(_zz_8) begin
+            if(_zz_12) begin
               sys_area_cache_data_1[31 : 24] <= _zz_sys_area_cache_data_0_3;
             end
-            if(_zz_9) begin
+            if(_zz_13) begin
               sys_area_cache_data_2[31 : 24] <= _zz_sys_area_cache_data_0_3;
             end
-            if(_zz_10) begin
+            if(_zz_14) begin
               sys_area_cache_data_3[31 : 24] <= _zz_sys_area_cache_data_0_3;
             end
           end
         end
-        if(when_axi4ddrgowin_l411_1) begin
-          if(when_axi4ddrgowin_l413_4) begin
-            if(_zz_7) begin
+        if(when_axi4ddrgowin_l430_1) begin
+          if(when_axi4ddrgowin_l432_4) begin
+            if(_zz_11) begin
               sys_area_cache_data_0[39 : 32] <= _zz_sys_area_cache_data_0_4;
             end
-            if(_zz_8) begin
+            if(_zz_12) begin
               sys_area_cache_data_1[39 : 32] <= _zz_sys_area_cache_data_0_4;
             end
-            if(_zz_9) begin
+            if(_zz_13) begin
               sys_area_cache_data_2[39 : 32] <= _zz_sys_area_cache_data_0_4;
             end
-            if(_zz_10) begin
+            if(_zz_14) begin
               sys_area_cache_data_3[39 : 32] <= _zz_sys_area_cache_data_0_4;
             end
           end
-          if(when_axi4ddrgowin_l413_5) begin
-            if(_zz_7) begin
+          if(when_axi4ddrgowin_l432_5) begin
+            if(_zz_11) begin
               sys_area_cache_data_0[47 : 40] <= _zz_sys_area_cache_data_0_5;
             end
-            if(_zz_8) begin
+            if(_zz_12) begin
               sys_area_cache_data_1[47 : 40] <= _zz_sys_area_cache_data_0_5;
             end
-            if(_zz_9) begin
+            if(_zz_13) begin
               sys_area_cache_data_2[47 : 40] <= _zz_sys_area_cache_data_0_5;
             end
-            if(_zz_10) begin
+            if(_zz_14) begin
               sys_area_cache_data_3[47 : 40] <= _zz_sys_area_cache_data_0_5;
             end
           end
-          if(when_axi4ddrgowin_l413_6) begin
-            if(_zz_7) begin
+          if(when_axi4ddrgowin_l432_6) begin
+            if(_zz_11) begin
               sys_area_cache_data_0[55 : 48] <= _zz_sys_area_cache_data_0_6;
             end
-            if(_zz_8) begin
+            if(_zz_12) begin
               sys_area_cache_data_1[55 : 48] <= _zz_sys_area_cache_data_0_6;
             end
-            if(_zz_9) begin
+            if(_zz_13) begin
               sys_area_cache_data_2[55 : 48] <= _zz_sys_area_cache_data_0_6;
             end
-            if(_zz_10) begin
+            if(_zz_14) begin
               sys_area_cache_data_3[55 : 48] <= _zz_sys_area_cache_data_0_6;
             end
           end
-          if(when_axi4ddrgowin_l413_7) begin
-            if(_zz_7) begin
+          if(when_axi4ddrgowin_l432_7) begin
+            if(_zz_11) begin
               sys_area_cache_data_0[63 : 56] <= _zz_sys_area_cache_data_0_7;
             end
-            if(_zz_8) begin
+            if(_zz_12) begin
               sys_area_cache_data_1[63 : 56] <= _zz_sys_area_cache_data_0_7;
             end
-            if(_zz_9) begin
+            if(_zz_13) begin
               sys_area_cache_data_2[63 : 56] <= _zz_sys_area_cache_data_0_7;
             end
-            if(_zz_10) begin
+            if(_zz_14) begin
               sys_area_cache_data_3[63 : 56] <= _zz_sys_area_cache_data_0_7;
             end
           end
         end
-        if(when_axi4ddrgowin_l411_2) begin
-          if(when_axi4ddrgowin_l413_8) begin
-            if(_zz_7) begin
+        if(when_axi4ddrgowin_l430_2) begin
+          if(when_axi4ddrgowin_l432_8) begin
+            if(_zz_11) begin
               sys_area_cache_data_0[71 : 64] <= _zz_sys_area_cache_data_0_8;
             end
-            if(_zz_8) begin
+            if(_zz_12) begin
               sys_area_cache_data_1[71 : 64] <= _zz_sys_area_cache_data_0_8;
             end
-            if(_zz_9) begin
+            if(_zz_13) begin
               sys_area_cache_data_2[71 : 64] <= _zz_sys_area_cache_data_0_8;
             end
-            if(_zz_10) begin
+            if(_zz_14) begin
               sys_area_cache_data_3[71 : 64] <= _zz_sys_area_cache_data_0_8;
             end
           end
-          if(when_axi4ddrgowin_l413_9) begin
-            if(_zz_7) begin
+          if(when_axi4ddrgowin_l432_9) begin
+            if(_zz_11) begin
               sys_area_cache_data_0[79 : 72] <= _zz_sys_area_cache_data_0_9;
             end
-            if(_zz_8) begin
+            if(_zz_12) begin
               sys_area_cache_data_1[79 : 72] <= _zz_sys_area_cache_data_0_9;
             end
-            if(_zz_9) begin
+            if(_zz_13) begin
               sys_area_cache_data_2[79 : 72] <= _zz_sys_area_cache_data_0_9;
             end
-            if(_zz_10) begin
+            if(_zz_14) begin
               sys_area_cache_data_3[79 : 72] <= _zz_sys_area_cache_data_0_9;
             end
           end
-          if(when_axi4ddrgowin_l413_10) begin
-            if(_zz_7) begin
+          if(when_axi4ddrgowin_l432_10) begin
+            if(_zz_11) begin
               sys_area_cache_data_0[87 : 80] <= _zz_sys_area_cache_data_0_10;
             end
-            if(_zz_8) begin
+            if(_zz_12) begin
               sys_area_cache_data_1[87 : 80] <= _zz_sys_area_cache_data_0_10;
             end
-            if(_zz_9) begin
+            if(_zz_13) begin
               sys_area_cache_data_2[87 : 80] <= _zz_sys_area_cache_data_0_10;
             end
-            if(_zz_10) begin
+            if(_zz_14) begin
               sys_area_cache_data_3[87 : 80] <= _zz_sys_area_cache_data_0_10;
             end
           end
-          if(when_axi4ddrgowin_l413_11) begin
-            if(_zz_7) begin
+          if(when_axi4ddrgowin_l432_11) begin
+            if(_zz_11) begin
               sys_area_cache_data_0[95 : 88] <= _zz_sys_area_cache_data_0_11;
             end
-            if(_zz_8) begin
+            if(_zz_12) begin
               sys_area_cache_data_1[95 : 88] <= _zz_sys_area_cache_data_0_11;
             end
-            if(_zz_9) begin
+            if(_zz_13) begin
               sys_area_cache_data_2[95 : 88] <= _zz_sys_area_cache_data_0_11;
             end
-            if(_zz_10) begin
+            if(_zz_14) begin
               sys_area_cache_data_3[95 : 88] <= _zz_sys_area_cache_data_0_11;
             end
           end
         end
-        if(when_axi4ddrgowin_l411_3) begin
-          if(when_axi4ddrgowin_l413_12) begin
-            if(_zz_7) begin
+        if(when_axi4ddrgowin_l430_3) begin
+          if(when_axi4ddrgowin_l432_12) begin
+            if(_zz_11) begin
               sys_area_cache_data_0[103 : 96] <= _zz_sys_area_cache_data_0_12;
             end
-            if(_zz_8) begin
+            if(_zz_12) begin
               sys_area_cache_data_1[103 : 96] <= _zz_sys_area_cache_data_0_12;
             end
-            if(_zz_9) begin
+            if(_zz_13) begin
               sys_area_cache_data_2[103 : 96] <= _zz_sys_area_cache_data_0_12;
             end
-            if(_zz_10) begin
+            if(_zz_14) begin
               sys_area_cache_data_3[103 : 96] <= _zz_sys_area_cache_data_0_12;
             end
           end
-          if(when_axi4ddrgowin_l413_13) begin
-            if(_zz_7) begin
+          if(when_axi4ddrgowin_l432_13) begin
+            if(_zz_11) begin
               sys_area_cache_data_0[111 : 104] <= _zz_sys_area_cache_data_0_13;
             end
-            if(_zz_8) begin
+            if(_zz_12) begin
               sys_area_cache_data_1[111 : 104] <= _zz_sys_area_cache_data_0_13;
             end
-            if(_zz_9) begin
+            if(_zz_13) begin
               sys_area_cache_data_2[111 : 104] <= _zz_sys_area_cache_data_0_13;
             end
-            if(_zz_10) begin
+            if(_zz_14) begin
               sys_area_cache_data_3[111 : 104] <= _zz_sys_area_cache_data_0_13;
             end
           end
-          if(when_axi4ddrgowin_l413_14) begin
-            if(_zz_7) begin
+          if(when_axi4ddrgowin_l432_14) begin
+            if(_zz_11) begin
               sys_area_cache_data_0[119 : 112] <= _zz_sys_area_cache_data_0_14;
             end
-            if(_zz_8) begin
+            if(_zz_12) begin
               sys_area_cache_data_1[119 : 112] <= _zz_sys_area_cache_data_0_14;
             end
-            if(_zz_9) begin
+            if(_zz_13) begin
               sys_area_cache_data_2[119 : 112] <= _zz_sys_area_cache_data_0_14;
             end
-            if(_zz_10) begin
+            if(_zz_14) begin
               sys_area_cache_data_3[119 : 112] <= _zz_sys_area_cache_data_0_14;
             end
           end
-          if(when_axi4ddrgowin_l413_15) begin
-            if(_zz_7) begin
+          if(when_axi4ddrgowin_l432_15) begin
+            if(_zz_11) begin
               sys_area_cache_data_0[127 : 120] <= _zz_sys_area_cache_data_0_15;
             end
-            if(_zz_8) begin
+            if(_zz_12) begin
               sys_area_cache_data_1[127 : 120] <= _zz_sys_area_cache_data_0_15;
             end
-            if(_zz_9) begin
+            if(_zz_13) begin
               sys_area_cache_data_2[127 : 120] <= _zz_sys_area_cache_data_0_15;
             end
-            if(_zz_10) begin
+            if(_zz_14) begin
               sys_area_cache_data_3[127 : 120] <= _zz_sys_area_cache_data_0_15;
+            end
+          end
+        end
+        if(when_axi4ddrgowin_l430_4) begin
+          if(when_axi4ddrgowin_l432_16) begin
+            if(_zz_11) begin
+              sys_area_cache_data_0[135 : 128] <= _zz_sys_area_cache_data_0_16;
+            end
+            if(_zz_12) begin
+              sys_area_cache_data_1[135 : 128] <= _zz_sys_area_cache_data_0_16;
+            end
+            if(_zz_13) begin
+              sys_area_cache_data_2[135 : 128] <= _zz_sys_area_cache_data_0_16;
+            end
+            if(_zz_14) begin
+              sys_area_cache_data_3[135 : 128] <= _zz_sys_area_cache_data_0_16;
+            end
+          end
+          if(when_axi4ddrgowin_l432_17) begin
+            if(_zz_11) begin
+              sys_area_cache_data_0[143 : 136] <= _zz_sys_area_cache_data_0_17;
+            end
+            if(_zz_12) begin
+              sys_area_cache_data_1[143 : 136] <= _zz_sys_area_cache_data_0_17;
+            end
+            if(_zz_13) begin
+              sys_area_cache_data_2[143 : 136] <= _zz_sys_area_cache_data_0_17;
+            end
+            if(_zz_14) begin
+              sys_area_cache_data_3[143 : 136] <= _zz_sys_area_cache_data_0_17;
+            end
+          end
+          if(when_axi4ddrgowin_l432_18) begin
+            if(_zz_11) begin
+              sys_area_cache_data_0[151 : 144] <= _zz_sys_area_cache_data_0_18;
+            end
+            if(_zz_12) begin
+              sys_area_cache_data_1[151 : 144] <= _zz_sys_area_cache_data_0_18;
+            end
+            if(_zz_13) begin
+              sys_area_cache_data_2[151 : 144] <= _zz_sys_area_cache_data_0_18;
+            end
+            if(_zz_14) begin
+              sys_area_cache_data_3[151 : 144] <= _zz_sys_area_cache_data_0_18;
+            end
+          end
+          if(when_axi4ddrgowin_l432_19) begin
+            if(_zz_11) begin
+              sys_area_cache_data_0[159 : 152] <= _zz_sys_area_cache_data_0_19;
+            end
+            if(_zz_12) begin
+              sys_area_cache_data_1[159 : 152] <= _zz_sys_area_cache_data_0_19;
+            end
+            if(_zz_13) begin
+              sys_area_cache_data_2[159 : 152] <= _zz_sys_area_cache_data_0_19;
+            end
+            if(_zz_14) begin
+              sys_area_cache_data_3[159 : 152] <= _zz_sys_area_cache_data_0_19;
+            end
+          end
+        end
+        if(when_axi4ddrgowin_l430_5) begin
+          if(when_axi4ddrgowin_l432_20) begin
+            if(_zz_11) begin
+              sys_area_cache_data_0[167 : 160] <= _zz_sys_area_cache_data_0_20;
+            end
+            if(_zz_12) begin
+              sys_area_cache_data_1[167 : 160] <= _zz_sys_area_cache_data_0_20;
+            end
+            if(_zz_13) begin
+              sys_area_cache_data_2[167 : 160] <= _zz_sys_area_cache_data_0_20;
+            end
+            if(_zz_14) begin
+              sys_area_cache_data_3[167 : 160] <= _zz_sys_area_cache_data_0_20;
+            end
+          end
+          if(when_axi4ddrgowin_l432_21) begin
+            if(_zz_11) begin
+              sys_area_cache_data_0[175 : 168] <= _zz_sys_area_cache_data_0_21;
+            end
+            if(_zz_12) begin
+              sys_area_cache_data_1[175 : 168] <= _zz_sys_area_cache_data_0_21;
+            end
+            if(_zz_13) begin
+              sys_area_cache_data_2[175 : 168] <= _zz_sys_area_cache_data_0_21;
+            end
+            if(_zz_14) begin
+              sys_area_cache_data_3[175 : 168] <= _zz_sys_area_cache_data_0_21;
+            end
+          end
+          if(when_axi4ddrgowin_l432_22) begin
+            if(_zz_11) begin
+              sys_area_cache_data_0[183 : 176] <= _zz_sys_area_cache_data_0_22;
+            end
+            if(_zz_12) begin
+              sys_area_cache_data_1[183 : 176] <= _zz_sys_area_cache_data_0_22;
+            end
+            if(_zz_13) begin
+              sys_area_cache_data_2[183 : 176] <= _zz_sys_area_cache_data_0_22;
+            end
+            if(_zz_14) begin
+              sys_area_cache_data_3[183 : 176] <= _zz_sys_area_cache_data_0_22;
+            end
+          end
+          if(when_axi4ddrgowin_l432_23) begin
+            if(_zz_11) begin
+              sys_area_cache_data_0[191 : 184] <= _zz_sys_area_cache_data_0_23;
+            end
+            if(_zz_12) begin
+              sys_area_cache_data_1[191 : 184] <= _zz_sys_area_cache_data_0_23;
+            end
+            if(_zz_13) begin
+              sys_area_cache_data_2[191 : 184] <= _zz_sys_area_cache_data_0_23;
+            end
+            if(_zz_14) begin
+              sys_area_cache_data_3[191 : 184] <= _zz_sys_area_cache_data_0_23;
+            end
+          end
+        end
+        if(when_axi4ddrgowin_l430_6) begin
+          if(when_axi4ddrgowin_l432_24) begin
+            if(_zz_11) begin
+              sys_area_cache_data_0[199 : 192] <= _zz_sys_area_cache_data_0_24;
+            end
+            if(_zz_12) begin
+              sys_area_cache_data_1[199 : 192] <= _zz_sys_area_cache_data_0_24;
+            end
+            if(_zz_13) begin
+              sys_area_cache_data_2[199 : 192] <= _zz_sys_area_cache_data_0_24;
+            end
+            if(_zz_14) begin
+              sys_area_cache_data_3[199 : 192] <= _zz_sys_area_cache_data_0_24;
+            end
+          end
+          if(when_axi4ddrgowin_l432_25) begin
+            if(_zz_11) begin
+              sys_area_cache_data_0[207 : 200] <= _zz_sys_area_cache_data_0_25;
+            end
+            if(_zz_12) begin
+              sys_area_cache_data_1[207 : 200] <= _zz_sys_area_cache_data_0_25;
+            end
+            if(_zz_13) begin
+              sys_area_cache_data_2[207 : 200] <= _zz_sys_area_cache_data_0_25;
+            end
+            if(_zz_14) begin
+              sys_area_cache_data_3[207 : 200] <= _zz_sys_area_cache_data_0_25;
+            end
+          end
+          if(when_axi4ddrgowin_l432_26) begin
+            if(_zz_11) begin
+              sys_area_cache_data_0[215 : 208] <= _zz_sys_area_cache_data_0_26;
+            end
+            if(_zz_12) begin
+              sys_area_cache_data_1[215 : 208] <= _zz_sys_area_cache_data_0_26;
+            end
+            if(_zz_13) begin
+              sys_area_cache_data_2[215 : 208] <= _zz_sys_area_cache_data_0_26;
+            end
+            if(_zz_14) begin
+              sys_area_cache_data_3[215 : 208] <= _zz_sys_area_cache_data_0_26;
+            end
+          end
+          if(when_axi4ddrgowin_l432_27) begin
+            if(_zz_11) begin
+              sys_area_cache_data_0[223 : 216] <= _zz_sys_area_cache_data_0_27;
+            end
+            if(_zz_12) begin
+              sys_area_cache_data_1[223 : 216] <= _zz_sys_area_cache_data_0_27;
+            end
+            if(_zz_13) begin
+              sys_area_cache_data_2[223 : 216] <= _zz_sys_area_cache_data_0_27;
+            end
+            if(_zz_14) begin
+              sys_area_cache_data_3[223 : 216] <= _zz_sys_area_cache_data_0_27;
+            end
+          end
+        end
+        if(when_axi4ddrgowin_l430_7) begin
+          if(when_axi4ddrgowin_l432_28) begin
+            if(_zz_11) begin
+              sys_area_cache_data_0[231 : 224] <= _zz_sys_area_cache_data_0_28;
+            end
+            if(_zz_12) begin
+              sys_area_cache_data_1[231 : 224] <= _zz_sys_area_cache_data_0_28;
+            end
+            if(_zz_13) begin
+              sys_area_cache_data_2[231 : 224] <= _zz_sys_area_cache_data_0_28;
+            end
+            if(_zz_14) begin
+              sys_area_cache_data_3[231 : 224] <= _zz_sys_area_cache_data_0_28;
+            end
+          end
+          if(when_axi4ddrgowin_l432_29) begin
+            if(_zz_11) begin
+              sys_area_cache_data_0[239 : 232] <= _zz_sys_area_cache_data_0_29;
+            end
+            if(_zz_12) begin
+              sys_area_cache_data_1[239 : 232] <= _zz_sys_area_cache_data_0_29;
+            end
+            if(_zz_13) begin
+              sys_area_cache_data_2[239 : 232] <= _zz_sys_area_cache_data_0_29;
+            end
+            if(_zz_14) begin
+              sys_area_cache_data_3[239 : 232] <= _zz_sys_area_cache_data_0_29;
+            end
+          end
+          if(when_axi4ddrgowin_l432_30) begin
+            if(_zz_11) begin
+              sys_area_cache_data_0[247 : 240] <= _zz_sys_area_cache_data_0_30;
+            end
+            if(_zz_12) begin
+              sys_area_cache_data_1[247 : 240] <= _zz_sys_area_cache_data_0_30;
+            end
+            if(_zz_13) begin
+              sys_area_cache_data_2[247 : 240] <= _zz_sys_area_cache_data_0_30;
+            end
+            if(_zz_14) begin
+              sys_area_cache_data_3[247 : 240] <= _zz_sys_area_cache_data_0_30;
+            end
+          end
+          if(when_axi4ddrgowin_l432_31) begin
+            if(_zz_11) begin
+              sys_area_cache_data_0[255 : 248] <= _zz_sys_area_cache_data_0_31;
+            end
+            if(_zz_12) begin
+              sys_area_cache_data_1[255 : 248] <= _zz_sys_area_cache_data_0_31;
+            end
+            if(_zz_13) begin
+              sys_area_cache_data_2[255 : 248] <= _zz_sys_area_cache_data_0_31;
+            end
+            if(_zz_14) begin
+              sys_area_cache_data_3[255 : 248] <= _zz_sys_area_cache_data_0_31;
             end
           end
         end
@@ -13019,7 +13430,7 @@ module Axi4DdrWithCache (
           sys_area_arwcmd_free <= 1'b1;
         end
       end
-      if(when_axi4ddrgowin_l439) begin
+      if(when_axi4ddrgowin_l458) begin
         sys_area_read_response_valid <= (! io_axi_r_fire);
         if(io_axi_r_fire) begin
           sys_area_arwcmd_free <= 1'b1;
@@ -13054,13 +13465,15 @@ module Axi4DdrWithCache (
       sys_area_arwcmd_fragment_burst <= unburstify_result_payload_fragment_burst;
       sys_area_arwcmd_fragment_write <= unburstify_result_payload_fragment_write;
     end
-    if(when_axi4ddrgowin_l358) begin
-      if(when_axi4ddrgowin_l360) begin
+    if(when_axi4ddrgowin_l361) begin
+      if(when_axi4ddrgowin_l362) begin
         if(io_ddr_cmd_fire) begin
-          sys_area_ddr_write_page <= sys_area_lru_counter;
+          if(when_axi4ddrgowin_l374) begin
+            sys_area_ddr_write_page <= sys_area_lru_counter;
+          end
         end
       end else begin
-        if(when_axi4ddrgowin_l371) begin
+        if(when_axi4ddrgowin_l382) begin
           if(io_ddr_cmd_fire) begin
             sys_area_ddr_read_page <= sys_area_lru_counter;
           end
@@ -18606,14 +19019,14 @@ module BufferCC_15 (
 endmodule
 
 module BufferCC_14 (
-  input  wire [6:0]    io_dataIn,
-  output wire [6:0]    io_dataOut,
+  input  wire [7:0]    io_dataIn,
+  output wire [7:0]    io_dataOut,
   input  wire          clkout,
   input  wire          resetCtrl_axiReset
 );
 
-  (* async_reg = "true" *) reg        [6:0]    buffers_0;
-  (* async_reg = "true" *) reg        [6:0]    buffers_1;
+  (* async_reg = "true" *) reg        [7:0]    buffers_0;
+  (* async_reg = "true" *) reg        [7:0]    buffers_1;
 
   assign io_dataOut = buffers_1;
   always @(posedge clkout) begin
@@ -18633,31 +19046,33 @@ module StreamFifoCC_2 (
   input  wire          io_pop_ready,
   output wire          io_pop_payload_last,
   output wire [31:0]   io_pop_payload_fragment,
-  output wire [9:0]    io_pushOccupancy,
-  output wire [9:0]    io_popOccupancy,
+  output wire [10:0]   io_pushOccupancy,
+  output wire [10:0]   io_popOccupancy,
   input  wire          clkout,
   input  wire          resetCtrl_axiReset,
   input  wire          CLKOUT_1
 );
 
   reg        [32:0]   ram_spinal_port1;
-  wire       [9:0]    popToPushGray_buffercc_io_dataOut;
+  wire       [10:0]   popToPushGray_buffercc_io_dataOut;
   wire                dma_axi_vgaCtrl_toplevel_resetCtrl_axiReset_asyncAssertSyncDeassert_buffercc_io_dataOut;
-  wire       [9:0]    pushToPopGray_buffercc_io_dataOut;
-  wire       [9:0]    _zz_pushCC_pushPtrGray;
-  wire       [8:0]    _zz_ram_port;
+  wire       [10:0]   pushToPopGray_buffercc_io_dataOut;
+  wire       [10:0]   _zz_pushCC_pushPtrGray;
+  wire       [9:0]    _zz_ram_port;
   wire       [32:0]   _zz_ram_port_1;
-  wire                _zz_io_pushOccupancy_9;
-  wire       [9:0]    _zz_popCC_popPtrGray;
-  wire                _zz_io_popOccupancy_9;
+  wire       [0:0]    _zz_io_pushOccupancy_10;
+  wire       [0:0]    _zz_io_pushOccupancy_11;
+  wire       [10:0]   _zz_popCC_popPtrGray;
+  wire       [0:0]    _zz_io_popOccupancy_10;
+  wire       [0:0]    _zz_io_popOccupancy_11;
   reg                 _zz_1;
-  wire       [9:0]    popToPushGray;
-  wire       [9:0]    pushToPopGray;
-  reg        [9:0]    pushCC_pushPtr;
-  wire       [9:0]    pushCC_pushPtrPlus;
+  wire       [10:0]   popToPushGray;
+  wire       [10:0]   pushToPopGray;
+  reg        [10:0]   pushCC_pushPtr;
+  wire       [10:0]   pushCC_pushPtrPlus;
   wire                io_push_fire;
-  (* altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" *) reg        [9:0]    pushCC_pushPtrGray;
-  wire       [9:0]    pushCC_popPtrGray;
+  (* altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" *) reg        [10:0]   pushCC_pushPtrGray;
+  wire       [10:0]   pushCC_popPtrGray;
   wire                pushCC_full;
   wire                _zz_io_pushOccupancy;
   wire                _zz_io_pushOccupancy_1;
@@ -18668,37 +19083,38 @@ module StreamFifoCC_2 (
   wire                _zz_io_pushOccupancy_6;
   wire                _zz_io_pushOccupancy_7;
   wire                _zz_io_pushOccupancy_8;
+  wire                _zz_io_pushOccupancy_9;
   wire                dma_axi_vgaCtrl_toplevel_resetCtrl_axiReset_asyncAssertSyncDeassert;
   wire                dma_axi_vgaCtrl_toplevel_resetCtrl_axiReset_synchronized;
-  reg        [9:0]    popCC_popPtr;
-  (* keep , syn_keep *) wire       [9:0]    popCC_popPtrPlus /* synthesis syn_keep = 1 */ ;
-  wire       [9:0]    popCC_popPtrGray;
-  wire       [9:0]    popCC_pushPtrGray;
+  reg        [10:0]   popCC_popPtr;
+  (* keep , syn_keep *) wire       [10:0]   popCC_popPtrPlus /* synthesis syn_keep = 1 */ ;
+  wire       [10:0]   popCC_popPtrGray;
+  wire       [10:0]   popCC_pushPtrGray;
   wire                popCC_addressGen_valid;
   reg                 popCC_addressGen_ready;
-  wire       [8:0]    popCC_addressGen_payload;
+  wire       [9:0]    popCC_addressGen_payload;
   wire                popCC_empty;
   wire                popCC_addressGen_fire;
   wire                popCC_readArbitation_valid;
   wire                popCC_readArbitation_ready;
-  wire       [8:0]    popCC_readArbitation_payload;
+  wire       [9:0]    popCC_readArbitation_payload;
   reg                 popCC_addressGen_rValid;
-  reg        [8:0]    popCC_addressGen_rData;
+  reg        [9:0]    popCC_addressGen_rData;
   wire                when_Stream_l399;
   wire                popCC_readPort_cmd_valid;
-  wire       [8:0]    popCC_readPort_cmd_payload;
+  wire       [9:0]    popCC_readPort_cmd_payload;
   wire                popCC_readPort_rsp_last;
   wire       [31:0]   popCC_readPort_rsp_fragment;
   wire       [32:0]   _zz_popCC_readPort_rsp_last;
   wire                popCC_addressGen_toFlowFire_valid;
-  wire       [8:0]    popCC_addressGen_toFlowFire_payload;
+  wire       [9:0]    popCC_addressGen_toFlowFire_payload;
   wire                popCC_readArbitation_translated_valid;
   wire                popCC_readArbitation_translated_ready;
   wire                popCC_readArbitation_translated_payload_last;
   wire       [31:0]   popCC_readArbitation_translated_payload_fragment;
   wire                popCC_readArbitation_fire;
-  (* altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" *) reg        [9:0]    popCC_ptrToPush;
-  reg        [9:0]    popCC_ptrToOccupancy;
+  (* altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" *) reg        [10:0]   popCC_ptrToPush;
+  reg        [10:0]   popCC_ptrToOccupancy;
   wire                _zz_io_popOccupancy;
   wire                _zz_io_popOccupancy_1;
   wire                _zz_io_popOccupancy_2;
@@ -18708,14 +19124,17 @@ module StreamFifoCC_2 (
   wire                _zz_io_popOccupancy_6;
   wire                _zz_io_popOccupancy_7;
   wire                _zz_io_popOccupancy_8;
-  reg [32:0] ram [0:511];
+  wire                _zz_io_popOccupancy_9;
+  reg [32:0] ram [0:1023];
 
   assign _zz_pushCC_pushPtrGray = (pushCC_pushPtrPlus >>> 1'b1);
-  assign _zz_ram_port = pushCC_pushPtr[8:0];
+  assign _zz_ram_port = pushCC_pushPtr[9:0];
   assign _zz_popCC_popPtrGray = (popCC_popPtr >>> 1'b1);
   assign _zz_ram_port_1 = {io_push_payload_fragment,io_push_payload_last};
-  assign _zz_io_pushOccupancy_9 = (pushCC_popPtrGray[0] ^ _zz_io_pushOccupancy);
-  assign _zz_io_popOccupancy_9 = (popCC_pushPtrGray[0] ^ _zz_io_popOccupancy);
+  assign _zz_io_pushOccupancy_10 = _zz_io_pushOccupancy;
+  assign _zz_io_pushOccupancy_11 = (pushCC_popPtrGray[0] ^ _zz_io_pushOccupancy);
+  assign _zz_io_popOccupancy_10 = _zz_io_popOccupancy;
+  assign _zz_io_popOccupancy_11 = (popCC_pushPtrGray[0] ^ _zz_io_popOccupancy);
   always @(posedge clkout) begin
     if(_zz_1) begin
       ram[_zz_ram_port] <= _zz_ram_port_1;
@@ -18729,10 +19148,10 @@ module StreamFifoCC_2 (
   end
 
   (* keep_hierarchy = "TRUE" *) BufferCC_11 popToPushGray_buffercc (
-    .io_dataIn          (popToPushGray[9:0]                    ), //i
-    .io_dataOut         (popToPushGray_buffercc_io_dataOut[9:0]), //o
-    .clkout             (clkout                                ), //i
-    .resetCtrl_axiReset (resetCtrl_axiReset                    )  //i
+    .io_dataIn          (popToPushGray[10:0]                    ), //i
+    .io_dataOut         (popToPushGray_buffercc_io_dataOut[10:0]), //o
+    .clkout             (clkout                                 ), //i
+    .resetCtrl_axiReset (resetCtrl_axiReset                     )  //i
   );
   (* keep_hierarchy = "TRUE" *) BufferCC_12 dma_axi_vgaCtrl_toplevel_resetCtrl_axiReset_asyncAssertSyncDeassert_buffercc (
     .io_dataIn          (dma_axi_vgaCtrl_toplevel_resetCtrl_axiReset_asyncAssertSyncDeassert                    ), //i
@@ -18741,8 +19160,8 @@ module StreamFifoCC_2 (
     .resetCtrl_axiReset (resetCtrl_axiReset                                                                     )  //i
   );
   (* keep_hierarchy = "TRUE" *) BufferCC_13 pushToPopGray_buffercc (
-    .io_dataIn                                                (pushToPopGray[9:0]                                      ), //i
-    .io_dataOut                                               (pushToPopGray_buffercc_io_dataOut[9:0]                  ), //o
+    .io_dataIn                                                (pushToPopGray[10:0]                                     ), //i
+    .io_dataOut                                               (pushToPopGray_buffercc_io_dataOut[10:0]                 ), //o
     .CLKOUT                                                   (CLKOUT_1                                                ), //i
     .dma_axi_vgaCtrl_toplevel_resetCtrl_axiReset_synchronized (dma_axi_vgaCtrl_toplevel_resetCtrl_axiReset_synchronized)  //i
   );
@@ -18753,10 +19172,10 @@ module StreamFifoCC_2 (
     end
   end
 
-  assign pushCC_pushPtrPlus = (pushCC_pushPtr + 10'h001);
+  assign pushCC_pushPtrPlus = (pushCC_pushPtr + 11'h001);
   assign io_push_fire = (io_push_valid && io_push_ready);
   assign pushCC_popPtrGray = popToPushGray_buffercc_io_dataOut;
-  assign pushCC_full = ((pushCC_pushPtrGray[9 : 8] == (~ pushCC_popPtrGray[9 : 8])) && (pushCC_pushPtrGray[7 : 0] == pushCC_popPtrGray[7 : 0]));
+  assign pushCC_full = ((pushCC_pushPtrGray[10 : 9] == (~ pushCC_popPtrGray[10 : 9])) && (pushCC_pushPtrGray[8 : 0] == pushCC_popPtrGray[8 : 0]));
   assign io_push_ready = (! pushCC_full);
   assign _zz_io_pushOccupancy = (pushCC_popPtrGray[1] ^ _zz_io_pushOccupancy_1);
   assign _zz_io_pushOccupancy_1 = (pushCC_popPtrGray[2] ^ _zz_io_pushOccupancy_2);
@@ -18766,16 +19185,17 @@ module StreamFifoCC_2 (
   assign _zz_io_pushOccupancy_5 = (pushCC_popPtrGray[6] ^ _zz_io_pushOccupancy_6);
   assign _zz_io_pushOccupancy_6 = (pushCC_popPtrGray[7] ^ _zz_io_pushOccupancy_7);
   assign _zz_io_pushOccupancy_7 = (pushCC_popPtrGray[8] ^ _zz_io_pushOccupancy_8);
-  assign _zz_io_pushOccupancy_8 = pushCC_popPtrGray[9];
-  assign io_pushOccupancy = (pushCC_pushPtr - {_zz_io_pushOccupancy_8,{_zz_io_pushOccupancy_7,{_zz_io_pushOccupancy_6,{_zz_io_pushOccupancy_5,{_zz_io_pushOccupancy_4,{_zz_io_pushOccupancy_3,{_zz_io_pushOccupancy_2,{_zz_io_pushOccupancy_1,{_zz_io_pushOccupancy,_zz_io_pushOccupancy_9}}}}}}}}});
+  assign _zz_io_pushOccupancy_8 = (pushCC_popPtrGray[9] ^ _zz_io_pushOccupancy_9);
+  assign _zz_io_pushOccupancy_9 = pushCC_popPtrGray[10];
+  assign io_pushOccupancy = (pushCC_pushPtr - {_zz_io_pushOccupancy_9,{_zz_io_pushOccupancy_8,{_zz_io_pushOccupancy_7,{_zz_io_pushOccupancy_6,{_zz_io_pushOccupancy_5,{_zz_io_pushOccupancy_4,{_zz_io_pushOccupancy_3,{_zz_io_pushOccupancy_2,{_zz_io_pushOccupancy_1,{_zz_io_pushOccupancy_10,_zz_io_pushOccupancy_11}}}}}}}}}});
   assign dma_axi_vgaCtrl_toplevel_resetCtrl_axiReset_asyncAssertSyncDeassert = (1'b0 ^ 1'b0);
   assign dma_axi_vgaCtrl_toplevel_resetCtrl_axiReset_synchronized = dma_axi_vgaCtrl_toplevel_resetCtrl_axiReset_asyncAssertSyncDeassert_buffercc_io_dataOut;
-  assign popCC_popPtrPlus = (popCC_popPtr + 10'h001);
+  assign popCC_popPtrPlus = (popCC_popPtr + 11'h001);
   assign popCC_popPtrGray = (_zz_popCC_popPtrGray ^ popCC_popPtr);
   assign popCC_pushPtrGray = pushToPopGray_buffercc_io_dataOut;
   assign popCC_empty = (popCC_popPtrGray == popCC_pushPtrGray);
   assign popCC_addressGen_valid = (! popCC_empty);
-  assign popCC_addressGen_payload = popCC_popPtr[8:0];
+  assign popCC_addressGen_payload = popCC_popPtr[9:0];
   assign popCC_addressGen_fire = (popCC_addressGen_valid && popCC_addressGen_ready);
   always @(*) begin
     popCC_addressGen_ready = popCC_readArbitation_ready;
@@ -18811,14 +19231,15 @@ module StreamFifoCC_2 (
   assign _zz_io_popOccupancy_5 = (popCC_pushPtrGray[6] ^ _zz_io_popOccupancy_6);
   assign _zz_io_popOccupancy_6 = (popCC_pushPtrGray[7] ^ _zz_io_popOccupancy_7);
   assign _zz_io_popOccupancy_7 = (popCC_pushPtrGray[8] ^ _zz_io_popOccupancy_8);
-  assign _zz_io_popOccupancy_8 = popCC_pushPtrGray[9];
-  assign io_popOccupancy = ({_zz_io_popOccupancy_8,{_zz_io_popOccupancy_7,{_zz_io_popOccupancy_6,{_zz_io_popOccupancy_5,{_zz_io_popOccupancy_4,{_zz_io_popOccupancy_3,{_zz_io_popOccupancy_2,{_zz_io_popOccupancy_1,{_zz_io_popOccupancy,_zz_io_popOccupancy_9}}}}}}}}} - popCC_ptrToOccupancy);
+  assign _zz_io_popOccupancy_8 = (popCC_pushPtrGray[9] ^ _zz_io_popOccupancy_9);
+  assign _zz_io_popOccupancy_9 = popCC_pushPtrGray[10];
+  assign io_popOccupancy = ({_zz_io_popOccupancy_9,{_zz_io_popOccupancy_8,{_zz_io_popOccupancy_7,{_zz_io_popOccupancy_6,{_zz_io_popOccupancy_5,{_zz_io_popOccupancy_4,{_zz_io_popOccupancy_3,{_zz_io_popOccupancy_2,{_zz_io_popOccupancy_1,{_zz_io_popOccupancy_10,_zz_io_popOccupancy_11}}}}}}}}}} - popCC_ptrToOccupancy);
   assign pushToPopGray = pushCC_pushPtrGray;
   assign popToPushGray = popCC_ptrToPush;
   always @(posedge clkout or posedge resetCtrl_axiReset) begin
     if(resetCtrl_axiReset) begin
-      pushCC_pushPtr <= 10'h0;
-      pushCC_pushPtrGray <= 10'h0;
+      pushCC_pushPtr <= 11'h0;
+      pushCC_pushPtrGray <= 11'h0;
     end else begin
       if(io_push_fire) begin
         pushCC_pushPtrGray <= (_zz_pushCC_pushPtrGray ^ pushCC_pushPtrPlus);
@@ -18831,10 +19252,10 @@ module StreamFifoCC_2 (
 
   always @(posedge CLKOUT_1 or posedge dma_axi_vgaCtrl_toplevel_resetCtrl_axiReset_synchronized) begin
     if(dma_axi_vgaCtrl_toplevel_resetCtrl_axiReset_synchronized) begin
-      popCC_popPtr <= 10'h0;
+      popCC_popPtr <= 11'h0;
       popCC_addressGen_rValid <= 1'b0;
-      popCC_ptrToPush <= 10'h0;
-      popCC_ptrToOccupancy <= 10'h0;
+      popCC_ptrToPush <= 11'h0;
+      popCC_ptrToOccupancy <= 11'h0;
     end else begin
       if(popCC_addressGen_fire) begin
         popCC_popPtr <= popCC_popPtrPlus;
@@ -20336,20 +20757,20 @@ module Alu_1 (
 endmodule
 
 module BufferCC_13 (
-  input  wire [9:0]    io_dataIn,
-  output wire [9:0]    io_dataOut,
+  input  wire [10:0]   io_dataIn,
+  output wire [10:0]   io_dataOut,
   input  wire          CLKOUT,
   input  wire          dma_axi_vgaCtrl_toplevel_resetCtrl_axiReset_synchronized
 );
 
-  (* async_reg = "true" , altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" *) reg        [9:0]    buffers_0;
-  (* async_reg = "true" *) reg        [9:0]    buffers_1;
+  (* async_reg = "true" , altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" *) reg        [10:0]   buffers_0;
+  (* async_reg = "true" *) reg        [10:0]   buffers_1;
 
   assign io_dataOut = buffers_1;
   always @(posedge CLKOUT or posedge dma_axi_vgaCtrl_toplevel_resetCtrl_axiReset_synchronized) begin
     if(dma_axi_vgaCtrl_toplevel_resetCtrl_axiReset_synchronized) begin
-      buffers_0 <= 10'h0;
-      buffers_1 <= 10'h0;
+      buffers_0 <= 11'h0;
+      buffers_1 <= 11'h0;
     end else begin
       buffers_0 <= io_dataIn;
       buffers_1 <= buffers_0;
@@ -20384,20 +20805,20 @@ module BufferCC_12 (
 endmodule
 
 module BufferCC_11 (
-  input  wire [9:0]    io_dataIn,
-  output wire [9:0]    io_dataOut,
+  input  wire [10:0]   io_dataIn,
+  output wire [10:0]   io_dataOut,
   input  wire          clkout,
   input  wire          resetCtrl_axiReset
 );
 
-  (* async_reg = "true" , altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" *) reg        [9:0]    buffers_0;
-  (* async_reg = "true" *) reg        [9:0]    buffers_1;
+  (* async_reg = "true" , altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" *) reg        [10:0]   buffers_0;
+  (* async_reg = "true" *) reg        [10:0]   buffers_1;
 
   assign io_dataOut = buffers_1;
   always @(posedge clkout or posedge resetCtrl_axiReset) begin
     if(resetCtrl_axiReset) begin
-      buffers_0 <= 10'h0;
-      buffers_1 <= 10'h0;
+      buffers_0 <= 11'h0;
+      buffers_1 <= 11'h0;
     end else begin
       buffers_0 <= io_dataIn;
       buffers_1 <= buffers_0;

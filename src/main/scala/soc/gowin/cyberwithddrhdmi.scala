@@ -275,7 +275,7 @@ class cyberwithddrhdmi(config: cyberwithddrhdmiConfig) extends Component {
       axiDataWidth = 32,
       burstLength = 8,
       frameSizeMax = 2048 * 1512 * 2,
-      fifoSize = 512,
+      fifoSize = 1024,
       rgbConfig = vgaRgbConfig,
       vgaClock = vgaClockDomain
     )
