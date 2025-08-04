@@ -221,8 +221,7 @@ case class Axi4Ddr_Controller[T <: Data](
 
   val ddr_control_area = new ClockingArea(ddr_ref_clk) {
     val cmd_free = Reg(Bool()) init True
-    val cmd_can_send =
-      RegNext(io.cmd_ready & io.wr_data_rdy & io.init_calib_complete) init False
+    val cmd_can_send = RegNext(io.cmd_ready & io.wr_data_rdy & io.init_calib_complete) init False
     val cmd_trigger = Reg(Bool()) init False
     val cmd_en = cmd_trigger
     val burst_cnt = Reg(UInt((burstlen + 1) bits)) init 0
@@ -231,6 +230,7 @@ case class Axi4Ddr_Controller[T <: Data](
     val wr_fire = io.wr_data_en & io.wr_data_rdy
     val data_fire = rd_fire | wr_fire
 
+    val cmd = RegNextWhen(cmd_fifo.io.pop.payload, cmd_fifo.io.pop.fire)
     cmd_fifo.io.pop.ready := cmd_free & cmd_can_send
     when(cmd_fifo.io.pop.fire) {
       cmd_free.clear()
@@ -243,24 +243,18 @@ case class Axi4Ddr_Controller[T <: Data](
     when(cmd_en) {
       cmd_trigger.clear()
     }
-    val cmd = RegNextWhen(cmd_fifo.io.pop.payload, cmd_fifo.io.pop.fire)
-    cmd.burst_cnt init 0
     when(burst_cnt === cmd.burst_cnt +^ 1) {
       cmd_free.setWhen(cmd_free === False)
     }
 
+    val is_write = cmd.cmdtype === Axi4Ddr_CMDTYPE.write
     io.cmd_en := cmd_en
+    io.cmd := Mux(is_write, B"000", B"001")
     io.app_burst_number := cmd.burst_cnt
     io.addr := cmd.addr
     io.wr_data := cmd.wr_data
     io.wr_data_mask := cmd.wr_mask
-    when(cmd.cmdtype === Axi4Ddr_CMDTYPE.read) {
-      io.cmd := B"001"
-      io.wr_data_en := False
-    }.otherwise { // write
-      io.cmd := B"000"
-      io.wr_data_en := (burst_cnt =/= cmd.burst_cnt +^ 1) & io.wr_data_rdy
-    }
+    io.wr_data_en := is_write & (burst_cnt =/= cmd.burst_cnt +^ 1) & io.wr_data_rdy
 
     rsp_fifo.io.push.valid := io.rd_data_valid
     rsp_fifo.io.push.payload.rsp_data := io.rd_data
@@ -275,10 +269,16 @@ case class Axi4DdrWithCache(
     idWidth: Int,
     addrlen: Int = 28,
     burstlen: Int = 6,
-    pagesize: Int = 512,
+    pagesize: Int = 256,
     pagecnt: Int = 4
 ) extends Component {
-  require(pagesize % 128 == 0, s"pagesize must be a multiple of 128, but got $pagesize")
+  // pagesize 限制
+  require(
+    pagesize > 128 &&
+    pagesize % 128 == 0 &&
+    isPow2(pagesize / 128),
+    s"pagesize must be 128 * 2^n and > 128, but got $pagesize"
+  )
   val pageBytes = pagesize / 8
   val pageWords = pagesize / 32
   val pageBlocks = pagesize / 128
@@ -327,9 +327,9 @@ case class Axi4DdrWithCache(
     val page_hit_vec = Vec.tabulate(pagecnt)(i =>
       cache_valid(i) && (cache_addr(i)((addrlen - 1) downto pageOffsetBits) === current_page_tag)
     )
-    val hit_any = page_hit_vec.orR
+    val hit = page_hit_vec.orR
     val hit_index = OHToUInt(page_hit_vec)
-    val miss = !hit_any
+    val miss = !hit
 
     // 选出要替换的页索引
     val replace_index = lru_counter
@@ -351,7 +351,7 @@ case class Axi4DdrWithCache(
     ddr_cmd_payload.cmdtype := Axi4Ddr_CMDTYPE.write
     ddr_cmd_payload.burst_cnt := pageBlocks - 1
     ddr_cmd_payload.wr_data := 0
-    ddr_cmd_payload.wr_mask := 0
+    ddr_cmd_payload.wr_mask := B"16'xFFFF" // "0": 数据无效，"1": 数据有效
     ddr_cmd_payload.context := 0
 
     // 处理未命中时的数据替换
@@ -368,10 +368,10 @@ case class Axi4DdrWithCache(
         }
         ddr_cmd_payload.addr := (cache_addr(replace_index)((addrlen - 1) downto pageOffsetBits) ## U(0, pageOffsetBits bits)).asUInt
         ddr_cmd_payload.cmdtype := Axi4Ddr_CMDTYPE.write
-        ddr_cmd_payload.wr_mask := Mux(dirty, B"16'x0000", B"16'xFFFF") // "0": 数据无效，"1": 数据有效
-        ddr_cmd_valid := ~io.ddr_cmd.fire
+        ddr_cmd_valid.setWhen(io.ddr_cmd.ready)
         when(io.ddr_cmd.fire) {
           when(write_burst_counter === pageBlocks - 1) {
+            ddr_cmd_valid := False
             ddr_write_pending := True
             ddr_write_page := replace_index
             write_burst_counter := 0
@@ -404,14 +404,10 @@ case class Axi4DdrWithCache(
         cache_dirty(ddr_read_page) := False
         cache_valid(ddr_read_page) := True
         ddr_read_pending := False
+        ddr_write_pending := False
         read_burst_counter := 0
         lru_counter := lru_counter + 1
       }
-    }
-
-    // 接收DDR写回完成
-    when(io.ddr_cmd.fire && ddr_write_pending) {
-      ddr_write_pending := False
     }
 
     // AXI写命中处理
@@ -422,7 +418,7 @@ case class Axi4DdrWithCache(
     io.axi.writeRsp.payload.id := arwcmd.id
     io.axi.writeRsp.payload.setOKAY()
 
-    when(hit_any && arwcmd.write && arwcmd_free === False) {
+    when(hit && arwcmd.write && arwcmd_free === False) {
       val strb = io.axi.writeData.payload.strb
       val wdata = io.axi.writeData.payload.data
       cache_dirty(hit_index) := True
@@ -455,16 +451,14 @@ case class Axi4DdrWithCache(
     io.axi.readRsp.payload.setOKAY()
     io.axi.readRsp.payload.data := 0
 
-    when(hit_any && !arwcmd.write && arwcmd_free === False) {
+    when(hit && !arwcmd.write && arwcmd_free === False) {
       for (i <- 0 until pageWords) {
         when(arwcmd.addr(pageOffsetBits - 1 downto 2) === i) {
           io.axi.readRsp.payload.data := cache_data(hit_index)((i*32+31) downto (i*32))
         }
       }
       read_response_valid := ~io.axi.readRsp.fire
-      when(io.axi.readRsp.fire) {
-        arwcmd_free.set()
-      }
+      arwcmd_free.setWhen(io.axi.readRsp.fire)
     }
   }
 }
