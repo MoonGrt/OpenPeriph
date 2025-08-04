@@ -1,19 +1,24 @@
 # make clean && make -j $(nproc)
 
+DDR_TEST = no
 PROJ_NAME = demo
 DEBUG = yes
 BENCH = no
 FUNC_OPT = yes
 MULDIV = yes
 
-SRCS = $(wildcard libs/*.c) \
-       $(wildcard libs/*.S) \
-       $(wildcard src/*.c) \
-       $(wildcard src/*.S) \
-       $(wildcard src/ov5640/*.c) \
-
-INC += -I./libs -I./src -I./src/ov5640
-LDSCRIPT = linker.ld
+ifeq ($(DDR_TEST),yes)
+    LDSCRIPT = linker.ld
+    SRCS = $(wildcard src/ddr_test.S)
+else
+    INC += -I./libs -I./src -I./src/ov5640
+    LDSCRIPT = linker.ld
+    SRCS = $(wildcard libs/*.c) \
+           $(wildcard libs/*.S) \
+           $(wildcard src/*.c) \
+           $(wildcard src/*.S) \
+           $(wildcard src/ov5640/*.c)
+endif
 
 # Set it to yes if you are using the sifive precompiled GCC pack
 SIFIVE_GCC_PACK ?= yes

@@ -275,7 +275,7 @@ case class Axi4DdrWithCache(
     idWidth: Int,
     addrlen: Int = 28,
     burstlen: Int = 6,
-    pagesize: Int = 256,
+    pagesize: Int = 512,
     pagecnt: Int = 4
 ) extends Component {
   require(pagesize % 128 == 0, s"pagesize must be a multiple of 128, but got $pagesize")
@@ -363,12 +363,12 @@ case class Axi4DdrWithCache(
         // 写回旧页
         for (i <- 0 until pageBlocks) {
           when (i === write_burst_counter) {
-            ddr_cmd_payload.wr_data := cache_data(ddr_read_page)(i*128+127 downto i*128)
+            ddr_cmd_payload.wr_data := cache_data(ddr_write_page)(i*128+127 downto i*128)
           }
         }
         ddr_cmd_payload.addr := (cache_addr(replace_index)((addrlen - 1) downto pageOffsetBits) ## U(0, pageOffsetBits bits)).asUInt
         ddr_cmd_payload.cmdtype := Axi4Ddr_CMDTYPE.write
-        ddr_cmd_payload.wr_mask := Mux(dirty, B"16'x0000", B"16'xFFFF")
+        ddr_cmd_payload.wr_mask := Mux(dirty, B"16'x0000", B"16'xFFFF") // "0": 数据无效，"1": 数据有效
         ddr_cmd_valid := ~io.ddr_cmd.fire
         when(io.ddr_cmd.fire) {
           when(write_burst_counter === pageBlocks - 1) {
@@ -387,22 +387,22 @@ case class Axi4DdrWithCache(
         when(io.ddr_cmd.fire) {
           ddr_read_pending := True
           ddr_read_page := replace_index
-          cache_addr(replace_index) := (arwcmd.addr((addrlen - 1) downto pageOffsetBits) ## U(0, pageOffsetBits bits)).asUInt
-          cache_valid(replace_index) := True
         }
       }
     }
 
     // 接收DDR读返回
     when(io.ddr_rsp.fire && ddr_read_pending) {
+      read_burst_counter := read_burst_counter + 1
+      cache_addr(ddr_read_page) := (arwcmd.addr((addrlen - 1) downto pageOffsetBits) ## U(0, pageOffsetBits bits)).asUInt
       for (i <- 0 until pageBlocks) {
         when (i === read_burst_counter) {
           cache_data(ddr_read_page)(i*128+127 downto i*128) := io.ddr_rsp.payload.rsp_data
         }
       }
-      read_burst_counter := read_burst_counter + 1
       when(read_burst_counter === pageBlocks - 1) {
         cache_dirty(ddr_read_page) := False
+        cache_valid(ddr_read_page) := True
         ddr_read_pending := False
         read_burst_counter := 0
         lru_counter := lru_counter + 1

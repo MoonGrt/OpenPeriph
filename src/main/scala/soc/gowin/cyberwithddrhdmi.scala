@@ -238,7 +238,7 @@ class cyberwithddrhdmi(config: cyberwithddrhdmiConfig) extends Component {
     val timCtrl = Apb3TimArray(timCnt = 2, timSpace = 0x1000)
     val timInterrupt = timCtrl.io.interrupt.asBits.orR // 按位“或”
     val wdgCtrl = coreClockDomain(Apb3Wdg(memSize = 0x1000))
-    resetCtrl.coreResetUnbuffered setWhen (wdgCtrl.io.iwdgRst || wdgCtrl.io.wwdgRst)
+    resetCtrl.coreResetUnbuffered setWhen (wdgCtrl.io.iwdgRst || wdgCtrl.io.wwdgRst || ~sdramCtrl.io.init_calib_complete)
     val systickCtrl = Apb3SysTick()
     val systickInterrupt = systickCtrl.io.interrupt.asBits.orR // 按位“或”
 
@@ -361,7 +361,7 @@ object cyberwithddrhdmi {
         new cyberwithddrhdmi(
           cyberwithddrhdmiConfig.default.copy(
             onChipRamSize = 32 kB,
-            onChipRamHexFile = "test/cyber/build/mem/demo.bin"
+            onChipRamHexFile = "test/cyberwithddr/build/mem/demo.bin"
           )
         )
       )
