@@ -154,18 +154,19 @@ object Axi4Ddr_CMDTYPE extends SpinalEnum {
 case class Axi4Ddr_PayloadCMD[T <: Data](
     addrlen: Int,
     burstlen: Int,
-    contextType: T
+    contextType: T,
+    pagesize: Int = 128
 ) extends Bundle {
   val cmdtype = Axi4Ddr_CMDTYPE()
   val addr = UInt(addrlen bits)
   val burst_cnt = UInt(burstlen bits)
-  val wr_data = Bits(128 bits)
-  val wr_mask = Bits(16 bits)
+  val wr_data = Bits(pagesize bits)
+  val wr_mask = Bits(pagesize/8 bits)
   val context = cloneOf(contextType)
 }
 
-case class Axi4Ddr_PayloadRSP[T <: Data](contextType: T) extends Bundle {
-  val rsp_data = Bits(128 bits)
+case class Axi4Ddr_PayloadRSP[T <: Data](contextType: T, pagesize: Int = 128) extends Bundle {
+  val rsp_data = Bits(pagesize bits)
   val context = cloneOf(contextType)
 }
 
@@ -463,6 +464,262 @@ case class Axi4DdrWithCache(
   }
 }
 
+case class Axi4DdrControllerWithCache(
+    sys_clk: ClockDomain,
+    ddr_clk: ClockDomain,
+    dataWidth: Int,
+    axiaddrlen: Int,
+    idWidth: Int,
+    addrlen: Int = 28,
+    burstlen: Int = 6,
+    fifolen: Int = 4,
+    pagesize: Int = 256,
+    pagecnt: Int = 4
+) extends Component {
+  // pagesize 限制
+  require(
+    pagesize > 128 &&
+    pagesize % 128 == 0 &&
+    isPow2(pagesize / 128),
+    s"pagesize must be 128 * 2^n and > 128, but got $pagesize"
+  )
+  val pageBytes = pagesize / 8
+  val pageWords = pagesize / 32
+  val pageBlocks = pagesize / 128
+
+  val contextType = UInt(1 bits)
+
+  val axiConfig = Axi4Config(
+    addressWidth = axiaddrlen,
+    dataWidth = dataWidth,
+    idWidth = idWidth,
+    useLock = false,
+    useRegion = false,
+    useCache = false,
+    useProt = false,
+    useQos = false
+  )
+
+  val io = new Bundle() {
+    // AXI4 接口
+    val axi = slave(Axi4Shared(axiConfig))
+    // Gowin DDR 控制器接口
+    val app_burst_number = out UInt (burstlen bits)
+    val cmd_ready = in Bool ()
+    val cmd = out Bits (3 bits)
+    val cmd_en = out Bool ()
+    val addr = out UInt (addrlen bits)
+    val wr_data_rdy = in Bool ()
+    val wr_data = out Bits (128 bits)
+    val wr_data_en = out Bool ()
+    // val wr_data_end = out Bool() // not use due to 1:4 mode
+    val wr_data_mask = out Bits (16 bits)
+    val rd_data = in Bits (128 bits)
+    val rd_data_valid = in Bool ()
+    // val rd_data_end = in Bool() // not use due to 1:4 mode
+    val init_calib_complete = in Bool ()
+  }
+
+  val ddr_cmd = Stream(Axi4Ddr_PayloadCMD(addrlen, burstlen, contextType, pagesize))
+  val ddr_rsp = Stream(Axi4Ddr_PayloadRSP(contextType, pagesize))
+  val cmd_fifo = new StreamFifoCC(
+    dataType = Axi4Ddr_PayloadCMD(addrlen, burstlen, contextType, pagesize),
+    depth = fifolen,
+    pushClock = sys_clk,
+    popClock = ddr_clk
+  )
+  val rsp_fifo = new StreamFifoCC(
+    dataType = Axi4Ddr_PayloadRSP(contextType, pagesize),
+    depth = fifolen,
+    pushClock = ddr_clk,
+    popClock = sys_clk
+  )
+
+  val sys_area = new ClockingArea(sys_clk) {
+    val cache_addr  = Vec(Reg(UInt(addrlen bits)) init 0, pagecnt)
+    val cache_data  = Vec(Reg(Bits(pagesize bits)) init 0, pagecnt)
+    val cache_dirty = Vec(Reg(Bool()) init False, pagecnt)  // 标记页是否被修改。可以使用ddr控制器的mask，使得控制更精确，但此处无必要。
+    val cache_valid = Vec(Reg(Bool()) init False, pagecnt)
+
+    val lru_counter = Reg(UInt(log2Up(pagecnt) bits)) init 0
+
+    // AXI unburst 化
+    val axi_unburst = io.axi.sharedCmd.unburstify
+    val arwcmd_free = Reg(Bool()) init True
+    val arwcmd = RegNextWhen(axi_unburst.payload, axi_unburst.fire)
+    // 捕捉新的命令
+    when(axi_unburst.fire) {
+      arwcmd_free.clear()
+    }
+    axi_unburst.ready := arwcmd_free
+
+    // hit/miss 检测
+    val pageOffsetBits = log2Up(pageBytes)
+    val current_page_tag = arwcmd.addr((addrlen - 1) downto pageOffsetBits)
+    val page_hit_vec = Vec.tabulate(pagecnt)(i =>
+      cache_valid(i) && (cache_addr(i)((addrlen - 1) downto pageOffsetBits) === current_page_tag)
+    )
+    val hit = page_hit_vec.orR
+    val hit_index = OHToUInt(page_hit_vec)
+    val miss = !hit
+
+    // DDR 相关
+    val ddr_write_pending = Reg(Bool()) init False
+    val ddr_read_pending  = Reg(Bool()) init False
+    val ddr_cmd_valid = Reg(Bool()) init False
+    val ddr_cmd_payload = Axi4Ddr_PayloadCMD(addrlen, burstlen, contextType, pagesize)
+    ddr_cmd.payload := ddr_cmd_payload
+    ddr_cmd.valid := ddr_cmd_valid
+    ddr_rsp.ready := True
+
+    // 初始化 cmd
+    ddr_cmd_payload.addr := 0
+    ddr_cmd_payload.cmdtype := Axi4Ddr_CMDTYPE.write
+    ddr_cmd_payload.burst_cnt := pageBlocks - 1
+    ddr_cmd_payload.wr_data := cache_data(lru_counter)
+    ddr_cmd_payload.wr_mask :=  B(pageBytes bits, default -> False)  // "0": 数据有效，"1": 数据无效
+    ddr_cmd_payload.context := 0
+
+    // 处理未命中时的数据替换
+    val dirty = cache_dirty(lru_counter)
+    when(arwcmd_free === False && miss) {
+      when(dirty && !ddr_write_pending) {
+        // 写回旧页
+        ddr_cmd_payload.addr := (cache_addr(lru_counter)((addrlen - 1) downto pageOffsetBits) ## U(0, pageOffsetBits bits)).asUInt
+        ddr_cmd_payload.cmdtype := Axi4Ddr_CMDTYPE.write
+        ddr_cmd_valid := ~ddr_cmd.fire
+        ddr_write_pending.setWhen(ddr_cmd.fire)
+      }.elsewhen(!ddr_read_pending) {
+        // 读取新页
+        ddr_cmd_payload.addr := (arwcmd.addr((addrlen - 1) downto pageOffsetBits) ## U(0, pageOffsetBits bits)).asUInt
+        ddr_cmd_payload.cmdtype := Axi4Ddr_CMDTYPE.read
+        ddr_cmd_valid := ~ddr_cmd.fire
+        ddr_read_pending.setWhen(ddr_cmd.fire)
+      }
+    }
+
+    // 接收DDR读返回
+    when(ddr_rsp.fire && ddr_read_pending) {
+      cache_addr(lru_counter) := (arwcmd.addr((addrlen - 1) downto pageOffsetBits) ## U(0, pageOffsetBits bits)).asUInt
+      cache_data(lru_counter) := ddr_rsp.payload.rsp_data
+      cache_dirty(lru_counter) := False
+      cache_valid(lru_counter) := True
+      ddr_read_pending := False
+      ddr_write_pending := False
+      lru_counter := lru_counter + 1
+    }
+
+    // AXI写命中处理
+    val write_data_ready = Reg(Bool()) init False
+    val write_response_valid = Reg(Bool()) init False
+    io.axi.writeData.ready := write_data_ready
+    io.axi.writeRsp.valid := write_response_valid
+    io.axi.writeRsp.payload.id := arwcmd.id
+    io.axi.writeRsp.payload.setOKAY()
+
+    when(hit && arwcmd.write && arwcmd_free === False) {
+      val strb = io.axi.writeData.payload.strb
+      val wdata = io.axi.writeData.payload.data
+      cache_dirty(hit_index) := True
+      for (i <- 0 until pageWords) {
+        when(arwcmd.addr(pageOffsetBits - 1 downto 2) === i) {
+          for (j <- 0 until 4) {
+            when(strb(j) && io.axi.writeData.fire) {
+              cache_data(hit_index)((i*32+j*8+7) downto (i*32+j*8)) := wdata((j*8+7) downto (j*8))
+            }
+          }
+        }
+      }
+      write_data_ready := ~write_response_valid
+      when(io.axi.writeData.fire) {
+        write_data_ready := False
+        write_response_valid := True
+      }
+      when(io.axi.writeRsp.fire) {
+        write_response_valid := False
+        arwcmd_free := True
+      }
+    }
+
+    // AXI读命中处理
+    val read_response_valid = Reg(Bool()) init False
+    io.axi.readRsp.valid := read_response_valid
+    io.axi.readRsp.payload.id := arwcmd.id
+    io.axi.readRsp.payload.last := arwcmd.last
+    io.axi.readRsp.payload.setOKAY()
+    io.axi.readRsp.payload.data := 0
+
+    when(hit && !arwcmd.write && arwcmd_free === False) {
+      for (i <- 0 until pageWords) {
+        when(arwcmd.addr(pageOffsetBits - 1 downto 2) === i) {
+          io.axi.readRsp.payload.data := cache_data(hit_index)((i*32+31) downto (i*32))
+        }
+      }
+      read_response_valid := ~io.axi.readRsp.fire
+      arwcmd_free.setWhen(io.axi.readRsp.fire)
+    }
+
+    ddr_cmd >> cmd_fifo.io.push
+    ddr_rsp << rsp_fifo.io.pop
+  }
+
+  val ddr_control_area = new ClockingArea(ddr_clk) {
+    val cmd_free = Reg(Bool()) init True
+    val cmd_can_send = RegNext(io.cmd_ready & io.wr_data_rdy & io.init_calib_complete) init False
+    val cmd_trigger = Reg(Bool()) init False
+    val cmd_en = cmd_trigger
+    val burst_cnt = Reg(UInt((burstlen + 1) bits)) init 0
+
+    val rd_fire = io.rd_data_valid
+    val wr_fire = io.wr_data_en & io.wr_data_rdy
+    val data_fire = rd_fire | wr_fire
+
+    val cmd = RegNextWhen(cmd_fifo.io.pop.payload, cmd_fifo.io.pop.fire)
+    cmd_fifo.io.pop.ready := cmd_free & cmd_can_send
+    when(cmd_fifo.io.pop.fire) {
+      cmd_free.clear()
+      cmd_trigger.set()
+      burst_cnt := 0
+    }
+    when(data_fire) {
+      burst_cnt := burst_cnt + 1
+    }
+    when(cmd_en) {
+      cmd_trigger.clear()
+    }
+    when(burst_cnt === cmd.burst_cnt +^ 1) {
+      cmd_free.setWhen(cmd_free === False)
+    }
+
+    val is_write = cmd.cmdtype === Axi4Ddr_CMDTYPE.write
+    io.cmd_en := cmd_en
+    io.cmd := Mux(is_write, B"000", B"001")
+    io.app_burst_number := cmd.burst_cnt
+    io.addr := cmd.addr
+    io.wr_data_en := is_write & (burst_cnt =/= cmd.burst_cnt +^ 1) & io.wr_data_rdy
+    io.wr_data := B(0, 128 bits) // 默认赋值，消除 latch
+    io.wr_data_mask := B"16'x0000" // 默认赋值，消除 latch
+    for (i <- 0 until pageBlocks) {
+      when (i === burst_cnt) {
+        io.wr_data := cmd.wr_data(i*128+127 downto i*128)
+        io.wr_data_mask := cmd.wr_mask(i*16+15 downto i*16)
+      }
+    }
+
+    val push_valid_reg = RegNext(io.rd_data_valid & (burst_cnt === cmd.burst_cnt)) init False
+    val push_context_reg = RegNext(cmd.context) init 0
+    val push_data_reg = Reg(Bits(pagesize bits)) init 0
+    for (i <- 0 until pageBlocks) {
+      when (i === burst_cnt) {
+        push_data_reg(i*128+127 downto i*128) := io.rd_data
+      }
+    }
+    rsp_fifo.io.push.valid := push_valid_reg
+    rsp_fifo.io.push.payload.context := push_context_reg
+    rsp_fifo.io.push.payload.rsp_data := push_data_reg
+  }
+}
+
 case class Axi4Ddr_Bus[T <: Data](addrlen: Int = 28, burstlen: Int = 6, contextType : T) extends Bundle {
   val cmd = master(Stream(Axi4Ddr_PayloadCMD(addrlen, burstlen, contextType)))
   val rsp = slave(Stream(Axi4Ddr_PayloadRSP(contextType)))
@@ -559,8 +816,61 @@ case class Axi4Ddr_BusArbiter[T <: Data](sys_clk: ClockDomain, addrlen: Int = 28
   }
 }
 
+// case class Axi4Ddr(sys_clk: ClockDomain, mem_clk: ClockDomain) extends Component {
+//   val axiController = Axi4DdrWithCache(sys_clk, 32, 28, 4)
+//   val io = new Bundle() {
+//     val pll_lock = in Bool ()
+//     val axi = slave(Axi4Shared(axiController.axiConfig))
+//     val ddr_iface = master(DDR3_Interface())
+//     val init_calib_complete = out Bool()
+//   }
+
+//   val gowin_DDR3 = Gowin_DDR3(sys_clk, mem_clk)
+//   val ddr_ref_clk = gowin_DDR3.clk_out
+//   val controller = Axi4Ddr_Controller(
+//     sys_clk,
+//     ddr_ref_clk,
+//     contextType = axiController.context_type,
+//     fifo_length = 4
+//   )
+
+//   val sys_area = new ClockingArea(sys_clk) {
+//     axiController.io.ddr_cmd >> controller.io.ddr_cmd
+//     axiController.io.ddr_rsp << controller.io.ddr_rsp
+
+//     io.axi.sharedCmd >> axiController.io.axi.sharedCmd
+//     io.axi.writeData >> axiController.io.axi.writeData
+//     io.axi.writeRsp << axiController.io.axi.writeRsp
+//     io.axi.readRsp << axiController.io.axi.readRsp
+
+//     gowin_DDR3.io.sr_req := False
+//     gowin_DDR3.io.ref_req := False
+//     gowin_DDR3.io.burst := True
+//     gowin_DDR3.io.pll_lock := io.pll_lock
+//     gowin_DDR3.io.app_burst_number := controller.io.app_burst_number
+//     gowin_DDR3.io.cmd := controller.io.cmd
+//     gowin_DDR3.io.cmd_en := controller.io.cmd_en
+//     gowin_DDR3.io.addr := controller.io.addr
+//     gowin_DDR3.io.wr_data := controller.io.wr_data
+//     gowin_DDR3.io.wr_data_en := controller.io.wr_data_en
+//     gowin_DDR3.io.wr_data_end := controller.io.wr_data_en
+//     gowin_DDR3.io.wr_data_mask := controller.io.wr_data_mask
+
+//     controller.io.cmd_ready := gowin_DDR3.io.cmd_ready
+//     controller.io.wr_data_rdy := gowin_DDR3.io.wr_data_rdy
+//     controller.io.rd_data := gowin_DDR3.io.rd_data
+//     controller.io.rd_data_valid := gowin_DDR3.io.rd_data_valid
+//     controller.io.init_calib_complete := gowin_DDR3.io.init_calib_complete
+
+//     gowin_DDR3.connectDDR3Interface(io.ddr_iface)
+//   }
+//   io.init_calib_complete := gowin_DDR3.io.init_calib_complete
+// }
+
 case class Axi4Ddr(sys_clk: ClockDomain, mem_clk: ClockDomain) extends Component {
-  val axiController = Axi4DdrWithCache(sys_clk, 32, 28, 4)
+  val gowin_DDR3 = Gowin_DDR3(sys_clk, mem_clk)
+  val ddr_clk = gowin_DDR3.clk_out
+  val axiController = Axi4DdrControllerWithCache(sys_clk, ddr_clk, 32, 28, 4)
   val io = new Bundle() {
     val pll_lock = in Bool ()
     val axi = slave(Axi4Shared(axiController.axiConfig))
@@ -568,19 +878,8 @@ case class Axi4Ddr(sys_clk: ClockDomain, mem_clk: ClockDomain) extends Component
     val init_calib_complete = out Bool()
   }
 
-  val gowin_DDR3 = Gowin_DDR3(sys_clk, mem_clk)
-  val ddr_ref_clk = gowin_DDR3.clk_out
-  val controller = Axi4Ddr_Controller(
-    sys_clk,
-    ddr_ref_clk,
-    contextType = axiController.context_type,
-    fifo_length = 4
-  )
-
+  io.init_calib_complete := gowin_DDR3.io.init_calib_complete
   val sys_area = new ClockingArea(sys_clk) {
-    axiController.io.ddr_cmd >> controller.io.ddr_cmd
-    axiController.io.ddr_rsp << controller.io.ddr_rsp
-
     io.axi.sharedCmd >> axiController.io.axi.sharedCmd
     io.axi.writeData >> axiController.io.axi.writeData
     io.axi.writeRsp << axiController.io.axi.writeRsp
@@ -590,24 +889,23 @@ case class Axi4Ddr(sys_clk: ClockDomain, mem_clk: ClockDomain) extends Component
     gowin_DDR3.io.ref_req := False
     gowin_DDR3.io.burst := True
     gowin_DDR3.io.pll_lock := io.pll_lock
-    gowin_DDR3.io.app_burst_number := controller.io.app_burst_number
-    gowin_DDR3.io.cmd := controller.io.cmd
-    gowin_DDR3.io.cmd_en := controller.io.cmd_en
-    gowin_DDR3.io.addr := controller.io.addr
-    gowin_DDR3.io.wr_data := controller.io.wr_data
-    gowin_DDR3.io.wr_data_en := controller.io.wr_data_en
-    gowin_DDR3.io.wr_data_end := controller.io.wr_data_en
-    gowin_DDR3.io.wr_data_mask := controller.io.wr_data_mask
+    gowin_DDR3.io.app_burst_number := axiController.io.app_burst_number
+    gowin_DDR3.io.cmd := axiController.io.cmd
+    gowin_DDR3.io.cmd_en := axiController.io.cmd_en
+    gowin_DDR3.io.addr := axiController.io.addr
+    gowin_DDR3.io.wr_data := axiController.io.wr_data
+    gowin_DDR3.io.wr_data_en := axiController.io.wr_data_en
+    gowin_DDR3.io.wr_data_end := axiController.io.wr_data_en
+    gowin_DDR3.io.wr_data_mask := axiController.io.wr_data_mask
 
-    controller.io.cmd_ready := gowin_DDR3.io.cmd_ready
-    controller.io.wr_data_rdy := gowin_DDR3.io.wr_data_rdy
-    controller.io.rd_data := gowin_DDR3.io.rd_data
-    controller.io.rd_data_valid := gowin_DDR3.io.rd_data_valid
-    controller.io.init_calib_complete := gowin_DDR3.io.init_calib_complete
+    axiController.io.cmd_ready := gowin_DDR3.io.cmd_ready
+    axiController.io.wr_data_rdy := gowin_DDR3.io.wr_data_rdy
+    axiController.io.rd_data := gowin_DDR3.io.rd_data
+    axiController.io.rd_data_valid := gowin_DDR3.io.rd_data_valid
+    axiController.io.init_calib_complete := gowin_DDR3.io.init_calib_complete
 
     gowin_DDR3.connectDDR3Interface(io.ddr_iface)
   }
-  io.init_calib_complete := gowin_DDR3.io.init_calib_complete
 }
 
 case class Axi4DdrCtrl(sys_clk: ClockDomain, mem_clk: ClockDomain) extends Component{
