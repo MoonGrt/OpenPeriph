@@ -19,7 +19,7 @@ case class Hdmi() extends Bundle with IMasterSlave {
   }
 }
 
-case class dvi_tx (vgaCd : ClockDomain, hdmiCd : ClockDomain) extends BlackBox {
+case class dvi_tx (vgaCd: ClockDomain, hdmiCd: ClockDomain) extends BlackBox {
   setDefinitionName("DVI_TX_Top") // Verilog 中模块名为 DVI_TX_Top，不加 io_
   val io = new Bundle {
     // Inputs

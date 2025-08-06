@@ -8,7 +8,7 @@ import spinal.lib.graphic.vga._
 
 
 object TmdsEncoder{
-  def apply(VD : UInt, CD : Bits, VDE : Bool, TMDS :Bits) : TmdsEncoder = {
+  def apply(VD: UInt, CD: Bits, VDE: Bool, TMDS :Bits): TmdsEncoder = {
     val ret = TmdsEncoder()
     ret.io.VD := VD
     ret.io.CD := CD
@@ -53,7 +53,7 @@ case class TmdsEncoder() extends Component{
   dc_bias := (io.VDE ? dc_bias_d | 0)
 }
 
-case class VgaToHdmi(vgaCd : ClockDomain, hdmiCd : ClockDomain, rgbConfig: RgbConfig) extends Component {
+case class VgaToHdmi(vgaCd: ClockDomain, hdmiCd: ClockDomain, rgbConfig: RgbConfig) extends Component {
   val io = new Bundle {
     val vga = slave(Vga(rgbConfig))
     val gpdi_dp, gpdi_dn = out Bits(4 bits)

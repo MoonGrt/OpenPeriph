@@ -34,3 +34,11 @@ class hdmipll extends BlackBox {
   val reset = in Bool ()
   val clkin = in Bool ()
 }
+
+class lcdpll extends BlackBox {
+  setDefinitionName("lcdpll") // Verilog 中模块名为 lcdpll，不加 io_
+  val clkout = out Bool ()
+  val lock = out Bool ()
+  val reset = in Bool ()
+  val clkin = in Bool ()
+}

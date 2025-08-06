@@ -125,7 +125,7 @@ class Axi4RamMultiPort(config: Axi4Config, wordCount: BigInt, portCount: Int) ex
 }
 
 object Axi4Ram{
-  def getAxiConfig(dataWidth : Int,byteCount : BigInt,idWidth : Int) = Axi4Config(
+  def getAxiConfig(dataWidth: Int,byteCount: BigInt,idWidth: Int) = Axi4Config(
     addressWidth = log2Up(byteCount),
     dataWidth = dataWidth,
     idWidth = idWidth,
@@ -137,7 +137,7 @@ object Axi4Ram{
   )
 }
 
-case class Axi4Ram(dataWidth : Int, byteCount : BigInt, idWidth : Int, arwStage : Boolean = false, onChipRamHexFile : String = null, bigEndian : Boolean = false) extends Component{
+case class Axi4Ram(dataWidth: Int, byteCount: BigInt, idWidth: Int, arwStage: Boolean = false, onChipRamHexFile: String = null, bigEndian: Boolean = false) extends Component{
   val axiConfig = Axi4Ram.getAxiConfig(dataWidth, byteCount, idWidth)
 
   val io = new Bundle {

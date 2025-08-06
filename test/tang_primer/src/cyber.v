@@ -1,16 +1,16 @@
 // Generator : SpinalHDL v1.12.0    git head : 1aa7d7b5732f11cca2dd83bacc2a4cb92ca8e5c9
-// Component : cyberwithddrhdmi
-// Git hash  : 9a5b0559bcc39b16e7c0029c42dfb49f25c1f13d
+// Component : cyberwithddrlcd
+// Git hash  : 446c965fde15913b2abf6f19ee792c855d7d3df7
 
 `timescale 1ns/1ps
 `define SYNTHESIS
-module cyberwithddrhdmi (
+module cyberwithddrlcd (
   input  wire          io_rstn,
   input  wire          io_clk,
-  input  wire          io_jtag_tms,
-  input  wire          io_jtag_tdi,
-  output wire          io_jtag_tdo,
-  input  wire          io_jtag_tck,
+  // input  wire          io_jtag_tms,
+  // input  wire          io_jtag_tdi,
+  // output wire          io_jtag_tdo,
+  // input  wire          io_jtag_tck,
   output wire [13:0]   io_sdram_O_ddr_addr,
   output wire [2:0]    io_sdram_O_ddr_ba,
   output wire          io_sdram_O_ddr_cs_n,
@@ -26,11 +26,14 @@ module cyberwithddrhdmi (
   inout  wire [15:0]   io_sdram_IO_ddr_dq,
   inout  wire [1:0]    io_sdram_IO_ddr_dqs,
   inout  wire [1:0]    io_sdram_IO_ddr_dqs_n,
-  output wire          io_hdmi_O_tmds_clk_p,
-  output wire          io_hdmi_O_tmds_clk_n,
-  output wire [2:0]    io_hdmi_O_tmds_data_p,
-  output wire [2:0]    io_hdmi_O_tmds_data_n,
-  inout  wire [31:0]   io_gpio
+  output wire          io_uart_tx,
+  output wire          io_lcd_vSync,
+  output wire          io_lcd_hSync,
+  output wire          io_lcd_colorEn,
+  output wire [4:0]    io_lcd_color_r,
+  output wire [5:0]    io_lcd_color_g,
+  output wire [4:0]    io_lcd_color_b,
+  output wire          io_lcdclk
 );
 
   wire                bufferCC_19_io_dataIn;
@@ -41,6 +44,7 @@ module cyberwithddrhdmi (
   wire       [31:0]   axi_afioCtrl_io_device_read;
   wire       [4:0]    axi_extiCtrl_io_apb_PADDR;
   wire       [12:0]   axi_gpioCtrl_io_apb_PADDR;
+  wire       [31:0]   axi_gpioCtrl_io_gpio_read;
   wire       [12:0]   axi_timCtrl_io_apb_PADDR;
   wire       [12:0]   axi_wdgCtrl_io_apb_PADDR;
   wire       [3:0]    axi_systickCtrl_io_apb_PADDR;
@@ -64,9 +68,8 @@ module cyberwithddrhdmi (
   wire                sysclk_lock;
   wire                memclk_clkout;
   wire                memclk_lock;
-  wire                hdmiclk_clkout;
-  wire                hdmiclk_lock;
-  wire                CLKDIV_1_CLKOUT;
+  wire                lcdclk_clkout;
+  wire                lcdclk_lock;
   wire                bufferCC_19_io_dataOut;
   wire                axi_core_io_i_ar_valid;
   wire       [31:0]   axi_core_io_i_ar_payload_addr;
@@ -200,10 +203,6 @@ module cyberwithddrhdmi (
   wire       [4:0]    axi_vgaCtrl_io_vga_color_r;
   wire       [5:0]    axi_vgaCtrl_io_vga_color_g;
   wire       [4:0]    axi_vgaCtrl_io_vga_color_b;
-  wire                axi_vgatohdmi_io_hdmi_O_tmds_clk_p;
-  wire                axi_vgatohdmi_io_hdmi_O_tmds_clk_n;
-  wire       [2:0]    axi_vgatohdmi_io_hdmi_O_tmds_data_p;
-  wire       [2:0]    axi_vgatohdmi_io_hdmi_O_tmds_data_n;
   wire                axi_core_io_i_decoder_io_input_ar_ready;
   wire                axi_core_io_i_decoder_io_input_r_valid;
   wire       [31:0]   axi_core_io_i_decoder_io_input_r_payload_data;
@@ -480,52 +479,17 @@ module cyberwithddrhdmi (
   wire                apb3Router_5_io_outputs_8_PENABLE;
   wire                apb3Router_5_io_outputs_8_PWRITE;
   wire       [31:0]   apb3Router_5_io_outputs_8_PWDATA;
-  reg                 _zz_io_gpio;
-  reg                 _zz_io_gpio_1;
-  reg                 _zz_io_gpio_2;
-  reg                 _zz_io_gpio_3;
-  reg                 _zz_io_gpio_4;
-  reg                 _zz_io_gpio_5;
-  reg                 _zz_io_gpio_6;
-  reg                 _zz_io_gpio_7;
-  reg                 _zz_io_gpio_8;
-  reg                 _zz_io_gpio_9;
-  reg                 _zz_io_gpio_10;
-  reg                 _zz_io_gpio_11;
-  reg                 _zz_io_gpio_12;
-  reg                 _zz_io_gpio_13;
-  reg                 _zz_io_gpio_14;
-  reg                 _zz_io_gpio_15;
-  reg                 _zz_io_gpio_16;
-  reg                 _zz_io_gpio_17;
-  reg                 _zz_io_gpio_18;
-  reg                 _zz_io_gpio_19;
-  reg                 _zz_io_gpio_20;
-  reg                 _zz_io_gpio_21;
-  reg                 _zz_io_gpio_22;
-  reg                 _zz_io_gpio_23;
-  reg                 _zz_io_gpio_24;
-  reg                 _zz_io_gpio_25;
-  reg                 _zz_io_gpio_26;
-  reg                 _zz_io_gpio_27;
-  reg                 _zz_io_gpio_28;
-  reg                 _zz_io_gpio_29;
-  reg                 _zz_io_gpio_30;
-  reg                 _zz_io_gpio_31;
-  wire       [31:0]   _zz_io_gpio_read;
-  wire       [31:0]   _zz_io_gpio_32;
-  wire       [31:0]   _zz_when_InOutWrapper_l15;
   reg                 resetCtrl_axiResetUnbuffered;
   reg                 resetCtrl_coreResetUnbuffered;
   reg        [5:0]    resetCtrl_axiResetCounter;
-  wire       [5:0]    _zz_when_cyberwithddrhdmi_l134;
-  wire                when_cyberwithddrhdmi_l134;
-  wire                when_cyberwithddrhdmi_l138;
+  wire       [5:0]    _zz_when_cyberwithddrlcd_l131;
+  wire                when_cyberwithddrlcd_l131;
+  wire                when_cyberwithddrlcd_l135;
   reg                 resetCtrl_axiReset;
   reg                 resetCtrl_coreReset;
   wire                axi_extiInterrupt;
   wire                axi_timInterrupt;
-  wire                when_cyberwithddrhdmi_l241;
+  wire                when_cyberwithddrlcd_l233;
   wire                axi_systickInterrupt;
   wire                axi_uartInterrupt;
   wire                io_outputs_0_ar_validPipe_valid;
@@ -677,41 +641,6 @@ module cyberwithddrhdmi (
   reg        [31:0]   io_output_w_rData_data_1;
   reg        [3:0]    io_output_w_rData_strb_1;
   reg                 io_output_w_rData_last_1;
-  wire       [31:0]   _zz_when_InOutWrapper_l15_1;
-  wire       [31:0]   _zz_io_gpio_33;
-  reg        [31:0]   _zz_io_gpio_read_1;
-  wire                when_InOutWrapper_l15;
-  wire                when_InOutWrapper_l15_1;
-  wire                when_InOutWrapper_l15_2;
-  wire                when_InOutWrapper_l15_3;
-  wire                when_InOutWrapper_l15_4;
-  wire                when_InOutWrapper_l15_5;
-  wire                when_InOutWrapper_l15_6;
-  wire                when_InOutWrapper_l15_7;
-  wire                when_InOutWrapper_l15_8;
-  wire                when_InOutWrapper_l15_9;
-  wire                when_InOutWrapper_l15_10;
-  wire                when_InOutWrapper_l15_11;
-  wire                when_InOutWrapper_l15_12;
-  wire                when_InOutWrapper_l15_13;
-  wire                when_InOutWrapper_l15_14;
-  wire                when_InOutWrapper_l15_15;
-  wire                when_InOutWrapper_l15_16;
-  wire                when_InOutWrapper_l15_17;
-  wire                when_InOutWrapper_l15_18;
-  wire                when_InOutWrapper_l15_19;
-  wire                when_InOutWrapper_l15_20;
-  wire                when_InOutWrapper_l15_21;
-  wire                when_InOutWrapper_l15_22;
-  wire                when_InOutWrapper_l15_23;
-  wire                when_InOutWrapper_l15_24;
-  wire                when_InOutWrapper_l15_25;
-  wire                when_InOutWrapper_l15_26;
-  wire                when_InOutWrapper_l15_27;
-  wire                when_InOutWrapper_l15_28;
-  wire                when_InOutWrapper_l15_29;
-  wire                when_InOutWrapper_l15_30;
-  wire                when_InOutWrapper_l15_31;
 
   syspll sysclk (
     .clkout (sysclk_clkout), //o
@@ -725,20 +654,11 @@ module cyberwithddrhdmi (
     .reset  (1'b0         ), //i
     .clkin  (sysclk_clkout)  //i
   );
-  hdmipll hdmiclk (
-    .clkout (hdmiclk_clkout), //o
-    .lock   (hdmiclk_lock  ), //o
-    .reset  (1'b0          ), //i
-    .clkin  (io_clk        )  //i
-  );
-  CLKDIV #(
-    .DIV_MODE ("5"    ),
-    .GSREN    ("false")
-  ) CLKDIV_1 (
-    .RESETN (io_rstn        ), //i
-    .CALIB  (1'b1           ), //i
-    .HCLKIN (hdmiclk_clkout ), //i
-    .CLKOUT (CLKDIV_1_CLKOUT)  //o
+  lcdpll lcdclk (
+    .clkout (lcdclk_clkout), //o
+    .lock   (lcdclk_lock  ), //o
+    .reset  (1'b0         ), //i
+    .clkin  (io_clk       )  //i
   );
   (* keep_hierarchy = "TRUE" *) BufferCC_18 bufferCC_19 (
     .io_dataIn  (bufferCC_19_io_dataIn ), //i
@@ -930,7 +850,7 @@ module cyberwithddrhdmi (
     .io_device_read        (axi_afioCtrl_io_device_read[31:0]       ), //i
     .io_device_write       (axi_afioCtrl_io_device_write[31:0]      ), //o
     .io_device_writeEnable (axi_afioCtrl_io_device_writeEnable[31:0]), //o
-    .io_afio_read          (_zz_io_gpio_read[31:0]                  ), //i
+    .io_afio_read          (axi_gpioCtrl_io_gpio_read[31:0]         ), //i
     .io_afio_write         (axi_afioCtrl_io_afio_write[31:0]        ), //o
     .io_afio_writeEnable   (axi_afioCtrl_io_afio_writeEnable[31:0]  ), //o
     .io_afioExti           (axi_afioCtrl_io_afioExti[15:0]          ), //o
@@ -960,7 +880,7 @@ module cyberwithddrhdmi (
     .io_apb_PWDATA       (apb3Router_5_io_outputs_0_PWDATA[31:0]), //i
     .io_apb_PRDATA       (axi_gpioCtrl_io_apb_PRDATA[31:0]      ), //o
     .io_apb_PSLVERROR    (axi_gpioCtrl_io_apb_PSLVERROR         ), //o
-    .io_gpio_read        (_zz_io_gpio_read[31:0]                ), //i
+    .io_gpio_read        (axi_gpioCtrl_io_gpio_read[31:0]       ), //i
     .io_gpio_write       (axi_gpioCtrl_io_gpio_write[31:0]      ), //o
     .io_gpio_writeEnable (axi_gpioCtrl_io_gpio_writeEnable[31:0]), //o
     .io_afio             (axi_afioCtrl_io_afio_write[31:0]      ), //i
@@ -1052,22 +972,7 @@ module cyberwithddrhdmi (
     .io_vga_color_b          (axi_vgaCtrl_io_vga_color_b[4:0]                         ), //o
     .clkout                  (sysclk_clkout                                           ), //i
     .resetCtrl_axiReset      (resetCtrl_axiReset                                      ), //i
-    .CLKOUT_1                (CLKDIV_1_CLKOUT                                         )  //i
-  );
-  VgaToHdmiGowin axi_vgatohdmi (
-    .io_vga_vSync          (axi_vgaCtrl_io_vga_vSync                ), //i
-    .io_vga_hSync          (axi_vgaCtrl_io_vga_hSync                ), //i
-    .io_vga_colorEn        (axi_vgaCtrl_io_vga_colorEn              ), //i
-    .io_vga_color_r        (axi_vgaCtrl_io_vga_color_r[4:0]         ), //i
-    .io_vga_color_g        (axi_vgaCtrl_io_vga_color_g[5:0]         ), //i
-    .io_vga_color_b        (axi_vgaCtrl_io_vga_color_b[4:0]         ), //i
-    .io_hdmi_O_tmds_clk_p  (axi_vgatohdmi_io_hdmi_O_tmds_clk_p      ), //o
-    .io_hdmi_O_tmds_clk_n  (axi_vgatohdmi_io_hdmi_O_tmds_clk_n      ), //o
-    .io_hdmi_O_tmds_data_p (axi_vgatohdmi_io_hdmi_O_tmds_data_p[2:0]), //o
-    .io_hdmi_O_tmds_data_n (axi_vgatohdmi_io_hdmi_O_tmds_data_n[2:0]), //o
-    .resetCtrl_axiReset    (resetCtrl_axiReset                      ), //i
-    .CLKOUT                (CLKDIV_1_CLKOUT                         ), //i
-    .clkout_1              (hdmiclk_clkout                          )  //i
+    .clkout_1                (lcdclk_clkout                                           )  //i
   );
   Axi4ReadOnlyDecoder axi_core_io_i_decoder (
     .io_input_ar_valid             (axi_core_io_i_ar_valid                                           ), //i
@@ -1634,265 +1539,10 @@ module cyberwithddrhdmi (
     resetCtrl_axiResetCounter = 6'h0;
   end
 
-  assign io_gpio[0] = _zz_io_gpio_31 ? _zz_io_gpio_33[0] : 1'bz;
-  assign io_gpio[1] = _zz_io_gpio_30 ? _zz_io_gpio_33[1] : 1'bz;
-  assign io_gpio[2] = _zz_io_gpio_29 ? _zz_io_gpio_33[2] : 1'bz;
-  assign io_gpio[3] = _zz_io_gpio_28 ? _zz_io_gpio_33[3] : 1'bz;
-  assign io_gpio[4] = _zz_io_gpio_27 ? _zz_io_gpio_33[4] : 1'bz;
-  assign io_gpio[5] = _zz_io_gpio_26 ? _zz_io_gpio_33[5] : 1'bz;
-  assign io_gpio[6] = _zz_io_gpio_25 ? _zz_io_gpio_33[6] : 1'bz;
-  assign io_gpio[7] = _zz_io_gpio_24 ? _zz_io_gpio_33[7] : 1'bz;
-  assign io_gpio[8] = _zz_io_gpio_23 ? _zz_io_gpio_33[8] : 1'bz;
-  assign io_gpio[9] = _zz_io_gpio_22 ? _zz_io_gpio_33[9] : 1'bz;
-  assign io_gpio[10] = _zz_io_gpio_21 ? _zz_io_gpio_33[10] : 1'bz;
-  assign io_gpio[11] = _zz_io_gpio_20 ? _zz_io_gpio_33[11] : 1'bz;
-  assign io_gpio[12] = _zz_io_gpio_19 ? _zz_io_gpio_33[12] : 1'bz;
-  assign io_gpio[13] = _zz_io_gpio_18 ? _zz_io_gpio_33[13] : 1'bz;
-  assign io_gpio[14] = _zz_io_gpio_17 ? _zz_io_gpio_33[14] : 1'bz;
-  assign io_gpio[15] = _zz_io_gpio_16 ? _zz_io_gpio_33[15] : 1'bz;
-  assign io_gpio[16] = _zz_io_gpio_15 ? _zz_io_gpio_33[16] : 1'bz;
-  assign io_gpio[17] = _zz_io_gpio_14 ? _zz_io_gpio_33[17] : 1'bz;
-  assign io_gpio[18] = _zz_io_gpio_13 ? _zz_io_gpio_33[18] : 1'bz;
-  assign io_gpio[19] = _zz_io_gpio_12 ? _zz_io_gpio_33[19] : 1'bz;
-  assign io_gpio[20] = _zz_io_gpio_11 ? _zz_io_gpio_33[20] : 1'bz;
-  assign io_gpio[21] = _zz_io_gpio_10 ? _zz_io_gpio_33[21] : 1'bz;
-  assign io_gpio[22] = _zz_io_gpio_9 ? _zz_io_gpio_33[22] : 1'bz;
-  assign io_gpio[23] = _zz_io_gpio_8 ? _zz_io_gpio_33[23] : 1'bz;
-  assign io_gpio[24] = _zz_io_gpio_7 ? _zz_io_gpio_33[24] : 1'bz;
-  assign io_gpio[25] = _zz_io_gpio_6 ? _zz_io_gpio_33[25] : 1'bz;
-  assign io_gpio[26] = _zz_io_gpio_5 ? _zz_io_gpio_33[26] : 1'bz;
-  assign io_gpio[27] = _zz_io_gpio_4 ? _zz_io_gpio_33[27] : 1'bz;
-  assign io_gpio[28] = _zz_io_gpio_3 ? _zz_io_gpio_33[28] : 1'bz;
-  assign io_gpio[29] = _zz_io_gpio_2 ? _zz_io_gpio_33[29] : 1'bz;
-  assign io_gpio[30] = _zz_io_gpio_1 ? _zz_io_gpio_33[30] : 1'bz;
-  assign io_gpio[31] = _zz_io_gpio ? _zz_io_gpio_33[31] : 1'bz;
-  always @(*) begin
-    _zz_io_gpio = 1'b0;
-    if(when_InOutWrapper_l15_31) begin
-      _zz_io_gpio = 1'b1;
-    end
-  end
-
-  always @(*) begin
-    _zz_io_gpio_1 = 1'b0;
-    if(when_InOutWrapper_l15_30) begin
-      _zz_io_gpio_1 = 1'b1;
-    end
-  end
-
-  always @(*) begin
-    _zz_io_gpio_2 = 1'b0;
-    if(when_InOutWrapper_l15_29) begin
-      _zz_io_gpio_2 = 1'b1;
-    end
-  end
-
-  always @(*) begin
-    _zz_io_gpio_3 = 1'b0;
-    if(when_InOutWrapper_l15_28) begin
-      _zz_io_gpio_3 = 1'b1;
-    end
-  end
-
-  always @(*) begin
-    _zz_io_gpio_4 = 1'b0;
-    if(when_InOutWrapper_l15_27) begin
-      _zz_io_gpio_4 = 1'b1;
-    end
-  end
-
-  always @(*) begin
-    _zz_io_gpio_5 = 1'b0;
-    if(when_InOutWrapper_l15_26) begin
-      _zz_io_gpio_5 = 1'b1;
-    end
-  end
-
-  always @(*) begin
-    _zz_io_gpio_6 = 1'b0;
-    if(when_InOutWrapper_l15_25) begin
-      _zz_io_gpio_6 = 1'b1;
-    end
-  end
-
-  always @(*) begin
-    _zz_io_gpio_7 = 1'b0;
-    if(when_InOutWrapper_l15_24) begin
-      _zz_io_gpio_7 = 1'b1;
-    end
-  end
-
-  always @(*) begin
-    _zz_io_gpio_8 = 1'b0;
-    if(when_InOutWrapper_l15_23) begin
-      _zz_io_gpio_8 = 1'b1;
-    end
-  end
-
-  always @(*) begin
-    _zz_io_gpio_9 = 1'b0;
-    if(when_InOutWrapper_l15_22) begin
-      _zz_io_gpio_9 = 1'b1;
-    end
-  end
-
-  always @(*) begin
-    _zz_io_gpio_10 = 1'b0;
-    if(when_InOutWrapper_l15_21) begin
-      _zz_io_gpio_10 = 1'b1;
-    end
-  end
-
-  always @(*) begin
-    _zz_io_gpio_11 = 1'b0;
-    if(when_InOutWrapper_l15_20) begin
-      _zz_io_gpio_11 = 1'b1;
-    end
-  end
-
-  always @(*) begin
-    _zz_io_gpio_12 = 1'b0;
-    if(when_InOutWrapper_l15_19) begin
-      _zz_io_gpio_12 = 1'b1;
-    end
-  end
-
-  always @(*) begin
-    _zz_io_gpio_13 = 1'b0;
-    if(when_InOutWrapper_l15_18) begin
-      _zz_io_gpio_13 = 1'b1;
-    end
-  end
-
-  always @(*) begin
-    _zz_io_gpio_14 = 1'b0;
-    if(when_InOutWrapper_l15_17) begin
-      _zz_io_gpio_14 = 1'b1;
-    end
-  end
-
-  always @(*) begin
-    _zz_io_gpio_15 = 1'b0;
-    if(when_InOutWrapper_l15_16) begin
-      _zz_io_gpio_15 = 1'b1;
-    end
-  end
-
-  always @(*) begin
-    _zz_io_gpio_16 = 1'b0;
-    if(when_InOutWrapper_l15_15) begin
-      _zz_io_gpio_16 = 1'b1;
-    end
-  end
-
-  always @(*) begin
-    _zz_io_gpio_17 = 1'b0;
-    if(when_InOutWrapper_l15_14) begin
-      _zz_io_gpio_17 = 1'b1;
-    end
-  end
-
-  always @(*) begin
-    _zz_io_gpio_18 = 1'b0;
-    if(when_InOutWrapper_l15_13) begin
-      _zz_io_gpio_18 = 1'b1;
-    end
-  end
-
-  always @(*) begin
-    _zz_io_gpio_19 = 1'b0;
-    if(when_InOutWrapper_l15_12) begin
-      _zz_io_gpio_19 = 1'b1;
-    end
-  end
-
-  always @(*) begin
-    _zz_io_gpio_20 = 1'b0;
-    if(when_InOutWrapper_l15_11) begin
-      _zz_io_gpio_20 = 1'b1;
-    end
-  end
-
-  always @(*) begin
-    _zz_io_gpio_21 = 1'b0;
-    if(when_InOutWrapper_l15_10) begin
-      _zz_io_gpio_21 = 1'b1;
-    end
-  end
-
-  always @(*) begin
-    _zz_io_gpio_22 = 1'b0;
-    if(when_InOutWrapper_l15_9) begin
-      _zz_io_gpio_22 = 1'b1;
-    end
-  end
-
-  always @(*) begin
-    _zz_io_gpio_23 = 1'b0;
-    if(when_InOutWrapper_l15_8) begin
-      _zz_io_gpio_23 = 1'b1;
-    end
-  end
-
-  always @(*) begin
-    _zz_io_gpio_24 = 1'b0;
-    if(when_InOutWrapper_l15_7) begin
-      _zz_io_gpio_24 = 1'b1;
-    end
-  end
-
-  always @(*) begin
-    _zz_io_gpio_25 = 1'b0;
-    if(when_InOutWrapper_l15_6) begin
-      _zz_io_gpio_25 = 1'b1;
-    end
-  end
-
-  always @(*) begin
-    _zz_io_gpio_26 = 1'b0;
-    if(when_InOutWrapper_l15_5) begin
-      _zz_io_gpio_26 = 1'b1;
-    end
-  end
-
-  always @(*) begin
-    _zz_io_gpio_27 = 1'b0;
-    if(when_InOutWrapper_l15_4) begin
-      _zz_io_gpio_27 = 1'b1;
-    end
-  end
-
-  always @(*) begin
-    _zz_io_gpio_28 = 1'b0;
-    if(when_InOutWrapper_l15_3) begin
-      _zz_io_gpio_28 = 1'b1;
-    end
-  end
-
-  always @(*) begin
-    _zz_io_gpio_29 = 1'b0;
-    if(when_InOutWrapper_l15_2) begin
-      _zz_io_gpio_29 = 1'b1;
-    end
-  end
-
-  always @(*) begin
-    _zz_io_gpio_30 = 1'b0;
-    if(when_InOutWrapper_l15_1) begin
-      _zz_io_gpio_30 = 1'b1;
-    end
-  end
-
-  always @(*) begin
-    _zz_io_gpio_31 = 1'b0;
-    if(when_InOutWrapper_l15) begin
-      _zz_io_gpio_31 = 1'b1;
-    end
-  end
-
+  assign io_lcdclk = lcdclk_clkout;
   always @(*) begin
     resetCtrl_axiResetUnbuffered = 1'b0;
-    if(when_cyberwithddrhdmi_l134) begin
+    if(when_cyberwithddrlcd_l131) begin
       resetCtrl_axiResetUnbuffered = 1'b1;
     end
   end
@@ -1902,7 +1552,7 @@ module cyberwithddrhdmi (
     if(resetCtrl_axiResetUnbuffered) begin
       resetCtrl_coreResetUnbuffered = 1'b1;
     end
-    if(when_cyberwithddrhdmi_l241) begin
+    if(when_cyberwithddrlcd_l233) begin
       resetCtrl_coreResetUnbuffered = 1'b1;
     end
     if(axi_core_io_debugResetOut) begin
@@ -1910,14 +1560,14 @@ module cyberwithddrhdmi (
     end
   end
 
-  assign _zz_when_cyberwithddrhdmi_l134[5 : 0] = 6'h3f;
-  assign when_cyberwithddrhdmi_l134 = (resetCtrl_axiResetCounter != _zz_when_cyberwithddrhdmi_l134);
+  assign _zz_when_cyberwithddrlcd_l131[5 : 0] = 6'h3f;
+  assign when_cyberwithddrlcd_l131 = (resetCtrl_axiResetCounter != _zz_when_cyberwithddrlcd_l131);
   assign bufferCC_19_io_dataIn = (! io_rstn);
-  assign when_cyberwithddrhdmi_l138 = bufferCC_19_io_dataOut;
+  assign when_cyberwithddrlcd_l135 = bufferCC_19_io_dataOut;
   assign axi_sdramCtrl_io_pll_lock = (memclk_lock && sysclk_lock);
   assign axi_extiInterrupt = (|axi_extiCtrl_io_interrupt);
   assign axi_timInterrupt = (|axi_timCtrl_io_interrupt);
-  assign when_cyberwithddrhdmi_l241 = ((axi_wdgCtrl_io_iwdgRst || axi_wdgCtrl_io_wwdgRst) || (! axi_sdramCtrl_io_init_calib_complete));
+  assign when_cyberwithddrlcd_l233 = ((axi_wdgCtrl_io_iwdgRst || axi_wdgCtrl_io_wwdgRst) || (! axi_sdramCtrl_io_init_calib_complete));
   assign axi_systickInterrupt = (|axi_systickCtrl_io_interrupt);
   assign axi_uartInterrupt = (|axi_uartCtrl_io_interrupt);
   assign axi_afioCtrl_io_device_read = {{{{{{12'h0,1'b0},axi_uartCtrl_io_uarts_1_txd},1'b0},axi_uartCtrl_io_uarts_0_txd},axi_timCtrl_io_tim_ch},8'h0};
@@ -2072,8 +1722,8 @@ module cyberwithddrhdmi (
     axi_core_io_interrupt[3] = axi_extiInterrupt;
   end
 
-  assign _zz_io_gpio_32 = axi_gpioCtrl_io_gpio_write;
-  assign _zz_when_InOutWrapper_l15 = axi_gpioCtrl_io_gpio_writeEnable;
+  assign axi_gpioCtrl_io_gpio_read = 32'h0;
+  assign io_uart_tx = axi_uartCtrl_io_uarts_0_txd;
   assign io_jtag_tdo = axi_jtagCtrl_io_jtag_tdo;
   assign io_sdram_O_ddr_addr = axi_sdramCtrl_io_ddr_iface_O_ddr_addr;
   assign io_sdram_O_ddr_ba = axi_sdramCtrl_io_ddr_iface_O_ddr_ba;
@@ -2087,85 +1737,17 @@ module cyberwithddrhdmi (
   assign io_sdram_O_ddr_odt = axi_sdramCtrl_io_ddr_iface_O_ddr_odt;
   assign io_sdram_O_ddr_reset_n = axi_sdramCtrl_io_ddr_iface_O_ddr_reset_n;
   assign io_sdram_O_ddr_dqm = axi_sdramCtrl_io_ddr_iface_O_ddr_dqm;
-  assign io_hdmi_O_tmds_clk_p = axi_vgatohdmi_io_hdmi_O_tmds_clk_p;
-  assign io_hdmi_O_tmds_clk_n = axi_vgatohdmi_io_hdmi_O_tmds_clk_n;
-  assign io_hdmi_O_tmds_data_p = axi_vgatohdmi_io_hdmi_O_tmds_data_p;
-  assign io_hdmi_O_tmds_data_n = axi_vgatohdmi_io_hdmi_O_tmds_data_n;
-  assign when_InOutWrapper_l15 = _zz_when_InOutWrapper_l15_1[0];
-  always @(*) begin
-    _zz_io_gpio_read_1[0] = io_gpio[0];
-    _zz_io_gpio_read_1[1] = io_gpio[1];
-    _zz_io_gpio_read_1[2] = io_gpio[2];
-    _zz_io_gpio_read_1[3] = io_gpio[3];
-    _zz_io_gpio_read_1[4] = io_gpio[4];
-    _zz_io_gpio_read_1[5] = io_gpio[5];
-    _zz_io_gpio_read_1[6] = io_gpio[6];
-    _zz_io_gpio_read_1[7] = io_gpio[7];
-    _zz_io_gpio_read_1[8] = io_gpio[8];
-    _zz_io_gpio_read_1[9] = io_gpio[9];
-    _zz_io_gpio_read_1[10] = io_gpio[10];
-    _zz_io_gpio_read_1[11] = io_gpio[11];
-    _zz_io_gpio_read_1[12] = io_gpio[12];
-    _zz_io_gpio_read_1[13] = io_gpio[13];
-    _zz_io_gpio_read_1[14] = io_gpio[14];
-    _zz_io_gpio_read_1[15] = io_gpio[15];
-    _zz_io_gpio_read_1[16] = io_gpio[16];
-    _zz_io_gpio_read_1[17] = io_gpio[17];
-    _zz_io_gpio_read_1[18] = io_gpio[18];
-    _zz_io_gpio_read_1[19] = io_gpio[19];
-    _zz_io_gpio_read_1[20] = io_gpio[20];
-    _zz_io_gpio_read_1[21] = io_gpio[21];
-    _zz_io_gpio_read_1[22] = io_gpio[22];
-    _zz_io_gpio_read_1[23] = io_gpio[23];
-    _zz_io_gpio_read_1[24] = io_gpio[24];
-    _zz_io_gpio_read_1[25] = io_gpio[25];
-    _zz_io_gpio_read_1[26] = io_gpio[26];
-    _zz_io_gpio_read_1[27] = io_gpio[27];
-    _zz_io_gpio_read_1[28] = io_gpio[28];
-    _zz_io_gpio_read_1[29] = io_gpio[29];
-    _zz_io_gpio_read_1[30] = io_gpio[30];
-    _zz_io_gpio_read_1[31] = io_gpio[31];
-  end
-
-  assign when_InOutWrapper_l15_1 = _zz_when_InOutWrapper_l15_1[1];
-  assign when_InOutWrapper_l15_2 = _zz_when_InOutWrapper_l15_1[2];
-  assign when_InOutWrapper_l15_3 = _zz_when_InOutWrapper_l15_1[3];
-  assign when_InOutWrapper_l15_4 = _zz_when_InOutWrapper_l15_1[4];
-  assign when_InOutWrapper_l15_5 = _zz_when_InOutWrapper_l15_1[5];
-  assign when_InOutWrapper_l15_6 = _zz_when_InOutWrapper_l15_1[6];
-  assign when_InOutWrapper_l15_7 = _zz_when_InOutWrapper_l15_1[7];
-  assign when_InOutWrapper_l15_8 = _zz_when_InOutWrapper_l15_1[8];
-  assign when_InOutWrapper_l15_9 = _zz_when_InOutWrapper_l15_1[9];
-  assign when_InOutWrapper_l15_10 = _zz_when_InOutWrapper_l15_1[10];
-  assign when_InOutWrapper_l15_11 = _zz_when_InOutWrapper_l15_1[11];
-  assign when_InOutWrapper_l15_12 = _zz_when_InOutWrapper_l15_1[12];
-  assign when_InOutWrapper_l15_13 = _zz_when_InOutWrapper_l15_1[13];
-  assign when_InOutWrapper_l15_14 = _zz_when_InOutWrapper_l15_1[14];
-  assign when_InOutWrapper_l15_15 = _zz_when_InOutWrapper_l15_1[15];
-  assign when_InOutWrapper_l15_16 = _zz_when_InOutWrapper_l15_1[16];
-  assign when_InOutWrapper_l15_17 = _zz_when_InOutWrapper_l15_1[17];
-  assign when_InOutWrapper_l15_18 = _zz_when_InOutWrapper_l15_1[18];
-  assign when_InOutWrapper_l15_19 = _zz_when_InOutWrapper_l15_1[19];
-  assign when_InOutWrapper_l15_20 = _zz_when_InOutWrapper_l15_1[20];
-  assign when_InOutWrapper_l15_21 = _zz_when_InOutWrapper_l15_1[21];
-  assign when_InOutWrapper_l15_22 = _zz_when_InOutWrapper_l15_1[22];
-  assign when_InOutWrapper_l15_23 = _zz_when_InOutWrapper_l15_1[23];
-  assign when_InOutWrapper_l15_24 = _zz_when_InOutWrapper_l15_1[24];
-  assign when_InOutWrapper_l15_25 = _zz_when_InOutWrapper_l15_1[25];
-  assign when_InOutWrapper_l15_26 = _zz_when_InOutWrapper_l15_1[26];
-  assign when_InOutWrapper_l15_27 = _zz_when_InOutWrapper_l15_1[27];
-  assign when_InOutWrapper_l15_28 = _zz_when_InOutWrapper_l15_1[28];
-  assign when_InOutWrapper_l15_29 = _zz_when_InOutWrapper_l15_1[29];
-  assign when_InOutWrapper_l15_30 = _zz_when_InOutWrapper_l15_1[30];
-  assign when_InOutWrapper_l15_31 = _zz_when_InOutWrapper_l15_1[31];
-  assign _zz_when_InOutWrapper_l15_1 = _zz_when_InOutWrapper_l15;
-  assign _zz_io_gpio_33 = _zz_io_gpio_32;
-  assign _zz_io_gpio_read = _zz_io_gpio_read_1;
+  assign io_lcd_vSync = axi_vgaCtrl_io_vga_vSync;
+  assign io_lcd_hSync = axi_vgaCtrl_io_vga_hSync;
+  assign io_lcd_colorEn = axi_vgaCtrl_io_vga_colorEn;
+  assign io_lcd_color_r = axi_vgaCtrl_io_vga_color_r;
+  assign io_lcd_color_g = axi_vgaCtrl_io_vga_color_g;
+  assign io_lcd_color_b = axi_vgaCtrl_io_vga_color_b;
   always @(posedge sysclk_clkout) begin
-    if(when_cyberwithddrhdmi_l134) begin
+    if(when_cyberwithddrlcd_l131) begin
       resetCtrl_axiResetCounter <= (resetCtrl_axiResetCounter + 6'h01);
     end
-    if(when_cyberwithddrhdmi_l138) begin
+    if(when_cyberwithddrlcd_l135) begin
       resetCtrl_axiResetCounter <= 6'h0;
     end
   end
@@ -2313,7 +1895,7 @@ module cyberwithddrhdmi (
 
   initial begin
     $dumpfile("wave.vcd");
-    $dumpvars(0, cyberwithddrhdmi);
+    $dumpvars(0, cyberwithddrlcd);
   end
 
 endmodule
@@ -4857,61 +4439,6 @@ module Axi4ReadOnlyDecoder (
 
 endmodule
 
-module VgaToHdmiGowin (
-  input  wire          io_vga_vSync,
-  input  wire          io_vga_hSync,
-  input  wire          io_vga_colorEn,
-  input  wire [4:0]    io_vga_color_r,
-  input  wire [5:0]    io_vga_color_g,
-  input  wire [4:0]    io_vga_color_b,
-  output wire          io_hdmi_O_tmds_clk_p,
-  output wire          io_hdmi_O_tmds_clk_n,
-  output wire [2:0]    io_hdmi_O_tmds_data_p,
-  output wire [2:0]    io_hdmi_O_tmds_data_n,
-  input  wire          resetCtrl_axiReset,
-  input  wire          CLKOUT,
-  input  wire          clkout_1
-);
-
-  wire                dvi_tx_I_rst_n;
-  wire                dvi_tx_I_rgb_vs;
-  wire                dvi_tx_I_rgb_hs;
-  wire       [7:0]    dvi_tx_I_rgb_r;
-  wire       [7:0]    dvi_tx_I_rgb_g;
-  wire       [7:0]    dvi_tx_I_rgb_b;
-  wire                dvi_tx_O_tmds_clk_p;
-  wire                dvi_tx_O_tmds_clk_n;
-  wire       [2:0]    dvi_tx_O_tmds_data_p;
-  wire       [2:0]    dvi_tx_O_tmds_data_n;
-
-  DVI_TX_Top dvi_tx (
-    .I_rst_n       (dvi_tx_I_rst_n           ), //i
-    .I_serial_clk  (clkout_1                 ), //i
-    .I_rgb_clk     (CLKOUT                   ), //i
-    .I_rgb_vs      (dvi_tx_I_rgb_vs          ), //i
-    .I_rgb_hs      (dvi_tx_I_rgb_hs          ), //i
-    .I_rgb_de      (io_vga_colorEn           ), //i
-    .I_rgb_r       (dvi_tx_I_rgb_r[7:0]      ), //i
-    .I_rgb_g       (dvi_tx_I_rgb_g[7:0]      ), //i
-    .I_rgb_b       (dvi_tx_I_rgb_b[7:0]      ), //i
-    .O_tmds_clk_p  (dvi_tx_O_tmds_clk_p      ), //o
-    .O_tmds_clk_n  (dvi_tx_O_tmds_clk_n      ), //o
-    .O_tmds_data_p (dvi_tx_O_tmds_data_p[2:0]), //o
-    .O_tmds_data_n (dvi_tx_O_tmds_data_n[2:0])  //o
-  );
-  assign dvi_tx_I_rst_n = (! resetCtrl_axiReset);
-  assign dvi_tx_I_rgb_vs = (! io_vga_vSync);
-  assign dvi_tx_I_rgb_hs = (! io_vga_hSync);
-  assign dvi_tx_I_rgb_r = {io_vga_color_r,3'b000};
-  assign dvi_tx_I_rgb_g = {io_vga_color_g,2'b00};
-  assign dvi_tx_I_rgb_b = {io_vga_color_b,3'b000};
-  assign io_hdmi_O_tmds_clk_p = dvi_tx_O_tmds_clk_p;
-  assign io_hdmi_O_tmds_clk_n = dvi_tx_O_tmds_clk_n;
-  assign io_hdmi_O_tmds_data_p = dvi_tx_O_tmds_data_p;
-  assign io_hdmi_O_tmds_data_n = dvi_tx_O_tmds_data_n;
-
-endmodule
-
 module Axi4VgaCtrl (
   output wire          io_axi_ar_valid,
   input  wire          io_axi_ar_ready,
@@ -4939,7 +4466,7 @@ module Axi4VgaCtrl (
   output wire [4:0]    io_vga_color_b,
   input  wire          clkout,
   input  wire          resetCtrl_axiReset,
-  input  wire          CLKOUT_1
+  input  wire          clkout_1
 );
 
   wire                dma_io_start;
@@ -5026,12 +4553,12 @@ module Axi4VgaCtrl (
     .io_frame_payload_fragment_b (dma_io_frame_payload_fragment_b[4:0]), //o
     .clkout                      (clkout                              ), //i
     .resetCtrl_axiReset          (resetCtrl_axiReset                  ), //i
-    .CLKOUT_1                    (CLKOUT_1                            )  //i
+    .clkout_1                    (clkout_1                            )  //i
   );
   (* keep_hierarchy = "TRUE" *) BufferCC_17 run_buffercc (
     .io_dataIn          (run                    ), //i
     .io_dataOut         (run_buffercc_io_dataOut), //o
-    .CLKOUT             (CLKOUT_1               ), //i
+    .clkout             (clkout_1               ), //i
     .resetCtrl_axiReset (resetCtrl_axiReset     )  //i
   );
   VgaCtrl vga_ctrl (
@@ -5059,13 +4586,13 @@ module Axi4VgaCtrl (
     .io_vga_color_g          (vga_ctrl_io_vga_color_g[5:0]                   ), //o
     .io_vga_color_b          (vga_ctrl_io_vga_color_b[4:0]                   ), //o
     .io_error                (vga_ctrl_io_error                              ), //o
-    .CLKOUT                  (CLKOUT_1                                       ), //i
+    .clkout                  (clkout_1                                       ), //i
     .resetCtrl_axiReset      (resetCtrl_axiReset                             )  //i
   );
   PulseCCByToggle vga_ctrl_io_frameStart_pulseCCByToggle (
     .io_pulseIn         (vga_ctrl_io_frameStart                            ), //i
     .io_pulseOut        (vga_ctrl_io_frameStart_pulseCCByToggle_io_pulseOut), //o
-    .CLKOUT             (CLKOUT_1                                          ), //i
+    .clkout             (clkout_1                                          ), //i
     .resetCtrl_axiReset (resetCtrl_axiReset                                ), //i
     .clkout_1           (clkout                                            )  //i
   );
@@ -5152,7 +4679,7 @@ module Axi4VgaCtrl (
     end
   end
 
-  always @(posedge CLKOUT_1) begin
+  always @(posedge clkout_1) begin
     vga_run_regNext <= vga_run;
     if(vga_ctrl_io_frameStart) begin
       _zz_when_VgaCtrl_l335 <= 1'b1;
@@ -5162,7 +4689,7 @@ module Axi4VgaCtrl (
     end
   end
 
-  always @(posedge CLKOUT_1 or posedge resetCtrl_axiReset) begin
+  always @(posedge clkout_1 or posedge resetCtrl_axiReset) begin
     if(resetCtrl_axiReset) begin
       _zz_when_VgaCtrl_l334 <= 1'b0;
       _zz_when_VgaCtrl_l334_1 <= 1'b0;
@@ -8847,7 +8374,7 @@ endmodule
 module PulseCCByToggle (
   input  wire          io_pulseIn,
   output wire          io_pulseOut,
-  input  wire          CLKOUT,
+  input  wire          clkout,
   input  wire          resetCtrl_axiReset,
   input  wire          clkout_1
 );
@@ -8860,7 +8387,7 @@ module PulseCCByToggle (
   wire                outArea_target;
   reg                 outArea_target_regNext;
 
-  (* keep_hierarchy = "TRUE" *) BufferCC_15 axi_vgaCtrl_toplevel_resetCtrl_axiReset_asyncAssertSyncDeassert_buffercc (
+  (* keep_hierarchy = "TRUE" *) BufferCC_12 axi_vgaCtrl_toplevel_resetCtrl_axiReset_asyncAssertSyncDeassert_buffercc (
     .io_dataIn          (axi_vgaCtrl_toplevel_resetCtrl_axiReset_asyncAssertSyncDeassert                    ), //i
     .io_dataOut         (axi_vgaCtrl_toplevel_resetCtrl_axiReset_asyncAssertSyncDeassert_buffercc_io_dataOut), //o
     .clkout             (clkout_1                                                                           ), //i
@@ -8876,7 +8403,7 @@ module PulseCCByToggle (
   assign axi_vgaCtrl_toplevel_resetCtrl_axiReset_synchronized = axi_vgaCtrl_toplevel_resetCtrl_axiReset_asyncAssertSyncDeassert_buffercc_io_dataOut;
   assign outArea_target = inArea_target_buffercc_io_dataOut;
   assign io_pulseOut = (outArea_target ^ outArea_target_regNext);
-  always @(posedge CLKOUT or posedge resetCtrl_axiReset) begin
+  always @(posedge clkout or posedge resetCtrl_axiReset) begin
     if(resetCtrl_axiReset) begin
       inArea_target <= 1'b0;
     end else begin
@@ -8922,7 +8449,7 @@ module VgaCtrl (
   output wire [5:0]    io_vga_color_g,
   output wire [4:0]    io_vga_color_b,
   output wire          io_error,
-  input  wire          CLKOUT,
+  input  wire          clkout,
   input  wire          resetCtrl_axiReset
 );
 
@@ -8962,7 +8489,7 @@ module VgaCtrl (
   assign io_vga_color_r = io_pixels_payload_r;
   assign io_vga_color_g = io_pixels_payload_g;
   assign io_vga_color_b = io_pixels_payload_b;
-  always @(posedge CLKOUT or posedge resetCtrl_axiReset) begin
+  always @(posedge clkout or posedge resetCtrl_axiReset) begin
     if(resetCtrl_axiReset) begin
       h_counter <= 12'h0;
       h_sync <= 1'b0;
@@ -9026,7 +8553,7 @@ endmodule
 module BufferCC_17 (
   input  wire          io_dataIn,
   output wire          io_dataOut,
-  input  wire          CLKOUT,
+  input  wire          clkout,
   input  wire          resetCtrl_axiReset
 );
 
@@ -9034,7 +8561,7 @@ module BufferCC_17 (
   (* async_reg = "true" *) reg                 buffers_1;
 
   assign io_dataOut = buffers_1;
-  always @(posedge CLKOUT) begin
+  always @(posedge clkout) begin
     buffers_0 <= io_dataIn;
     buffers_1 <= buffers_0;
   end
@@ -9061,7 +8588,7 @@ module VideoDma (
   output wire [4:0]    io_frame_payload_fragment_b,
   input  wire          clkout,
   input  wire          resetCtrl_axiReset,
-  input  wire          CLKOUT_1
+  input  wire          clkout_1
 );
 
   wire                rspArea_fifo_io_push_ready;
@@ -9185,7 +8712,7 @@ module VideoDma (
     .io_popOccupancy          (rspArea_fifo_io_popOccupancy[10:0]        ), //o
     .clkout                   (clkout                                    ), //i
     .resetCtrl_axiReset       (resetCtrl_axiReset                        ), //i
-    .CLKOUT_1                 (CLKOUT_1                                  )  //i
+    .clkout_1                 (clkout_1                                  )  //i
   );
   (* keep_hierarchy = "TRUE" *) BufferCC_14 rspArea_frameClockArea_popCmdGray_buffercc (
     .io_dataIn          (rspArea_frameClockArea_popCmdGray[7:0]                    ), //i
@@ -9513,7 +9040,7 @@ module VideoDma (
     end
   end
 
-  always @(posedge CLKOUT_1 or posedge resetCtrl_axiReset) begin
+  always @(posedge clkout_1 or posedge resetCtrl_axiReset) begin
     if(resetCtrl_axiReset) begin
       rspArea_frameClockArea_popBeatCounter_value <= 3'b000;
       rspArea_frameClockArea_popCmdGray <= 8'h0;
@@ -10303,10 +9830,10 @@ module Apb3Tim (
   wire                when_apb3tim_l118;
   wire                when_apb3tim_l121;
   wire                when_apb3tim_l124;
-  (* altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" , altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" *) reg                 _zz_io_tim_ch;
-  (* altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" , altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" *) reg                 _zz_io_tim_ch_1;
-  (* altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" , altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" *) reg                 _zz_io_tim_ch_2;
-  (* altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" , altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" *) reg                 _zz_io_tim_ch_3;
+  reg                 _zz_io_tim_ch;
+  reg                 _zz_io_tim_ch_1;
+  reg                 _zz_io_tim_ch_2;
+  reg                 _zz_io_tim_ch_3;
 
   assign ctrl_readErrorFlag = 1'b0;
   assign ctrl_writeErrorFlag = 1'b0;
@@ -10756,10 +10283,10 @@ module Apb3Gpio (
   wire                ctrl_askRead;
   wire                ctrl_doWrite;
   wire                ctrl_doRead;
-  (* altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" , altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" *) reg        [31:0]   CRL;
-  (* altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" , altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" *) reg        [31:0]   CRH;
+  reg        [31:0]   CRL;
+  reg        [31:0]   CRH;
   wire       [15:0]   IDR;
-  (* altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" , altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" *) reg        [15:0]   ODR;
+  reg        [15:0]   ODR;
   reg        [15:0]   LCKR;
   reg                 LCKK;
   wire       [1:0]    gpioCfg_0_mode;
@@ -18842,29 +18369,7 @@ module BufferCC_16 (
 
 endmodule
 
-module BufferCC_15 (
-  input  wire          io_dataIn,
-  output wire          io_dataOut,
-  input  wire          clkout,
-  input  wire          resetCtrl_axiReset
-);
-
-  (* async_reg = "true" *) reg                 buffers_0;
-  (* async_reg = "true" *) reg                 buffers_1;
-
-  assign io_dataOut = buffers_1;
-  always @(posedge clkout or posedge resetCtrl_axiReset) begin
-    if(resetCtrl_axiReset) begin
-      buffers_0 <= 1'b1;
-      buffers_1 <= 1'b1;
-    end else begin
-      buffers_0 <= io_dataIn;
-      buffers_1 <= buffers_0;
-    end
-  end
-
-
-endmodule
+//BufferCC_15 replaced by BufferCC_12
 
 module BufferCC_14 (
   input  wire [7:0]    io_dataIn,
@@ -18898,7 +18403,7 @@ module StreamFifoCC_2 (
   output wire [10:0]   io_popOccupancy,
   input  wire          clkout,
   input  wire          resetCtrl_axiReset,
-  input  wire          CLKOUT_1
+  input  wire          clkout_1
 );
 
   reg        [32:0]   ram_spinal_port1;
@@ -18989,7 +18494,7 @@ module StreamFifoCC_2 (
     end
   end
 
-  always @(posedge CLKOUT_1) begin
+  always @(posedge clkout_1) begin
     if(popCC_readPort_cmd_valid) begin
       ram_spinal_port1 <= ram[popCC_readPort_cmd_payload];
     end
@@ -19004,13 +18509,13 @@ module StreamFifoCC_2 (
   (* keep_hierarchy = "TRUE" *) BufferCC_12 dma_axi_vgaCtrl_toplevel_resetCtrl_axiReset_asyncAssertSyncDeassert_buffercc (
     .io_dataIn          (dma_axi_vgaCtrl_toplevel_resetCtrl_axiReset_asyncAssertSyncDeassert                    ), //i
     .io_dataOut         (dma_axi_vgaCtrl_toplevel_resetCtrl_axiReset_asyncAssertSyncDeassert_buffercc_io_dataOut), //o
-    .CLKOUT             (CLKOUT_1                                                                               ), //i
+    .clkout             (clkout_1                                                                               ), //i
     .resetCtrl_axiReset (resetCtrl_axiReset                                                                     )  //i
   );
   (* keep_hierarchy = "TRUE" *) BufferCC_13 pushToPopGray_buffercc (
     .io_dataIn                                                (pushToPopGray[10:0]                                     ), //i
     .io_dataOut                                               (pushToPopGray_buffercc_io_dataOut[10:0]                 ), //o
-    .CLKOUT                                                   (CLKOUT_1                                                ), //i
+    .clkout                                                   (clkout_1                                                ), //i
     .dma_axi_vgaCtrl_toplevel_resetCtrl_axiReset_synchronized (dma_axi_vgaCtrl_toplevel_resetCtrl_axiReset_synchronized)  //i
   );
   always @(*) begin
@@ -19098,7 +18603,7 @@ module StreamFifoCC_2 (
     end
   end
 
-  always @(posedge CLKOUT_1 or posedge dma_axi_vgaCtrl_toplevel_resetCtrl_axiReset_synchronized) begin
+  always @(posedge clkout_1 or posedge dma_axi_vgaCtrl_toplevel_resetCtrl_axiReset_synchronized) begin
     if(dma_axi_vgaCtrl_toplevel_resetCtrl_axiReset_synchronized) begin
       popCC_popPtr <= 11'h0;
       popCC_addressGen_rValid <= 1'b0;
@@ -19120,7 +18625,7 @@ module StreamFifoCC_2 (
     end
   end
 
-  always @(posedge CLKOUT_1) begin
+  always @(posedge clkout_1) begin
     if(popCC_addressGen_ready) begin
       popCC_addressGen_rData <= popCC_addressGen_payload;
     end
@@ -19614,7 +19119,7 @@ module UartCtrlTx (
   wire                when_UartCtrlTx_l76;
   wire                when_UartCtrlTx_l93;
   wire       [2:0]    _zz_stateMachine_state;
-  (* altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" , altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" *) reg                 _zz_io_txd;
+  reg                 _zz_io_txd;
   `ifndef SYNTHESIS
   reg [23:0] io_configFrame_stop_string;
   reg [31:0] io_configFrame_parity_string;
@@ -20607,7 +20112,7 @@ endmodule
 module BufferCC_13 (
   input  wire [10:0]   io_dataIn,
   output wire [10:0]   io_dataOut,
-  input  wire          CLKOUT,
+  input  wire          clkout,
   input  wire          dma_axi_vgaCtrl_toplevel_resetCtrl_axiReset_synchronized
 );
 
@@ -20615,7 +20120,7 @@ module BufferCC_13 (
   (* async_reg = "true" *) reg        [10:0]   buffers_1;
 
   assign io_dataOut = buffers_1;
-  always @(posedge CLKOUT or posedge dma_axi_vgaCtrl_toplevel_resetCtrl_axiReset_synchronized) begin
+  always @(posedge clkout or posedge dma_axi_vgaCtrl_toplevel_resetCtrl_axiReset_synchronized) begin
     if(dma_axi_vgaCtrl_toplevel_resetCtrl_axiReset_synchronized) begin
       buffers_0 <= 11'h0;
       buffers_1 <= 11'h0;
@@ -20631,7 +20136,7 @@ endmodule
 module BufferCC_12 (
   input  wire          io_dataIn,
   output wire          io_dataOut,
-  input  wire          CLKOUT,
+  input  wire          clkout,
   input  wire          resetCtrl_axiReset
 );
 
@@ -20639,7 +20144,7 @@ module BufferCC_12 (
   (* async_reg = "true" *) reg                 buffers_1;
 
   assign io_dataOut = buffers_1;
-  always @(posedge CLKOUT or posedge resetCtrl_axiReset) begin
+  always @(posedge clkout or posedge resetCtrl_axiReset) begin
     if(resetCtrl_axiReset) begin
       buffers_0 <= 1'b1;
       buffers_1 <= 1'b1;

@@ -1,7 +1,6 @@
 package soc.gowin
 
 import periph._
-import graphic.hdmi._
 import soc.gowin.tangprimer._
 
 import spinal.core._
@@ -23,10 +22,9 @@ import spinal.lib.system.debugger.{JtagAxi4SharedDebugger, SystemDebuggerConfig}
 import spinal.lib.misc.{InterruptCtrl, Timer, Prescaler}
 import spinal.lib.graphic.RgbConfig
 import spinal.lib.graphic.vga.{Axi4VgaCtrl, Axi4VgaCtrlGenerics, Vga}
-import spinal.lib.graphic.hdmi.VgaToHdmiEcp5
 
 
-case class cyberwithddrhdmiConfig(
+case class cyberwithddrlcdConfig(
     axiFrequency: HertzNumber,
     memFrequency: HertzNumber,
     onChipRamSize: BigInt,
@@ -35,9 +33,9 @@ case class cyberwithddrhdmiConfig(
     iCache: InstructionCacheConfig
 )
 
-object cyberwithddrhdmiConfig {
+object cyberwithddrlcdConfig {
   def default = {
-    val config = cyberwithddrhdmiConfig(
+    val config = cyberwithddrlcdConfig(
       axiFrequency = 100 MHz,
       memFrequency = 400 MHz,
       onChipRamSize = 4 KiB,
@@ -76,9 +74,9 @@ object cyberwithddrhdmiConfig {
   }
 }
 
-class cyberwithddrhdmi(config: cyberwithddrhdmiConfig) extends Component {
+class cyberwithddrlcd(config: cyberwithddrlcdConfig) extends Component {
   def this(axiFrequency: HertzNumber) {
-    this(cyberwithddrhdmiConfig.default.copy(axiFrequency = axiFrequency))
+    this(cyberwithddrlcdConfig.default.copy(axiFrequency = axiFrequency))
   }
 
   import config._
@@ -94,9 +92,11 @@ class cyberwithddrhdmi(config: cyberwithddrhdmiConfig) extends Component {
     val jtag = slave(Jtag())
     val sdram = master(DDR3_Interface())
     // Peripherals IO
-    val gpio = master(TriStateArray(32 bits))
+    // val gpio = master(TriStateArray(32 bits)) // Tang Primer has limited IOBUF(s)
+    val uart_tx = out(Bool)
     // Graphics IO
-    val hdmi = master(Hdmi())
+    val lcd = master(Vga(vgaRgbConfig))
+    val lcdclk = out Bool ()
   }
 
   val sysclk = new syspll
@@ -109,14 +109,11 @@ class cyberwithddrhdmi(config: cyberwithddrhdmiConfig) extends Component {
   // memclk.reset := ~io.rstn
   memclk.reset := False
 
-  val hdmiclk = new hdmipll
-  hdmiclk.clkin := io.clk
-  // hdmiclk.reset := ~io.rstn
-  hdmiclk.reset := False
-  val CLKDIV = new CLKDIV
-  CLKDIV.RESETN := io.rstn
-  CLKDIV.CALIB := True
-  CLKDIV.HCLKIN := hdmiclk.clkout
+  val lcdclk = new lcdpll
+  lcdclk.clkin := io.clk
+  // lcdclk.reset := ~io.rstn
+  lcdclk.reset := False
+  io.lcdclk := lcdclk.clkout
 
   val resetCtrlClockDomain = ClockDomain(
     clock = sysclk.clkout,
@@ -164,13 +161,8 @@ class cyberwithddrhdmi(config: cyberwithddrhdmiConfig) extends Component {
     frequency = FixedFrequency(memFrequency)
   )
 
-  val hdmiClockDomain = ClockDomain(
-    clock = hdmiclk.clkout,
-    reset = resetCtrl.axiReset
-  )
-
-  val vgaClockDomain = ClockDomain(
-    clock = CLKDIV.CLKOUT,
+  val lcdClockDomain = ClockDomain(
+    clock = lcdclk.clkout,
     reset = resetCtrl.axiReset
   )
 
@@ -277,11 +269,9 @@ class cyberwithddrhdmi(config: cyberwithddrhdmiConfig) extends Component {
       frameSizeMax = 2048 * 1512 * 2,
       fifoSize = 1024,
       rgbConfig = vgaRgbConfig,
-      vgaClock = vgaClockDomain
+      vgaClock = lcdClockDomain
     )
     val vgaCtrl = Axi4VgaCtrl(vgaCtrlConfig)
-    val vgatohdmi = VgaToHdmiGowin(vgaClockDomain, hdmiClockDomain, vgaRgbConfig)
-    vgatohdmi.io.vga <> vgaCtrl.io.vga
 
     val axiCrossbar = Axi4CrossbarFactory()
 
@@ -344,21 +334,23 @@ class cyberwithddrhdmi(config: cyberwithddrhdmiConfig) extends Component {
       resetCtrl.coreResetUnbuffered setWhen (core.io.debugResetOut)
     }
   }
-
-  io.gpio <> axi.gpioCtrl.io.gpio
+  
+  // io.gpio <> axi.gpioCtrl.io.gpio
+  axi.gpioCtrl.io.gpio.read := B(0, 32 bits)
+  io.uart_tx <> axi.uartCtrl.io.uarts(0).txd
   io.jtag <> axi.jtagCtrl.io.jtag
   io.sdram <> axi.sdramCtrl.io.ddr_iface
-  io.hdmi <> axi.vgatohdmi.io.hdmi
+  io.lcd <> axi.vgaCtrl.io.vga
 }
 
-object cyberwithddrhdmi {
+object cyberwithddrlcd {
   def main(args: Array[String]) {
     val config =
       SpinalConfig(verbose = true, targetDirectory = "rtl").dumpWave()
     val report = config.generateVerilog(
       InOutWrapper(
-        new cyberwithddrhdmi(
-          cyberwithddrhdmiConfig.default.copy(
+        new cyberwithddrlcd(
+          cyberwithddrlcdConfig.default.copy(
             onChipRamSize = 32 kB,
             onChipRamHexFile = "test/cyberwithddr/build/mem/demo.bin"
           )

@@ -23,7 +23,7 @@ case class DDR3_Interface() extends Bundle with IMasterSlave {
   val IO_ddr_dqs = Analog(Bits(2 bits))
   val IO_ddr_dqs_n = Analog(Bits(2 bits))
 
-  override def asMaster() : Unit = {
+  override def asMaster(): Unit = {
     out(O_ddr_addr, O_ddr_ba, O_ddr_cs_n, O_ddr_ras_n, O_ddr_cas_n, O_ddr_we_n, O_ddr_clk, O_ddr_clk_n, O_ddr_cke, O_ddr_odt, O_ddr_reset_n, O_ddr_dqm)
     inout(IO_ddr_dq, IO_ddr_dqs, IO_ddr_dqs_n)
   }
@@ -271,7 +271,7 @@ case class Axi4DdrWithCache(
     addrlen: Int = 28,
     burstlen: Int = 6,
     pagesize: Int = 256,
-    pagecnt: Int = 4
+    pagenum: Int = 4
 ) extends Component {
   // pagesize 限制
   require(
@@ -305,12 +305,12 @@ case class Axi4DdrWithCache(
   }
 
   val sys_area = new ClockingArea(sys_clk) {
-    val cache_addr  = Vec(Reg(UInt(addrlen bits)) init 0, pagecnt)
-    val cache_data  = Vec(Reg(Bits(pagesize bits)) init 0, pagecnt)
-    val cache_dirty = Vec(Reg(Bool()) init False, pagecnt)  // 标记页是否被修改。可以使用ddr控制器的mask，使得控制更精确，但此处无必要。
-    val cache_valid = Vec(Reg(Bool()) init False, pagecnt)
+    val cache_addr  = Vec(Reg(UInt(addrlen bits)) init 0, pagenum)
+    val cache_data  = Vec(Reg(Bits(pagesize bits)) init 0, pagenum)
+    val cache_dirty = Vec(Reg(Bool()) init False, pagenum)  // 标记页是否被修改。可以使用ddr控制器的mask，使得控制更精确，但此处无必要。
+    val cache_valid = Vec(Reg(Bool()) init False, pagenum)
 
-    val lru_counter = Reg(UInt(log2Up(pagecnt) bits)) init 0
+    val lru_counter = Reg(UInt(log2Up(pagenum) bits)) init 0
 
     // AXI unburst 化
     val axi_unburst = io.axi.sharedCmd.unburstify
@@ -325,7 +325,7 @@ case class Axi4DdrWithCache(
     // hit/miss 检测
     val pageOffsetBits = log2Up(pageBytes)
     val current_page_tag = arwcmd.addr((addrlen - 1) downto pageOffsetBits)
-    val page_hit_vec = Vec.tabulate(pagecnt)(i =>
+    val page_hit_vec = Vec.tabulate(pagenum)(i =>
       cache_valid(i) && (cache_addr(i)((addrlen - 1) downto pageOffsetBits) === current_page_tag)
     )
     val hit = page_hit_vec.orR
@@ -338,8 +338,8 @@ case class Axi4DdrWithCache(
     // DDR 相关
     val ddr_write_pending = Reg(Bool()) init False
     val ddr_read_pending  = Reg(Bool()) init False
-    val ddr_write_page = Reg(UInt(log2Up(pagecnt) bits))
-    val ddr_read_page  = Reg(UInt(log2Up(pagecnt) bits))
+    val ddr_write_page = Reg(UInt(log2Up(pagenum) bits))
+    val ddr_read_page  = Reg(UInt(log2Up(pagenum) bits))
 
     val ddr_cmd_valid = Reg(Bool()) init False
     val ddr_cmd_payload = Axi4Ddr_PayloadCMD(addrlen, burstlen, context_type)
@@ -474,7 +474,7 @@ case class Axi4DdrControllerWithCache(
     burstlen: Int = 6,
     fifolen: Int = 4,
     pagesize: Int = 256,
-    pagecnt: Int = 4
+    pagenum: Int = 4
 ) extends Component {
   // pagesize 限制
   require(
@@ -536,12 +536,12 @@ case class Axi4DdrControllerWithCache(
   )
 
   val sys_area = new ClockingArea(sys_clk) {
-    val cache_addr  = Vec(Reg(UInt(addrlen bits)) init 0, pagecnt)
-    val cache_data  = Vec(Reg(Bits(pagesize bits)) init 0, pagecnt)
-    val cache_dirty = Vec(Reg(Bool()) init False, pagecnt)  // 标记页是否被修改。可以使用ddr控制器的mask，使得控制更精确，但此处无必要。
-    val cache_valid = Vec(Reg(Bool()) init False, pagecnt)
+    val cache_addr  = Vec(Reg(UInt(addrlen bits)) init 0, pagenum)
+    val cache_data  = Vec(Reg(Bits(pagesize bits)) init 0, pagenum)
+    val cache_dirty = Vec(Reg(Bool()) init False, pagenum)  // 标记页是否被修改。可以使用ddr控制器的mask，使得控制更精确，但此处无必要。
+    val cache_valid = Vec(Reg(Bool()) init False, pagenum)
 
-    val lru_counter = Reg(UInt(log2Up(pagecnt) bits)) init 0
+    val lru_counter = Reg(UInt(log2Up(pagenum) bits)) init 0
 
     // AXI unburst 化
     val axi_unburst = io.axi.sharedCmd.unburstify
@@ -556,7 +556,7 @@ case class Axi4DdrControllerWithCache(
     // hit/miss 检测
     val pageOffsetBits = log2Up(pageBytes)
     val current_page_tag = arwcmd.addr((addrlen - 1) downto pageOffsetBits)
-    val page_hit_vec = Vec.tabulate(pagecnt)(i =>
+    val page_hit_vec = Vec.tabulate(pagenum)(i =>
       cache_valid(i) && (cache_addr(i)((addrlen - 1) downto pageOffsetBits) === current_page_tag)
     )
     val hit = page_hit_vec.orR
@@ -720,22 +720,22 @@ case class Axi4DdrControllerWithCache(
   }
 }
 
-case class Axi4Ddr_Bus[T <: Data](addrlen: Int = 28, burstlen: Int = 6, contextType : T) extends Bundle {
+case class Axi4Ddr_Bus[T <: Data](addrlen: Int = 28, burstlen: Int = 6, contextType: T) extends Bundle {
   val cmd = master(Stream(Axi4Ddr_PayloadCMD(addrlen, burstlen, contextType)))
   val rsp = slave(Stream(Axi4Ddr_PayloadRSP(contextType)))
 }
 
-case class Axi4Ddr_Bus_Device[T <: Data](addrlen: Int = 28, burstlen: Int = 6, contextType : T) extends Bundle {
+case class Axi4Ddr_Bus_Device[T <: Data](addrlen: Int = 28, burstlen: Int = 6, contextType: T) extends Bundle {
   val cmd = slave(Stream(Axi4Ddr_PayloadCMD(addrlen, burstlen, contextType)))
   val rsp = master(Stream(Axi4Ddr_PayloadRSP(contextType)))
 }
 
-case class Axi4Ddr_BusArbiter_Context[T <: Data](contextType : T) extends Bundle {
+case class Axi4Ddr_BusArbiter_Context[T <: Data](contextType: T) extends Bundle {
   val devid = UInt(1 bits)
   val other = cloneOf(contextType)
 }
 
-case class Axi4Ddr_BusArbiter[T <: Data](sys_clk: ClockDomain, addrlen: Int = 28, burstlen: Int = 6, contextType : T) extends Component{
+case class Axi4Ddr_BusArbiter[T <: Data](sys_clk: ClockDomain, addrlen: Int = 28, burstlen: Int = 6, contextType: T) extends Component{
   val bus_context = Axi4Ddr_BusArbiter_Context(contextType)
   val io = new Bundle {
     val bus_ddr = Axi4Ddr_Bus(addrlen, burstlen, bus_context)
