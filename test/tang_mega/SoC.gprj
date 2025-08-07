@@ -1,0 +1,43 @@
+<?xml version="1" encoding="UTF-8"?>
+<!DOCTYPE gowin-fpga-project>
+<Project>
+    <Template>FPGA</Template>
+    <Version>5</Version>
+    <Device name="GW5AST-138B" pn="GW5AST-LV138FPG676AES">gw5ast138b-002</Device>
+    <FileList>
+        <File path="src/Cyber.v" type="file.verilog" enable="1"/>
+        <File path="src/DDR3MI/DDR3MI.v" type="file.verilog" enable="1"/>
+        <File path="src/DVI/RX/DVI_RX.v" type="file.verilog" enable="1"/>
+        <File path="src/DVI/TX/DVI_TX.v" type="file.verilog" enable="1"/>
+        <File path="src/Frame_Buffer/Frame_Buffer.v" type="file.verilog" enable="1"/>
+        <File path="src/PLL/HDMI_PLL.v" type="file.verilog" enable="1"/>
+        <File path="src/PLL/SYS_PLL.v" type="file.verilog" enable="1"/>
+        <File path="src/RISCV/AHBBUS.v" type="file.verilog" enable="1"/>
+        <File path="src/RISCV/AHBDMA.v" type="file.verilog" enable="1"/>
+        <File path="src/RISCV/AHBDVP.v" type="file.verilog" enable="1"/>
+        <File path="src/RISCV/AHBRCC.v" type="file.verilog" enable="1"/>
+        <File path="src/RISCV/AHBVI.v" type="file.verilog" enable="1"/>
+        <File path="src/RISCV/AHBVO.v" type="file.verilog" enable="1"/>
+        <File path="src/RISCV/AHBVP.v" type="file.verilog" enable="1"/>
+        <File path="src/RISCV/APB3BUS.v" type="file.verilog" enable="1"/>
+        <File path="src/RISCV/APB3GPIO.v" type="file.verilog" enable="1"/>
+        <File path="src/RISCV/APB3I2C.v" type="file.verilog" enable="1"/>
+        <File path="src/RISCV/APB3RAM.v" type="file.verilog" enable="1"/>
+        <File path="src/RISCV/APB3SPI.v" type="file.verilog" enable="1"/>
+        <File path="src/RISCV/APB3TIM.v" type="file.verilog" enable="1"/>
+        <File path="src/RISCV/APB3USART.v" type="file.verilog" enable="1"/>
+        <File path="src/RISCV/APB3WDG.v" type="file.verilog" enable="1"/>
+        <File path="src/RISCV/VexRiscv.v" type="file.verilog" enable="1"/>
+        <File path="src/VP/binarizer.v" type="file.verilog" enable="1"/>
+        <File path="src/VP/cutter.v" type="file.verilog" enable="1"/>
+        <File path="src/VP/edger.v" type="file.verilog" enable="1"/>
+        <File path="src/VP/filler.v" type="file.verilog" enable="1"/>
+        <File path="src/VP/filter.v" type="file.verilog" enable="1"/>
+        <File path="src/VP/rgb2ycbcr.v" type="file.verilog" enable="1"/>
+        <File path="src/VP/scaler.v" type="file.verilog" enable="1"/>
+        <File path="src/edid_prom/edid_prom.v" type="file.verilog" enable="1"/>
+        <File path="src/SoC.cst" type="file.cst" enable="1"/>
+        <File path="src/SoC.sdc" type="file.sdc" enable="1"/>
+        <File path="src/SoC.rao" type="file.gao" enable="0"/>
+    </FileList>
+</Project>

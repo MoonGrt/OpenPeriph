@@ -1,0 +1,8 @@
+`define RX_PLL_CLKIN_FRE "74.25"
+`define RX_USE_5AT_PLL
+`define RX_PLL_ODIV_SEL 3
+`define AUTO_PHASE
+`define RX_DYN_DPA_EN "TRUE"
+`define RX_DYN_PE0_SEL "TRUE"
+`define RX_CLKOUT0_PE_COARSE 0
+`define RX_CLKOUT0_PE_FINE 0

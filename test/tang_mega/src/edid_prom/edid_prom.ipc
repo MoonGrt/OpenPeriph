@@ -1,0 +1,14 @@
+[General]
+ipc_version=4
+file=edid_prom
+module=EDID_PROM_Top
+target_device=gw2a18c-021
+type=edid_prom
+version=1.0
+
+[Config]
+DISABLE_IO_INSERTION=true
+LANG=0
+Memory_Ini_File=../philips_edid.mi
+Memory_Type=ROM
+Synthesis_tool=GowinSynthesis

@@ -1,0 +1,21 @@
+[General]
+ipc_version=4
+file=DVI_RX
+module=DVI_RX
+target_device=gw5ast138b-002
+type=dvi_rx
+version=1.1
+
+[Config]
+AUTO_PHASE_SIM_ACC=false
+CHANNEL0_IO_DELAY_VALUE=0
+CHANNEL1_IO_DELAY_VALUE=0
+CHANNEL2_IO_DELAY_VALUE=0
+DATA_BEFORE_ALIGN_ENABLE=false
+IO_Delay_Enable=false
+LANG=0
+PHASE_SEARCH_MODE_TEXT=Auto For Debug
+RX_CLOCK_IN_FREQUENCY=74.25
+RX_CLOCK_OUT_PHASE=90
+Synthesis_tool=GowinSynthesis
+Using_External_Clock=false

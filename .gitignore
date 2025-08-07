@@ -51,7 +51,9 @@ explor
 
 mill
 
-simWorkspace/
+sim/
+rtl/
+project/target/
 tmp/
 /archive.tar.gz
 *.out32
