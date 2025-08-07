@@ -11,7 +11,7 @@ void demo_SPI(void);
 void demo_TIM(void);
 void demo_PWM(void);
 void demo_DVP(void);
-void demo_GRAPHICS(void);
+void demo_DVTC(void);
 
 void led_flow(void);
 void led_breathe(void);
@@ -32,7 +32,7 @@ void main()
     // demo_PWM();
     // demo_WDG();
     // demo_DVP();
-    demo_GRAPHICS();
+    demo_DVTC();
 
     // led_flow();
     // led_breathe();
@@ -635,103 +635,28 @@ void demo_DVP(void)
 }
 #endif
 
-#ifdef CYBER_GRAPHICS
+#ifdef CYBER_DVTC
 
 #define DEMO_LCD
 
 #ifdef DEMO_HDMI
-#define RES_X 1280
-#define RES_Y 720
-
-__attribute__((section(".noinit"))) __attribute__((aligned(4 * 8))) uint16_t vgaFramebuffer[RES_Y][RES_X];
-extern void flushDataCache(uint32_t dummy);
 
 void demo_hdmi(void)
 {
-    vga_stop(GRAPHICS);
-    GRAPHICS->TIMING = vga_h1280_v720_r60;
-    GRAPHICS->FRAME_SIZE = RES_X * RES_Y * 2 - 1;
-    GRAPHICS->FRAME_BASE = (uint32_t)vgaFramebuffer;
-    // vga_run(GRAPHICS);
 
-    // uint16_t offset = 0;
-    // while (1)
-    // {
-    //     printf("offset: %d\r\n", offset);
-    //     uint16_t *ptr = &vgaFramebuffer[0][0];
-    //     for (uint32_t y = 0; y < RES_Y; y++)
-    //     {
-    //         uint16_t c = (((y + offset) & 0x1F) << 6);
-    //         for (uint32_t x = 0; x < RES_X; x++)
-    //         {
-    //             *ptr = ((uint16_t)(x & 0x1F)) + c;
-    //             ptr++;
-    //         }
-    //     }
-    //     offset += 4;
-    //     flushDataCache(0);
-    // }
-
-    const uint16_t colors[8] = {
-        0xFFFF, 0xFFE0, 0x07FF, 0x07E0,
-        0xF81F, 0xF800, 0x001F, 0x0000
-    };
-    uint16_t *ptr = &vgaFramebuffer[0][0];
-    for (uint32_t y = 0; y < RES_Y; y++)
-        for (uint32_t x = 0; x < RES_X; x++)
-            *ptr++ = colors[x / (RES_X / 8)];
-    flushDataCache(0);
-
-    vga_run(GRAPHICS);
 }
 
 #endif // DEMO_HDMI
 
 #ifdef DEMO_LCD
-#define RES_X 480
-#define RES_Y 272
-
-__attribute__((section(".noinit"))) __attribute__((aligned(4 * 8))) uint16_t lcdFramebuffer[RES_Y][RES_X];
-extern void flushDataCache(uint32_t dummy);
 
 void demo_lcd(void)
 {
-    vga_stop(GRAPHICS);
-    GRAPHICS->TIMING = vga_h480_v272_r60;
-    GRAPHICS->FRAME_SIZE = RES_X * RES_Y * 2 - 1;
-    GRAPHICS->FRAME_BASE = (uint32_t)lcdFramebuffer;
-    vga_run(GRAPHICS);
 
-    uint16_t offset = 0;
-    while (1)
-    {
-        printf("offset: %d\r\n", offset);
-        uint16_t *ptr = &lcdFramebuffer[0][0];
-        for (uint32_t y = 0; y < RES_Y; y++)
-        {
-            uint16_t c = (((y + offset) & 0x1F) << 6);
-            for (uint32_t x = 0; x < RES_X; x++)
-            {
-                *ptr = ((uint16_t)(x & 0x1F)) + c;
-                ptr++;
-            }
-        }
-        offset += 4;
-        flushDataCache(0);
-    }
-    // const uint16_t colors[8] = {
-    //     0xFFFF, 0xFFE0, 0x07FF, 0x07E0,
-    //     0xF81F, 0xF800, 0x001F, 0x0000
-    // };
-    // uint16_t *ptr = &lcdFramebuffer[0][0];
-    // for (uint32_t y = 0; y < RES_Y; y++)
-    //     for (uint32_t x = 0; x < RES_X; x++)
-    //         *ptr++ = colors[x / (RES_X / 8)];
-    // flushDataCache(0);
 }
 #endif // DEMO_LCD
 
-void demo_GRAPHICS(void)
+void demo_DVTC(void)
 {
 #ifdef DEMO_HDMI
     demo_hdmi();

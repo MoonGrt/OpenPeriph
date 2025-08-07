@@ -18,7 +18,7 @@ case class Apb3Gpio(
   val io = new Bundle {
     val apb = slave(Apb3(Apb3Config(addressWidth, dataWidth)))
     val gpio = master(TriStateArray(gpioWidth bits))
-    val afio = in(Bits(gpioWidth bits)) // 复用功能输入
+    val afio = in(Bits(gpioWidth bits))
   }
 
   // GPIO输入值，同步或异步传递

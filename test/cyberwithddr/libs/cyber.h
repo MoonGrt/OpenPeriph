@@ -169,11 +169,15 @@ typedef enum{ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 #define SysTick ((SysTick_TypeDef *)SysTick_BASE) // 0xF0060000
 #endif
 
-#ifdef CYBER_GRAPHICS
-/*!< GRAPHICS */
-#include "graphics.h"
-#define GRAPHICS_BASE (APBPERIPH_BASE + 0x70000)
-#define GRAPHICS ((GRAPHICS_TypeDef *)GRAPHICS_BASE) // 0xF0070000
+#ifdef CYBER_DVTC
+/*!< DVTC */
+#include "dvtc.h"
+#define DVTC_BASE (APBPERIPH_BASE + 0x70000)
+#define DVTC_Layer1_BASE (DVTC_BASE + 0x84)
+#define DVTC_Layer2_BASE (DVTC_BASE + 0x104)
+#define DVTC ((DVTC_TypeDef *)DVTC_BASE) // 0xF0070000
+#define DVTC_Layer1 ((DVTC_Layer_TypeDef *)DVTC_Layer1_BASE)
+#define DVTC_Layer2 ((DVTC_Layer_TypeDef *)DVTC_Layer2_BASE)
 #endif
 
 /* Exported macro ------------------------------------------------------------*/
