@@ -151,9 +151,7 @@ case class Apb3TimArray(
     dataWidth: Int = 32
 ) extends Component {
   val io = new Bundle {
-    val apb = slave(
-      Apb3(Apb3TimArray.apb3Config(timCnt, timSpace, dataWidth))
-    )
+    val apb = slave(Apb3(Apb3TimArray.apb3Config(timCnt, timSpace, dataWidth)))
     val tim_ch = out Bits(timCnt * 4 bits)
     val interrupt = out Bits(timCnt bits)
   }

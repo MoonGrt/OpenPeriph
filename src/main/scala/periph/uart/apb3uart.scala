@@ -133,9 +133,7 @@ case class ApbUartArray(
     uartConfig: ApbUartCtrlConfig
 ) extends Component {
   val io = new Bundle {
-    val apb = slave(
-      Apb3(ApbUartArray.apb3Config(uartCount, groupSpace, dataWidth))
-    )
+    val apb = slave(Apb3(ApbUartArray.apb3Config(uartCount, groupSpace, dataWidth)))
     val uarts = Vec(master(Uart(ctsGen = uartConfig.ctsGen, rtsGen = uartConfig.rtsGen)), uartCount)
     val interrupt = out(Bits(uartCount bits))
   }

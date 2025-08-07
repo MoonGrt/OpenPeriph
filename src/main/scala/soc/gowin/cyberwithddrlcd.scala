@@ -2,6 +2,9 @@ package soc.gowin
 
 import periph._
 import soc.gowin.tangprimer._
+import graphic.base._
+import graphic.dvtc._
+import graphic.lcd._
 
 import spinal.core._
 import spinal.lib._
@@ -21,7 +24,6 @@ import spinal.lib.io.{TriStateArray, InOutWrapper}
 import spinal.lib.system.debugger.{JtagAxi4SharedDebugger, SystemDebuggerConfig}
 import spinal.lib.misc.{InterruptCtrl, Timer, Prescaler}
 import spinal.lib.graphic.RgbConfig
-import spinal.lib.graphic.vga.{Axi4VgaCtrl, Axi4VgaCtrlGenerics, Vga}
 
 
 case class cyberwithddrlcdConfig(
@@ -82,20 +84,20 @@ class cyberwithddrlcd(config: cyberwithddrlcdConfig) extends Component {
   import config._
   val debug = true
   val interruptCount = 16
-  def vgaRgbConfig = RgbConfig(5, 6, 5)
+  val colorConfig = RGBConfig(5, 6, 5)
 
   val io = new Bundle {
     // Clocks / reset
     val rstn = in Bool ()
     val clk = in Bool ()
     // Main components IO
-    val jtag = slave(Jtag())
+    // val jtag = slave(Jtag()) // Tang Primer has limited IOBUF(s)
     val sdram = master(DDR3_Interface())
     // Peripherals IO
     // val gpio = master(TriStateArray(32 bits)) // Tang Primer has limited IOBUF(s)
     val uart_tx = out(Bool)
     // Graphics IO
-    val lcd = master(Vga(vgaRgbConfig))
+    val dvt = master(DVTI(colorConfig))
     val lcdclk = out Bool ()
   }
 
@@ -166,9 +168,9 @@ class cyberwithddrlcd(config: cyberwithddrlcdConfig) extends Component {
     reset = resetCtrl.axiReset
   )
 
-  val jtagClockDomain = ClockDomain(
-    clock = io.jtag.tck
-  )
+  // val jtagClockDomain = ClockDomain(
+  //   clock = io.jtag.tck
+  // )
 
   val axi = new ClockingArea(axiClockDomain) {
     val core = coreClockDomain {
@@ -192,13 +194,13 @@ class cyberwithddrlcd(config: cyberwithddrlcdConfig) extends Component {
     val sdramCtrl = Axi4Ddr(axiClockDomain, memClockDomain)
     sdramCtrl.io.pll_lock := memclk.lock && sysclk.lock
 
-    val jtagCtrl = JtagAxi4SharedDebugger(
-      SystemDebuggerConfig(
-        memAddressWidth = 32,
-        memDataWidth = 32,
-        remoteCmdWidth = 1
-      )
-    )
+    // val jtagCtrl = JtagAxi4SharedDebugger(
+    //   SystemDebuggerConfig(
+    //     memAddressWidth = 32,
+    //     memDataWidth = 32,
+    //     remoteCmdWidth = 1
+    //   )
+    // )
 
     val apbBridge = Axi4SharedToApb3Bridge(
       addressWidth = 20,
@@ -262,16 +264,16 @@ class cyberwithddrlcd(config: cyberwithddrlcdConfig) extends Component {
     uartCtrl.io.uarts(0).rxd := afioCtrl.io.device.write(17)
     uartCtrl.io.uarts(1).rxd := afioCtrl.io.device.write(19)
 
-    val vgaCtrlConfig = Axi4VgaCtrlGenerics(
-      axiAddressWidth = 32,
-      axiDataWidth = 32,
-      burstLength = 8,
-      frameSizeMax = 2048 * 1512 * 2,
-      fifoSize = 1024,
-      rgbConfig = vgaRgbConfig,
-      vgaClock = lcdClockDomain
+    val lcdCtrlConfig = DvtcGenerics(
+        axiAddressWidth = 32,
+        axiDataWidth = 32,
+        burstLength = 8,
+        frameSizeMax = 2048*1512,
+        fifoSize = 512,
+        colorConfig = RGBConfig(5, 6, 5),
+        dvtClock = ClockDomain.external("dvt")
     )
-    val vgaCtrl = Axi4VgaCtrl(vgaCtrlConfig)
+    val lcdCtrl = Axi4Lcd(lcdCtrlConfig)
 
     val axiCrossbar = Axi4CrossbarFactory()
 
@@ -284,8 +286,8 @@ class cyberwithddrlcd(config: cyberwithddrlcdConfig) extends Component {
     axiCrossbar.addConnections(
       core.io.i -> List(ram.io.axi, sdramCtrl.io.axi),
       core.io.d -> List(ram.io.axi, sdramCtrl.io.axi, apbBridge.io.axi),
-      jtagCtrl.io.axi -> List(ram.io.axi, sdramCtrl.io.axi, apbBridge.io.axi),
-      vgaCtrl.io.axi -> List(sdramCtrl.io.axi)
+      // jtagCtrl.io.axi -> List(ram.io.axi, sdramCtrl.io.axi, apbBridge.io.axi),
+      lcdCtrl.io.axi -> List(sdramCtrl.io.axi)
     )
 
     axiCrossbar.addPipelining(apbBridge.io.axi)((crossbar, bridge) => {
@@ -312,7 +314,7 @@ class cyberwithddrlcd(config: cyberwithddrlcdConfig) extends Component {
         timCtrl.io.apb -> (0x40000, 64 KiB),
         wdgCtrl.io.apb -> (0x50000, 64 KiB),
         systickCtrl.io.apb -> (0x60000, 64 KiB),
-        vgaCtrl.io.apb -> (0x70000, 64 KiB),
+        lcdCtrl.io.apb -> (0x70000, 64 KiB),
         afioCtrl.io.apb -> (0xd0000, 64 KiB),
         extiCtrl.io.apb -> (0xe0000, 64 KiB),
         core.io.debugBus -> (0xf0000, 64 KiB)
@@ -334,13 +336,12 @@ class cyberwithddrlcd(config: cyberwithddrlcdConfig) extends Component {
       resetCtrl.coreResetUnbuffered setWhen (core.io.debugResetOut)
     }
   }
-  
-  // io.gpio <> axi.gpioCtrl.io.gpio
+
   axi.gpioCtrl.io.gpio.read := B(0, 32 bits)
   io.uart_tx <> axi.uartCtrl.io.uarts(0).txd
-  io.jtag <> axi.jtagCtrl.io.jtag
+  // io.jtag <> axi.jtagCtrl.io.jtag
   io.sdram <> axi.sdramCtrl.io.ddr_iface
-  io.lcd <> axi.vgaCtrl.io.vga
+  io.dvt <> axi.lcdCtrl.io.dvt
 }
 
 object cyberwithddrlcd {

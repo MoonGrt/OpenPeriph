@@ -702,32 +702,32 @@ void demo_lcd(void)
     GRAPHICS->FRAME_BASE = (uint32_t)lcdFramebuffer;
     vga_run(GRAPHICS);
 
-    // uint16_t offset = 0;
-    // while (1)
-    // {
-    //     printf("offset: %d\r\n", offset);
-    //     uint16_t *ptr = &lcdFramebuffer[0][0];
-    //     for (uint32_t y = 0; y < RES_Y; y++)
-    //     {
-    //         uint16_t c = (((y + offset) & 0x1F) << 6);
-    //         for (uint32_t x = 0; x < RES_X; x++)
-    //         {
-    //             *ptr = ((uint16_t)(x & 0x1F)) + c;
-    //             ptr++;
-    //         }
-    //     }
-    //     offset += 4;
-    //     flushDataCache(0);
-    // }
-    const uint16_t colors[8] = {
-        0xFFFF, 0xFFE0, 0x07FF, 0x07E0,
-        0xF81F, 0xF800, 0x001F, 0x0000
-    };
-    uint16_t *ptr = &lcdFramebuffer[0][0];
-    for (uint32_t y = 0; y < RES_Y; y++)
-        for (uint32_t x = 0; x < RES_X; x++)
-            *ptr++ = colors[x / (RES_X / 8)];
-    flushDataCache(0);
+    uint16_t offset = 0;
+    while (1)
+    {
+        printf("offset: %d\r\n", offset);
+        uint16_t *ptr = &lcdFramebuffer[0][0];
+        for (uint32_t y = 0; y < RES_Y; y++)
+        {
+            uint16_t c = (((y + offset) & 0x1F) << 6);
+            for (uint32_t x = 0; x < RES_X; x++)
+            {
+                *ptr = ((uint16_t)(x & 0x1F)) + c;
+                ptr++;
+            }
+        }
+        offset += 4;
+        flushDataCache(0);
+    }
+    // const uint16_t colors[8] = {
+    //     0xFFFF, 0xFFE0, 0x07FF, 0x07E0,
+    //     0xF81F, 0xF800, 0x001F, 0x0000
+    // };
+    // uint16_t *ptr = &lcdFramebuffer[0][0];
+    // for (uint32_t y = 0; y < RES_Y; y++)
+    //     for (uint32_t x = 0; x < RES_X; x++)
+    //         *ptr++ = colors[x / (RES_X / 8)];
+    // flushDataCache(0);
 }
 #endif // DEMO_LCD
 

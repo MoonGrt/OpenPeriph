@@ -1,78 +1,73 @@
-// package graphic.hdmi
+package graphic.lcd
 
-// import graphic.base._
-// import graphic.dvtc._
-// import spinal.core._
-// import spinal.lib._
-// import spinal.lib.bus.amba3.apb._
-// import spinal.lib.bus.amba4.axi._
-// import spinal.lib.graphic.{VideoDmaGeneric, VideoDma}
+import graphic.base._
+import graphic.dvtc._
+import spinal.core._
+import spinal.lib._
+import spinal.lib.bus.amba3.apb._
+import spinal.lib.bus.amba4.axi._
+import spinal.lib.bus.misc.SizeMapping
+import spinal.lib.graphic.{VideoDmaGeneric, VideoDma}
 
-// case class Axi4LcdCtrlGenerics(
-//   axiAddressWidth : Int,
-//   axiDataWidth : Int,
-//   burstLength : Int,
-//   frameSizeMax : Int,
-//   fifoSize : Int,
-//   rgbConfig: RgbConfig,
-//   timingsWidth: Int = 12,
-//   pendingRequestMax : Int = 7,
-//   lcdClock : ClockDomain = ClockDomain.current
-// ) {
-//   def axi4Config = dmaGenerics.getAxi4ReadOnlyConfig
+case class Axi4Lcd(config: DvtcGenerics) extends Component{
+  import config._
+  require(isPow2(burstLength))
 
-//   def apb3Config = Apb3Config(
-//     addressWidth = 8,
-//     dataWidth = 32,
-//     useSlaveError = false
-//   )
+  val io = new Bundle{
+    val axi = master(Axi4ReadOnly(axi4Config))
+    val apb = slave(Apb3(Apb3Config(addressWidth = 12, dataWidth = 32, useSlaveError = false)))
+    val dvt = master(DVTI(colorConfig))
+  }
 
-//   def dmaGenerics = VideoDmaGeneric(
-//     addressWidth      = axiAddressWidth - log2Up(bytePerAddress),
-//     dataWidth         = axiDataWidth,
-//     beatPerAccess     = burstLength,
-//     sizeWidth         = log2Up(frameSizeMax) -log2Up(bytePerAddress),
-//     pendingRequetMax  = pendingRequestMax,
-//     fifoSize          = fifoSize,
-//     frameClock        = lcdClock,
-//     frameFragmentType = Rgb(rgbConfig)
-//   )
+  val dvtc = new Apb3Dvtc(config)
+  val layer = new Apb3DvtcLayer(config)
+  layer.io.axi <> io.axi
 
-//   def bytePerAddress =  axiDataWidth/8 * burstLength
-//   def colorConfig = rgbConfig.toColorConfig
-// }
+  val lcd = new ClockingArea(dvtClock) {
+    val error = RegInit(False)
+    val frameStart = dvtc.io.dvt.de.rise
+    val waitStartOfFrame = RegInit(False)
+    val firstPixel = Reg(Bool()) setWhen(frameStart) clearWhen(layer.io.pixel.firstFire)
 
-// case class Axi4Lcd(g : Axi4LcdCtrlGenerics) extends Component{
-//   import g._
-//   require(isPow2(burstLength))
+    dvtc.io.pixel << layer.io.pixel.toStreamOfFragment.haltWhen(waitStartOfFrame && !error)
 
-//   val io = new Bundle{
-//     val axi = master(Axi4ReadOnly(axi4Config))
-//     val apb = slave(Apb3(apb3Config))
-//     val dvt = master(DVTBus(colorConfig))
-//   }
+    when(frameStart){
+      waitStartOfFrame := False
+    }
+    when(layer.io.pixel.fire && layer.io.pixel.last){
+      error := False
+      waitStartOfFrame := error
+    }
+    when(!waitStartOfFrame && !error) {
+      when(firstPixel && layer.io.pixel.valid && !layer.io.pixel.first) {
+        error := True
+      }
+    }
 
-//   val dma  = VideoDma(dmaGenerics)
-//   dma.io.mem.toAxi4ReadOnly <> io.axi
+    layer.io.pixel.ready setWhen(!waitStartOfFrame && !error)
+    io.dvt <> dvtc.io.dvt
+  }
 
-//   val lcd = new ClockingArea(lcdClock) {
-//     val DVTCCtrl = new Apb3Dvtc(g.colorConfig, g.timingsWidth)
-//   }
-//   io.apb <> lcd.DVTCCtrl.io.apb
-//   io.dvt <> lcd.DVTCCtrl.io.dvt
-// }
+  val decoder = Apb3Decoder(
+    master = io.apb,
+    slaves = List(
+      dvtc.io.apb  -> SizeMapping(0x0000, 0x80),
+      layer.io.apb -> SizeMapping(0x0080, 0x80)
+    )
+  )
+}
 
 // object Axi4LcdCtrlGen{
 //   def main(args: Array[String]): Unit = {
 //     SpinalConfig(targetDirectory = "rtl").generateVerilog(
-//       Axi4Lcd(Axi4LcdCtrlGenerics(
+//       Axi4Lcd(DvtcGenerics(
 //         axiAddressWidth = 32,
 //         axiDataWidth = 32,
 //         burstLength = 8,
 //         frameSizeMax = 2048*1512,
 //         fifoSize = 512,
-//         ColorConfig = RGBConfig(5, 6, 5),
-//         lcdClock = ClockDomain.external("lcd"))
+//         colorConfig = RGBConfig(5, 6, 5),
+//         dvtClock = ClockDomain.external("dvt"))
 //       )
 //     )
 //   }

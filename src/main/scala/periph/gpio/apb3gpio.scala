@@ -137,9 +137,7 @@ case class Apb3GpioArray(
     dataWidth: Int = 32
 ) extends Component {
   val io = new Bundle {
-    val apb = slave(
-      Apb3(Apb3GpioArray.apb3Config(gpioGroupCnt, groupSpace, dataWidth))
-    )
+    val apb = slave(Apb3(Apb3GpioArray.apb3Config(gpioGroupCnt, groupSpace, dataWidth)))
     val gpio = master(TriStateArray(gpioWidth * gpioGroupCnt bits))
     val afio = in(Bits(gpioWidth * gpioGroupCnt bits))
   }
