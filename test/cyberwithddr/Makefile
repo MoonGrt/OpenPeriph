@@ -1,5 +1,6 @@
 # make clean && make -j $(nproc) && make mem
 
+DDREN = no
 DDR_TEST = no
 PROJ_NAME = demo
 DEBUG = yes
@@ -7,12 +8,16 @@ BENCH = no
 FUNC_OPT = yes
 MULDIV = yes
 
+ifeq ($(DDREN),yes)
+    LDSCRIPT = linkerddr.ld
+else
+	LDSCRIPT = linker.ld
+endif
+
 ifeq ($(DDR_TEST),yes)
-    LDSCRIPT = linker.ld
     SRCS = $(wildcard src/ddr_test.S)
 else
     INC += -I./libs -I./src -I./src/ov5640 -I./src/lcd
-    LDSCRIPT = linker.ld
     SRCS = $(wildcard libs/*.c) \
            $(wildcard libs/*.S) \
            $(wildcard src/*.c) \

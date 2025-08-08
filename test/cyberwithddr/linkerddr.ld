@@ -4,6 +4,7 @@ ENTRY(crtStart)
 
 MEMORY {
   onChipRam : ORIGIN = 0x00000000, LENGTH = 32k
+  sdram : ORIGIN = 0x40000000, LENGTH = 128M
 }
 
 _stack_size = DEFINED(_stack_size) ? _stack_size : 512;
@@ -36,7 +37,7 @@ SECTIONS {
     KEEP (*(.ctors))
     . = ALIGN(4);
     _ctors_end = .;
-  } > onChipRam
+  } > sdram
 
   .data          :
   {
@@ -55,7 +56,7 @@ SECTIONS {
     *(.srodata.cst4)
     *(.srodata.cst2)
     *(.srodata .srodata.*)
-  } > onChipRam
+  } > sdram
 
   .bss (NOLOAD) : {
 		. = ALIGN(4);
@@ -68,13 +69,13 @@ SECTIONS {
     *(COMMON)
 		. = ALIGN(4);
 		_bss_end = .;
-  } > onChipRam
+  } > sdram
 
   .noinit (NOLOAD) : {
       . = ALIGN(4);
       *(.noinit .noinit.*)
       . = ALIGN(4);
-  } > onChipRam
+  } > sdram
 
   ._user_heap (NOLOAD):
   {
@@ -85,7 +86,7 @@ SECTIONS {
     . = . + _heap_size;
     . = ALIGN(8);
     PROVIDE ( _heap_end = .);
-  } > onChipRam
+  } > sdram
 
   ._stack (NOLOAD):
   {
