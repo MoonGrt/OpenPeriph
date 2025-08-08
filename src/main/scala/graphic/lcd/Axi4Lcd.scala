@@ -14,47 +14,17 @@ case class Axi4Lcd(config: DvtcGenerics) extends Component{
   require(isPow2(burstLength))
 
   val io = new Bundle{
+    val apb = slave(Apb3(apb3Config))
     val axi = master(Axi4ReadOnly(axi4Config))
-    val apb = slave(Apb3(Apb3Config(addressWidth = 12, dataWidth = 32, useSlaveError = false)))
-    val dvt = master(DVTI(colorConfig))
+    val dvti = master(DVTI(colorConfig))
+    val interrupt = out(Bool())
   }
 
   val dvtc = new Apb3Dvtc(config)
-  val layer = new Apb3DvtcLayer(config)
-  layer.io.axi <> io.axi
-
-  val lcd = new ClockingArea(dvtClock) {
-    val error = RegInit(False)
-    val frameStart = dvtc.io.dvt.de.rise
-    val waitStartOfFrame = RegInit(False)
-    val firstPixel = Reg(Bool()) setWhen(frameStart) clearWhen(layer.io.pixel.firstFire)
-
-    dvtc.io.pixel << layer.io.pixel.toStreamOfFragment.haltWhen(waitStartOfFrame && !error)
-
-    when(frameStart){
-      waitStartOfFrame := False
-    }
-    when(layer.io.pixel.fire && layer.io.pixel.last){
-      error := False
-      waitStartOfFrame := error
-    }
-    when(!waitStartOfFrame && !error) {
-      when(firstPixel && layer.io.pixel.valid && !layer.io.pixel.first) {
-        error := True
-      }
-    }
-
-    layer.io.pixel.ready setWhen(!waitStartOfFrame && !error)
-    io.dvt <> dvtc.io.dvt
-  }
-
-  val decoder = Apb3Decoder(
-    master = io.apb,
-    slaves = List(
-      dvtc.io.apb  -> SizeMapping(0x0000, 0x80),
-      layer.io.apb -> SizeMapping(0x0080, 0x80)
-    )
-  )
+  io.apb <> dvtc.io.apb
+  io.axi <> dvtc.io.axi
+  io.dvti <> dvtc.io.dvti
+  io.interrupt <> dvtc.io.interrupt
 }
 
 // object Axi4LcdCtrlGen{

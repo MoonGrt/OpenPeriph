@@ -97,7 +97,7 @@ class cyberwithddrlcd(config: cyberwithddrlcdConfig) extends Component {
     // val gpio = master(TriStateArray(32 bits)) // Tang Primer has limited IOBUF(s)
     val uart_tx = out(Bool)
     // Graphics IO
-    val dvt = master(DVTI(colorConfig))
+    val dvti = master(DVTI(colorConfig))
     val lcdclk = out Bool ()
   }
 
@@ -341,7 +341,7 @@ class cyberwithddrlcd(config: cyberwithddrlcdConfig) extends Component {
   io.uart_tx <> axi.uartCtrl.io.uarts(0).txd
   // io.jtag <> axi.jtagCtrl.io.jtag
   io.sdram <> axi.sdramCtrl.io.ddr_iface
-  io.dvt <> axi.lcdCtrl.io.dvt
+  io.dvti <> axi.lcdCtrl.io.dvti
 }
 
 object cyberwithddrlcd {

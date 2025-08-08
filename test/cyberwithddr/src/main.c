@@ -650,9 +650,50 @@ void demo_hdmi(void)
 
 #ifdef DEMO_LCD
 
+#include "lcd.h"
+#include "dvtc.h"
+
+#define BytesSwap16(num)     \
+  (((num) & 0xFF00U) >> 8U | \
+   ((num) & 0x00FFU) << 8U)
+#define BytesSwap32(num)          \
+  (((num) & 0xFF000000U) >> 24U | \
+   ((num) & 0x00FF0000U) >> 8U |  \
+   ((num) & 0x0000FF00U) << 8U |  \
+   ((num) & 0x000000FFU) << 24U)
+
+#define UNUSED(X) (void)X /* To avoid gcc/g++ warnings */
+
+/**
+ * @brief  Decrements the TimingDelay variable.
+ * @param  None
+ * @retval None
+ */
+__IO uint32_t uwTimingDelay;
+inline void TimingDelay_Decrement(void)
+{
+  if (uwTimingDelay != 0x00)
+  {
+    uwTimingDelay--;
+  }
+}
+
+/* 以绝对定位的方式访问，但是必须定义成为函数外的全局变量，其实这就是一个指针 */
+uint8_t SDRAM_Point __attribute__((at(SDRAM_BASE_ADDR)));
+
 void demo_lcd(void)
 {
+  /* DVTC
+     DVTC仅使用一个图层，如果要使用双图层则需使用DMA2D的前景和背景来实现
+     仅存储的有1帧图像
+  */
+  LCD_DVTC_Init();
 
+  while (1)
+  {
+    FPS = 0;
+    delay_ms(500);
+  }
 }
 #endif // DEMO_LCD
 

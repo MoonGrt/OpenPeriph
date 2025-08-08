@@ -2,11 +2,19 @@
 package graphic.dvtc
 
 import graphic.base._
+import graphic.algorithm._
 import spinal.core._
 import spinal.lib._
 import spinal.lib.bus.amba3.apb._
-import spinal.lib.bus.amba4.axi.{Axi4Config, Axi4ReadOnly}
+import spinal.lib.bus.amba4.axi.{Axi4Config, Axi4ReadOnly, Axi4ReadOnlyArbiter}
 import spinal.lib.graphic.{VideoDma, VideoDmaGeneric}
+
+case class DvtConfig(
+  timingWidth: Int = 12,
+  positionWidth: Int = 16,
+  colorConfig: ColorConfig = RGBConfig(5, 6, 5),
+  dvtClock: ClockDomain
+)
 
 case class DvtcGenerics(
   axiAddressWidth: Int,
@@ -17,7 +25,8 @@ case class DvtcGenerics(
   dvtClock: ClockDomain,
   colorConfig: ColorConfig = RGBConfig(5, 6, 5),
   timingWidth: Int = 12,
-  pendingRequestMax: Int = 7
+  pendingRequestMax: Int = 7,
+  layerNum: Int = 2
 ) {
   def axi4Config = dmaGenerics.getAxi4ReadOnlyConfig
 
@@ -25,6 +34,13 @@ case class DvtcGenerics(
     addressWidth = 10,
     dataWidth = 32,
     useSlaveError = false
+  )
+
+  def dvtConfig = DvtConfig(
+    timingWidth = 12,
+    positionWidth = 16,
+    colorConfig = colorConfig,
+    dvtClock = dvtClock
   )
 
   def dmaGenerics = VideoDmaGeneric(
@@ -41,13 +57,12 @@ case class DvtcGenerics(
   def bytePerAddress = axiDataWidth/8 * burstLength
 }
 
-// DVT Generator
 case class position(positionWidth: Int = 16) extends Bundle{
   val x = UInt(positionWidth bits)
   val y = UInt(positionWidth bits)
 }
 
-case class DVTConfig(timingWidth: Int = 12) extends Bundle {
+case class DVTCfgInterface(timingWidth: Int = 12) extends Bundle {
   val vsync  = UInt(timingWidth bits)
   val vback  = UInt(timingWidth bits)
   val vdisp  = UInt(timingWidth bits)
@@ -82,44 +97,51 @@ case class DVTI(colorConfig: ColorConfig) extends Bundle with IMasterSlave {
   }
 }
 
-case class DVT(timingWidth: Int = 12, positionWidth: Int = 16, colorConfig: ColorConfig) extends Component {
+case class DVTiming(dvtConfig: DvtConfig) extends Component {
+  import dvtConfig._
   val io = new Bundle {
     val en = in Bool()
-    val cfg = in(DVTConfig(timingWidth))
+    val cfg = in(DVTCfgInterface(timingWidth))
     val pixel = slave(Stream(UInt(colorConfig.getWidth bits)))
     val pos = out(position(positionWidth))
-    val dvt = master(DVTI(colorConfig))
+    val dvti = master(DVTI(colorConfig))
     val hen = out Bool()
     val ven = out Bool()
   }
 
-  val en = io.hen && io.ven
-  val hCnt = Reg(UInt(12 bits)) init(0)
-  val vCnt = Reg(UInt(12 bits)) init(0)
-  io.hen := (hCnt >= io.cfg.hsync + io.cfg.hback) &&
-         (hCnt < io.cfg.hsync + io.cfg.hback + io.cfg.hdisp)
-  io.ven := (vCnt >= io.cfg.vsync + io.cfg.vback) &&
-         (vCnt < io.cfg.vsync + io.cfg.vback + io.cfg.vdisp)
-  when(io.en) {
-    when(hCnt === io.cfg.htotal - 1) {
-      hCnt := 0
-      when(vCnt === io.cfg.vtotal - 1) {
-        vCnt := 0
+  val dvtArea = new ClockingArea(dvtClock) {
+    val en = io.hen && io.ven
+    val hCnt = Reg(UInt(timingWidth bits)) init(0)
+    val vCnt = Reg(UInt(timingWidth bits)) init(0)
+    io.hen := (hCnt >= io.cfg.hsync + io.cfg.hback) &&
+          (hCnt < io.cfg.hsync + io.cfg.hback + io.cfg.hdisp)
+    io.ven := (vCnt >= io.cfg.vsync + io.cfg.vback) &&
+          (vCnt < io.cfg.vsync + io.cfg.vback + io.cfg.vdisp)
+    when(io.en) {
+      when(hCnt === io.cfg.htotal - 1) {
+        hCnt := 0
+        when(vCnt === io.cfg.vtotal - 1) {
+          vCnt := 0
+        } otherwise {
+          vCnt := vCnt + 1
+        }
       } otherwise {
-        vCnt := vCnt + 1
+        hCnt := hCnt + 1
       }
-    } otherwise {
-      hCnt := hCnt + 1
+    }.otherwise {
+      hCnt := 0
+      vCnt := 0
     }
-  }
 
-  io.dvt.color := io.pixel.payload
-  io.dvt.hs := (hCnt < io.cfg.hsync) ^ io.cfg.hspol
-  io.dvt.vs := (vCnt < io.cfg.vsync) ^ io.cfg.vspol
-  io.dvt.de := (en) ^ io.cfg.depol
-  io.pos.x := (hCnt).resized
-  io.pos.y := (vCnt).resized
-  io.pixel.ready := en && io.en
+    // 负极性: 高电平时间长，低电平时间短; 正极性: 高电平时间短，低电平时间长
+    io.dvti.color := io.pixel.payload
+    io.dvti.vs := (vCnt < io.cfg.vsync) ^ io.cfg.vspol
+    io.dvti.hs := (hCnt < io.cfg.hsync) ^ io.cfg.hspol
+    io.dvti.de := (en) ^ io.cfg.depol
+    io.pos.x := (hCnt).resized
+    io.pos.y := (vCnt).resized
+    io.pixel.ready := en && io.en
+  }
 }
 
 // Apb3 DVT Controller
@@ -127,13 +149,17 @@ case class Apb3Dvtc(config: DvtcGenerics) extends Component {
   import config._
   val io = new Bundle {
     val apb = slave(Apb3(apb3Config))
-    val pixel = slave(Stream(UInt(colorConfig.getWidth bits)))
-    val dvt = master(DVTI(colorConfig))
+    val axi = master(Axi4ReadOnly(axi4Config))
+    val dvti = master(DVTI(colorConfig))
     val interrupt = out Bool()
   }
 
+  // APB3 控制器
   val ctrl = Apb3SlaveFactory(io.apb)
 
+  /* ---------------------------------------------------------------------------- */
+  /* ----------------------------------- DVTC ----------------------------------- */
+  /* ---------------------------------------------------------------------------- */
   // 定义寄存器
   val SSCR  = Reg(UInt(32 bits)) init(0) // 0x08 // Synchronization Size Configuration Register
   val BPCR  = Reg(UInt(32 bits)) init(0) // 0x0C // Back Porch Configuration Register
@@ -159,7 +185,7 @@ case class Apb3Dvtc(config: DvtcGenerics) extends Component {
   ctrl.readAndWrite(BCCR,  0x2C)
   ctrl.readAndWrite(IER,   0x34)
   ctrl.read(ISR,           0x38)
-  // ctrl.write(ICR,          0x3C)
+  ctrl.write(ICR,          0x3C)
   ctrl.readAndWrite(LIPCR, 0x40)
   ctrl.read(CPSR,          0x44)
   ctrl.read(CDSR,          0x48)
@@ -177,71 +203,9 @@ case class Apb3Dvtc(config: DvtcGenerics) extends Component {
   val INT_TERRIF = 2
   val INT_RRIF = 3
 
-  // 连接 DVT 控制器
-  val dvtArea = new ClockingArea(dvtClock) {
-    val DVT = new DVT(timingWidth = timingWidth, colorConfig = colorConfig)
-
-    DVT.io.en        := BufferCC(GCR(GCR_DVTCEN))
-    DVT.io.cfg.pcpol := BufferCC(GCR(GCR_PCPOL))
-    DVT.io.cfg.depol := BufferCC(GCR(GCR_DEPOL))    
-
-    DVT.io.cfg.vsync  := BufferCC(SSCR(timingWidth - 1 downto 0))
-    DVT.io.cfg.vback  := BufferCC(BPCR(timingWidth - 1 downto 0))
-    DVT.io.cfg.vdisp  := BufferCC(AWCR(timingWidth - 1 downto 0))
-    DVT.io.cfg.vtotal := BufferCC(TWCR(timingWidth - 1 downto 0))
-    DVT.io.cfg.vspol  := BufferCC(GCR(GCR_VSPOL))
-
-    DVT.io.cfg.hsync  := BufferCC(SSCR(timingWidth + 15 downto 16))
-    DVT.io.cfg.hback  := BufferCC(BPCR(timingWidth + 15 downto 16))
-    DVT.io.cfg.hdisp  := BufferCC(AWCR(timingWidth + 15 downto 16))
-    DVT.io.cfg.htotal := BufferCC(TWCR(timingWidth + 15 downto 16))
-    DVT.io.cfg.hspol  := BufferCC(GCR(GCR_HSPOL))
-  }
-
-  // 在 APB 时钟域中同步来自 dvtClock 的信号
-  val pos_x_sync = BufferCC(dvtArea.DVT.io.pos.x)
-  val pos_y_sync = BufferCC(dvtArea.DVT.io.pos.y)
-  val vs_sync    = BufferCC(dvtArea.DVT.io.dvt.vs)
-  val hs_sync    = BufferCC(dvtArea.DVT.io.dvt.hs)
-  val hen_sync   = BufferCC(dvtArea.DVT.io.hen)
-  val ven_sync   = BufferCC(dvtArea.DVT.io.ven)
-
-  CPSR := (pos_x_sync ## pos_y_sync).asUInt
-  CDSR := (B(0, 28 bits) ## vs_sync ## hs_sync ## hen_sync ## ven_sync).asUInt
-
-  // 中断边沿检测
-  val vs_rise = Mux(GCR(GCR_VSPOL), vs_sync.rise, vs_sync.fall)
-  val hs_rise = Mux(GCR(GCR_HSPOL), hs_sync.rise, hs_sync.fall)
-  val line_match = (pos_y_sync === LIPCR(timingWidth - 1 downto 0)) && hs_rise
-
-  // 中断状态设置
-  ISR(INT_LIF).setWhen(line_match && IER(INT_LIF))
-  // ISR(INT_FUIF).setWhen(&& IER(INT_FUIF))
-  // ISR(INT_TERRIF).setWhen(&& IER(INT_TERRIF))
-  // ISR(INT_RRIF).setWhen(&& IER(INT_RRIF))
-
-  // 中断清除
-  ctrl.onWrite(0x3C) { // ICR
-    ISR := ISR & ~io.apb.PWDATA.asUInt
-  }
-
-  // 输入输出连接
-  io.dvt << dvtArea.DVT.io.dvt
-  io.pixel <> dvtArea.DVT.io.pixel
-  io.interrupt := (ISR & IER).orR
-}
-
-case class Apb3DvtcLayer(config: DvtcGenerics) extends Component {
-  import config._
-  val io = new Bundle {
-    val apb = slave(Apb3(apb3Config))
-    val axi = master(Axi4ReadOnly(axi4Config))
-    val pixel = master(Stream(Fragment(dmaGenerics.frameFragmentType)))
-  }
-
-  val ctrl = Apb3SlaveFactory(io.apb)
-  val layerDma = VideoDma(dmaGenerics)
-
+  /* ---------------------------------------------------------------------------- */
+  /* -------------------------------- DVTC Layer -------------------------------- */
+  /* ---------------------------------------------------------------------------- */
   // 定义寄存器
   val CR     = Reg(UInt(32 bits)) init(0) // 0x84 // Control Register
   val WHPCR  = Reg(UInt(32 bits)) init(0) // 0x88 // Window Horizontal Position Configuration Register
@@ -270,13 +234,107 @@ case class Apb3DvtcLayer(config: DvtcGenerics) extends Component {
   ctrl.readAndWrite(CFBLNR, 0xB4)
   ctrl.readAndWrite(CLUTWR, 0xC4)
 
+  /* ---------------------------------------------------------------------------- */
+  /* -------------------------------- Connection -------------------------------- */
+  /* ---------------------------------------------------------------------------- */
+  val layerDma = new VideoDma(dmaGenerics)
+  val dvt = new DVTiming(dvtConfig)
+  // 连接 DVTiming 控制器
+  val dvtArea = new ClockingArea(dvtClock) {
+    // 连接 DVTiming 控制器的配置寄存器
+    dvt.io.en        := BufferCC(GCR(GCR_DVTCEN))
+    dvt.io.cfg.pcpol := BufferCC(GCR(GCR_PCPOL))
+    dvt.io.cfg.depol := BufferCC(GCR(GCR_DEPOL))
+
+    dvt.io.cfg.vsync  := BufferCC(SSCR(timingWidth - 1 downto 0))
+    dvt.io.cfg.vback  := BufferCC(BPCR(timingWidth - 1 downto 0))
+    dvt.io.cfg.vdisp  := BufferCC(AWCR(timingWidth - 1 downto 0))
+    dvt.io.cfg.vtotal := BufferCC(TWCR(timingWidth - 1 downto 0))
+    dvt.io.cfg.vspol  := BufferCC(GCR(GCR_VSPOL))
+
+    dvt.io.cfg.hsync  := BufferCC(SSCR(timingWidth + 15 downto 16))
+    dvt.io.cfg.hback  := BufferCC(BPCR(timingWidth + 15 downto 16))
+    dvt.io.cfg.hdisp  := BufferCC(AWCR(timingWidth + 15 downto 16))
+    dvt.io.cfg.htotal := BufferCC(TWCR(timingWidth + 15 downto 16))
+    dvt.io.cfg.hspol  := BufferCC(GCR(GCR_HSPOL))
+
+    // 连接 DVTiming 控制器的数据流
+    val error = RegInit(False)
+    val frameStart = Mux(dvt.io.cfg.vspol, dvt.io.dvti.vs, ~dvt.io.dvti.vs)
+    val waitStartOfFrame = RegInit(False)
+    val firstPixel = Reg(Bool()) setWhen(frameStart) clearWhen(layerDma.io.frame.firstFire)
+
+    when(frameStart){
+      waitStartOfFrame := False
+    }
+    when(layerDma.io.frame.fire && layerDma.io.frame.last){
+      error := False
+      waitStartOfFrame := error
+    }
+    when(!waitStartOfFrame && !error) {
+      when(firstPixel && layerDma.io.frame.valid && !layerDma.io.frame.first) {
+        error := True
+      }
+    }
+
+    // // Layer window 区域判断
+    // val winX0 = BufferCC(WHPCR(15 downto 0))
+    // val winX1 = BufferCC(WHPCR(31 downto 16))
+    // val winY0 = BufferCC(WVPCR(15 downto 0))
+    // val winY1 = BufferCC(WVPCR(31 downto 16))
+    // val inWindow = (dvt.io.pos.x >= winX0.resized) && (dvt.io.pos.x < winX1.resized) &&
+    //                (dvt.io.pos.y >= winY0.resized) && (dvt.io.pos.y < winY1.resized)
+
+    // // ready 仅在有效区域内反馈
+    // layerDma.io.frame.ready.setWhen(!waitStartOfFrame && !error && inWindow)
+
+    // // 像素选择逻辑
+    // dvt.io.pixel.valid := layerDma.io.frame.valid && inWindow
+    // dvt.io.pixel.payload := Converter(ARGBConfig(8,8,8,8), colorConfig)(DCCR)
+    // when(inWindow) {
+    //   dvt.io.pixel.payload := layerDma.io.frame.toStreamOfFragment.payload
+    // }
+    dvt.io.pixel << layerDma.io.frame.toStreamOfFragment.haltWhen(waitStartOfFrame && !error)
+  }
+
+  // 在 APB 时钟域中同步来自 dvtClock 的信号
+  val pos_x_sync = BufferCC(dvt.io.pos.x)
+  val pos_y_sync = BufferCC(dvt.io.pos.y)
+  val vs_sync    = BufferCC(dvt.io.dvti.vs)
+  val hs_sync    = BufferCC(dvt.io.dvti.hs)
+  val hen_sync   = BufferCC(dvt.io.hen)
+  val ven_sync   = BufferCC(dvt.io.ven)
+
+  CPSR := (pos_x_sync ## pos_y_sync).asUInt
+  CDSR := (B(0, 28 bits) ## vs_sync ## hs_sync ## hen_sync ## ven_sync).asUInt
+
+  // 中断边沿检测
+  val vs_rise = Mux(GCR(GCR_VSPOL), vs_sync.rise, vs_sync.fall)
+  val hs_rise = Mux(GCR(GCR_HSPOL), hs_sync.rise, hs_sync.fall)
+  val line_match = (pos_y_sync === LIPCR(timingWidth - 1 downto 0)) && hs_rise
+
+  // 中断状态设置
+  ISR(INT_LIF).setWhen(line_match && IER(INT_LIF))
+  // ISR(INT_FUIF).setWhen(&& IER(INT_FUIF))
+  // ISR(INT_TERRIF).setWhen(&& IER(INT_TERRIF))
+  // ISR(INT_RRIF).setWhen(&& IER(INT_RRIF))
+
+  // 中断清除
+  ctrl.onWrite(0x3C) { // ICR
+    ISR := ISR & ~io.apb.PWDATA.asUInt
+  }
+
   // 连接 DMA 控制器
   io.axi <> layerDma.io.mem.toAxi4ReadOnly
-  io.pixel <> layerDma.io.frame
   layerDma.io.size := (CFBLNR(15 downto 0) * CFBLR(31 downto 16) * (2)).resized
   layerDma.io.base := CFBAR.resized
-  layerDma.io.start := CR(0)
+  layerDma.io.start := PulseCCByToggle(dvtArea.frameStart, clockIn = dvtClock, clockOut = ClockDomain.current) && CR(0)
+
+  // 输入输出连接
+  io.dvti << dvt.io.dvti
+  io.interrupt := (ISR & IER).orR
 }
+
 
 // object Apb3DvtcGen {
 //   def main(args: Array[String]): Unit = {
@@ -291,21 +349,5 @@ case class Apb3DvtcLayer(config: DvtcGenerics) extends Component {
 //         dvtClock = ClockDomain.external("dvt"))
 //       )
 //     )
-//   }
-// }
-
-// object Apb3DvtcLayerGen {
-//   def main(args: Array[String]): Unit = {
-//     SpinalConfig(targetDirectory = "rtl").generateVerilog {
-//       Apb3DvtcLayer(DvtcGenerics(
-//         axiAddressWidth = 32,
-//         axiDataWidth = 32,
-//         burstLength = 8,
-//         frameSizeMax = 2048*1512,
-//         fifoSize = 512,
-//         colorConfig = RGBConfig(5, 6, 5),
-//         dvtClock = ClockDomain.external("dvt"))
-//       )
-//     }
 //   }
 // }

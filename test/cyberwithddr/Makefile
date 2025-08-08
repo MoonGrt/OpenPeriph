@@ -1,4 +1,4 @@
-# make clean && make -j $(nproc)
+# make clean && make -j $(nproc) && make mem
 
 DDR_TEST = no
 PROJ_NAME = demo
@@ -11,13 +11,14 @@ ifeq ($(DDR_TEST),yes)
     LDSCRIPT = linker.ld
     SRCS = $(wildcard src/ddr_test.S)
 else
-    INC += -I./libs -I./src -I./src/ov5640
+    INC += -I./libs -I./src -I./src/ov5640 -I./src/lcd
     LDSCRIPT = linker.ld
     SRCS = $(wildcard libs/*.c) \
            $(wildcard libs/*.S) \
            $(wildcard src/*.c) \
            $(wildcard src/*.S) \
-           $(wildcard src/ov5640/*.c)
+           $(wildcard src/ov5640/*.c) \
+		   $(wildcard src/lcd/*.c)
 endif
 
 # Set it to yes if you are using the sifive precompiled GCC pack
