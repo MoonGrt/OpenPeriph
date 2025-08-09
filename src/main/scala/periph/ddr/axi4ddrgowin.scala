@@ -838,61 +838,8 @@ case class Axi4Ddr_BusArbiter[T <: Data](sys_clk: ClockDomain, addrlen: Int = 28
   }
 }
 
-case class Axi4Ddr(sys_clk: ClockDomain, mem_clk: ClockDomain) extends Component {
-  val axiController = Axi4DdrWithCache(sys_clk, 32, 28, 4)
-  val io = new Bundle() {
-    val pll_lock = in Bool ()
-    val axi = slave(Axi4Shared(axiController.axiConfig))
-    val ddr_iface = master(DDR3_Interface())
-    val init_calib_complete = out Bool()
-  }
-
-  val gowin_DDR3 = Gowin_DDR3(sys_clk, mem_clk)
-  val ddr_ref_clk = gowin_DDR3.clk_out
-  val controller = Axi4Ddr_Controller(
-    sys_clk,
-    ddr_ref_clk,
-    contextType = axiController.context_type,
-    fifo_length = 4
-  )
-
-  val sys_area = new ClockingArea(sys_clk) {
-    axiController.io.ddr_cmd >> controller.io.ddr_cmd
-    axiController.io.ddr_rsp << controller.io.ddr_rsp
-
-    io.axi.sharedCmd >> axiController.io.axi.sharedCmd
-    io.axi.writeData >> axiController.io.axi.writeData
-    io.axi.writeRsp << axiController.io.axi.writeRsp
-    io.axi.readRsp << axiController.io.axi.readRsp
-
-    gowin_DDR3.io.sr_req := False
-    gowin_DDR3.io.ref_req := False
-    gowin_DDR3.io.burst := True
-    gowin_DDR3.io.pll_lock := io.pll_lock
-    gowin_DDR3.io.app_burst_number := controller.io.app_burst_number
-    gowin_DDR3.io.cmd := controller.io.cmd
-    gowin_DDR3.io.cmd_en := controller.io.cmd_en
-    gowin_DDR3.io.addr := controller.io.addr
-    gowin_DDR3.io.wr_data := controller.io.wr_data
-    gowin_DDR3.io.wr_data_en := controller.io.wr_data_en
-    gowin_DDR3.io.wr_data_end := controller.io.wr_data_en
-    gowin_DDR3.io.wr_data_mask := controller.io.wr_data_mask
-
-    controller.io.cmd_ready := gowin_DDR3.io.cmd_ready
-    controller.io.wr_data_rdy := gowin_DDR3.io.wr_data_rdy
-    controller.io.rd_data := gowin_DDR3.io.rd_data
-    controller.io.rd_data_valid := gowin_DDR3.io.rd_data_valid
-    controller.io.init_calib_complete := gowin_DDR3.io.init_calib_complete
-
-    gowin_DDR3.connectDDR3Interface(io.ddr_iface)
-  }
-  io.init_calib_complete := gowin_DDR3.io.init_calib_complete
-}
-
 // case class Axi4Ddr(sys_clk: ClockDomain, mem_clk: ClockDomain) extends Component {
-//   val gowin_DDR3 = Gowin_DDR3(sys_clk, mem_clk)
-//   val ddr_clk = gowin_DDR3.clk_out
-//   val axiController = Axi4DdrControllerWithCache(sys_clk, ddr_clk, 32, 28, 4)
+//   val axiController = Axi4DdrWithCache(sys_clk, 32, 28, 4)
 //   val io = new Bundle() {
 //     val pll_lock = in Bool ()
 //     val axi = slave(Axi4Shared(axiController.axiConfig))
@@ -900,8 +847,19 @@ case class Axi4Ddr(sys_clk: ClockDomain, mem_clk: ClockDomain) extends Component
 //     val init_calib_complete = out Bool()
 //   }
 
-//   io.init_calib_complete := gowin_DDR3.io.init_calib_complete
+//   val gowin_DDR3 = Gowin_DDR3(sys_clk, mem_clk)
+//   val ddr_ref_clk = gowin_DDR3.clk_out
+//   val controller = Axi4Ddr_Controller(
+//     sys_clk,
+//     ddr_ref_clk,
+//     contextType = axiController.context_type,
+//     fifo_length = 4
+//   )
+
 //   val sys_area = new ClockingArea(sys_clk) {
+//     axiController.io.ddr_cmd >> controller.io.ddr_cmd
+//     axiController.io.ddr_rsp << controller.io.ddr_rsp
+
 //     io.axi.sharedCmd >> axiController.io.axi.sharedCmd
 //     io.axi.writeData >> axiController.io.axi.writeData
 //     io.axi.writeRsp << axiController.io.axi.writeRsp
@@ -911,24 +869,66 @@ case class Axi4Ddr(sys_clk: ClockDomain, mem_clk: ClockDomain) extends Component
 //     gowin_DDR3.io.ref_req := False
 //     gowin_DDR3.io.burst := True
 //     gowin_DDR3.io.pll_lock := io.pll_lock
-//     gowin_DDR3.io.app_burst_number := axiController.io.app_burst_number
-//     gowin_DDR3.io.cmd := axiController.io.cmd
-//     gowin_DDR3.io.cmd_en := axiController.io.cmd_en
-//     gowin_DDR3.io.addr := axiController.io.addr
-//     gowin_DDR3.io.wr_data := axiController.io.wr_data
-//     gowin_DDR3.io.wr_data_en := axiController.io.wr_data_en
-//     gowin_DDR3.io.wr_data_end := axiController.io.wr_data_en
-//     gowin_DDR3.io.wr_data_mask := axiController.io.wr_data_mask
+//     gowin_DDR3.io.app_burst_number := controller.io.app_burst_number
+//     gowin_DDR3.io.cmd := controller.io.cmd
+//     gowin_DDR3.io.cmd_en := controller.io.cmd_en
+//     gowin_DDR3.io.addr := controller.io.addr
+//     gowin_DDR3.io.wr_data := controller.io.wr_data
+//     gowin_DDR3.io.wr_data_en := controller.io.wr_data_en
+//     gowin_DDR3.io.wr_data_end := controller.io.wr_data_en
+//     gowin_DDR3.io.wr_data_mask := controller.io.wr_data_mask
 
-//     axiController.io.cmd_ready := gowin_DDR3.io.cmd_ready
-//     axiController.io.wr_data_rdy := gowin_DDR3.io.wr_data_rdy
-//     axiController.io.rd_data := gowin_DDR3.io.rd_data
-//     axiController.io.rd_data_valid := gowin_DDR3.io.rd_data_valid
-//     axiController.io.init_calib_complete := gowin_DDR3.io.init_calib_complete
+//     controller.io.cmd_ready := gowin_DDR3.io.cmd_ready
+//     controller.io.wr_data_rdy := gowin_DDR3.io.wr_data_rdy
+//     controller.io.rd_data := gowin_DDR3.io.rd_data
+//     controller.io.rd_data_valid := gowin_DDR3.io.rd_data_valid
+//     controller.io.init_calib_complete := gowin_DDR3.io.init_calib_complete
 
 //     gowin_DDR3.connectDDR3Interface(io.ddr_iface)
 //   }
+//   io.init_calib_complete := gowin_DDR3.io.init_calib_complete
 // }
+
+case class Axi4Ddr(sys_clk: ClockDomain, mem_clk: ClockDomain) extends Component {
+  val gowin_DDR3 = Gowin_DDR3(sys_clk, mem_clk)
+  val ddr_clk = gowin_DDR3.clk_out
+  val axiController = Axi4DdrControllerWithCache(sys_clk, ddr_clk, 32, 28, 4)
+  val io = new Bundle() {
+    val pll_lock = in Bool ()
+    val axi = slave(Axi4Shared(axiController.axiConfig))
+    val ddr_iface = master(DDR3_Interface())
+    val init_calib_complete = out Bool()
+  }
+
+  io.init_calib_complete := gowin_DDR3.io.init_calib_complete
+  val sys_area = new ClockingArea(sys_clk) {
+    io.axi.sharedCmd >> axiController.io.axi.sharedCmd
+    io.axi.writeData >> axiController.io.axi.writeData
+    io.axi.writeRsp << axiController.io.axi.writeRsp
+    io.axi.readRsp << axiController.io.axi.readRsp
+
+    gowin_DDR3.io.sr_req := False
+    gowin_DDR3.io.ref_req := False
+    gowin_DDR3.io.burst := True
+    gowin_DDR3.io.pll_lock := io.pll_lock
+    gowin_DDR3.io.app_burst_number := axiController.io.app_burst_number
+    gowin_DDR3.io.cmd := axiController.io.cmd
+    gowin_DDR3.io.cmd_en := axiController.io.cmd_en
+    gowin_DDR3.io.addr := axiController.io.addr
+    gowin_DDR3.io.wr_data := axiController.io.wr_data
+    gowin_DDR3.io.wr_data_en := axiController.io.wr_data_en
+    gowin_DDR3.io.wr_data_end := axiController.io.wr_data_en
+    gowin_DDR3.io.wr_data_mask := axiController.io.wr_data_mask
+
+    axiController.io.cmd_ready := gowin_DDR3.io.cmd_ready
+    axiController.io.wr_data_rdy := gowin_DDR3.io.wr_data_rdy
+    axiController.io.rd_data := gowin_DDR3.io.rd_data
+    axiController.io.rd_data_valid := gowin_DDR3.io.rd_data_valid
+    axiController.io.init_calib_complete := gowin_DDR3.io.init_calib_complete
+
+    gowin_DDR3.connectDDR3Interface(io.ddr_iface)
+  }
+}
 
 case class Axi4DdrCtrl(sys_clk: ClockDomain, mem_clk: ClockDomain) extends Component{
   val inst = Axi4Ddr(sys_clk, mem_clk)

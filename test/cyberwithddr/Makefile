@@ -1,6 +1,6 @@
 # make clean && make -j $(nproc) && make mem
 
-DDREN = no
+DDREN = yes
 DDR_TEST = no
 PROJ_NAME = demo
 DEBUG = yes

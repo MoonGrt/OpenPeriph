@@ -344,7 +344,6 @@ void DVTC_LayerInit(DVTC_Layer_TypeDef* DVTC_Layerx, DVTC_Layer_InitTypeDef* DVT
   /* Configures the frame buffer line number */
   DVTC_Layerx->CFBLNR  &= ~(DVTC_LxCFBLNR_CFBLNBR);
   DVTC_Layerx->CFBLNR  = (DVTC_Layer_InitStruct->DVTC_CFBLineNumber);
-
 }
 
 /**

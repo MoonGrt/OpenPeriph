@@ -8,10 +8,10 @@
 
 #ifdef CYBER_DVTC
 
-/** 
+/**
   * @brief LCD-TFT Display Controller
   */
-  
+
 typedef struct
 {
   uint32_t      RESERVED0[2];  /*!< Reserved, 0x00-0x04 */
@@ -31,14 +31,14 @@ typedef struct
   __IO uint32_t LIPCR;         /*!< DVTC Line Interrupt Position Configuration Register, Address offset: 0x40 */
   __IO uint32_t CPSR;          /*!< DVTC Current Position Status Register,               Address offset: 0x44 */
   __IO uint32_t CDSR;         /*!< DVTC Current Display Status Register,                       Address offset: 0x48 */
-} DVTC_TypeDef;  
+} DVTC_TypeDef;
 
-/** 
+/**
   * @brief LCD-TFT Display layer x Controller
   */
-  
+
 typedef struct
-{  
+{
   __IO uint32_t CR;            /*!< DVTC Layerx Control Register                                  Address offset: 0x84 */
   __IO uint32_t WHPCR;         /*!< DVTC Layerx Window Horizontal Position Configuration Register Address offset: 0x88 */
   __IO uint32_t WVPCR;         /*!< DVTC Layerx Window Vertical Position Configuration Register   Address offset: 0x8C */
@@ -93,6 +93,16 @@ typedef struct
    uint32_t DVTC_BackgroundBlueValue;  /*!< configures the background blue value.
                                             This parameter must range from 0x00 to 0xFF. */
 } DVTC_InitTypeDef;
+
+/**
+  * @brief  DVTC Layer structure definition
+  */
+
+typedef struct {
+  uint16_t hsync, hback, hdisp, hfront, htotal;
+  uint16_t vsync, vback, vdisp, vfront, vtotal;
+  bool vspol, hspol, depol, pcpol;
+} DVTiming;
 
 /**
   * @brief  DVTC Layer structure definition
@@ -159,10 +169,8 @@ typedef struct
 {
   uint32_t DVTC_ColorKeyBlue;               /*!< Configures the color key blue value.
                                                  This parameter must range from 0x00 to 0xFF. */
-
   uint32_t DVTC_ColorKeyGreen;              /*!< Configures the color key green value.
                                                  This parameter must range from 0x00 to 0xFF. */
-
   uint32_t DVTC_ColorKeyRed;                /*!< Configures the color key red value.
                                                  This parameter must range from 0x00 to 0xFF. */
 } DVTC_ColorKeying_InitTypeDef;
@@ -174,13 +182,10 @@ typedef struct
 {
   uint32_t DVTC_CLUTAdress;                 /*!< Configures the CLUT address.
                                                  This parameter must range from 0x00 to 0xFF. */
-
   uint32_t DVTC_BlueValue;                  /*!< Configures the blue value.
                                                  This parameter must range from 0x00 to 0xFF. */
-
   uint32_t DVTC_GreenValue;                 /*!< Configures the green value.
                                                  This parameter must range from 0x00 to 0xFF. */
-
   uint32_t DVTC_RedValue;                   /*!< Configures the red value.
                                                  This parameter must range from 0x00 to 0xFF. */
 } DVTC_CLUT_InitTypeDef;
@@ -310,7 +315,7 @@ typedef struct
 #define DVTC_LxDCCR_DCGREEN                 ((uint32_t)0x0000FF00)              /*!< Default Color Green */
 #define DVTC_LxDCCR_DCRED                   ((uint32_t)0x00FF0000)              /*!< Default Color Red */
 #define DVTC_LxDCCR_DCALPHA                 ((uint32_t)0xFF000000)              /*!< Default Color Alpha */
-                                
+
 /********************  Bit definition for DVTC_LxBFCR register  ***************/
 
 #define DVTC_LxBFCR_BF2                     ((uint32_t)0x00000007)              /*!< Blending Factor 2 */

@@ -62,7 +62,7 @@ while read -r line || [ -n "$line" ]; do
 done < "$input_file"
 
 if (( line_count < mem_size )); then
-    add_instruction "00000000" $((mem_size - line_count))
+    add_instruction "00000000" $((mem_size - line_count - 1))
 fi
 
 write_outputs() {

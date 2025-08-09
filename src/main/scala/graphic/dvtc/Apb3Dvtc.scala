@@ -113,14 +113,12 @@ case class DVTiming(dvtConfig: DvtConfig) extends Component {
     val en = io.hen && io.ven
     val hCnt = Reg(UInt(timingWidth bits)) init(0)
     val vCnt = Reg(UInt(timingWidth bits)) init(0)
-    io.hen := (hCnt >= io.cfg.hsync + io.cfg.hback) &&
-          (hCnt < io.cfg.hsync + io.cfg.hback + io.cfg.hdisp)
-    io.ven := (vCnt >= io.cfg.vsync + io.cfg.vback) &&
-          (vCnt < io.cfg.vsync + io.cfg.vback + io.cfg.vdisp)
+    io.hen := (hCnt >= io.cfg.hback) && (hCnt < io.cfg.hdisp)
+    io.ven := (vCnt >= io.cfg.vback) && (vCnt < io.cfg.vdisp)
     when(io.en) {
-      when(hCnt === io.cfg.htotal - 1) {
+      when(hCnt === io.cfg.htotal) {
         hCnt := 0
-        when(vCnt === io.cfg.vtotal - 1) {
+        when(vCnt === io.cfg.vtotal) {
           vCnt := 0
         } otherwise {
           vCnt := vCnt + 1
@@ -135,12 +133,12 @@ case class DVTiming(dvtConfig: DvtConfig) extends Component {
 
     // 负极性: 高电平时间长，低电平时间短; 正极性: 高电平时间短，低电平时间长
     io.dvti.color := io.pixel.payload
-    io.dvti.vs := (vCnt < io.cfg.vsync) ^ io.cfg.vspol
-    io.dvti.hs := (hCnt < io.cfg.hsync) ^ io.cfg.hspol
-    io.dvti.de := (en) ^ io.cfg.depol
-    io.pos.x := (hCnt).resized
-    io.pos.y := (vCnt).resized
-    io.pixel.ready := en && io.en
+    io.dvti.vs := (vCnt <= io.cfg.vsync) ^ io.cfg.vspol
+    io.dvti.hs := (hCnt <= io.cfg.hsync) ^ io.cfg.hspol
+    io.dvti.de := en ^ io.cfg.depol
+    io.pos.x := hCnt.resized
+    io.pos.y := vCnt.resized
+    io.pixel.ready := en || io.en
   }
 }
 
@@ -259,8 +257,8 @@ case class Apb3Dvtc(config: DvtcGenerics) extends Component {
     dvt.io.cfg.hspol  := BufferCC(GCR(GCR_HSPOL))
 
     // 连接 DVTiming 控制器的数据流
-    val error = RegInit(False)
     val frameStart = Mux(dvt.io.cfg.vspol, dvt.io.dvti.vs, ~dvt.io.dvti.vs)
+    val error = RegInit(False)
     val waitStartOfFrame = RegInit(False)
     val firstPixel = Reg(Bool()) setWhen(frameStart) clearWhen(layerDma.io.frame.firstFire)
 
@@ -294,7 +292,9 @@ case class Apb3Dvtc(config: DvtcGenerics) extends Component {
     // when(inWindow) {
     //   dvt.io.pixel.payload := layerDma.io.frame.toStreamOfFragment.payload
     // }
+
     dvt.io.pixel << layerDma.io.frame.toStreamOfFragment.haltWhen(waitStartOfFrame && !error)
+    layerDma.io.frame.ready.setWhen(BufferCC(CR(0)))
   }
 
   // 在 APB 时钟域中同步来自 dvtClock 的信号
@@ -326,8 +326,8 @@ case class Apb3Dvtc(config: DvtcGenerics) extends Component {
 
   // 连接 DMA 控制器
   io.axi <> layerDma.io.mem.toAxi4ReadOnly
-  layerDma.io.size := (CFBLNR(15 downto 0) * CFBLR(31 downto 16) * (2)).resized
   layerDma.io.base := CFBAR.resized
+  layerDma.io.size := (CFBLNR(15 downto 0) * CFBLR(31 downto 16)).resized
   layerDma.io.start := PulseCCByToggle(dvtArea.frameStart, clockIn = dvtClock, clockOut = ClockDomain.current) && CR(0)
 
   // 输入输出连接

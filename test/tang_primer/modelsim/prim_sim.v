@@ -15103,9 +15103,9 @@ always @(posedge CLKIN or negedge resetn) begin
         max_tlock <= 0.0;
     end else begin
         if((clkin_cycle[0] >= 2) && (clkin_cycle[0] <= 40)) begin
-            max_tlock <= 50000;
+            max_tlock <= 500;
         end else if ((clkin_cycle[0] > 40) && (clkin_cycle[0] <= 500)) begin
-            max_tlock <= 200000;
+            max_tlock <= 2000;
         end
     end
 end
