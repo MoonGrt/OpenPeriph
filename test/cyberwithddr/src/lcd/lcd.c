@@ -1,7 +1,7 @@
 #include "lcd.h"
 
 // DVTiming DVTCfg = test;
-DVTiming DVTCfg = h480_v272_r60;
+static const DVTiming DVTCfg = h480_v272_r60;
 
 // Framebuffer - 16-bit 2D array
 __attribute__ ((section (".noinit"))) __attribute__ ((aligned (4*8))) uint16_t Framebuffer[DISPX][DISPY];

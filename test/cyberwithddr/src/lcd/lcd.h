@@ -12,12 +12,12 @@
 /* 根据液晶数据手册的参数配置 */
 static const DVTiming test = {
     .hsync = 1, .hback = 2, .hdisp = DISPX, .hfront = 1,
-    .vsync = 1, .vback = 2, .vdisp = DISPY, .vdisp = 1,
+    .vsync = 1, .vback = 2, .vdisp = DISPY, .vfront = 1,
     .vspol = FALSE, .hspol = FALSE, .depol = FALSE, .pcpol = FALSE
 };
 static const DVTiming h480_v272_r60 = {
-    .hsync = 1, .hback = 46, .hdisp = DISPX, .hfront = 20,
-    .vsync = 1, .vback = 23, .vdisp = DISPY, .vdisp = 22,
+    .hsync = 41, .hback = 2, .hdisp = DISPX, .hfront = 2,
+    .vsync = 10, .vback = 2, .vdisp = DISPY, .vfront = 2,
     .vspol = FALSE, .hspol = FALSE, .depol = FALSE, .pcpol = FALSE
 };
 

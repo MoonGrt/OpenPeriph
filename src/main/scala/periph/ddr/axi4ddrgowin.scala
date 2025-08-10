@@ -497,7 +497,7 @@ case class Axi4DdrControllerWithCache(
   require(
     pagesize % 128 == 0 &&
     isPow2(pagesize / 128),
-    s"pagesize must be 128 * 2^n and > 128, but got $pagesize"
+    s"pagesize must be 128 * 2^n, but got $pagesize"
   )
   val pageBytes = pagesize / 8
   val pageWords = pagesize / 32

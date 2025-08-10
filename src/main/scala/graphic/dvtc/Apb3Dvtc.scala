@@ -47,7 +47,7 @@ case class DvtcGenerics(
     addressWidth      = axiAddressWidth - log2Up(bytePerAddress),
     dataWidth         = axiDataWidth,
     beatPerAccess     = burstLength,
-    sizeWidth         = log2Up(frameSizeMax) -log2Up(bytePerAddress),
+    sizeWidth         = log2Up(frameSizeMax) - log2Up(bytePerAddress),
     pendingRequetMax  = pendingRequestMax,
     fifoSize          = fifoSize,
     frameClock        = dvtClock,
@@ -133,12 +133,12 @@ case class DVTiming(dvtConfig: DvtConfig) extends Component {
 
     // 负极性: 高电平时间长，低电平时间短; 正极性: 高电平时间短，低电平时间长
     io.dvti.color := io.pixel.payload
-    io.dvti.vs := (vCnt <= io.cfg.vsync) ^ io.cfg.vspol
-    io.dvti.hs := (hCnt <= io.cfg.hsync) ^ io.cfg.hspol
-    io.dvti.de := en ^ io.cfg.depol
+    io.dvti.vs := ((vCnt <= io.cfg.vsync) ^ io.cfg.vspol) && io.en
+    io.dvti.hs := ((hCnt <= io.cfg.hsync) ^ io.cfg.hspol) && io.en
+    io.dvti.de := (en ^ io.cfg.depol) && io.en
     io.pos.x := hCnt.resized
     io.pos.y := vCnt.resized
-    io.pixel.ready := en || io.en
+    io.pixel.ready := en || ~io.en
   }
 }
 
@@ -257,7 +257,7 @@ case class Apb3Dvtc(config: DvtcGenerics) extends Component {
     dvt.io.cfg.hspol  := BufferCC(GCR(GCR_HSPOL))
 
     // 连接 DVTiming 控制器的数据流
-    val frameStart = Mux(dvt.io.cfg.vspol, dvt.io.dvti.vs, ~dvt.io.dvti.vs)
+    val frameStart = Mux(dvt.io.cfg.vspol, dvt.io.dvti.vs.rise, dvt.io.dvti.vs.rise.fall)
     val error = RegInit(False)
     val waitStartOfFrame = RegInit(False)
     val firstPixel = Reg(Bool()) setWhen(frameStart) clearWhen(layerDma.io.frame.firstFire)
@@ -294,7 +294,7 @@ case class Apb3Dvtc(config: DvtcGenerics) extends Component {
     // }
 
     dvt.io.pixel << layerDma.io.frame.toStreamOfFragment.haltWhen(waitStartOfFrame && !error)
-    layerDma.io.frame.ready.setWhen(BufferCC(CR(0)))
+    layerDma.io.frame.ready.setWhen(BufferCC(~CR(0)))
   }
 
   // 在 APB 时钟域中同步来自 dvtClock 的信号
@@ -326,8 +326,8 @@ case class Apb3Dvtc(config: DvtcGenerics) extends Component {
 
   // 连接 DMA 控制器
   io.axi <> layerDma.io.mem.toAxi4ReadOnly
-  layerDma.io.base := CFBAR.resized
-  layerDma.io.size := (CFBLNR(15 downto 0) * CFBLR(31 downto 16)).resized
+  layerDma.io.base := CFBAR >> log2Up(bytePerAddress)
+  layerDma.io.size := ((CFBLNR(15 downto 0) * CFBLR(31 downto 16) - 1) >> log2Up(bytePerAddress)).resized
   layerDma.io.start := PulseCCByToggle(dvtArea.frameStart, clockIn = dvtClock, clockOut = ClockDomain.current) && CR(0)
 
   // 输入输出连接

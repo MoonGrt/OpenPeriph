@@ -2,29 +2,8 @@
 <GAO_CONFIG>
     <Version>3.0</Version>
     <Mode>Standard</Mode>
-    <AoCore index="0" sample_clock="axi_sdramCtrl/gowin_DDR3/clk_out" trig_type="0" storage_depth="1024" window_num="1" capture_amount="1024" implementation="0" trigger_pos="16" module_name="cyberwithddrlcd" force_trigger_by_falling_edge="false" capture_init_data_enabled="false">
+    <AoCore index="0" sample_clock="lcdclk_clkout" trig_type="0" storage_depth="1024" window_num="1" capture_amount="1024" implementation="0" trigger_pos="32" module_name="cyberwithddrlcd" force_trigger_by_falling_edge="false" capture_init_data_enabled="false">
         <SignalList>
-            <Signal capture_enable="true">axi_lcdCtrl/dvtc/dvt/io_dvti_vs</Signal>
-            <Signal capture_enable="true">axi_lcdCtrl/dvtc/dvt/io_dvti_hs</Signal>
-            <Signal capture_enable="true">axi_lcdCtrl/dvtc/dvt/io_dvti_de</Signal>
-            <Bus capture_enable="true" name="axi_lcdCtrl/dvtc/dvt/io_dvti_color[15:0]">
-                <Signal>axi_lcdCtrl/dvtc/dvt/io_dvti_color[15]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/dvt/io_dvti_color[14]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/dvt/io_dvti_color[13]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/dvt/io_dvti_color[12]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/dvt/io_dvti_color[11]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/dvt/io_dvti_color[10]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/dvt/io_dvti_color[9]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/dvt/io_dvti_color[8]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/dvt/io_dvti_color[7]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/dvt/io_dvti_color[6]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/dvt/io_dvti_color[5]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/dvt/io_dvti_color[4]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/dvt/io_dvti_color[3]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/dvt/io_dvti_color[2]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/dvt/io_dvti_color[1]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/dvt/io_dvti_color[0]</Signal>
-            </Bus>
             <Bus capture_enable="true" name="axi_sdramCtrl/gowin_DDR3/addr[27:0]">
                 <Signal>axi_sdramCtrl/gowin_DDR3/addr[27]</Signal>
                 <Signal>axi_sdramCtrl/gowin_DDR3/addr[26]</Signal>
@@ -63,136 +42,6 @@
             <Signal capture_enable="true">axi_sdramCtrl/gowin_DDR3/cmd_en</Signal>
             <Signal capture_enable="true">axi_sdramCtrl/gowin_DDR3/wr_data_en</Signal>
             <Signal capture_enable="true">axi_sdramCtrl/gowin_DDR3/rd_data_valid</Signal>
-            <Bus capture_enable="true" name="axi_sdramCtrl/gowin_DDR3/rd_data[127:0]">
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[127]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[126]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[125]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[124]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[123]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[122]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[121]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[120]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[119]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[118]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[117]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[116]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[115]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[114]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[113]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[112]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[111]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[110]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[109]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[108]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[107]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[106]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[105]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[104]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[103]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[102]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[101]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[100]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[99]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[98]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[97]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[96]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[95]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[94]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[93]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[92]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[91]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[90]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[89]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[88]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[87]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[86]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[85]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[84]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[83]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[82]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[81]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[80]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[79]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[78]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[77]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[76]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[75]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[74]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[73]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[72]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[71]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[70]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[69]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[68]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[67]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[66]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[65]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[64]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[63]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[62]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[61]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[60]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[59]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[58]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[57]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[56]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[55]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[54]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[53]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[52]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[51]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[50]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[49]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[48]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[47]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[46]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[45]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[44]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[43]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[42]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[41]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[40]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[39]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[38]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[37]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[36]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[35]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[34]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[33]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[32]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[31]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[30]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[29]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[28]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[27]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[26]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[25]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[24]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[23]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[22]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[21]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[20]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[19]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[18]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[17]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[16]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[15]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[14]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[13]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[12]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[11]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[10]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[9]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[8]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[7]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[6]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[5]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[4]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[3]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[2]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[1]</Signal>
-                <Signal>axi_sdramCtrl/gowin_DDR3/rd_data[0]</Signal>
-            </Bus>
             <Signal capture_enable="true">axi_sdramCtrl/io_axi_arw_valid</Signal>
             <Signal capture_enable="true">axi_sdramCtrl/io_axi_w_valid</Signal>
             <Signal capture_enable="true">axi_sdramCtrl/io_axi_r_valid</Signal>
@@ -230,36 +79,113 @@
                 <Signal>axi_sdramCtrl/io_axi_r_payload_data[1]</Signal>
                 <Signal>axi_sdramCtrl/io_axi_r_payload_data[0]</Signal>
             </Bus>
-            <Bus capture_enable="true" name="axi_lcdCtrl/dvtc/layerDma/io_base[26:0]">
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_base[26]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_base[25]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_base[24]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_base[23]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_base[22]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_base[21]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_base[20]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_base[19]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_base[18]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_base[17]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_base[16]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_base[15]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_base[14]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_base[13]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_base[12]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_base[11]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_base[10]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_base[9]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_base[8]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_base[7]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_base[6]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_base[5]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_base[4]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_base[3]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_base[2]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_base[1]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_base[0]</Signal>
+            <Bus capture_enable="true" name="axi_lcdCtrl/dvtc/layerDma/rspArea_fifo/io_pushOccupancy[9:0]">
+                <Signal>axi_lcdCtrl/dvtc/layerDma/rspArea_fifo/io_pushOccupancy[9]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/layerDma/rspArea_fifo/io_pushOccupancy[8]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/layerDma/rspArea_fifo/io_pushOccupancy[7]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/layerDma/rspArea_fifo/io_pushOccupancy[6]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/layerDma/rspArea_fifo/io_pushOccupancy[5]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/layerDma/rspArea_fifo/io_pushOccupancy[4]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/layerDma/rspArea_fifo/io_pushOccupancy[3]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/layerDma/rspArea_fifo/io_pushOccupancy[2]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/layerDma/rspArea_fifo/io_pushOccupancy[1]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/layerDma/rspArea_fifo/io_pushOccupancy[0]</Signal>
             </Bus>
-            <Bus capture_enable="true" name="axi_lcdCtrl/dvtc/layerDma/io_size[16:0]">
+            <Signal capture_enable="true">axi_lcdCtrl/dvtc/layerDma/rspArea_fifo/io_push_valid</Signal>
+            <Signal capture_enable="true">axi_lcdCtrl/dvtc/layerDma/rspArea_fifo/io_push_ready</Signal>
+            <Signal capture_enable="true">axi_lcdCtrl/dvtc/layerDma/rspArea_fifo/io_pop_valid</Signal>
+            <Signal capture_enable="true">axi_lcdCtrl/dvtc/layerDma/rspArea_fifo/io_pop_ready</Signal>
+            <Signal capture_enable="true">io_dvti_vs</Signal>
+            <Signal capture_enable="true">io_dvti_hs</Signal>
+            <Signal capture_enable="true">io_dvti_de</Signal>
+            <Bus capture_enable="true" name="io_dvti_color[15:0]">
+                <Signal>io_dvti_color[15]</Signal>
+                <Signal>io_dvti_color[14]</Signal>
+                <Signal>io_dvti_color[13]</Signal>
+                <Signal>io_dvti_color[12]</Signal>
+                <Signal>io_dvti_color[11]</Signal>
+                <Signal>io_dvti_color[10]</Signal>
+                <Signal>io_dvti_color[9]</Signal>
+                <Signal>io_dvti_color[8]</Signal>
+                <Signal>io_dvti_color[7]</Signal>
+                <Signal>io_dvti_color[6]</Signal>
+                <Signal>io_dvti_color[5]</Signal>
+                <Signal>io_dvti_color[4]</Signal>
+                <Signal>io_dvti_color[3]</Signal>
+                <Signal>io_dvti_color[2]</Signal>
+                <Signal>io_dvti_color[1]</Signal>
+                <Signal>io_dvti_color[0]</Signal>
+            </Bus>
+            <Bus capture_enable="true" name="axi_lcdCtrl/dvtc/CFBLNR[31:0]">
+                <Signal>axi_lcdCtrl/dvtc/CFBLNR[31]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLNR[30]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLNR[29]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLNR[28]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLNR[27]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLNR[26]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLNR[25]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLNR[24]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLNR[23]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLNR[22]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLNR[21]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLNR[20]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLNR[19]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLNR[18]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLNR[17]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLNR[16]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLNR[15]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLNR[14]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLNR[13]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLNR[12]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLNR[11]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLNR[10]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLNR[9]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLNR[8]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLNR[7]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLNR[6]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLNR[5]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLNR[4]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLNR[3]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLNR[2]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLNR[1]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLNR[0]</Signal>
+            </Bus>
+            <Bus capture_enable="true" name="axi_lcdCtrl/dvtc/CFBLR[31:0]">
+                <Signal>axi_lcdCtrl/dvtc/CFBLR[31]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLR[30]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLR[29]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLR[28]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLR[27]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLR[26]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLR[25]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLR[24]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLR[23]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLR[22]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLR[21]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLR[20]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLR[19]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLR[18]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLR[17]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLR[16]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLR[15]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLR[14]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLR[13]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLR[12]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLR[11]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLR[10]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLR[9]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLR[8]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLR[7]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLR[6]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLR[5]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLR[4]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLR[3]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLR[2]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLR[1]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/CFBLR[0]</Signal>
+            </Bus>
+            <Bus capture_enable="true" name="axi_lcdCtrl/dvtc/layerDma/io_size[17:0]">
+                <Signal>axi_lcdCtrl/dvtc/layerDma/io_size[17]</Signal>
                 <Signal>axi_lcdCtrl/dvtc/layerDma/io_size[16]</Signal>
                 <Signal>axi_lcdCtrl/dvtc/layerDma/io_size[15]</Signal>
                 <Signal>axi_lcdCtrl/dvtc/layerDma/io_size[14]</Signal>
@@ -278,100 +204,342 @@
                 <Signal>axi_lcdCtrl/dvtc/layerDma/io_size[1]</Signal>
                 <Signal>axi_lcdCtrl/dvtc/layerDma/io_size[0]</Signal>
             </Bus>
-            <Bus capture_enable="true" name="axi_lcdCtrl/dvtc/layerDma/io_mem_cmd_payload[26:0]">
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_cmd_payload[26]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_cmd_payload[25]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_cmd_payload[24]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_cmd_payload[23]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_cmd_payload[22]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_cmd_payload[21]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_cmd_payload[20]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_cmd_payload[19]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_cmd_payload[18]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_cmd_payload[17]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_cmd_payload[16]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_cmd_payload[15]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_cmd_payload[14]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_cmd_payload[13]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_cmd_payload[12]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_cmd_payload[11]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_cmd_payload[10]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_cmd_payload[9]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_cmd_payload[8]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_cmd_payload[7]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_cmd_payload[6]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_cmd_payload[5]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_cmd_payload[4]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_cmd_payload[3]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_cmd_payload[2]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_cmd_payload[1]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_cmd_payload[0]</Signal>
+            <Bus capture_enable="false" name="axi_lcdCtrl/dvtc/SSCR[31:0]">
+                <Signal>axi_lcdCtrl/dvtc/SSCR[31]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/SSCR[30]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/SSCR[29]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/SSCR[28]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/SSCR[27]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/SSCR[26]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/SSCR[25]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/SSCR[24]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/SSCR[23]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/SSCR[22]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/SSCR[21]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/SSCR[20]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/SSCR[19]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/SSCR[18]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/SSCR[17]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/SSCR[16]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/SSCR[15]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/SSCR[14]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/SSCR[13]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/SSCR[12]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/SSCR[11]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/SSCR[10]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/SSCR[9]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/SSCR[8]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/SSCR[7]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/SSCR[6]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/SSCR[5]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/SSCR[4]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/SSCR[3]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/SSCR[2]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/SSCR[1]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/SSCR[0]</Signal>
             </Bus>
-            <Bus capture_enable="true" name="axi_lcdCtrl/dvtc/layerDma/io_mem_rsp_payload_fragment[31:0]">
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_rsp_payload_fragment[31]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_rsp_payload_fragment[30]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_rsp_payload_fragment[29]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_rsp_payload_fragment[28]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_rsp_payload_fragment[27]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_rsp_payload_fragment[26]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_rsp_payload_fragment[25]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_rsp_payload_fragment[24]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_rsp_payload_fragment[23]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_rsp_payload_fragment[22]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_rsp_payload_fragment[21]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_rsp_payload_fragment[20]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_rsp_payload_fragment[19]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_rsp_payload_fragment[18]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_rsp_payload_fragment[17]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_rsp_payload_fragment[16]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_rsp_payload_fragment[15]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_rsp_payload_fragment[14]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_rsp_payload_fragment[13]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_rsp_payload_fragment[12]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_rsp_payload_fragment[11]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_rsp_payload_fragment[10]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_rsp_payload_fragment[9]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_rsp_payload_fragment[8]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_rsp_payload_fragment[7]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_rsp_payload_fragment[6]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_rsp_payload_fragment[5]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_rsp_payload_fragment[4]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_rsp_payload_fragment[3]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_rsp_payload_fragment[2]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_rsp_payload_fragment[1]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_mem_rsp_payload_fragment[0]</Signal>
+            <Bus capture_enable="false" name="axi_lcdCtrl/dvtc/BPCR[31:0]">
+                <Signal>axi_lcdCtrl/dvtc/BPCR[31]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/BPCR[30]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/BPCR[29]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/BPCR[28]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/BPCR[27]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/BPCR[26]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/BPCR[25]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/BPCR[24]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/BPCR[23]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/BPCR[22]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/BPCR[21]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/BPCR[20]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/BPCR[19]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/BPCR[18]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/BPCR[17]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/BPCR[16]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/BPCR[15]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/BPCR[14]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/BPCR[13]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/BPCR[12]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/BPCR[11]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/BPCR[10]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/BPCR[9]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/BPCR[8]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/BPCR[7]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/BPCR[6]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/BPCR[5]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/BPCR[4]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/BPCR[3]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/BPCR[2]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/BPCR[1]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/BPCR[0]</Signal>
             </Bus>
-            <Bus capture_enable="true" name="axi_lcdCtrl/dvtc/layerDma/io_frame_payload_fragment[15:0]">
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_frame_payload_fragment[15]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_frame_payload_fragment[14]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_frame_payload_fragment[13]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_frame_payload_fragment[12]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_frame_payload_fragment[11]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_frame_payload_fragment[10]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_frame_payload_fragment[9]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_frame_payload_fragment[8]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_frame_payload_fragment[7]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_frame_payload_fragment[6]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_frame_payload_fragment[5]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_frame_payload_fragment[4]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_frame_payload_fragment[3]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_frame_payload_fragment[2]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_frame_payload_fragment[1]</Signal>
-                <Signal>axi_lcdCtrl/dvtc/layerDma/io_frame_payload_fragment[0]</Signal>
+            <Bus capture_enable="false" name="axi_lcdCtrl/dvtc/AWCR[31:0]">
+                <Signal>axi_lcdCtrl/dvtc/AWCR[31]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/AWCR[30]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/AWCR[29]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/AWCR[28]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/AWCR[27]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/AWCR[26]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/AWCR[25]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/AWCR[24]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/AWCR[23]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/AWCR[22]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/AWCR[21]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/AWCR[20]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/AWCR[19]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/AWCR[18]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/AWCR[17]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/AWCR[16]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/AWCR[15]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/AWCR[14]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/AWCR[13]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/AWCR[12]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/AWCR[11]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/AWCR[10]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/AWCR[9]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/AWCR[8]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/AWCR[7]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/AWCR[6]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/AWCR[5]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/AWCR[4]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/AWCR[3]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/AWCR[2]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/AWCR[1]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/AWCR[0]</Signal>
             </Bus>
-            <Signal capture_enable="true">axi_lcdCtrl/dvtc/layerDma/io_start</Signal>
-            <Signal capture_enable="true">axi_lcdCtrl/dvtc/layerDma/io_busy</Signal>
-            <Signal capture_enable="true">axi_lcdCtrl/dvtc/layerDma/io_mem_cmd_valid</Signal>
-            <Signal capture_enable="true">axi_lcdCtrl/dvtc/layerDma/io_mem_cmd_ready</Signal>
-            <Signal capture_enable="true">axi_lcdCtrl/dvtc/layerDma/io_mem_rsp_valid</Signal>
-            <Signal capture_enable="true">axi_lcdCtrl/dvtc/layerDma/io_mem_rsp_payload_last</Signal>
-            <Signal capture_enable="true">axi_lcdCtrl/dvtc/layerDma/io_frame_valid</Signal>
-            <Signal capture_enable="true">axi_lcdCtrl/dvtc/layerDma/io_frame_ready</Signal>
-            <Signal capture_enable="true">axi_lcdCtrl/dvtc/layerDma/io_frame_payload_last</Signal>
-            <Signal capture_enable="true">axi_lcdCtrl/dvtc/layerDma/io_mem_cmd_fire</Signal>
-            <Signal capture_enable="true">axi_lcdCtrl/dvtc/layerDma/io_frame_fire</Signal>
-            <Signal capture_enable="true">axi_lcdCtrl/dvtc/dvtArea_frameStart</Signal>
-            <Signal capture_enable="true">axi_lcdCtrl/dvtc/CR[0]</Signal>
+            <Bus capture_enable="false" name="axi_lcdCtrl/dvtc/TWCR[31:0]">
+                <Signal>axi_lcdCtrl/dvtc/TWCR[31]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/TWCR[30]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/TWCR[29]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/TWCR[28]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/TWCR[27]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/TWCR[26]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/TWCR[25]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/TWCR[24]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/TWCR[23]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/TWCR[22]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/TWCR[21]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/TWCR[20]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/TWCR[19]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/TWCR[18]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/TWCR[17]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/TWCR[16]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/TWCR[15]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/TWCR[14]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/TWCR[13]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/TWCR[12]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/TWCR[11]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/TWCR[10]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/TWCR[9]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/TWCR[8]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/TWCR[7]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/TWCR[6]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/TWCR[5]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/TWCR[4]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/TWCR[3]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/TWCR[2]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/TWCR[1]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/TWCR[0]</Signal>
+            </Bus>
+            <Signal capture_enable="false">axi_lcdCtrl/io_apb_PSEL[0]</Signal>
+            <Signal capture_enable="false">axi_lcdCtrl/io_apb_PWRITE</Signal>
+            <Bus capture_enable="false" name="axi_lcdCtrl/io_apb_PADDR[9:0]">
+                <Signal>axi_lcdCtrl/io_apb_PADDR[9]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PADDR[8]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PADDR[7]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PADDR[6]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PADDR[5]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PADDR[4]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PADDR[3]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PADDR[2]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PADDR[1]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PADDR[0]</Signal>
+            </Bus>
+            <Bus capture_enable="false" name="axi_lcdCtrl/io_apb_PWDATA[31:0]">
+                <Signal>axi_lcdCtrl/io_apb_PWDATA[31]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PWDATA[30]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PWDATA[29]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PWDATA[28]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PWDATA[27]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PWDATA[26]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PWDATA[25]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PWDATA[24]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PWDATA[23]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PWDATA[22]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PWDATA[21]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PWDATA[20]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PWDATA[19]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PWDATA[18]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PWDATA[17]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PWDATA[16]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PWDATA[15]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PWDATA[14]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PWDATA[13]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PWDATA[12]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PWDATA[11]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PWDATA[10]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PWDATA[9]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PWDATA[8]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PWDATA[7]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PWDATA[6]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PWDATA[5]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PWDATA[4]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PWDATA[3]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PWDATA[2]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PWDATA[1]</Signal>
+                <Signal>axi_lcdCtrl/io_apb_PWDATA[0]</Signal>
+            </Bus>
+            <Bus capture_enable="false" name="axi_lcdCtrl/dvtc/dvt_io_pos_x[15:0]">
+                <Signal>axi_lcdCtrl/dvtc/dvt_io_pos_x[15]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt_io_pos_x[14]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt_io_pos_x[13]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt_io_pos_x[12]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt_io_pos_x[11]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt_io_pos_x[10]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt_io_pos_x[9]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt_io_pos_x[8]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt_io_pos_x[7]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt_io_pos_x[6]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt_io_pos_x[5]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt_io_pos_x[4]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt_io_pos_x[3]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt_io_pos_x[2]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt_io_pos_x[1]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt_io_pos_x[0]</Signal>
+            </Bus>
+            <Bus capture_enable="false" name="axi_lcdCtrl/dvtc/dvt_io_pos_y[15:0]">
+                <Signal>axi_lcdCtrl/dvtc/dvt_io_pos_y[15]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt_io_pos_y[14]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt_io_pos_y[13]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt_io_pos_y[12]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt_io_pos_y[11]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt_io_pos_y[10]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt_io_pos_y[9]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt_io_pos_y[8]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt_io_pos_y[7]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt_io_pos_y[6]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt_io_pos_y[5]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt_io_pos_y[4]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt_io_pos_y[3]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt_io_pos_y[2]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt_io_pos_y[1]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt_io_pos_y[0]</Signal>
+            </Bus>
+            <Signal capture_enable="false">axi_lcdCtrl/dvtc/dvt/io_cfg_vspol</Signal>
+            <Signal capture_enable="false">axi_lcdCtrl/dvtc/dvt/io_cfg_hspol</Signal>
+            <Signal capture_enable="false">axi_lcdCtrl/dvtc/dvt/io_cfg_depol</Signal>
+            <Signal capture_enable="false">axi_lcdCtrl/dvtc/dvt/io_cfg_pcpol</Signal>
+            <Bus capture_enable="false" name="axi_lcdCtrl/dvtc/dvt/io_cfg_vsync[11:0]">
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vsync[11]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vsync[10]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vsync[9]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vsync[8]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vsync[7]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vsync[6]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vsync[5]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vsync[4]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vsync[3]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vsync[2]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vsync[1]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vsync[0]</Signal>
+            </Bus>
+            <Bus capture_enable="false" name="axi_lcdCtrl/dvtc/dvt/io_cfg_vback[11:0]">
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vback[11]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vback[10]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vback[9]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vback[8]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vback[7]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vback[6]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vback[5]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vback[4]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vback[3]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vback[2]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vback[1]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vback[0]</Signal>
+            </Bus>
+            <Bus capture_enable="false" name="axi_lcdCtrl/dvtc/dvt/io_cfg_vdisp[11:0]">
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vdisp[11]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vdisp[10]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vdisp[9]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vdisp[8]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vdisp[7]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vdisp[6]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vdisp[5]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vdisp[4]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vdisp[3]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vdisp[2]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vdisp[1]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vdisp[0]</Signal>
+            </Bus>
+            <Bus capture_enable="false" name="axi_lcdCtrl/dvtc/dvt/io_cfg_vtotal[11:0]">
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vtotal[11]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vtotal[10]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vtotal[9]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vtotal[8]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vtotal[7]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vtotal[6]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vtotal[5]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vtotal[4]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vtotal[3]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vtotal[2]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vtotal[1]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_vtotal[0]</Signal>
+            </Bus>
+            <Bus capture_enable="false" name="axi_lcdCtrl/dvtc/dvt/io_cfg_hsync[11:0]">
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_hsync[11]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_hsync[10]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_hsync[9]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_hsync[8]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_hsync[7]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_hsync[6]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_hsync[5]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_hsync[4]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_hsync[3]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_hsync[2]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_hsync[1]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_hsync[0]</Signal>
+            </Bus>
+            <Bus capture_enable="false" name="axi_lcdCtrl/dvtc/dvt/io_cfg_hback[11:0]">
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_hback[11]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_hback[10]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_hback[9]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_hback[8]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_hback[7]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_hback[6]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_hback[5]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_hback[4]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_hback[3]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_hback[2]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_hback[1]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_hback[0]</Signal>
+            </Bus>
+            <Bus capture_enable="false" name="axi_lcdCtrl/dvtc/dvt/io_cfg_hdisp[11:0]">
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_hdisp[11]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_hdisp[10]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_hdisp[9]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_hdisp[8]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_hdisp[7]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_hdisp[6]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_hdisp[5]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_hdisp[4]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_hdisp[3]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_hdisp[2]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_hdisp[1]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_hdisp[0]</Signal>
+            </Bus>
+            <Bus capture_enable="false" name="axi_lcdCtrl/dvtc/dvt/io_cfg_htotal[11:0]">
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_htotal[11]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_htotal[10]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_htotal[9]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_htotal[8]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_htotal[7]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_htotal[6]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_htotal[5]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_htotal[4]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_htotal[3]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_htotal[2]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_htotal[1]</Signal>
+                <Signal>axi_lcdCtrl/dvtc/dvt/io_cfg_htotal[0]</Signal>
+            </Bus>
         </SignalList>
         <Triggers>
             <Trigger index="0">
@@ -389,7 +557,11 @@
                     <Signal>io_dvti_de</Signal>
                 </SignalList>
             </Trigger>
-            <Trigger index="3"/>
+            <Trigger index="3">
+                <SignalList>
+                    <Signal>axi_lcdCtrl/io_apb_PSEL[0]</Signal>
+                </SignalList>
+            </Trigger>
             <Trigger index="4"/>
             <Trigger index="5"/>
             <Trigger index="6"/>
@@ -405,9 +577,9 @@
         </Triggers>
         <MatchUnits>
             <MatchUnit index="0" enabled="0" match_type="1" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="1" value1="0" trigger="0"/>
-            <MatchUnit index="1" enabled="1" match_type="1" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="1" value1="0" trigger="1"/>
-            <MatchUnit index="2" enabled="0" match_type="1" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="1" value1="0" trigger="2"/>
-            <MatchUnit index="3" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="1" enabled="0" match_type="1" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="1" value1="0" trigger="1"/>
+            <MatchUnit index="2" enabled="1" match_type="1" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="1" value1="0" trigger="2"/>
+            <MatchUnit index="3" enabled="0" match_type="1" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="1" value1="0" trigger="3"/>
             <MatchUnit index="4" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
             <MatchUnit index="5" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
             <MatchUnit index="6" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
@@ -422,8 +594,8 @@
             <MatchUnit index="15" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
         </MatchUnits>
         <Expressions type="Static">
-            <Expression>M1</Expression>
+            <Expression>M2</Expression>
         </Expressions>
     </AoCore>
-    <GAO_ID>1001111000100101</GAO_ID>
+    <GAO_ID>0110001101100101</GAO_ID>
 </GAO_CONFIG>

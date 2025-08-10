@@ -659,6 +659,8 @@ void demo_lcd(void)
        仅存储的有1帧图像
     */
     LCD_DVTC_Init();
+    /* 使能DVTC */
+    DVTC_Cmd(ENABLE);
 
     // uint16_t offset = 0;
     // while (1)
@@ -683,10 +685,7 @@ void demo_lcd(void)
     uint16_t *ptr = &Framebuffer[0][0];
     for (uint32_t y = 0; y < DISPY; y++)
         for (uint32_t x = 0; x < DISPX; x++)
-            *ptr++ = colors[x / (DISPX / 8)];
-
-    /* 使能DVTC */
-    DVTC_Cmd(ENABLE);
+            *ptr++ = colors[(x * 8) / DISPX];
 }
 #endif // DEMO_LCD
 

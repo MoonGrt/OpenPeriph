@@ -268,9 +268,9 @@ class cyberwithddrlcd(config: cyberwithddrlcdConfig) extends Component {
         axiAddressWidth = 32,
         axiDataWidth = 32,
         burstLength = 8,
-        frameSizeMax = 2048*1512,
+        frameSizeMax = 2048 * 1512 * 2,
         fifoSize = 512,
-        colorConfig = RGBConfig(5, 6, 5),
+        colorConfig = colorConfig,
         dvtClock = lcdClockDomain
     )
     val lcdCtrl = Axi4Lcd(lcdCtrlConfig)

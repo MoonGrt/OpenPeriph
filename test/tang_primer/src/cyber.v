@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.12.0    git head : 1aa7d7b5732f11cca2dd83bacc2a4cb92ca8e5c9
 // Component : cyberwithddrlcd
-// Git hash  : 09b16dfc707c1afa1a4a6a7b424331a2b0be90ad
+// Git hash  : 05bf9886cffb131b3a75860531a4264e7d9553c2
 
 `timescale 1ns/1ps
 `define SYNTHESIS
@@ -6755,7 +6755,7 @@ module Apb3Dvtc (
 
   wire                layerDma_io_start;
   wire       [26:0]   layerDma_io_base;
-  wire       [16:0]   layerDma_io_size;
+  wire       [17:0]   layerDma_io_size;
   reg                 layerDma_io_frame_ready;
   wire                bufferCC_37_io_dataIn;
   wire                bufferCC_38_io_dataIn;
@@ -6809,7 +6809,9 @@ module Apb3Dvtc (
   wire                dvtArea_frameStart_pulseCCByToggle_io_pulseOut;
   wire       [15:0]   _zz_line_match;
   wire       [11:0]   _zz_line_match_1;
-  wire       [31:0]   _zz_io_size;
+  wire       [26:0]   _zz_io_size;
+  wire       [31:0]   _zz_io_size_1;
+  wire       [31:0]   _zz_io_size_2;
   wire                ctrl_readErrorFlag;
   wire                ctrl_writeErrorFlag;
   wire                ctrl_askWrite;
@@ -6841,6 +6843,10 @@ module Apb3Dvtc (
   reg        [31:0]   CFBLR;
   reg        [31:0]   CFBLNR;
   reg        [31:0]   CLUTWR;
+  reg                 dvt_io_dvti_vs_regNext;
+  reg                 dvt_io_dvti_vs_regNext_1;
+  wire                _zz_dvtArea_frameStart;
+  reg                 _zz_dvtArea_frameStart_1;
   wire                dvtArea_frameStart;
   reg                 dvtArea_error;
   reg                 dvtArea_waitStartOfFrame;
@@ -6876,12 +6882,14 @@ module Apb3Dvtc (
 
   assign _zz_line_match_1 = LIPCR[11 : 0];
   assign _zz_line_match = {4'd0, _zz_line_match_1};
-  assign _zz_io_size = (CFBLNR[15 : 0] * CFBLR[31 : 16]);
+  assign _zz_io_size = (_zz_io_size_1 >>> 3'd5);
+  assign _zz_io_size_1 = (_zz_io_size_2 - 32'h00000001);
+  assign _zz_io_size_2 = (CFBLNR[15 : 0] * CFBLR[31 : 16]);
   VideoDma layerDma (
     .io_start                    (layerDma_io_start                       ), //i
     .io_busy                     (layerDma_io_busy                        ), //o
     .io_base                     (layerDma_io_base[26:0]                  ), //i
-    .io_size                     (layerDma_io_size[16:0]                  ), //i
+    .io_size                     (layerDma_io_size[17:0]                  ), //i
     .io_mem_cmd_valid            (layerDma_io_mem_cmd_valid               ), //o
     .io_mem_cmd_ready            (io_axi_ar_ready                         ), //i
     .io_mem_cmd_payload          (layerDma_io_mem_cmd_payload[26:0]       ), //o
@@ -7151,7 +7159,8 @@ module Apb3Dvtc (
   assign bufferCC_47_io_dataIn = AWCR[27 : 16];
   assign bufferCC_48_io_dataIn = TWCR[27 : 16];
   assign bufferCC_49_io_dataIn = GCR[31];
-  assign dvtArea_frameStart = (bufferCC_44_io_dataOut ? dvt_io_dvti_vs : (! dvt_io_dvti_vs));
+  assign _zz_dvtArea_frameStart = (dvt_io_dvti_vs && (! dvt_io_dvti_vs_regNext_1));
+  assign dvtArea_frameStart = (bufferCC_44_io_dataOut ? (dvt_io_dvti_vs && (! dvt_io_dvti_vs_regNext)) : ((! _zz_dvtArea_frameStart) && _zz_dvtArea_frameStart_1));
   assign layerDma_io_frame_fire = (layerDma_io_frame_valid && layerDma_io_frame_ready);
   assign when_Apb3Dvtc_l263 = (layerDma_io_frame_fire && layerDma_io_frame_payload_first);
   assign when_Apb3Dvtc_l268 = (layerDma_io_frame_fire && layerDma_io_frame_payload_last);
@@ -7171,7 +7180,7 @@ module Apb3Dvtc (
   assign layerDma_io_frame_translated_ready = (layerDma_io_frame_translated_haltWhen_ready && _zz_layerDma_io_frame_translated_ready);
   assign layerDma_io_frame_translated_haltWhen_payload = layerDma_io_frame_translated_payload;
   assign layerDma_io_frame_translated_haltWhen_ready = dvt_io_pixel_ready;
-  assign bufferCC_50_io_dataIn = CR[0];
+  assign bufferCC_50_io_dataIn = (! CR[0]);
   assign when_Apb3Dvtc_l297 = bufferCC_50_io_dataOut;
   assign pos_x_sync = dvt_io_pos_x_buffercc_io_dataOut;
   assign pos_y_sync = dvt_io_pos_y_buffercc_io_dataOut;
@@ -7190,8 +7199,8 @@ module Apb3Dvtc (
   assign io_axi_ar_payload_cache = 4'b1111;
   assign io_axi_ar_payload_prot = 3'b010;
   assign io_axi_r_ready = 1'b1;
-  assign layerDma_io_base = CFBAR[26:0];
-  assign layerDma_io_size = _zz_io_size[16:0];
+  assign layerDma_io_base = (CFBAR >>> 3'd5);
+  assign layerDma_io_size = _zz_io_size[17:0];
   assign layerDma_io_start = (dvtArea_frameStart_pulseCCByToggle_io_pulseOut && CR[0]);
   assign io_dvti_vs = dvt_io_dvti_vs;
   assign io_dvti_hs = dvt_io_dvti_hs;
@@ -7349,6 +7358,18 @@ module Apb3Dvtc (
     end
   end
 
+  always @(posedge clkout_1) begin
+    dvt_io_dvti_vs_regNext <= dvt_io_dvti_vs;
+    dvt_io_dvti_vs_regNext_1 <= dvt_io_dvti_vs;
+    _zz_dvtArea_frameStart_1 <= _zz_dvtArea_frameStart;
+    if(dvtArea_frameStart) begin
+      dvtArea_firstPixel <= 1'b1;
+    end
+    if(when_Apb3Dvtc_l263) begin
+      dvtArea_firstPixel <= 1'b0;
+    end
+  end
+
   always @(posedge clkout_1 or posedge resetCtrl_axiReset) begin
     if(resetCtrl_axiReset) begin
       dvtArea_error <= 1'b0;
@@ -7370,15 +7391,6 @@ module Apb3Dvtc (
           dvtArea_error <= 1'b1;
         end
       end
-    end
-  end
-
-  always @(posedge clkout_1) begin
-    if(dvtArea_frameStart) begin
-      dvtArea_firstPixel <= 1'b1;
-    end
-    if(when_Apb3Dvtc_l263) begin
-      dvtArea_firstPixel <= 1'b0;
     end
   end
 
@@ -15331,12 +15343,12 @@ module DVTiming (
   assign when_Apb3Dvtc_l119 = (dvtArea_hCnt == io_cfg_htotal);
   assign when_Apb3Dvtc_l121 = (dvtArea_vCnt == io_cfg_vtotal);
   assign io_dvti_color = io_pixel_payload;
-  assign io_dvti_vs = ((dvtArea_vCnt <= io_cfg_vsync) ^ io_cfg_vspol);
-  assign io_dvti_hs = ((dvtArea_hCnt <= io_cfg_hsync) ^ io_cfg_hspol);
-  assign io_dvti_de = (dvtArea_en ^ io_cfg_depol);
+  assign io_dvti_vs = (((dvtArea_vCnt <= io_cfg_vsync) ^ io_cfg_vspol) && io_en);
+  assign io_dvti_hs = (((dvtArea_hCnt <= io_cfg_hsync) ^ io_cfg_hspol) && io_en);
+  assign io_dvti_de = ((dvtArea_en ^ io_cfg_depol) && io_en);
   assign io_pos_x = {4'd0, dvtArea_hCnt};
   assign io_pos_y = {4'd0, dvtArea_vCnt};
-  assign io_pixel_ready = (dvtArea_en || io_en);
+  assign io_pixel_ready = (dvtArea_en || (! io_en));
   always @(posedge clkout or posedge resetCtrl_axiReset) begin
     if(resetCtrl_axiReset) begin
       dvtArea_hCnt <= 12'h0;
@@ -15367,7 +15379,7 @@ module VideoDma (
   input  wire          io_start,
   output wire          io_busy,
   input  wire [26:0]   io_base,
-  input  wire [16:0]   io_size,
+  input  wire [17:0]   io_size,
   output reg           io_mem_cmd_valid,
   input  wire          io_mem_cmd_ready,
   output wire [26:0]   io_mem_cmd_payload,
@@ -15417,7 +15429,7 @@ module VideoDma (
   wire                toManyPendingRsp;
   reg                 isActive;
   reg                 cmdActive;
-  reg        [16:0]   memCmdCounter;
+  reg        [17:0]   memCmdCounter;
   wire                memCmdLast;
   wire                when_VideoDma_l94;
   wire                when_VideoDma_l102;
@@ -15483,7 +15495,7 @@ module VideoDma (
   wire                fifoPop_widthAdapter_counter_willOverflow;
   wire       [31:0]   _zz_io_frame_payload_fragment;
 
-  assign _zz_io_mem_cmd_payload = {10'd0, memCmdCounter};
+  assign _zz_io_mem_cmd_payload = {9'd0, memCmdCounter};
   assign _zz_rspArea_frameClockArea_popBeatCounter_valueNext_1 = rspArea_frameClockArea_popBeatCounter_willIncrement;
   assign _zz_rspArea_frameClockArea_popBeatCounter_valueNext = {2'd0, _zz_rspArea_frameClockArea_popBeatCounter_valueNext_1};
   StreamFifoCC_2 rspArea_fifo (
@@ -15797,11 +15809,11 @@ module VideoDma (
   always @(posedge clkout) begin
     if(when_VideoDma_l94) begin
       if(io_start) begin
-        memCmdCounter <= 17'h0;
+        memCmdCounter <= 18'h0;
       end
     end
     if(io_mem_cmd_fire) begin
-      memCmdCounter <= (memCmdCounter + 17'h00001);
+      memCmdCounter <= (memCmdCounter + 18'h00001);
     end
   end
 
