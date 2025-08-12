@@ -3,7 +3,6 @@ package soc.gowin
 import periph._
 import soc.gowin.tangprimer._
 import graphic.base._
-import graphic.dvtc._
 import graphic.lcd._
 
 import spinal.core._
@@ -97,7 +96,7 @@ class cyberwithddrlcd(config: cyberwithddrlcdConfig) extends Component {
     // val gpio = master(TriStateArray(32 bits)) // Tang Primer has limited IOBUF(s)
     val uart_tx = out(Bool)
     // Graphics IO
-    val dvti = master(DVTI(colorConfig))
+    val dvti = master(DVTI(colorConfig.getWidth))
     val lcdclk = out Bool ()
   }
 

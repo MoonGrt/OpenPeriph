@@ -1,5 +1,6 @@
 package graphic.algorithm
 
+import graphic.base._
 import spinal.core._
 import spinal.lib._
 
@@ -53,7 +54,7 @@ class ShiftRam(dataWidth: Int, lineLength: Int) extends Component {
   } otherwise {
     // write then read (same cycle behavior as original Verilog)
     mem(wrPtr) := io.D
-    io.Q := mem(rdPtr)
+    io.Q := mem.readSync(rdPtr)
     // increment with wrap
     val nextWr = wrPtr + 1
     val nextRd = rdPtr + 1
@@ -99,10 +100,7 @@ case class Matrix3x3Interface(dataWidth: Int) extends Bundle with IMasterSlave {
 class Matrix3x3Dyn(dataWidth: Int, lineLengthBits: Int) extends Component {
   val io = new Bundle {
     val IMG_HDISP = in UInt(lineLengthBits bits)
-    val pre_vs  = in Bool()
-    val pre_hs  = in Bool()
-    val pre_de  = in Bool()
-    val pre_data = in Bits(dataWidth bits)
+    val pre = slave(DVTI(dataWidth))
 
     val matrix_vs = out Bool()
     val matrix_hs = out Bool()
@@ -115,16 +113,16 @@ class Matrix3x3Dyn(dataWidth: Int, lineLengthBits: Int) extends Component {
   val row2 = Bits(dataWidth bits)
   val row3 = Reg(Bits(dataWidth bits))
 
-  when(io.pre_de) { row3 := io.pre_data }
+  when(io.pre.de) { row3 := io.pre.data.asBits }
 
   val ram2 = new ShiftRamDyn(dataWidth, lineLengthBits)
-  ram2.io.CE := io.pre_de
+  ram2.io.CE := io.pre.de
   ram2.io.D  := row3
   ram2.io.LINE_LENGTH := io.IMG_HDISP
   row2 := ram2.io.Q
 
   val ram1 = new ShiftRamDyn(dataWidth, lineLengthBits)
-  ram1.io.CE := io.pre_de
+  ram1.io.CE := io.pre.de
   ram1.io.D  := row2
   ram1.io.LINE_LENGTH := io.IMG_HDISP
   row1 := ram1.io.Q
@@ -133,9 +131,9 @@ class Matrix3x3Dyn(dataWidth: Int, lineLengthBits: Int) extends Component {
   val pre_vs_r = Reg(Bits(2 bits)) init(0)
   val pre_hs_r = Reg(Bits(2 bits)) init(0)
   val pre_de_r = Reg(Bits(2 bits)) init(0)
-  pre_vs_r := (pre_vs_r(0) ## io.pre_vs)
-  pre_hs_r := (pre_hs_r(0) ## io.pre_hs)
-  pre_de_r := (pre_de_r(0) ## io.pre_de)
+  pre_vs_r := (pre_vs_r(0) ## io.pre.vs)
+  pre_hs_r := (pre_hs_r(0) ## io.pre.hs)
+  pre_de_r := (pre_de_r(0) ## io.pre.de)
 
   io.matrix_vs := pre_vs_r(1)
   io.matrix_hs := pre_hs_r(1)
@@ -171,10 +169,7 @@ class Matrix3x3Dyn(dataWidth: Int, lineLengthBits: Int) extends Component {
 
 class Matrix3x3(dataWidth: Int, lineLength: Int) extends Component {
   val io = new Bundle {
-    val pre_vs  = in Bool()
-    val pre_hs  = in Bool()
-    val pre_de  = in Bool()
-    val pre_data = in Bits(dataWidth bits)
+    val pre = slave(DVTI(dataWidth))
 
     val matrix_vs = out Bool()
     val matrix_hs = out Bool()
@@ -187,15 +182,15 @@ class Matrix3x3(dataWidth: Int, lineLength: Int) extends Component {
   val row2 = Bits(dataWidth bits)
   val row3 = Reg(Bits(dataWidth bits))
 
-  when(io.pre_de) { row3 := io.pre_data }
+  when(io.pre.de) { row3 := io.pre.data.asBits }
 
   val ram2 = new ShiftRam(dataWidth, lineLength)
-  ram2.io.CE := io.pre_de
+  ram2.io.CE := io.pre.de
   ram2.io.D  := row3
   row2 := ram2.io.Q
 
   val ram1 = new ShiftRam(dataWidth, lineLength)
-  ram1.io.CE := io.pre_de
+  ram1.io.CE := io.pre.de
   ram1.io.D  := row2
   row1 := ram1.io.Q
 
@@ -203,9 +198,9 @@ class Matrix3x3(dataWidth: Int, lineLength: Int) extends Component {
   val pre_vs_r = Reg(Bits(2 bits)) init(0)
   val pre_hs_r = Reg(Bits(2 bits)) init(0)
   val pre_de_r = Reg(Bits(2 bits)) init(0)
-  pre_vs_r := (pre_vs_r(0) ## io.pre_vs)
-  pre_hs_r := (pre_hs_r(0) ## io.pre_hs)
-  pre_de_r := (pre_de_r(0) ## io.pre_de)
+  pre_vs_r := (pre_vs_r(0) ## io.pre.vs)
+  pre_hs_r := (pre_hs_r(0) ## io.pre.hs)
+  pre_de_r := (pre_de_r(0) ## io.pre.de)
 
   io.matrix_vs := pre_vs_r(1)
   io.matrix_hs := pre_hs_r(1)
@@ -280,25 +275,14 @@ case class Conv2DConfig(
 case class Conv2D3x3(config: Conv2DConfig) extends Component {
   import config._
   val io = new Bundle {
-    val EN    = in Bool()
-
-    val pre_vs   = in Bool()
-    val pre_hs   = in Bool()
-    val pre_de   = in Bool()
-    val pre_data = in Bits(dataWidth bits)
-
-    val post_vs  = out Bool()
-    val post_hs  = out Bool()
-    val post_de  = out Bool()
-    val post_data= out Bits(dataWidth bits)
+    val EN   = in Bool()
+    val pre  = slave(DVTI(dataWidth))
+    val post = master(DVTI(dataWidth))
   }
 
   // instantiate matrix3x3 module
   val m = new Matrix3x3(dataWidth, lineLength)
-  m.io.pre_vs := io.pre_vs
-  m.io.pre_hs := io.pre_hs
-  m.io.pre_de := io.pre_de
-  m.io.pre_data := io.pre_data
+  m.io.pre << io.pre
 
   // convolution compute for each channel
   def conv(m: Matrix3x3, kernel: Seq[Int]) = {
@@ -332,10 +316,10 @@ case class Conv2D3x3(config: Conv2DConfig) extends Component {
   matrix_hs := m.io.matrix_hs
   matrix_de := m.io.matrix_de
 
-  io.post_vs := Mux(io.EN, matrix_vs, io.pre_vs)
-  io.post_hs := Mux(io.EN, matrix_hs, io.pre_hs)
-  io.post_de := Mux(io.EN, matrix_de, io.pre_de)
-  io.post_data := Mux(io.EN, conv_out.asBits, io.pre_data)
+  io.post.vs := Mux(io.EN, matrix_vs, io.pre.vs)
+  io.post.hs := Mux(io.EN, matrix_hs, io.pre.hs)
+  io.post.de := Mux(io.EN, matrix_de, io.pre.de)
+  io.post.data := Mux(io.EN, conv_out.asUInt, io.pre.data)
 }
 
 // object Conv2DGen {
@@ -349,6 +333,6 @@ case class Conv2D3x3(config: Conv2DConfig) extends Component {
 //         lineLength = 480,
 //         kernel = gaussianKernel,
 //         kernelShift = 4))
-//     )
+//     ).printPruned()
 //   }
 // }

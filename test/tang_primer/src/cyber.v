@@ -1,6 +1,6 @@
 // Generator : SpinalHDL v1.12.0    git head : 1aa7d7b5732f11cca2dd83bacc2a4cb92ca8e5c9
 // Component : cyberwithddrlcd
-// Git hash  : 05bf9886cffb131b3a75860531a4264e7d9553c2
+// Git hash  : 2f0e43726940bed23d36096a67d939c4c2002bbe
 
 `timescale 1ns/1ps
 `define SYNTHESIS
@@ -26,7 +26,7 @@ module cyberwithddrlcd (
   output wire          io_dvti_vs,
   output wire          io_dvti_hs,
   output wire          io_dvti_de,
-  output wire [15:0]   io_dvti_color,
+  output wire [15:0]   io_dvti_data,
   output wire          io_lcdclk
 );
 
@@ -180,7 +180,7 @@ module cyberwithddrlcd (
   wire                axi_lcdCtrl_io_dvti_vs;
   wire                axi_lcdCtrl_io_dvti_hs;
   wire                axi_lcdCtrl_io_dvti_de;
-  wire       [15:0]   axi_lcdCtrl_io_dvti_color;
+  wire       [15:0]   axi_lcdCtrl_io_dvti_data;
   wire                axi_lcdCtrl_io_interrupt;
   wire                axi_core_io_i_decoder_io_input_ar_ready;
   wire                axi_core_io_i_decoder_io_input_r_valid;
@@ -395,14 +395,14 @@ module cyberwithddrlcd (
   reg                 resetCtrl_axiResetUnbuffered;
   reg                 resetCtrl_coreResetUnbuffered;
   reg        [5:0]    resetCtrl_axiResetCounter;
-  wire       [5:0]    _zz_when_cyberwithddrlcd_l133;
-  wire                when_cyberwithddrlcd_l133;
-  wire                when_cyberwithddrlcd_l137;
+  wire       [5:0]    _zz_when_cyberwithddrlcd_l132;
+  wire                when_cyberwithddrlcd_l132;
+  wire                when_cyberwithddrlcd_l136;
   reg                 resetCtrl_axiReset;
   reg                 resetCtrl_coreReset;
   wire                axi_extiInterrupt;
   wire                axi_timInterrupt;
-  wire                when_cyberwithddrlcd_l235;
+  wire                when_cyberwithddrlcd_l234;
   wire                axi_systickInterrupt;
   wire                axi_uartInterrupt;
   wire                io_outputs_0_ar_validPipe_valid;
@@ -829,7 +829,7 @@ module cyberwithddrlcd (
     .io_dvti_vs              (axi_lcdCtrl_io_dvti_vs                                  ), //o
     .io_dvti_hs              (axi_lcdCtrl_io_dvti_hs                                  ), //o
     .io_dvti_de              (axi_lcdCtrl_io_dvti_de                                  ), //o
-    .io_dvti_color           (axi_lcdCtrl_io_dvti_color[15:0]                         ), //o
+    .io_dvti_data            (axi_lcdCtrl_io_dvti_data[15:0]                          ), //o
     .io_interrupt            (axi_lcdCtrl_io_interrupt                                ), //o
     .clkout                  (sysclk_clkout                                           ), //i
     .resetCtrl_axiReset      (resetCtrl_axiReset                                      ), //i
@@ -1266,7 +1266,7 @@ module cyberwithddrlcd (
   assign io_lcdclk = lcdclk_clkout;
   always @(*) begin
     resetCtrl_axiResetUnbuffered = 1'b0;
-    if(when_cyberwithddrlcd_l133) begin
+    if(when_cyberwithddrlcd_l132) begin
       resetCtrl_axiResetUnbuffered = 1'b1;
     end
   end
@@ -1276,7 +1276,7 @@ module cyberwithddrlcd (
     if(resetCtrl_axiResetUnbuffered) begin
       resetCtrl_coreResetUnbuffered = 1'b1;
     end
-    if(when_cyberwithddrlcd_l235) begin
+    if(when_cyberwithddrlcd_l234) begin
       resetCtrl_coreResetUnbuffered = 1'b1;
     end
     if(axi_core_io_debugResetOut) begin
@@ -1284,14 +1284,14 @@ module cyberwithddrlcd (
     end
   end
 
-  assign _zz_when_cyberwithddrlcd_l133[5 : 0] = 6'h3f;
-  assign when_cyberwithddrlcd_l133 = (resetCtrl_axiResetCounter != _zz_when_cyberwithddrlcd_l133);
+  assign _zz_when_cyberwithddrlcd_l132[5 : 0] = 6'h3f;
+  assign when_cyberwithddrlcd_l132 = (resetCtrl_axiResetCounter != _zz_when_cyberwithddrlcd_l132);
   assign bufferCC_37_io_dataIn = (! io_rstn);
-  assign when_cyberwithddrlcd_l137 = bufferCC_37_io_dataOut;
+  assign when_cyberwithddrlcd_l136 = bufferCC_37_io_dataOut;
   assign axi_sdramCtrl_io_pll_lock = (memclk_lock && sysclk_lock);
   assign axi_extiInterrupt = (|axi_extiCtrl_io_interrupt);
   assign axi_timInterrupt = (|axi_timCtrl_io_interrupt);
-  assign when_cyberwithddrlcd_l235 = ((axi_wdgCtrl_io_iwdgRst || axi_wdgCtrl_io_wwdgRst) || (! axi_sdramCtrl_io_init_calib_complete));
+  assign when_cyberwithddrlcd_l234 = ((axi_wdgCtrl_io_iwdgRst || axi_wdgCtrl_io_wwdgRst) || (! axi_sdramCtrl_io_init_calib_complete));
   assign axi_systickInterrupt = (|axi_systickCtrl_io_interrupt);
   assign axi_uartInterrupt = (|axi_uartCtrl_io_interrupt);
   assign axi_afioCtrl_io_device_read = {{{{{{12'h0,1'b0},axi_uartCtrl_io_uarts_1_txd},1'b0},axi_uartCtrl_io_uarts_0_txd},axi_timCtrl_io_tim_ch},8'h0};
@@ -1436,12 +1436,12 @@ module cyberwithddrlcd (
   assign io_dvti_vs = axi_lcdCtrl_io_dvti_vs;
   assign io_dvti_hs = axi_lcdCtrl_io_dvti_hs;
   assign io_dvti_de = axi_lcdCtrl_io_dvti_de;
-  assign io_dvti_color = axi_lcdCtrl_io_dvti_color;
+  assign io_dvti_data = axi_lcdCtrl_io_dvti_data;
   always @(posedge sysclk_clkout) begin
-    if(when_cyberwithddrlcd_l133) begin
+    if(when_cyberwithddrlcd_l132) begin
       resetCtrl_axiResetCounter <= (resetCtrl_axiResetCounter + 6'h01);
     end
-    if(when_cyberwithddrlcd_l137) begin
+    if(when_cyberwithddrlcd_l136) begin
       resetCtrl_axiResetCounter <= 6'h0;
     end
   end
@@ -3474,7 +3474,7 @@ module Axi4Lcd (
   output wire          io_dvti_vs,
   output wire          io_dvti_hs,
   output wire          io_dvti_de,
-  output wire [15:0]   io_dvti_color,
+  output wire [15:0]   io_dvti_data,
   output wire          io_interrupt,
   input  wire          clkout,
   input  wire          resetCtrl_axiReset,
@@ -3493,7 +3493,7 @@ module Axi4Lcd (
   wire                dvtc_io_dvti_vs;
   wire                dvtc_io_dvti_hs;
   wire                dvtc_io_dvti_de;
-  wire       [15:0]   dvtc_io_dvti_color;
+  wire       [15:0]   dvtc_io_dvti_data;
   wire                dvtc_io_interrupt;
 
   Apb3Dvtc dvtc (
@@ -3518,7 +3518,7 @@ module Axi4Lcd (
     .io_dvti_vs              (dvtc_io_dvti_vs                  ), //o
     .io_dvti_hs              (dvtc_io_dvti_hs                  ), //o
     .io_dvti_de              (dvtc_io_dvti_de                  ), //o
-    .io_dvti_color           (dvtc_io_dvti_color[15:0]         ), //o
+    .io_dvti_data            (dvtc_io_dvti_data[15:0]          ), //o
     .io_interrupt            (dvtc_io_interrupt                ), //o
     .clkout                  (clkout                           ), //i
     .resetCtrl_axiReset      (resetCtrl_axiReset               ), //i
@@ -3536,7 +3536,7 @@ module Axi4Lcd (
   assign io_dvti_vs = dvtc_io_dvti_vs;
   assign io_dvti_hs = dvtc_io_dvti_hs;
   assign io_dvti_de = dvtc_io_dvti_de;
-  assign io_dvti_color = dvtc_io_dvti_color;
+  assign io_dvti_data = dvtc_io_dvti_data;
   assign io_interrupt = dvtc_io_interrupt;
 
 endmodule
@@ -6746,7 +6746,7 @@ module Apb3Dvtc (
   output wire          io_dvti_vs,
   output wire          io_dvti_hs,
   output wire          io_dvti_de,
-  output wire [15:0]   io_dvti_color,
+  output wire [15:0]   io_dvti_data,
   output wire          io_interrupt,
   input  wire          clkout,
   input  wire          resetCtrl_axiReset,
@@ -6783,7 +6783,7 @@ module Apb3Dvtc (
   wire                dvt_io_dvti_vs;
   wire                dvt_io_dvti_hs;
   wire                dvt_io_dvti_de;
-  wire       [15:0]   dvt_io_dvti_color;
+  wire       [15:0]   dvt_io_dvti_data;
   wire                dvt_io_hen;
   wire                dvt_io_ven;
   wire                bufferCC_37_io_dataOut;
@@ -6853,10 +6853,10 @@ module Apb3Dvtc (
   reg                 dvtArea_firstPixel;
   wire                layerDma_io_frame_fire;
   reg                 layerDma_io_frame_payload_first;
-  wire                when_Apb3Dvtc_l263;
-  wire                when_Apb3Dvtc_l268;
+  wire                when_Apb3Dvtc_l262;
+  wire                when_Apb3Dvtc_l267;
+  wire                when_Apb3Dvtc_l271;
   wire                when_Apb3Dvtc_l272;
-  wire                when_Apb3Dvtc_l273;
   wire                layerDma_io_frame_translated_valid;
   wire                layerDma_io_frame_translated_ready;
   wire       [15:0]   layerDma_io_frame_translated_payload;
@@ -6864,7 +6864,7 @@ module Apb3Dvtc (
   wire                layerDma_io_frame_translated_haltWhen_valid;
   wire                layerDma_io_frame_translated_haltWhen_ready;
   wire       [15:0]   layerDma_io_frame_translated_haltWhen_payload;
-  wire                when_Apb3Dvtc_l297;
+  wire                when_Apb3Dvtc_l296;
   wire       [15:0]   pos_x_sync;
   wire       [15:0]   pos_y_sync;
   wire                vs_sync;
@@ -6878,7 +6878,7 @@ module Apb3Dvtc (
   reg                 hs_sync_regNext_1;
   wire                hs_rise;
   wire                line_match;
-  wire                when_Apb3Dvtc_l317;
+  wire                when_Apb3Dvtc_l316;
 
   assign _zz_line_match_1 = LIPCR[11 : 0];
   assign _zz_line_match = {4'd0, _zz_line_match_1};
@@ -6926,7 +6926,7 @@ module Apb3Dvtc (
     .io_dvti_vs         (dvt_io_dvti_vs                                     ), //o
     .io_dvti_hs         (dvt_io_dvti_hs                                     ), //o
     .io_dvti_de         (dvt_io_dvti_de                                     ), //o
-    .io_dvti_color      (dvt_io_dvti_color[15:0]                            ), //o
+    .io_dvti_data       (dvt_io_dvti_data[15:0]                             ), //o
     .io_hen             (dvt_io_hen                                         ), //o
     .io_ven             (dvt_io_ven                                         ), //o
     .clkout             (clkout_1                                           ), //i
@@ -7162,14 +7162,14 @@ module Apb3Dvtc (
   assign _zz_dvtArea_frameStart = (dvt_io_dvti_vs && (! dvt_io_dvti_vs_regNext_1));
   assign dvtArea_frameStart = (bufferCC_44_io_dataOut ? (dvt_io_dvti_vs && (! dvt_io_dvti_vs_regNext)) : ((! _zz_dvtArea_frameStart) && _zz_dvtArea_frameStart_1));
   assign layerDma_io_frame_fire = (layerDma_io_frame_valid && layerDma_io_frame_ready);
-  assign when_Apb3Dvtc_l263 = (layerDma_io_frame_fire && layerDma_io_frame_payload_first);
-  assign when_Apb3Dvtc_l268 = (layerDma_io_frame_fire && layerDma_io_frame_payload_last);
-  assign when_Apb3Dvtc_l272 = ((! dvtArea_waitStartOfFrame) && (! dvtArea_error));
-  assign when_Apb3Dvtc_l273 = ((dvtArea_firstPixel && layerDma_io_frame_valid) && (! layerDma_io_frame_payload_first));
+  assign when_Apb3Dvtc_l262 = (layerDma_io_frame_fire && layerDma_io_frame_payload_first);
+  assign when_Apb3Dvtc_l267 = (layerDma_io_frame_fire && layerDma_io_frame_payload_last);
+  assign when_Apb3Dvtc_l271 = ((! dvtArea_waitStartOfFrame) && (! dvtArea_error));
+  assign when_Apb3Dvtc_l272 = ((dvtArea_firstPixel && layerDma_io_frame_valid) && (! layerDma_io_frame_payload_first));
   assign layerDma_io_frame_translated_valid = layerDma_io_frame_valid;
   always @(*) begin
     layerDma_io_frame_ready = layerDma_io_frame_translated_ready;
-    if(when_Apb3Dvtc_l297) begin
+    if(when_Apb3Dvtc_l296) begin
       layerDma_io_frame_ready = 1'b1;
     end
   end
@@ -7181,7 +7181,7 @@ module Apb3Dvtc (
   assign layerDma_io_frame_translated_haltWhen_payload = layerDma_io_frame_translated_payload;
   assign layerDma_io_frame_translated_haltWhen_ready = dvt_io_pixel_ready;
   assign bufferCC_50_io_dataIn = (! CR[0]);
-  assign when_Apb3Dvtc_l297 = bufferCC_50_io_dataOut;
+  assign when_Apb3Dvtc_l296 = bufferCC_50_io_dataOut;
   assign pos_x_sync = dvt_io_pos_x_buffercc_io_dataOut;
   assign pos_y_sync = dvt_io_pos_y_buffercc_io_dataOut;
   assign vs_sync = dvt_io_dvti_vs_buffercc_io_dataOut;
@@ -7191,7 +7191,7 @@ module Apb3Dvtc (
   assign vs_rise = (GCR[30] ? (vs_sync && (! vs_sync_regNext)) : ((! vs_sync) && vs_sync_regNext_1));
   assign hs_rise = (GCR[31] ? (hs_sync && (! hs_sync_regNext)) : ((! hs_sync) && hs_sync_regNext_1));
   assign line_match = ((pos_y_sync == _zz_line_match) && hs_rise);
-  assign when_Apb3Dvtc_l317 = (line_match && IER[0]);
+  assign when_Apb3Dvtc_l316 = (line_match && IER[0]);
   assign io_axi_ar_valid = layerDma_io_mem_cmd_valid;
   assign io_axi_ar_payload_addr = ({5'd0,layerDma_io_mem_cmd_payload} <<< 3'd5);
   assign io_axi_ar_payload_len = 8'h07;
@@ -7205,7 +7205,7 @@ module Apb3Dvtc (
   assign io_dvti_vs = dvt_io_dvti_vs;
   assign io_dvti_hs = dvt_io_dvti_hs;
   assign io_dvti_de = dvt_io_dvti_de;
-  assign io_dvti_color = dvt_io_dvti_color;
+  assign io_dvti_data = dvt_io_dvti_data;
   assign io_interrupt = (|(ISR & IER));
   always @(posedge clkout or posedge resetCtrl_axiReset) begin
     if(resetCtrl_axiReset) begin
@@ -7237,7 +7237,7 @@ module Apb3Dvtc (
     end else begin
       CPSR <= {pos_x_sync,pos_y_sync};
       CDSR <= {{{{28'h0,vs_sync},hs_sync},hen_sync},ven_sync};
-      if(when_Apb3Dvtc_l317) begin
+      if(when_Apb3Dvtc_l316) begin
         ISR[0] <= 1'b1;
       end
       case(io_apb_PADDR)
@@ -7365,7 +7365,7 @@ module Apb3Dvtc (
     if(dvtArea_frameStart) begin
       dvtArea_firstPixel <= 1'b1;
     end
-    if(when_Apb3Dvtc_l263) begin
+    if(when_Apb3Dvtc_l262) begin
       dvtArea_firstPixel <= 1'b0;
     end
   end
@@ -7382,12 +7382,12 @@ module Apb3Dvtc (
       if(dvtArea_frameStart) begin
         dvtArea_waitStartOfFrame <= 1'b0;
       end
-      if(when_Apb3Dvtc_l268) begin
+      if(when_Apb3Dvtc_l267) begin
         dvtArea_error <= 1'b0;
         dvtArea_waitStartOfFrame <= dvtArea_error;
       end
-      if(when_Apb3Dvtc_l272) begin
-        if(when_Apb3Dvtc_l273) begin
+      if(when_Apb3Dvtc_l271) begin
+        if(when_Apb3Dvtc_l272) begin
           dvtArea_error <= 1'b1;
         end
       end
@@ -15324,7 +15324,7 @@ module DVTiming (
   output wire          io_dvti_vs,
   output wire          io_dvti_hs,
   output wire          io_dvti_de,
-  output wire [15:0]   io_dvti_color,
+  output wire [15:0]   io_dvti_data,
   output wire          io_hen,
   output wire          io_ven,
   input  wire          clkout,
@@ -15334,15 +15334,15 @@ module DVTiming (
   wire                dvtArea_en;
   reg        [11:0]   dvtArea_hCnt;
   reg        [11:0]   dvtArea_vCnt;
-  wire                when_Apb3Dvtc_l119;
-  wire                when_Apb3Dvtc_l121;
+  wire                when_Apb3Dvtc_l118;
+  wire                when_Apb3Dvtc_l120;
 
   assign dvtArea_en = (io_hen && io_ven);
   assign io_hen = ((io_cfg_hback <= dvtArea_hCnt) && (dvtArea_hCnt < io_cfg_hdisp));
   assign io_ven = ((io_cfg_vback <= dvtArea_vCnt) && (dvtArea_vCnt < io_cfg_vdisp));
-  assign when_Apb3Dvtc_l119 = (dvtArea_hCnt == io_cfg_htotal);
-  assign when_Apb3Dvtc_l121 = (dvtArea_vCnt == io_cfg_vtotal);
-  assign io_dvti_color = io_pixel_payload;
+  assign when_Apb3Dvtc_l118 = (dvtArea_hCnt == io_cfg_htotal);
+  assign when_Apb3Dvtc_l120 = (dvtArea_vCnt == io_cfg_vtotal);
+  assign io_dvti_data = io_pixel_payload;
   assign io_dvti_vs = (((dvtArea_vCnt <= io_cfg_vsync) ^ io_cfg_vspol) && io_en);
   assign io_dvti_hs = (((dvtArea_hCnt <= io_cfg_hsync) ^ io_cfg_hspol) && io_en);
   assign io_dvti_de = ((dvtArea_en ^ io_cfg_depol) && io_en);
@@ -15355,9 +15355,9 @@ module DVTiming (
       dvtArea_vCnt <= 12'h0;
     end else begin
       if(io_en) begin
-        if(when_Apb3Dvtc_l119) begin
+        if(when_Apb3Dvtc_l118) begin
           dvtArea_hCnt <= 12'h0;
-          if(when_Apb3Dvtc_l121) begin
+          if(when_Apb3Dvtc_l120) begin
             dvtArea_vCnt <= 12'h0;
           end else begin
             dvtArea_vCnt <= (dvtArea_vCnt + 12'h001);

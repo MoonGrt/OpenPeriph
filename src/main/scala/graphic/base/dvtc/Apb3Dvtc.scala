@@ -1,7 +1,6 @@
 // Digital Video Timing Controller (DVTC) Apb3 Interface
-package graphic.dvtc
+package graphic.base
 
-import graphic.base._
 import graphic.algorithm._
 import spinal.core._
 import spinal.lib._
@@ -62,6 +61,24 @@ case class position(positionWidth: Int = 16) extends Bundle{
   val y = UInt(positionWidth bits)
 }
 
+case class DVTI(dataWidth: Int) extends Bundle with IMasterSlave {
+  val vs = Bool()
+  val hs = Bool()
+  val de = Bool()
+  val data = UInt(dataWidth bits)
+
+  override def asMaster() = this.asOutput()
+  override def asSlave() = this.asInput()
+  override def clone = new DVTI(dataWidth)
+
+  def << (that: DVTI): Unit = {
+    this.vs := that.vs
+    this.hs := that.hs
+    this.de := that.de
+    this.data := that.data
+  }
+}
+
 case class DVTCfgInterface(timingWidth: Int = 12) extends Bundle {
   val vsync  = UInt(timingWidth bits)
   val vback  = UInt(timingWidth bits)
@@ -79,24 +96,6 @@ case class DVTCfgInterface(timingWidth: Int = 12) extends Bundle {
   val pcpol = Bool()
 }
 
-case class DVTI(colorConfig: ColorConfig) extends Bundle with IMasterSlave {
-  val vs = Bool()
-  val hs = Bool()
-  val de = Bool()
-  val color = Color(colorConfig)
-
-  override def asMaster() = this.asOutput()
-  override def asSlave() = this.asInput()
-  override def clone = new DVTI(colorConfig)
-
-  def << (that: DVTI): Unit = {
-    this.vs := that.vs
-    this.hs := that.hs
-    this.de := that.de
-    this.color := that.color
-  }
-}
-
 case class DVTiming(dvtConfig: DvtConfig) extends Component {
   import dvtConfig._
   val io = new Bundle {
@@ -104,7 +103,7 @@ case class DVTiming(dvtConfig: DvtConfig) extends Component {
     val cfg = in(DVTCfgInterface(timingWidth))
     val pixel = slave(Stream(Color(colorConfig)))
     val pos = out(position(positionWidth))
-    val dvti = master(DVTI(colorConfig))
+    val dvti = master(DVTI(colorConfig.getWidth))
     val hen = out Bool()
     val ven = out Bool()
   }
@@ -132,7 +131,7 @@ case class DVTiming(dvtConfig: DvtConfig) extends Component {
     }
 
     // 负极性: 高电平时间长，低电平时间短; 正极性: 高电平时间短，低电平时间长
-    io.dvti.color := io.pixel.payload
+    io.dvti.data := io.pixel.payload
     io.dvti.vs := ((vCnt <= io.cfg.vsync) ^ io.cfg.vspol) && io.en
     io.dvti.hs := ((hCnt <= io.cfg.hsync) ^ io.cfg.hspol) && io.en
     io.dvti.de := (en ^ io.cfg.depol) && io.en
@@ -148,7 +147,7 @@ case class Apb3Dvtc(config: DvtcGenerics) extends Component {
   val io = new Bundle {
     val apb = slave(Apb3(apb3Config))
     val axi = master(Axi4ReadOnly(axi4Config))
-    val dvti = master(DVTI(colorConfig))
+    val dvti = master(DVTI(colorConfig.getWidth))
     val interrupt = out Bool()
   }
 

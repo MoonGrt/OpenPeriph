@@ -14,86 +14,79 @@ case class FilterConfig(
 class Filter(config: FilterConfig) extends Component {
   import config._
   val io = new Bundle {
-    val EN        = in Bool()
-    val pre_vs    = in Bool()
-    val pre_hs    = in Bool()
-    val pre_de    = in Bool()
-    val pre_data  = in Bits(colorConfig.getWidth bits)
-    val post_vs   = out Bool()
-    val post_hs   = out Bool()
-    val post_de   = out Bool()
-    val post_data = out Bits(colorConfig.getWidth bits)
+    val EN   = in Bool()
+    val pre  = slave(DVTI(colorConfig.getWidth))
+    val post = master(DVTI(colorConfig.getWidth))
   }
 
-  // 通用卷积构造器
-  def buildConv(w: Int) = {
-    val conv = new Conv2D3x3(Conv2DConfig(w, lineLength, kernel, kernelShift))
-    conv.io.EN     := io.EN
-    conv.io.pre_vs := io.pre_vs
-    conv.io.pre_hs := io.pre_hs
-    conv.io.pre_de := io.pre_de
-    conv
-  }
-
-  // 通用处理流程
+  // General processing flow
   def processChannels(channelBits: Seq[Bits]) = {
+    // General Convolution Constructor
+    def buildConv(w: Int) = {
+      val conv = new Conv2D3x3(Conv2DConfig(w, lineLength, kernel, kernelShift))
+      conv.io.EN     := io.EN
+      conv.io.pre.vs := io.pre.vs
+      conv.io.pre.hs := io.pre.hs
+      conv.io.pre.de := io.pre.de
+      conv
+    }
+    // Build Convolutions for each channel
     val convs = channelBits.map(ch => {
       val c = buildConv(ch.getWidth)
-      c.io.pre_data := ch
+      c.io.pre.data := ch.asUInt
       c
     })
-    val combinedData = convs.map(_.io.post_data).reduce(_ ## _)
-    io.post_vs   := Mux(io.EN, convs.head.io.post_vs, io.pre_vs)
-    io.post_hs   := Mux(io.EN, convs.head.io.post_hs, io.pre_hs)
-    io.post_de   := Mux(io.EN, convs.head.io.post_de, io.pre_de)
-    io.post_data := Mux(io.EN, combinedData, io.pre_data)
+    val combinedData = convs.map(_.io.post.data.asBits).reduce(_ ## _)
+    io.post.vs   := Mux(io.EN, convs.head.io.post.vs, io.pre.vs)
+    io.post.hs   := Mux(io.EN, convs.head.io.post.hs, io.pre.hs)
+    io.post.de   := Mux(io.EN, convs.head.io.post.de, io.pre.de)
+    io.post.data := Mux(io.EN, combinedData.asUInt, io.pre.data)
   }
 
   colorConfig match {
     case ARGBConfig(aW, rW, gW, bW) =>
       processChannels(Seq(
-        io.pre_data(aW - 1 downto 0),
-        io.pre_data(aW + rW - 1 downto aW),
-        io.pre_data(aW + rW + gW - 1 downto aW + rW),
-        io.pre_data(aW + rW + gW + bW - 1 downto aW + rW + gW)
+        io.pre.data.asBits(aW - 1 downto 0),
+        io.pre.data.asBits(aW + rW - 1 downto aW),
+        io.pre.data.asBits(aW + rW + gW - 1 downto aW + rW),
+        io.pre.data.asBits(aW + rW + gW + bW - 1 downto aW + rW + gW)
       ))
     case RGBConfig(rW, gW, bW) =>
       processChannels(Seq(
-        io.pre_data(rW - 1 downto 0),
-        io.pre_data(rW + gW - 1 downto rW),
-        io.pre_data(rW + gW + bW - 1 downto rW + gW)
+        io.pre.data.asBits(rW - 1 downto 0),
+        io.pre.data.asBits(rW + gW - 1 downto rW),
+        io.pre.data.asBits(rW + gW + bW - 1 downto rW + gW)
       ))
     case YUVConfig(yW, uW, vW) =>
       processChannels(Seq(
-        io.pre_data(yW - 1 downto 0),
-        io.pre_data(yW + uW - 1 downto yW),
-        io.pre_data(yW + uW + vW - 1 downto yW + uW)
+        io.pre.data.asBits(yW - 1 downto 0),
+        io.pre.data.asBits(yW + uW - 1 downto yW),
+        io.pre.data.asBits(yW + uW + vW - 1 downto yW + uW)
       ))
     case ALConfig(aW, lW) =>
       processChannels(Seq(
-        io.pre_data(aW - 1 downto 0),
-        io.pre_data(aW + lW - 1 downto aW)
+        io.pre.data.asBits(aW - 1 downto 0),
+        io.pre.data.asBits(aW + lW - 1 downto aW)
       ))
     case LConfig(lW) =>
-      processChannels(Seq(io.pre_data))
+      processChannels(Seq(io.pre.data.asBits))
     case _ =>
-      io.post_vs   := io.pre_vs
-      io.post_hs   := io.pre_hs
-      io.post_de   := io.pre_de
-      io.post_data := io.pre_data
+      io.post << io.pre
   }
 }
 
-object FilterGen {
-  def main(args: Array[String]): Unit = {
-    val gaussianKernel = Seq(1, 2, 1, 2, 4, 2, 1, 2, 1)
-    SpinalConfig(targetDirectory = "rtl").generateVerilog(
-      new Filter(FilterConfig(
-        colorConfig = ARGBConfig(8,8,8,8),
-        lineLength = 480,
-        kernel = gaussianKernel,
-        kernelShift = 4
-      ))
-    )
-  }
-}
+// object FilterGen {
+//   def main(args: Array[String]): Unit = {
+//     val meanKernel = Seq(1,1,1, 1,1,1, 1,1,1) // Identity kernel: 1 1 1 / 1 1 1 / 1 1 1
+//     val gaussianKernel = Seq(1,2,1, 2,4,2, 1,2,1) // Gaussian kernel: 1 2 1 / 2 4 2 / 1 2 1
+//     val sharpenKernel = Seq(0,-1,0, -1,5,-1, 0,-1,0) // Sharpen kernel: 0 -1 0 / -1 5 -1 / 0 -1 0
+//     SpinalConfig(targetDirectory = "rtl").generateVerilog(
+//       new Filter(FilterConfig(
+//         colorConfig = RGBConfig(8,8,8),
+//         lineLength = 480,
+//         kernel = gaussianKernel,
+//         kernelShift = 4
+//       ))
+//     ).printPruned()
+//   }
+// }

@@ -303,8 +303,6 @@ case class ColorConvertDeMux(outCfg: ColorConfig) extends Component {
 }
 
 
-
-
 // ---------- Generate ----------
 // object ColorConvertGen {
 //   def main(args: Array[String]): Unit = {

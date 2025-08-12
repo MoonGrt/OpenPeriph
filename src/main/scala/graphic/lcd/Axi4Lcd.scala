@@ -1,7 +1,6 @@
 package graphic.lcd
 
 import graphic.base._
-import graphic.dvtc._
 import spinal.core._
 import spinal.lib._
 import spinal.lib.bus.amba3.apb._
@@ -16,7 +15,7 @@ case class Axi4Lcd(config: DvtcGenerics) extends Component{
   val io = new Bundle{
     val apb = slave(Apb3(apb3Config))
     val axi = master(Axi4ReadOnly(axi4Config))
-    val dvti = master(DVTI(colorConfig))
+    val dvti = master(DVTI(colorConfig.getWidth))
     val interrupt = out(Bool())
   }
 
