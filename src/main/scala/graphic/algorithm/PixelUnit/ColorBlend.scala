@@ -30,8 +30,8 @@ import spinal.core._
 // // ---------- ColorBlend module ----------
 // case class ColorBlend(inCfg: ColorConfig, outCfg: ColorConfig) extends Component {
 //   val io = new Bundle {
-//     val inColor  = in(UInt(inCfg.getWidth bits))
-//     val outColor = out(UInt(outCfg.getWidth bits))
+//     val inColor  = in(Color(infig))
+//     val outColor = out(Color(outCfg))
 //   }
 //   io.outColor := Blender(io.inColor, inCfg, outCfg)
 // }

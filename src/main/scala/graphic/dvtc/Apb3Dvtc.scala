@@ -51,7 +51,7 @@ case class DvtcGenerics(
     pendingRequetMax  = pendingRequestMax,
     fifoSize          = fifoSize,
     frameClock        = dvtClock,
-    frameFragmentType = UInt(colorConfig.getWidth bits)
+    frameFragmentType = Color(colorConfig)
   )
 
   def bytePerAddress = axiDataWidth/8 * burstLength
@@ -83,17 +83,17 @@ case class DVTI(colorConfig: ColorConfig) extends Bundle with IMasterSlave {
   val vs = Bool()
   val hs = Bool()
   val de = Bool()
-  val color = UInt(colorConfig.getWidth bits)
+  val color = Color(colorConfig)
 
   override def asMaster() = this.asOutput()
   override def asSlave() = this.asInput()
   override def clone = new DVTI(colorConfig)
 
-  def << (m: DVTI): Unit = {
-    this.vs := m.vs
-    this.hs := m.hs
-    this.de := m.de
-    this.color := m.color
+  def << (that: DVTI): Unit = {
+    this.vs := that.vs
+    this.hs := that.hs
+    this.de := that.de
+    this.color := that.color
   }
 }
 
@@ -102,7 +102,7 @@ case class DVTiming(dvtConfig: DvtConfig) extends Component {
   val io = new Bundle {
     val en = in Bool()
     val cfg = in(DVTCfgInterface(timingWidth))
-    val pixel = slave(Stream(UInt(colorConfig.getWidth bits)))
+    val pixel = slave(Stream(Color(colorConfig)))
     val pos = out(position(positionWidth))
     val dvti = master(DVTI(colorConfig))
     val hen = out Bool()

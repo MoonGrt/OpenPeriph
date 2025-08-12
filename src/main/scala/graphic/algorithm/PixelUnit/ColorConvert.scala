@@ -4,24 +4,30 @@ import graphic.base._
 import spinal.core._
 
 // ---------- ColorConvert Function ----------
+case class ConvertConfig(
+  inCfg: ColorConfig,
+  outCfg: ColorConfig,
+  BThreshold: Int = 128
+)
+
 object Converter {
-  def apply(inCfg: ColorConfig, outCfg: ColorConfig)(inColor: UInt): UInt = {
-    inCfg match {
-      case ARGBConfig(_, _, _, _) => ARGBConverter(inCfg, outCfg)(inColor)
-      case RGBConfig(_, _, _)     => RGBConverter(inCfg, outCfg)(inColor)
-      case YUVConfig(_, _, _)     => YUVConverter(inCfg, outCfg)(inColor)
-      case ALConfig(_, _)         => ALConverter(inCfg, outCfg)(inColor)
-      case LConfig(_)             => LConverter(inCfg, outCfg)(inColor)
+  def apply(cfg: ConvertConfig)(inColor: UInt): UInt = {
+    cfg.inCfg match {
+      case ARGBConfig(_, _, _, _) => ARGBConverter(cfg)(inColor)
+      case RGBConfig(_, _, _)     => RGBConverter(cfg)(inColor)
+      case YUVConfig(_, _, _)     => YUVConverter(cfg)(inColor)
+      case ALConfig(_, _)         => ALConverter(cfg)(inColor)
+      case LConfig(_)             => LConverter(cfg)(inColor)
       case _                      => inColor.resized
     }
   }
-  // def apply(inCfg: ColorConfig, outCfg: ColorConfig)(inColor: UInt, outColor: UInt): Unit = {
-  //   val result = inCfg match {
-  //     case ARGBConfig(_, _, _, _) => ARGBConverter(inCfg, outCfg)(inColor)
-  //     case RGBConfig(_, _, _)     => RGBConverter(inCfg, outCfg)(inColor)
-  //     case YUVConfig(_, _, _)     => YUVConverter(inCfg, outCfg)(inColor)
-  //     case ALConfig(_, _)         => ALConverter(inCfg, outCfg)(inColor)
-  //     case LConfig(_)             => LConverter(inCfg, outCfg)(inColor)
+  // def apply(cfg: ConvertConfig)(inColor: UInt, outColor: UInt): Unit = {
+  //   val result = cfg.inCfg match {
+  //     case ARGBConfig(_, _, _, _) => ARGBConverter(cfg)(inColor)
+  //     case RGBConfig(_, _, _)     => RGBConverter(cfg)(inColor)
+  //     case YUVConfig(_, _, _)     => YUVConverter(cfg)(inColor)
+  //     case ALConfig(_, _)         => ALConverter(cfg)(inColor)
+  //     case LConfig(_)             => LConverter(cfg)(inColor)
   //     case _                      => inColor.resized
   //   }
   //   outColor := result
@@ -29,8 +35,8 @@ object Converter {
 }
 
 object ARGBConverter {
-  def apply(inCfg: ColorConfig, outCfg: ColorConfig)(inColor: UInt): UInt = {
-    inCfg match {
+  def apply(cfg: ConvertConfig)(inColor: UInt): UInt = {
+    cfg.inCfg match {
       case ARGBConfig(aW, rW, gW, bW) =>
         // Extract ARGB fields
         val a = inColor(aW - 1 downto 0)
@@ -38,7 +44,7 @@ object ARGBConverter {
         val g = inColor(aW + rW + gW - 1 downto aW + rW)
         val b = inColor(aW + rW + gW + bW - 1 downto aW + rW + gW)
         // Color conversion logic
-        outCfg match {
+        cfg.outCfg match {
           // ARGB → ARGB
           case ARGBConfig(aW, rW, gW, bW) =>
             (b.asBits.resizeLeft(bW) ## g.asBits.resizeLeft(gW) ## r.asBits.resizeLeft(rW) ## a.asBits.resizeLeft(aW)).asUInt
@@ -59,6 +65,10 @@ object ARGBConverter {
           case LConfig(lW) =>
             val l = (r * 77) + (g * 151) + (b * 28) >> 8
             l.asBits.resizeLeft(lW).asUInt
+          // ARGB → B
+          case BConfig(bW) =>
+            val l = (r * 77) + (g * 151) + (b * 28) >> 8
+            Mux(l >= cfg.BThreshold, U((1 << bW) - 1, bW bits), U(0, bW bits))
           // fallback: passthrough
           case _ => inColor.resized
         }
@@ -69,15 +79,15 @@ object ARGBConverter {
 }
 
 object RGBConverter {
-  def apply(inCfg: ColorConfig, outCfg: ColorConfig)(inColor: UInt): UInt = {
-    inCfg match {
+  def apply(cfg: ConvertConfig)(inColor: UInt): UInt = {
+    cfg.inCfg match {
       case RGBConfig(rW, gW, bW) =>
         // Extract RGB fields
         val r = inColor(rW - 1 downto 0)
         val g = inColor(rW + gW - 1 downto rW)
         val b = inColor(rW + gW + bW - 1 downto rW + gW)
         // Color conversion logic
-        outCfg match {
+        cfg.outCfg match {
           // RGB → ARGB
           case ARGBConfig(aW, rW, gW, bW) => // A field is set to 0
             (b.asBits.resizeLeft(bW) ## g.asBits.resizeLeft(gW) ## r.asBits.resizeLeft(rW) ## B(0, aW bits)).asUInt
@@ -98,6 +108,10 @@ object RGBConverter {
           case LConfig(lW) =>
             val l = (r * 77) + (g * 151) + (b * 28) >> 8
             l.asBits.resizeLeft(lW).asUInt
+          // RGB → B
+          case BConfig(bW) =>
+            val l = (r * 77) + (g * 151) + (b * 28) >> 8
+            Mux(l >= cfg.BThreshold, U((1 << bW) - 1, bW bits), U(0, bW bits))
           // fallback: passthrough
           case _ => inColor.resized
         }
@@ -108,15 +122,15 @@ object RGBConverter {
 }
 
 object YUVConverter {
-  def apply(inCfg: ColorConfig, outCfg: ColorConfig)(inColor: UInt): UInt = {
-    inCfg match {
+  def apply(cfg: ConvertConfig)(inColor: UInt): UInt = {
+    cfg.inCfg match {
       case YUVConfig(yW, uW, vW) =>
         // Extract YUV fields
         val y = inColor(yW - 1 downto 0)
         val u = inColor(yW + uW - 1 downto yW)
         val v = inColor(yW + uW + vW - 1 downto yW + uW)
         // Color conversion logic
-        outCfg match {
+        cfg.outCfg match {
           // YUV → ARGB
           case ARGBConfig(aW, rW, gW, bW) => // A field is set to 0
             val r = y + ((359 * (v - 128)) >> 8)
@@ -138,6 +152,9 @@ object YUVConverter {
           // YUV → L (grayscale)
           case LConfig(lW) =>
             y.asBits.resizeLeft(lW).asUInt
+          // YUV → B
+          case BConfig(bW) =>
+            Mux(y >= cfg.BThreshold, U((1 << bW) - 1, bW bits), U(0, bW bits))
           // fallback: passthrough
           case _ => inColor.resized
         }
@@ -148,14 +165,14 @@ object YUVConverter {
 }
 
 object ALConverter {
-  def apply(inCfg: ColorConfig, outCfg: ColorConfig)(inColor: UInt): UInt = {
-    inCfg match {
+  def apply(cfg: ConvertConfig)(inColor: UInt): UInt = {
+    cfg.inCfg match {
       case ALConfig(aW, lW) =>
         // Extract AL fields
-        val l = inColor(lW - 1 downto 0)
-        val a = inColor(lW + aW - 1 downto lW)
+        val a = inColor(aW - 1 downto 0)
+        val l = inColor(aW + aW - 1 downto aW)
         // Color conversion logic
-        outCfg match {
+        cfg.outCfg match {
           // AL → ARGB
           case ARGBConfig(aW, rW, gW, bW) => // RGB fields are set to L
             (l.asBits.resizeLeft(bW) ## l.asBits.resizeLeft(gW) ## l.asBits.resizeLeft(rW) ## a.asBits.resizeLeft(aW)).asUInt
@@ -171,6 +188,9 @@ object ALConverter {
           // AL → L
           case LConfig(lW) =>
             l.asBits.resizeLeft(lW).asUInt
+          // AL → B
+          case BConfig(bW) =>
+            Mux(l >= cfg.BThreshold, U((1 << bW) - 1, bW bits), U(0, bW bits))
           // fallback: passthrough
           case _ => inColor.resized
         }
@@ -181,13 +201,13 @@ object ALConverter {
 }
 
 object LConverter {
-  def apply(inCfg: ColorConfig, outCfg: ColorConfig)(inColor: UInt): UInt = {
-    inCfg match {
+  def apply(cfg: ConvertConfig)(inColor: UInt): UInt = {
+    cfg.inCfg match {
       case LConfig(lW) =>
         // Extract L fields
         val l = inColor
         // Color conversion logic
-        outCfg match {
+        cfg.outCfg match {
           // L → ARGB
           case ARGBConfig(aW, rW, gW, bW) => // RGB fields are set to L
             (l.asBits.resizeLeft(bW) ## l.asBits.resizeLeft(gW) ## l.asBits.resizeLeft(rW) ## B(0, aW bits)).asUInt
@@ -203,6 +223,9 @@ object LConverter {
           // L → L
           case LConfig(lW) =>
             l.asBits.resizeLeft(lW).asUInt
+          // L → B
+          case BConfig(bW) =>
+            Mux(l >= cfg.BThreshold, U((1 << bW) - 1, bW bits), U(0, bW bits))
           // fallback: passthrough
           case _ => inColor.resized
         }
@@ -213,22 +236,99 @@ object LConverter {
 }
 
 // ---------- ColorConvert module ----------
-case class ColorConvert(inCfg: ColorConfig, outCfg: ColorConfig) extends Component {
+// Demo usage:
+case class ColorConvert(cfg: ConvertConfig) extends Component {
+  import cfg._
   val io = new Bundle {
-    val inColor  = in(UInt(inCfg.getWidth bits))
-    val outColor = out(UInt(outCfg.getWidth bits))
+    val inColor  = in(Color(inCfg))
+    val outColor = out(Color(outCfg))
   }
-  io.outColor := Converter(inCfg, outCfg)(io.inColor)
-  // Converter(inCfg, outCfg)(io.inColor, io.outColor)
+  io.outColor := Converter(cfg)(io.inColor)
+  // Converter(cfg)(io.inColor, io.outColor)
 }
 
+// Inpin color conversion module with muxing support
+object ColorConvertType extends SpinalEnum {
+  val ARGB8888, RGB888, RGB565, ARGB1555, ARGB4444, L8, AL44, AL88 = newElement()
+}
+object ColorConvert {
+  def colorConfigOf(t: ColorConvertType.E): ColorConfig = t match {
+    case ColorConvertType.ARGB8888 => ARGBConfig(8,8,8,8)
+    case ColorConvertType.RGB888   => RGBConfig(8,8,8)
+    case ColorConvertType.RGB565   => RGBConfig(5,6,5)
+    case ColorConvertType.ARGB1555 => ARGBConfig(1,5,5,5)
+    case ColorConvertType.ARGB4444 => ARGBConfig(4,4,4,4)
+    case ColorConvertType.L8       => LConfig(8)
+    case ColorConvertType.AL44     => ALConfig(4,4)
+    case ColorConvertType.AL88     => ALConfig(8,8)
+  }
+}
+case class ColorConvertMux(inCfg: ColorConfig) extends Component {
+  import ColorConvert._
+  // Calculate the configuration corresponding to the maximum bit width
+  val maxCfg = ColorConvertType.elements
+    .map(colorConfigOf)
+    .maxBy(_.getWidth)
+  val io = new Bundle {
+    val inColor  = in(Color(inCfg))
+    val muxSel   = in(ColorConvertType())
+    val outColor = out(Color(maxCfg))
+  }
+
+  io.outColor := io.inColor.resized
+  for (t <- ColorConvertType.elements) {
+    when(io.muxSel === t) {
+      io.outColor := Converter(ConvertConfig(inCfg, colorConfigOf(t)))(io.inColor).resized
+    }
+  }
+}
+case class ColorConvertDeMux(outCfg: ColorConfig) extends Component {
+  import ColorConvert._
+  // Calculate the configuration corresponding to the maximum bit width
+  val maxInCfg = ColorConvertType.elements
+    .map(colorConfigOf)
+    .maxBy(_.getWidth)
+  val io = new Bundle {
+    val inColor  = in(Color(maxInCfg))
+    val muxSel   = in(ColorConvertType())
+    val outColor = out(Color(outCfg))
+  }
+
+  io.outColor := io.inColor.resized
+  for (t <- ColorConvertType.elements) {
+    when(io.muxSel === t) {
+      io.outColor := Converter(ConvertConfig(colorConfigOf(t), outCfg))(io.inColor.resized)
+    }
+  }
+}
+
+
+
+
+// ---------- Generate ----------
 // object ColorConvertGen {
 //   def main(args: Array[String]): Unit = {
 //     SpinalConfig(targetDirectory = "rtl").generateVerilog(
-//       ColorConvert(
+//       ColorConvert(ConvertConfig(
 //         inCfg = ARGBConfig(8,8,8,8),
-//         outCfg = RGBConfig(5,6,5)
+//         outCfg = RGBConfig(5,6,5))
 //       )
+//     )
+//   }
+// }
+
+// object ColorConvertMuxGen {
+//   def main(args: Array[String]): Unit = {
+//     SpinalConfig(targetDirectory = "rtl").generateVerilog(
+//       ColorConvertMux(inCfg = ARGBConfig(8,8,8,8))
+//     )
+//   }
+// }
+
+// object ColorConvertDeMuxGen {
+//   def main(args: Array[String]): Unit = {
+//     SpinalConfig(targetDirectory = "rtl").generateVerilog(
+//       ColorConvertDeMux(outCfg = ARGBConfig(8,8,8,8))
 //     )
 //   }
 // }
