@@ -83,7 +83,7 @@ class cyberwithddrlcd(config: cyberwithddrlcdConfig) extends Component {
   import config._
   val debug = true
   val interruptCount = 16
-  val colorConfig = RGBConfig(5, 6, 5)
+  val colorCfg = RGBCfg(5, 6, 5)
 
   val io = new Bundle {
     // Clocks / reset
@@ -96,7 +96,7 @@ class cyberwithddrlcd(config: cyberwithddrlcdConfig) extends Component {
     // val gpio = master(TriStateArray(32 bits)) // Tang Primer has limited IOBUF(s)
     val uart_tx = out(Bool)
     // Graphics IO
-    val dvti = master(DVTI(colorConfig.getWidth))
+    val dvti = master(DVTI(colorCfg.getWidth))
     val lcdclk = out Bool ()
   }
 
@@ -269,7 +269,7 @@ class cyberwithddrlcd(config: cyberwithddrlcdConfig) extends Component {
         burstLength = 8,
         frameSizeMax = 2048 * 1512 * 2,
         fifoSize = 512,
-        colorConfig = colorConfig,
+        colorCfg = colorCfg,
         dvtClock = lcdClockDomain
     )
     val lcdCtrl = Axi4Lcd(lcdCtrlConfig)

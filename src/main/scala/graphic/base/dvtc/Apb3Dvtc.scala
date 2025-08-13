@@ -11,7 +11,7 @@ import spinal.lib.graphic.{VideoDma, VideoDmaGeneric}
 case class DvtConfig(
   timingWidth: Int = 12,
   positionWidth: Int = 16,
-  colorConfig: ColorConfig = RGBConfig(5, 6, 5),
+  colorCfg: ColorCfg = RGBCfg(5, 6, 5),
   dvtClock: ClockDomain
 )
 
@@ -22,7 +22,7 @@ case class DvtcGenerics(
   frameSizeMax: Int,
   fifoSize: Int,
   dvtClock: ClockDomain,
-  colorConfig: ColorConfig = RGBConfig(5, 6, 5),
+  colorCfg: ColorCfg = RGBCfg(5, 6, 5),
   timingWidth: Int = 12,
   pendingRequestMax: Int = 7,
   layerNum: Int = 2
@@ -38,7 +38,7 @@ case class DvtcGenerics(
   def dvtConfig = DvtConfig(
     timingWidth = 12,
     positionWidth = 16,
-    colorConfig = colorConfig,
+    colorCfg = colorCfg,
     dvtClock = dvtClock
   )
 
@@ -50,7 +50,7 @@ case class DvtcGenerics(
     pendingRequetMax  = pendingRequestMax,
     fifoSize          = fifoSize,
     frameClock        = dvtClock,
-    frameFragmentType = Color(colorConfig)
+    frameFragmentType = Color(colorCfg)
   )
 
   def bytePerAddress = axiDataWidth/8 * burstLength
@@ -79,31 +79,46 @@ case class DVTI(dataWidth: Int) extends Bundle with IMasterSlave {
   }
 }
 
+case class DVTCfg(
+  hsync: Int,
+  hback: Int,
+  hdisp: Int,
+  htotal: Int,
+  vsync: Int,
+  vback: Int,
+  vdisp: Int,
+  vtotal: Int,
+  vspol: Boolean = false,
+  hspol: Boolean = false,
+  depol: Boolean = false,
+  pcpol: Boolean = false
+)
+
 case class DVTCfgInterface(timingWidth: Int = 12) extends Bundle {
-  val vsync  = UInt(timingWidth bits)
-  val vback  = UInt(timingWidth bits)
-  val vdisp  = UInt(timingWidth bits)
-  // val vfront = UInt(timingWidth bits)
-  val vtotal = UInt(timingWidth bits)
   val hsync  = UInt(timingWidth bits)
   val hback  = UInt(timingWidth bits)
   val hdisp  = UInt(timingWidth bits)
   // val hfront = UInt(timingWidth bits)
   val htotal = UInt(timingWidth bits)
+  val vsync  = UInt(timingWidth bits)
+  val vback  = UInt(timingWidth bits)
+  val vdisp  = UInt(timingWidth bits)
+  // val vfront = UInt(timingWidth bits)
+  val vtotal = UInt(timingWidth bits)
   val vspol = Bool()
   val hspol = Bool()
   val depol = Bool()
   val pcpol = Bool()
 }
 
-case class DVTiming(dvtConfig: DvtConfig) extends Component {
+case class DVTimingDyn(dvtConfig: DvtConfig) extends Component {
   import dvtConfig._
   val io = new Bundle {
     val en = in Bool()
     val cfg = in(DVTCfgInterface(timingWidth))
-    val pixel = slave(Stream(Color(colorConfig)))
+    val pixel = slave(Stream(Color(colorCfg)))
     val pos = out(position(positionWidth))
-    val dvti = master(DVTI(colorConfig.getWidth))
+    val dvti = master(DVTI(colorCfg.getWidth))
     val hen = out Bool()
     val ven = out Bool()
   }
@@ -141,13 +156,61 @@ case class DVTiming(dvtConfig: DvtConfig) extends Component {
   }
 }
 
+case class DVTiming(dvtcfg: DVTCfg, dvtConfig: DvtConfig) extends Component {
+  import dvtcfg._
+  import dvtConfig._
+  val io = new Bundle {
+    val en = in Bool()
+    val pixel = slave(Stream(Color(colorCfg)))
+    val pos = out(position(positionWidth))
+    val dvti = master(DVTI(colorCfg.getWidth))
+    val hen = out Bool()
+    val ven = out Bool()
+  }
+
+  val dvtArea = new ClockingArea(dvtClock) {
+    val en = io.hen && io.ven
+    val hCnt = Reg(UInt(timingWidth bits)) init(0)
+    val vCnt = Reg(UInt(timingWidth bits)) init(0)
+    io.hen := (hCnt >= hback) && (hCnt < hdisp)
+    io.ven := (vCnt >= vback) && (vCnt < vdisp)
+    when(io.en) {
+      when(hCnt === htotal) {
+        hCnt := 0
+        when(vCnt === vtotal) {
+          vCnt := 0
+        } otherwise {
+          vCnt := vCnt + 1
+        }
+      } otherwise {
+        hCnt := hCnt + 1
+      }
+    }.otherwise {
+      hCnt := 0
+      vCnt := 0
+    }
+
+    // 负极性: 高电平时间长，低电平时间短; 正极性: 高电平时间短，低电平时间长
+    val HSpol = Bool(hspol)
+    val VSpol = Bool(vspol)
+    val DEpol = Bool(depol)
+    io.dvti.data := io.pixel.payload
+    io.dvti.vs := ((vCnt <= vsync) ^ VSpol) && io.en
+    io.dvti.hs := ((hCnt <= hsync) ^ HSpol) && io.en
+    io.dvti.de := (en ^ DEpol) && io.en
+    io.pos.x := hCnt.resized
+    io.pos.y := vCnt.resized
+    io.pixel.ready := en || ~io.en
+  }
+}
+
 // Apb3 DVT Controller
 case class Apb3Dvtc(config: DvtcGenerics) extends Component {
   import config._
   val io = new Bundle {
     val apb = slave(Apb3(apb3Config))
     val axi = master(Axi4ReadOnly(axi4Config))
-    val dvti = master(DVTI(colorConfig.getWidth))
+    val dvti = master(DVTI(colorCfg.getWidth))
     val interrupt = out Bool()
   }
 
@@ -235,10 +298,10 @@ case class Apb3Dvtc(config: DvtcGenerics) extends Component {
   /* -------------------------------- Connection -------------------------------- */
   /* ---------------------------------------------------------------------------- */
   val layerDma = new VideoDma(dmaGenerics)
-  val dvt = new DVTiming(dvtConfig)
-  // 连接 DVTiming 控制器
+  val dvt = new DVTimingDyn(dvtConfig)
+  // 连接 DVTimingDyn 控制器
   val dvtArea = new ClockingArea(dvtClock) {
-    // 连接 DVTiming 控制器的配置寄存器
+    // 连接 DVTimingDyn 控制器的配置寄存器
     dvt.io.en        := BufferCC(GCR(GCR_DVTCEN))
     dvt.io.cfg.pcpol := BufferCC(GCR(GCR_PCPOL))
     dvt.io.cfg.depol := BufferCC(GCR(GCR_DEPOL))
@@ -255,7 +318,7 @@ case class Apb3Dvtc(config: DvtcGenerics) extends Component {
     dvt.io.cfg.htotal := BufferCC(TWCR(timingWidth + 15 downto 16))
     dvt.io.cfg.hspol  := BufferCC(GCR(GCR_HSPOL))
 
-    // 连接 DVTiming 控制器的数据流
+    // 连接 DVTimingDyn 控制器的数据流
     val frameStart = Mux(dvt.io.cfg.vspol, dvt.io.dvti.vs.rise, dvt.io.dvti.vs.rise.fall)
     val error = RegInit(False)
     val waitStartOfFrame = RegInit(False)
@@ -287,7 +350,7 @@ case class Apb3Dvtc(config: DvtcGenerics) extends Component {
 
     // // 像素选择逻辑
     // dvt.io.pixel.valid := layerDma.io.frame.valid && inWindow
-    // dvt.io.pixel.payload := Converter(ARGBConfig(8,8,8,8), colorConfig)(DCCR)
+    // dvt.io.pixel.payload := Converter(ARGBCfg(8,8,8,8), colorCfg)(DCCR)
     // when(inWindow) {
     //   dvt.io.pixel.payload := layerDma.io.frame.toStreamOfFragment.payload
     // }
@@ -344,7 +407,7 @@ case class Apb3Dvtc(config: DvtcGenerics) extends Component {
 //         burstLength = 8,
 //         frameSizeMax = 2048*1512,
 //         fifoSize = 512,
-//         colorConfig = RGBConfig(5, 6, 5),
+//         colorCfg = RGBCfg(5, 6, 5),
 //         dvtClock = ClockDomain.external("dvt"))
 //       )
 //     )

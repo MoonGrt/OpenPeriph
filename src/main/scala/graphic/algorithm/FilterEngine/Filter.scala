@@ -5,7 +5,7 @@ import spinal.core._
 import spinal.lib._
 
 case class FilterConfig(
-  colorConfig: ColorConfig,
+  colorCfg: ColorCfg,
   lineLength: Int,
   kernel: Seq[Int],
   kernelShift: Int = 4
@@ -15,8 +15,8 @@ class Filter(config: FilterConfig) extends Component {
   import config._
   val io = new Bundle {
     val EN   = in Bool()
-    val pre  = slave(DVTI(colorConfig.getWidth))
-    val post = master(DVTI(colorConfig.getWidth))
+    val pre  = slave(DVTI(colorCfg.getWidth))
+    val post = master(DVTI(colorCfg.getWidth))
   }
 
   // General processing flow
@@ -43,32 +43,32 @@ class Filter(config: FilterConfig) extends Component {
     io.post.data := Mux(io.EN, combinedData.asUInt, io.pre.data)
   }
 
-  colorConfig match {
-    case ARGBConfig(aW, rW, gW, bW) =>
+  colorCfg match {
+    case ARGBCfg(aW, rW, gW, bW) =>
       processChannels(Seq(
         io.pre.data.asBits(aW - 1 downto 0),
         io.pre.data.asBits(aW + rW - 1 downto aW),
         io.pre.data.asBits(aW + rW + gW - 1 downto aW + rW),
         io.pre.data.asBits(aW + rW + gW + bW - 1 downto aW + rW + gW)
       ))
-    case RGBConfig(rW, gW, bW) =>
+    case RGBCfg(rW, gW, bW) =>
       processChannels(Seq(
         io.pre.data.asBits(rW - 1 downto 0),
         io.pre.data.asBits(rW + gW - 1 downto rW),
         io.pre.data.asBits(rW + gW + bW - 1 downto rW + gW)
       ))
-    case YUVConfig(yW, uW, vW) =>
+    case YUVCfg(yW, uW, vW) =>
       processChannels(Seq(
         io.pre.data.asBits(yW - 1 downto 0),
         io.pre.data.asBits(yW + uW - 1 downto yW),
         io.pre.data.asBits(yW + uW + vW - 1 downto yW + uW)
       ))
-    case ALConfig(aW, lW) =>
+    case ALCfg(aW, lW) =>
       processChannels(Seq(
         io.pre.data.asBits(aW - 1 downto 0),
         io.pre.data.asBits(aW + lW - 1 downto aW)
       ))
-    case LConfig(lW) =>
+    case LCfg(lW) =>
       processChannels(Seq(io.pre.data.asBits))
     case _ =>
       io.post << io.pre
@@ -82,7 +82,7 @@ class Filter(config: FilterConfig) extends Component {
 //     val sharpenKernel = Seq(0,-1,0, -1,5,-1, 0,-1,0) // Sharpen kernel: 0 -1 0 / -1 5 -1 / 0 -1 0
 //     SpinalConfig(targetDirectory = "rtl").generateVerilog(
 //       new Filter(FilterConfig(
-//         colorConfig = RGBConfig(8,8,8),
+//         colorCfg = RGBCfg(8,8,8),
 //         lineLength = 480,
 //         kernel = gaussianKernel,
 //         kernelShift = 4

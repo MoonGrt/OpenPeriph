@@ -8,82 +8,82 @@ object ColorFormat extends SpinalEnum {
 }
 
 // Color Interface
-trait ColorConfig {
+trait ColorCfg {
   def getWidth: Int
 }
 object Color {
-  def apply(colorConfig: ColorConfig): UInt = UInt(colorConfig.getWidth bits)
+  def apply(colorCfg: ColorCfg): UInt = UInt(colorCfg.getWidth bits)
 }
 
 // ARGB color model configuration
-case class ARGBConfig(aWidth: Int, rWidth: Int, gWidth: Int, bWidth: Int) extends ColorConfig {
+case class ARGBCfg(aWidth: Int, rWidth: Int, gWidth: Int, bWidth: Int) extends ColorCfg {
   def getWidth = aWidth + rWidth + gWidth + bWidth
 }
 object ARGB{
-  def apply(aWidth: Int, rWidth: Int, gWidth: Int, bWidth: Int): ARGB = ARGB(ARGBConfig(aWidth, rWidth, gWidth, bWidth))
+  def apply(aWidth: Int, rWidth: Int, gWidth: Int, bWidth: Int): ARGB = ARGB(ARGBCfg(aWidth, rWidth, gWidth, bWidth))
 }
-case class ARGB(colorConfig: ARGBConfig) extends Bundle{
-  val color = UInt(colorConfig.getWidth bits)
+case class ARGB(colorCfg: ARGBCfg) extends Bundle{
+  val color = UInt(colorCfg.getWidth bits)
   def clear(): Unit ={ color := 0 }
 }
 
 // RGB color model configuration
-case class RGBConfig(rWidth: Int, gWidth: Int, bWidth: Int) extends ColorConfig {
+case class RGBCfg(rWidth: Int, gWidth: Int, bWidth: Int) extends ColorCfg {
   def getWidth = rWidth + gWidth + bWidth
 }
 object RGB{
-  def apply(rWidth: Int, gWidth: Int, bWidth: Int): RGB = RGB(RGBConfig(rWidth, gWidth, bWidth))
+  def apply(rWidth: Int, gWidth: Int, bWidth: Int): RGB = RGB(RGBCfg(rWidth, gWidth, bWidth))
 }
-case class RGB(colorConfig: RGBConfig) extends Bundle{
-  val color = UInt(colorConfig.getWidth bits)
+case class RGB(colorCfg: RGBCfg) extends Bundle{
+  val color = UInt(colorCfg.getWidth bits)
   def clear(): Unit ={ color := 0 }
 }
 
 // YUV color model configuration
-case class YUVConfig(yWidth: Int, uWidth: Int, vWidth: Int) extends ColorConfig {
+case class YUVCfg(yWidth: Int, uWidth: Int, vWidth: Int) extends ColorCfg {
   def getWidth = yWidth + uWidth + vWidth
 }
 object YUV{
-  def apply(yWidth: Int, uWidth: Int, vWidth: Int): YUV = YUV(YUVConfig(yWidth, uWidth, vWidth))
+  def apply(yWidth: Int, uWidth: Int, vWidth: Int): YUV = YUV(YUVCfg(yWidth, uWidth, vWidth))
 }
-case class YUV(colorConfig: YUVConfig) extends Bundle{
-  val color = UInt(colorConfig.getWidth bits)
+case class YUV(colorCfg: YUVCfg) extends Bundle{
+  val color = UInt(colorCfg.getWidth bits)
   def clear(): Unit ={ color := 0 }
 }
 
 // AL color model configuration
-case class ALConfig(aWidth: Int, lWidth: Int) extends ColorConfig {
+case class ALCfg(aWidth: Int, lWidth: Int) extends ColorCfg {
   def getWidth = aWidth + lWidth
 }
 object AL{
-  def apply(aWidth: Int, lWidth: Int): AL = AL(ALConfig(aWidth, lWidth))
+  def apply(aWidth: Int, lWidth: Int): AL = AL(ALCfg(aWidth, lWidth))
 }
-case class AL(colorConfig: ALConfig) extends Bundle{
-  val color = UInt(colorConfig.getWidth bits)
+case class AL(colorCfg: ALCfg) extends Bundle{
+  val color = UInt(colorCfg.getWidth bits)
   def clear(): Unit ={ color := 0 }
 }
 
 // L color model configuration
-case class LConfig(lWidth: Int) extends ColorConfig {
+case class LCfg(lWidth: Int) extends ColorCfg {
   def getWidth = lWidth
 }
 object L{
-  def apply(lWidth: Int): L = L(LConfig(lWidth))
+  def apply(lWidth: Int): L = L(LCfg(lWidth))
 }
-case class L(colorConfig: LConfig) extends Bundle{
-  val color = UInt(colorConfig.getWidth bits)
+case class L(colorCfg: LCfg) extends Bundle{
+  val color = UInt(colorCfg.getWidth bits)
   def clear(): Unit ={ color := 0 }
 }
 
 // B color model configuration
-case class BConfig(bWidth: Int) extends ColorConfig {
+case class BCfg(bWidth: Int) extends ColorCfg {
   def getWidth = bWidth
 }
 // object B{
-//   def apply(bWidth: Int): B = B(BConfig(bWidth))
+//   def apply(bWidth: Int): B = B(BCfg(bWidth))
 // }
-// case class B(colorConfig: BConfig) extends Bundle{
-//   val color = UInt(colorConfig.getWidth bits)
+// case class B(colorCfg: BCfg) extends Bundle{
+//   val color = UInt(colorCfg.getWidth bits)
 //   def clear(): Unit ={
 //     color := 0
 //   }

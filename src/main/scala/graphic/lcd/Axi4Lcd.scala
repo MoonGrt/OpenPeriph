@@ -15,7 +15,7 @@ case class Axi4Lcd(config: DvtcGenerics) extends Component{
   val io = new Bundle{
     val apb = slave(Apb3(apb3Config))
     val axi = master(Axi4ReadOnly(axi4Config))
-    val dvti = master(DVTI(colorConfig.getWidth))
+    val dvti = master(DVTI(colorCfg.getWidth))
     val interrupt = out(Bool())
   }
 
@@ -35,7 +35,7 @@ case class Axi4Lcd(config: DvtcGenerics) extends Component{
 //         burstLength = 8,
 //         frameSizeMax = 2048*1512,
 //         fifoSize = 512,
-//         colorConfig = RGBConfig(5, 6, 5),
+//         colorCfg = RGBCfg(5, 6, 5),
 //         dvtClock = ClockDomain.external("dvt"))
 //       )
 //     )

@@ -182,7 +182,7 @@ class Matrix3x3(dataWidth: Int, lineLength: Int) extends Component {
   val row2 = Bits(dataWidth bits)
   val row3 = Reg(Bits(dataWidth bits))
 
-  when(io.pre.de) { row3 := io.pre.data.asBits }
+  row3 := io.pre.data.asBits
 
   val ram2 = new ShiftRam(dataWidth, lineLength)
   ram2.io.CE := io.pre.de
@@ -216,7 +216,6 @@ class Matrix3x3(dataWidth: Int, lineLength: Int) extends Component {
   val m31 = Reg(Bits(dataWidth bits)) init(0)
   val m32 = Reg(Bits(dataWidth bits)) init(0)
   val m33 = Reg(Bits(dataWidth bits)) init(0)
-
   when(pre_de_r(0)) {
     m11 := m12; m12 := m13; m13 := row1
     m21 := m22; m22 := m23; m23 := row2
@@ -266,10 +265,10 @@ case class Conv2D3x3ParamsInterface(dataWidth: Int) extends Bundle with IMasterS
 }
 
 case class Conv2DConfig(
-  dataWidth    : Int = 8,   // bits per pixel
-  lineLength   : Int = 480, // number of pixels per line
-  kernel       : Seq[Int],  // 9 elements, row-major: k11,k12,k13,k21,...,k33
-  kernelShift  : Int = 4    // right shift to divide by kernel sum (e.g. 16 -> shift 4)
+  dataWidth    : Int,      // bits per pixel
+  lineLength   : Int,      // number of pixels per line
+  kernel       : Seq[Int], // 9 elements, row-major: k11,k12,k13,k21,...,k33
+  kernelShift  : Int = 4   // right shift to divide by kernel sum (e.g. 16 -> shift 4)
 )
 
 case class Conv2D3x3(config: Conv2DConfig) extends Component {
