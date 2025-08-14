@@ -35,8 +35,10 @@ class EdgeDetect(config: EdgeDetectConfig) extends Component {
   )
 
   // Create two convolvers (Gx and Gy)
-  val convGx = new Conv2D3x3(Conv2DConfig(8, lineLength, kernelGx, 0))
-  val convGy = new Conv2D3x3(Conv2DConfig(8, lineLength, kernelGy, 0))
+  val dataWidth = LCfg(8).getWidth
+  val convWidth = dataWidth + 4
+  val convGx = new Conv2D3x3(UInt(dataWidth bits), Conv2DConfig(dataWidth, convWidth, lineLength, kernelGx, 0))
+  val convGy = new Conv2D3x3(UInt(dataWidth bits), Conv2DConfig(dataWidth, convWidth, lineLength, kernelGy, 0))
 
   convGx.io.EN     := io.EN
   convGx.io.pre.vs := io.pre.vs
@@ -53,7 +55,10 @@ class EdgeDetect(config: EdgeDetectConfig) extends Component {
   // Calculate gradient = |Gx| + |Gy|
   val Gx = convGx.io.post.data.asSInt.abs
   val Gy = convGy.io.post.data.asSInt.abs
-  val grad = (Gx + Gy).resize(8)
+  val grad = (Gx + Gy)
+  val clipped = Bits(dataWidth bits)
+  when(grad > 255) { clipped := 255 } 
+  .otherwise { clipped := grad.resize(dataWidth).asBits }
   val bin = Converter(grad)(ConvertConfig(LCfg(8), BCfg(colorCfg.getWidth)))
 
   io.post.vs   := Mux(io.EN, convGx.io.post.vs, io.pre.vs)
