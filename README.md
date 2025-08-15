@@ -38,8 +38,6 @@
     <li><a href="#file-tree">File Tree</a></li>
     <li>
       <a href="#about-the-project">About The Project</a>
-      <ul>
-      </ul>
     </li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
@@ -57,12 +55,39 @@
 
 ```
 └─ Project
-  ├─ .gitignore
-  ├─ LICENSE
-  ├─ README.md
-  ├─ README_cn.md
-  └─ /docs/
-
+  ├─ /src/
+  │ └─ /main/
+  │   └─ /scala/
+  │     ├─ /graphic/
+  │     │ ├─ /algorithm/
+  │     │ ├─ /base/
+  │     │ ├─ /hdmi/
+  │     │ ├─ /lcd/
+  │     │ └─ /vga/
+  │     ├─ /periph/
+  │     │ ├─ /afio/
+  │     │ ├─ /exit/
+  │     │ ├─ /gpio/
+  │     │ └─ /.../
+  │     └─ /soc/
+  │       ├─ cyber.scala
+  │       └─ /gowin/
+  └─ /test/
+    ├─ /cyber/
+    │ ├─ linker.ld
+    │ ├─ Makefile
+    │ ├─ /libs/
+    │ │ ├─ exti.h
+    │ │ ├─ gpio.h
+    │ │ ├─ i2c.h
+    │ │ ├─ iwdg.h
+    │ │ └─ ...
+    │ └─ /src/
+    │   ├─ config.h
+    │   ├─ init.S
+    │   └─ main.c
+    ├─ /cyberwithddr/
+    └─ /tang_primer/
 ```
 
 
@@ -70,7 +95,100 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">[![Product Name Screen Shot][product-screenshot]](https://example.com) Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`</p></body></html>
+This project is based on the **STM32-compatible peripheral and register set** and uses **SpinalHDL** for hardware design and implementation, aiming to build a RISC-V SoC platform that supports **open-source, STM32-compatible firmware**.
+Its design objective is to enable developers to directly reuse STM32 standard peripheral libraries and firmware code on the RISC-V architecture, while providing a comprehensive hardware and software environment for FPGA and SoC prototype verification.
+
+The project is divided into two main parts:
+
+1. **Hardware Design** — A modular SoC architecture based on SpinalHDL
+2. **Software Support Package** — Peripheral drivers and example programs ported from the STM32 standard library  
+
+The project includes minimal RISC-V SoC example code, a complete Gowin FPGA project, environment configuration scripts, and auxiliary tools to help users get started quickly and perform secondary development.
+
+### Background and Objectives
+
+In the field of embedded development, the STM32 series of MCUs are widely used due to their rich peripherals and extensive software ecosystem. The objectives of this project are:
+
+* **Hardware Level**: Replicate the register and peripheral design philosophy of STM32 and port it to the RISC-V SoC architecture to achieve register-level compatibility.
+* **Software Level**: Ensure full compatibility with the STM32 standard peripheral library, enabling existing STM32 firmware to run directly on the RISC-V SoC with minimal modifications.
+* **Verification and Testing**: Provide engineering files and test firmware compatible with Gowin FPGA, facilitating SoC functionality verification on actual hardware.
+
+---
+
+### Hardware Design
+
+The hardware part was written using **SpinalHDL** and is divided into three major modules: **Peripherals (Periph)**, **Graphics Processing (Graphic)**, and **SoC Integration**.
+
+#### 1. Periph (Peripheral Module)
+
+* Includes common MCU peripherals:
+  `GPIO`, `EXTI`, `AFIO`, `UART`, `TIM`, `SPI`, `IIC`, `WDG`, `SysTick`, etc.
+* Design fully references the STM32 data manual:
+  * Register naming and address mapping remain consistent
+  * Register functions are almost completely replicated
+  * Supports complex interrupts, timing, peripheral interaction, and other functions
+
+#### 2. Graphic (Graphics and Video Processing Module)
+
+* Driver layer: `HDMI`, `VGA`, `LCD`
+* Algorithm layer: `convolution`, `filtering`, `edge detection`, `color conversion`, `color blending`, etc.
+* DVTC and other modules are designed based on the STM32 `LTDC + DMA2D` architecture and extended with video stream processing functionality
+* Suitable for image display, video rendering, embedded vision processing, and other scenarios
+
+#### 3. SoC (Integration and Platform Adaptation)
+
+* Integrates peripherals and graphics modules into the RISC-V SoC architecture
+* Customized design for **Gowin FPGA**:
+  * DDR controller
+  * HDMI video interface
+* Each Scala file includes a directly executable demo for convenient functionality verification and debugging
+
+---
+
+### Software Support Package
+
+The software component supports the STM32 compatibility features of the hardware and has ported the **STM32 Standard Peripheral Library**, providing multiple runtime environments:
+
+* **pinsec**  
+  * Software support package for SpinalHDL native SoCs
+* **cyber**  
+  * SoC project using STM32 peripherals from this project  
+  * Includes a complete development environment:
+* `Makefile`
+* Linker script (`linker.ld`)
+    * Boot file (`init.S`)
+    * User example (`main.c`)
+    * Ported STM32 standard library drivers (`libs/`)
+* **cyberwithddr**
+  * An upgraded version of `cyber`
+  * Supports hardware DDR, enabling data storage in the DDR address space
+  * Includes a simple DDR test program
+
+---
+
+### Script Tools
+
+* **Environment Initialization** — `scripts/setup.sh`
+  * Automatically installs tools such as `sbt`, `verilator`, and `riscv-gnu-toolchain`
+  * Downloads necessary dependencies and library files
+* **Instruction Extraction Tool** — `scripts/InstExtractor.py`
+  * Extract instructions and data from the compiled binary files
+  * Generate a Verilog-formatted `mem` initialization file
+  * Can be run via `make mem` or manually
+
+---
+
+### Gowin FPGA Project
+
+The directory `test/tang_primer/` contains the complete Gowin FPGA project files:
+
+* All hardware design and SoC integration code
+* Gowin official IP core files
+* Pin and timing constraint files
+
+This project can be directly compiled, synthesized, and burned to the target development board in the Gowin IDE.
+
+
 <p align="right">(<a href="#top">top</a>)</p>
 
 

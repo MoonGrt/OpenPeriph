@@ -57,13 +57,12 @@ class EdgeDetect(config: EdgeDetectConfig) extends Component {
   val Gy = convGy.io.post.data.asSInt.abs
   val grad = (Gx + Gy)
   val clipped = Bits(dataWidth bits)
-  when(grad > 255) { clipped := 255 } 
-  .otherwise { clipped := grad.resize(dataWidth).asBits }
-  val bin = Converter(grad)(ConvertConfig(LCfg(8), BCfg(colorCfg.getWidth)))
+  when(grad > 255) { clipped := 255 } .otherwise { clipped := grad.resize(dataWidth).asBits }
+  val bin = Converter(grad)(ConvertConfig(LCfg(8), BCfg(colorCfg.getWidth), BThreshold = threshold))
 
-  io.post.vs   := Mux(io.EN, convGx.io.post.vs, io.pre.vs)
-  io.post.hs   := Mux(io.EN, convGx.io.post.hs, io.pre.hs)
-  io.post.de   := Mux(io.EN, convGx.io.post.de, io.pre.de)
+  io.post.vs   := Mux(io.EN, RegNext(convGx.io.post.vs), io.pre.vs)
+  io.post.hs   := Mux(io.EN, RegNext(convGx.io.post.hs), io.pre.hs)
+  io.post.de   := Mux(io.EN, RegNext(convGx.io.post.de), io.pre.de)
   io.post.data := Mux(io.EN, bin, L)
 }
 

@@ -53,7 +53,7 @@ case class TestPattern(dvtcfg: DVTCfg, colorCfg: ColorCfg) extends Component {
     U"h000000", U"hFF0000", U"h00FF00", U"h0000FF",
     U"hFFFF00", U"hFF00FF", U"h00FFFF", U"hFFFFFF"
   )
-  val colorBarPixel = Converter(colors(colorSel.resized))(ConvertConfig(RGBCfg(8,8,8), colorCfg))
+  val colorBarPixel = Converter(colors(7-colorSel.resized))(ConvertConfig(RGBCfg(8,8,8), colorCfg))
 
   // Gray Scale
   val grayLevel = ((hcnt - (hsync + hback)) * 255 / hdisp).resized

@@ -21,12 +21,10 @@ class ShiftRamDyn(dataWidth: Int, lineLengthBits: Int) extends Component {
   val wrPtr = RegInit(U(0, lineLengthBits bits))
   val rdPtr = RegInit(U(0, lineLengthBits bits))
 
-  when(!io.CE) {
-    io.Q := 0
-  } otherwise {
+  io.Q := mem(rdPtr)
+  when(io.CE) {
     // write then read (same cycle behavior as original Verilog)
     mem(wrPtr) := io.D
-    io.Q := mem(rdPtr)
     // increment with wrap
     when(wrPtr === (io.LINE_LENGTH - 1) - 1) { wrPtr := U(0) } .otherwise { wrPtr := wrPtr + 1 }
     when(rdPtr === (io.LINE_LENGTH - 1) - 1) { rdPtr := U(0) } .otherwise { rdPtr := rdPtr + 1 }
@@ -144,7 +142,7 @@ class Matrix3x3Dyn[T <: Data](dataType: HardType[T], dataWidth: Int, lineLengthB
   val m32 = Reg(Bits(dataWidth bits)) init(0)
   val m33 = Reg(Bits(dataWidth bits)) init(0)
 
-  when(pre_de_r(0)) {
+  when(io.pre.de) {
     m11 := m12; m12 := m13; m13 := row1
     m21 := m22; m22 := m23; m23 := row2
     m31 := m32; m32 := m33; m33 := row3
@@ -198,7 +196,7 @@ class Matrix3x3[T <: Data](dataType: HardType[T], dataWidth: Int, lineLength: In
   val m11, m12, m13 = Reg(Bits(dataWidth bits)) init(0)
   val m21, m22, m23 = Reg(Bits(dataWidth bits)) init(0)
   val m31, m32, m33 = Reg(Bits(dataWidth bits)) init(0)
-  when(pre_de_r(0)) {
+  when(io.pre.de) {
     m11 := m12; m12 := m13; m13 := row1
     m21 := m22; m22 := m23; m23 := row2
     m31 := m32; m32 := m33; m33 := row3
