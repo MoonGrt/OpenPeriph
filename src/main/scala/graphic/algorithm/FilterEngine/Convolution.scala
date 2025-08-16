@@ -61,22 +61,22 @@ class ShiftRam(dataWidth: Int, lineLength: Int) extends Component {
  * Matrix3x3 builds a 3x3 neighborhood for a single channel.
  * The output matrix signals are valid two cycles after input pre_de (matches Verilog behavior).
  */
-case class Matrix3x3Interface[T <: Data](dataType: HardType[T]) extends Bundle with IMasterSlave {
-  val m11 = dataType()
-  val m12 = dataType()
-  val m13 = dataType()
-  val m21 = dataType()
-  val m22 = dataType()
-  val m23 = dataType()
-  val m31 = dataType()
-  val m32 = dataType()
-  val m33 = dataType()
+case class Matrix3x3Interface(dataWidth: Int) extends Bundle with IMasterSlave {
+  val m11 = SInt(dataWidth bits)
+  val m12 = SInt(dataWidth bits)
+  val m13 = SInt(dataWidth bits)
+  val m21 = SInt(dataWidth bits)
+  val m22 = SInt(dataWidth bits)
+  val m23 = SInt(dataWidth bits)
+  val m31 = SInt(dataWidth bits)
+  val m32 = SInt(dataWidth bits)
+  val m33 = SInt(dataWidth bits)
 
   override def asMaster() = this.asOutput()
   override def asSlave() = this.asInput()
-  override def clone = Matrix3x3Interface(dataType)
+  override def clone = Matrix3x3Interface(dataWidth)
 
-  def << (that: Matrix3x3Interface[T]): Unit = {
+  def << (that: Matrix3x3Interface): Unit = {
     this.m11 := that.m11
     this.m12 := that.m12
     this.m13 := that.m13
@@ -89,15 +89,14 @@ case class Matrix3x3Interface[T <: Data](dataType: HardType[T]) extends Bundle w
   }
 }
 
-class Matrix3x3Dyn[T <: Data](dataType: HardType[T], dataWidth: Int, lineLengthBits: Int) extends Component {
+class Matrix3x3Dyn(dataWidth: Int, lineLengthBits: Int) extends Component {
   val io = new Bundle {
     val IMG_HDISP = in UInt(lineLengthBits bits)
     val pre = slave(DVTI(dataWidth))
-
     val matrix_vs = out Bool()
     val matrix_hs = out Bool()
     val matrix_de = out Bool()
-    val matrix = master(Matrix3x3Interface(dataType))
+    val matrix = master(Matrix3x3Interface(dataWidth))
   }
 
   // row shift: row1 is the straight input, row1 and row2 come from two line buffers
@@ -148,24 +147,24 @@ class Matrix3x3Dyn[T <: Data](dataType: HardType[T], dataWidth: Int, lineLengthB
     m31 := m32; m32 := m33; m33 := row3
   }
 
-  io.matrix.m11 := m11.as(dataType)
-  io.matrix.m12 := m12.as(dataType)
-  io.matrix.m13 := m13.as(dataType)
-  io.matrix.m21 := m21.as(dataType)
-  io.matrix.m22 := m22.as(dataType)
-  io.matrix.m23 := m23.as(dataType)
-  io.matrix.m31 := m31.as(dataType)
-  io.matrix.m32 := m32.as(dataType)
-  io.matrix.m33 := m33.as(dataType)
+  io.matrix.m11 := m11.asSInt
+  io.matrix.m12 := m12.asSInt
+  io.matrix.m13 := m13.asSInt
+  io.matrix.m21 := m21.asSInt
+  io.matrix.m22 := m22.asSInt
+  io.matrix.m23 := m23.asSInt
+  io.matrix.m31 := m31.asSInt
+  io.matrix.m32 := m32.asSInt
+  io.matrix.m33 := m33.asSInt
 }
 
-class Matrix3x3[T <: Data](dataType: HardType[T], dataWidth: Int, lineLength: Int) extends Component {
+class Matrix3x3(dataWidth: Int, lineLength: Int) extends Component {
   val io = new Bundle {
     val pre = slave(DVTI(dataWidth))
     val matrix_vs = out Bool()
     val matrix_hs = out Bool()
     val matrix_de = out Bool()
-    val matrix = master(Matrix3x3Interface(dataType))
+    val matrix = master(Matrix3x3Interface(dataWidth))
   }
 
   val row1, row2 = Bits(dataWidth bits)
@@ -202,15 +201,15 @@ class Matrix3x3[T <: Data](dataType: HardType[T], dataWidth: Int, lineLength: In
     m31 := m32; m32 := m33; m33 := row3
   }
 
-  io.matrix.m11 := m11.as(dataType)
-  io.matrix.m12 := m12.as(dataType)
-  io.matrix.m13 := m13.as(dataType)
-  io.matrix.m21 := m21.as(dataType)
-  io.matrix.m22 := m22.as(dataType)
-  io.matrix.m23 := m23.as(dataType)
-  io.matrix.m31 := m31.as(dataType)
-  io.matrix.m32 := m32.as(dataType)
-  io.matrix.m33 := m33.as(dataType)
+  io.matrix.m11 := m11.asSInt
+  io.matrix.m12 := m12.asSInt
+  io.matrix.m13 := m13.asSInt
+  io.matrix.m21 := m21.asSInt
+  io.matrix.m22 := m22.asSInt
+  io.matrix.m23 := m23.asSInt
+  io.matrix.m31 := m31.asSInt
+  io.matrix.m32 := m32.asSInt
+  io.matrix.m33 := m33.asSInt
 }
 
 /* --------------------------------------------------------------------------- */
@@ -246,15 +245,16 @@ case class Conv2D3x3ParamsInterface(dataWidth: Int) extends Bundle with IMasterS
 
 case class Conv2DConfig(
   dataWidth    : Int,             // bits per pixel
-  convWidth  : Int,               // bits per convolution output
+  convWidth    : Int,             // bits per convolution output
   lineLength   : Int,             // number of pixels per line
   kernel       : Seq[Int],        // 9 elements, row-major: k11,k12,k13,k21,...,k33
   kernelShift  : Int = 4,         // right shift to divide by kernel sum (e.g. 16 -> shift 4)
+  insigned     : Boolean,         // input signed or unsigned
   absolute     : Boolean = false, // absolute value of convolution output
   leftresize   : Boolean = true   // left shift to increase precision (e.g. 16 -> shift 4)
 )
 
-class Conv2D3x3[T <: Data](dataType: HardType[T], config: Conv2DConfig) extends Component {
+class Conv2D3x3(config: Conv2DConfig) extends Component {
   import config._
   val io = new Bundle {
     val EN   = in Bool()
@@ -263,35 +263,30 @@ class Conv2D3x3[T <: Data](dataType: HardType[T], config: Conv2DConfig) extends 
   }
 
   // instantiate matrix3x3 module
-  val m = new Matrix3x3(dataType, dataWidth, lineLength)
+  val m = new Matrix3x3(dataWidth, lineLength)
   m.io.pre << io.pre
 
-  def toSigned[T <: Data](data: T): SInt = data match {
-    case u: UInt => u.resize(dataWidth + 1).asSInt
-    case s: SInt => s
-  }
-
   // convolution compute for each channel
-  def conv(m: Matrix3x3[T], kernel: Seq[Int]) = {
+  def conv(m: Matrix3x3, kernel: Seq[Int]) = {
     // compute sum = sum(kernel[i]*pixel[i])
-    val convm = Matrix3x3Interface(dataType)
-    convm << m.io.matrix
+    val convm = if (insigned) {
+      Matrix3x3Interface(dataWidth)
+    } else {
+      Matrix3x3Interface(dataWidth + 1)
+    }
+    convm << m.io.matrix.resized
     val pixels = Seq(
       convm.m11, convm.m12, convm.m13,
       convm.m21, convm.m22, convm.m23,
       convm.m31, convm.m32, convm.m33
-    ).map(toSigned(_))
+    )
     val acc = pixels.zip(kernel).map { case (p, k) => p * k }.reduce(_ + _).resize(32)
     // arithmetic right shift by kernelShift
     val shifted = (acc >> kernelShift)
-    val clipped = Bits(convWidth bits)
-    clipped := shifted.asBits.resize(convWidth)
+    val clipped = shifted.asUInt.resize(convWidth)
     clipped
   }
-
   val convolution = conv(m, kernel)
-  val conv_out = Reg(Bits(convWidth bits)) init(0)
-  conv_out := Mux(m.io.matrix_de, convolution, U((1 << convWidth) - 1, convWidth bits).asBits)
 
   // delay vs/de by one cycle to match data latency and support EN bypass
   val matrix_vs = Reg(Bool()) init(False)
@@ -304,7 +299,7 @@ class Conv2D3x3[T <: Data](dataType: HardType[T], config: Conv2DConfig) extends 
   io.post.vs := Mux(io.EN, matrix_vs, io.pre.vs)
   io.post.hs := Mux(io.EN, matrix_hs, io.pre.hs)
   io.post.de := Mux(io.EN, matrix_de, io.pre.de)
-  io.post.data := Mux(io.EN, conv_out.asUInt, io.pre.data.resized)
+  io.post.data := Mux(io.EN, convolution, io.pre.data.resized)
 }
 
 // object Conv2DGen {

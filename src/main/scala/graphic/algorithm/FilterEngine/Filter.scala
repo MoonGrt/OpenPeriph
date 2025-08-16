@@ -23,7 +23,7 @@ class Filter(config: FilterConfig) extends Component {
   def processChannels(channelBits: Seq[Bits]) = {
     // General Convolution Constructor
     def buildConv(w: Int) = {
-      val conv = new Conv2D3x3(UInt(w bits), Conv2DConfig(w, w, lineLength, kernel, kernelShift))
+      val conv = new Conv2D3x3(Conv2DConfig(w, w, lineLength, kernel, kernelShift, false))
       conv.io.EN     := io.EN
       conv.io.pre.vs := io.pre.vs
       conv.io.pre.hs := io.pre.hs

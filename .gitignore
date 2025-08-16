@@ -52,6 +52,7 @@ explor
 mill
 
 sim/
+simWorkspace/
 rtl/
 project/target/
 tmp/

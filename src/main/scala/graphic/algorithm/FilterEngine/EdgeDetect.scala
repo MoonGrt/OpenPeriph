@@ -37,8 +37,8 @@ class EdgeDetect(config: EdgeDetectConfig) extends Component {
   // Create two convolvers (Gx and Gy)
   val dataWidth = LCfg(8).getWidth
   val convWidth = dataWidth + 4
-  val convGx = new Conv2D3x3(UInt(dataWidth bits), Conv2DConfig(dataWidth, convWidth, lineLength, kernelGx, 0))
-  val convGy = new Conv2D3x3(UInt(dataWidth bits), Conv2DConfig(dataWidth, convWidth, lineLength, kernelGy, 0))
+  val convGx = new Conv2D3x3(Conv2DConfig(dataWidth, convWidth, lineLength, kernelGx, 0, false))
+  val convGy = new Conv2D3x3(Conv2DConfig(dataWidth, convWidth, lineLength, kernelGy, 0, false))
 
   convGx.io.EN     := io.EN
   convGx.io.pre.vs := io.pre.vs
