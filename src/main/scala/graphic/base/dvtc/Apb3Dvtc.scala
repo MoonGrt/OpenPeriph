@@ -398,6 +398,9 @@ case class Apb3Dvtc(config: DvtcGenerics) extends Component {
 }
 
 
+/* ----------------------------------------------------------------------------- */
+/* ---------------------------------- Demo Gen --------------------------------- */
+/* ----------------------------------------------------------------------------- */
 // object Apb3DvtcGen {
 //   def main(args: Array[String]): Unit = {
 //     SpinalConfig(targetDirectory = "rtl").generateVerilog(

@@ -309,6 +309,10 @@ class cyberwithddr(config: cyberwithddrConfig) extends Component {
   io.sdram <> axi.sdramCtrl.io.ddr_iface
 }
 
+
+/* ----------------------------------------------------------------------------- */
+/* ---------------------------------- Demo Gen --------------------------------- */
+/* ----------------------------------------------------------------------------- */
 object cyberwithddr {
   def main(args: Array[String]) {
     val config =

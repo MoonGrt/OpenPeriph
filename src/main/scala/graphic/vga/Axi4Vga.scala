@@ -26,6 +26,10 @@ case class Axi4Vga(config: DvtcGenerics) extends Component{
   io.interrupt <> dvtc.io.interrupt
 }
 
+
+/* ----------------------------------------------------------------------------- */
+/* ---------------------------------- Demo Gen --------------------------------- */
+/* ----------------------------------------------------------------------------- */
 // object Axi4VgaCtrlGen{
 //   def main(args: Array[String]): Unit = {
 //     SpinalConfig(targetDirectory = "rtl").generateVerilog(

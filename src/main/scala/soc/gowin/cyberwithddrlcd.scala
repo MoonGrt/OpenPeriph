@@ -343,6 +343,10 @@ class cyberwithddrlcd(config: cyberwithddrlcdConfig) extends Component {
   io.dvti <> axi.lcdCtrl.io.dvti
 }
 
+
+/* ----------------------------------------------------------------------------- */
+/* ---------------------------------- Demo Gen --------------------------------- */
+/* ----------------------------------------------------------------------------- */
 object cyberwithddrlcd {
   def main(args: Array[String]) {
     val config =

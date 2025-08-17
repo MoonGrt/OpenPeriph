@@ -313,6 +313,10 @@ case class pinsecTimerCtrl() extends Component {
   io.interrupt := interruptCtrl.io.pendings.orR
 }
 
+
+/* ----------------------------------------------------------------------------- */
+/* ---------------------------------- Demo Gen --------------------------------- */
+/* ----------------------------------------------------------------------------- */
 object pinsec {
   def main(args: Array[String]) {
     val config =

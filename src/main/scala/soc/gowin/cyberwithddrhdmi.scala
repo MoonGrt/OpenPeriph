@@ -351,6 +351,10 @@ class cyberwithddrhdmi(config: cyberwithddrhdmiConfig) extends Component {
   io.hdmi <> axi.vgatohdmi.io.hdmi
 }
 
+
+/* ----------------------------------------------------------------------------- */
+/* ---------------------------------- Demo Gen --------------------------------- */
+/* ----------------------------------------------------------------------------- */
 object cyberwithddrhdmi {
   def main(args: Array[String]) {
     val config =

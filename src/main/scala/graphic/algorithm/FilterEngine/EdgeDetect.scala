@@ -66,6 +66,10 @@ class EdgeDetect(config: EdgeDetectConfig) extends Component {
   io.post.data := Mux(io.EN, bin, L)
 }
 
+
+/* ----------------------------------------------------------------------------- */
+/* ---------------------------------- Demo Gen --------------------------------- */
+/* ----------------------------------------------------------------------------- */
 // object EdgeDetectGen {
 //   def main(args: Array[String]): Unit = {
 //     SpinalConfig(targetDirectory = "rtl").generateVerilog(

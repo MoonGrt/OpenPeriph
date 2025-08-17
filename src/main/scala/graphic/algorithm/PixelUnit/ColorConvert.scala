@@ -303,7 +303,9 @@ case class ColorConvertDeMux(outCfg: ColorCfg) extends Component {
 }
 
 
-// ---------- Generate ----------
+/* ----------------------------------------------------------------------------- */
+/* ---------------------------------- Demo Gen --------------------------------- */
+/* ----------------------------------------------------------------------------- */
 // object ColorConvertGen {
 //   def main(args: Array[String]): Unit = {
 //     SpinalConfig(targetDirectory = "rtl").generateVerilog(

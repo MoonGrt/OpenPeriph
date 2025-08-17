@@ -190,6 +190,10 @@ case class Axi4Ram(
   io.axi.arw.ready.noBackendCombMerge // Verilator perf
 }
 
+
+/* ----------------------------------------------------------------------------- */
+/* ---------------------------------- Demo Gen --------------------------------- */
+/* ----------------------------------------------------------------------------- */
 // object Axi4RamGen {
 //   def main(args: Array[String]) {
 //     SpinalConfig(targetDirectory = "rtl").generateVerilog(Axi4Ram(32,1024,4))

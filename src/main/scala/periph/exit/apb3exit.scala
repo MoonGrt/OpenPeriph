@@ -59,6 +59,10 @@ case class Apb3Exti(
   io.interrupt := PR & IMR
 }
 
+
+/* ----------------------------------------------------------------------------- */
+/* ---------------------------------- Demo Gen --------------------------------- */
+/* ----------------------------------------------------------------------------- */
 // object Apb3ExtiGen {
 //   def main(args: Array[String]): Unit = {
 //     SpinalConfig(targetDirectory = "rtl").generateVerilog(Apb3Exti(extiWidth = 16))

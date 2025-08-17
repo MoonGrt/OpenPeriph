@@ -1037,6 +1037,9 @@ case class Axi4DdrWithDMACtrl(sys_clk: ClockDomain, mem_clk: ClockDomain) extend
 }
 
 
+/* ----------------------------------------------------------------------------- */
+/* ---------------------------------- Demo Gen --------------------------------- */
+/* ----------------------------------------------------------------------------- */
 // object Axi4DdrGen {
 //   def main(args: Array[String]): Unit = {
 //     SpinalConfig(targetDirectory = "rtl").generateVerilog(Axi4DdrCtrl(

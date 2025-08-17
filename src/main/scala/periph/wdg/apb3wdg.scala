@@ -173,6 +173,10 @@ case class Apb3Wdg(memSize: Int = 0x400) extends Component {
   io.wwdgRst := wwdg.io.rst
 }
 
+
+/* ----------------------------------------------------------------------------- */
+/* ---------------------------------- Demo Gen --------------------------------- */
+/* ----------------------------------------------------------------------------- */
 // object Apb3WwdgGen {
 //   def main(args: Array[String]): Unit = {
 //     SpinalConfig(targetDirectory = "rtl").generateVerilog(Apb3Wwdg())

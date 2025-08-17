@@ -52,6 +52,10 @@ case class Apb3SysTick(
   io.interrupt := TICKINT && COUNTFLAG
 }
 
+
+/* ----------------------------------------------------------------------------- */
+/* ---------------------------------- Demo Gen --------------------------------- */
+/* ----------------------------------------------------------------------------- */
 // object Apb3SysTickGen {
 //   def main(args: Array[String]): Unit = {
 //     SpinalConfig(targetDirectory = "rtl").generateVerilog(Apb3SysTick())

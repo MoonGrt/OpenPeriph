@@ -302,6 +302,10 @@ class Conv2D3x3(config: Conv2DConfig) extends Component {
   io.post.data := Mux(io.EN, convolution, io.pre.data.resized)
 }
 
+
+/* ----------------------------------------------------------------------------- */
+/* ---------------------------------- Demo Gen --------------------------------- */
+/* ----------------------------------------------------------------------------- */
 // object Conv2DGen {
 //   def main(args: Array[String]): Unit = {
 //     val meanKernel = Seq(1,1,1, 1,1,1, 1,1,1) // Identity kernel: 1 1 1 / 1 1 1 / 1 1 1
