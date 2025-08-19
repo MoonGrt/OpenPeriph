@@ -8,8 +8,8 @@
 
 // case class cyberwithallperiphConfig(
 //     cpuFrequency: HertzNumber = 50 MHz,
-//     onChipRamSize: BigInt = 8 kB,
-//     onChipRamHexFile: String = null,
+//     memSize: BigInt = 8 kB,
+//     memFile: String = null,
 //     apb3Config: Apb3Config = Apb3Config(
 //         addressWidth = 20,
 //         dataWidth = 32

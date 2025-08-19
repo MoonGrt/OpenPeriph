@@ -16,14 +16,12 @@ import spinal.lib.cpu.riscv.impl.extension.{
 import spinal.lib.cpu.riscv.impl._
 import spinal.lib.io.{TriStateArray, InOutWrapper}
 import spinal.lib.system.debugger.{JtagAxi4SharedDebugger, SystemDebuggerConfig}
-import spinal.lib.misc.{InterruptCtrl, Timer, Prescaler}
-
-import periph.Axi4Ram
+import spinal.lib.misc.{HexTools, InterruptCtrl, Timer, Prescaler}
 
 case class pinsecConfig(
     axiFrequency: HertzNumber,
-    onChipRamSize: BigInt,
-    onChipRamHexFile: String,
+    memSize: BigInt,
+    memFile: String,
     cpu: RiscvCoreConfig,
     iCache: InstructionCacheConfig
 )
@@ -32,8 +30,8 @@ object pinsecConfig {
   def default = {
     val config = pinsecConfig(
       axiFrequency = 100 MHz,
-      onChipRamSize = 4 KiB,
-      onChipRamHexFile = null,
+      memSize = 32 KiB,
+      memFile = null,
       cpu = RiscvCoreConfig(
         pcWidth = 32,
         addrWidth = 32,
@@ -69,7 +67,6 @@ object pinsecConfig {
 }
 
 class pinsec(config: pinsecConfig) extends Component {
-
   // Legacy constructor
   def this(axiFrequency: HertzNumber) {
     this(pinsecConfig.default.copy(axiFrequency = axiFrequency))
@@ -153,12 +150,12 @@ class pinsec(config: pinsecConfig) extends Component {
       )
     }
 
-    val ram = Axi4Ram(
+    val ram = Axi4SharedOnChipRam(
       dataWidth = 32,
-      byteCount = onChipRamSize,
-      idWidth = 4,
-      onChipRamHexFile = onChipRamHexFile
+      byteCount = memSize,
+      idWidth = 4
     )
+    HexTools.initRam(ram.ram, memFile, 0x00000000l)
 
     val jtagCtrl = JtagAxi4SharedDebugger(
       SystemDebuggerConfig(
@@ -206,7 +203,7 @@ class pinsec(config: pinsecConfig) extends Component {
     val axiCrossbar = Axi4CrossbarFactory()
 
     axiCrossbar.addSlaves(
-      ram.io.axi -> (0x00000000L, onChipRamSize),
+      ram.io.axi -> (0x00000000L, memSize),
       apbBridge.io.axi -> (0xf0000000L, 1 MiB)
     )
 
@@ -317,19 +314,12 @@ case class pinsecTimerCtrl() extends Component {
 /* ----------------------------------------------------------------------------- */
 /* ---------------------------------- Demo Gen --------------------------------- */
 /* ----------------------------------------------------------------------------- */
-object pinsec {
-  def main(args: Array[String]) {
-    val config =
-      SpinalConfig(verbose = true, targetDirectory = "rtl").dumpWave()
-    val report = config.generateVerilog(
-      InOutWrapper(
-        new pinsec(
-          pinsecConfig.default.copy(
-            onChipRamSize = 32 kB,
-            onChipRamHexFile = "test/pinsec/demo.hex"
-          )
-        )
-      )
-    )
-  }
-}
+// object pinsec {
+//   def main(args: Array[String]) {
+//     val config =
+//       SpinalConfig(verbose = true, targetDirectory = "rtl").dumpWave()
+//     val report = config.generateVerilog(
+//       InOutWrapper(new pinsec(pinsecConfig.default.copy(memFile = "test/pinsec/build/demo.hex")))
+//     )
+//   }
+// }

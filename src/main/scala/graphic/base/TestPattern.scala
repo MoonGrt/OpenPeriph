@@ -108,10 +108,10 @@ case class TestSobel() extends Component {
 //   }
 // }
 
-object TestSobelGen {
-  def main(args: Array[String]): Unit = {
-    SpinalConfig(targetDirectory = "rtl").generateVerilog(
-      TestSobel()
-    )
-  }
-}
+// object TestSobelGen {
+//   def main(args: Array[String]): Unit = {
+//     SpinalConfig(targetDirectory = "rtl").generateVerilog(
+//       TestSobel()
+//     )
+//   }
+// }

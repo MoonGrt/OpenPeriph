@@ -21,15 +21,14 @@ import spinal.lib.cpu.riscv.impl.extension.{
 import spinal.lib.cpu.riscv.impl._
 import spinal.lib.io.{TriStateArray, InOutWrapper}
 import spinal.lib.system.debugger.{JtagAxi4SharedDebugger, SystemDebuggerConfig}
-import spinal.lib.misc.{InterruptCtrl, Timer, Prescaler}
-import spinal.lib.graphic.RgbConfig
 
 
 case class cyberwithddrlcdConfig(
     axiFrequency: HertzNumber,
     memFrequency: HertzNumber,
-    onChipRamSize: BigInt,
-    onChipRamHexFile: String,
+    memSize: BigInt,
+    memFile: String,
+    memFileType: String,
     cpu: RiscvCoreConfig,
     iCache: InstructionCacheConfig
 )
@@ -39,8 +38,9 @@ object cyberwithddrlcdConfig {
     val config = cyberwithddrlcdConfig(
       axiFrequency = 100 MHz,
       memFrequency = 400 MHz,
-      onChipRamSize = 4 KiB,
-      onChipRamHexFile = null,
+      memSize = 32 KiB,
+      memFile = null,
+      memFileType = "rawhex",
       cpu = RiscvCoreConfig(
         pcWidth = 32,
         addrWidth = 32,
@@ -185,9 +185,10 @@ class cyberwithddrlcd(config: cyberwithddrlcdConfig) extends Component {
 
     val ram = Axi4Ram(
       dataWidth = 32,
-      byteCount = onChipRamSize,
+      byteCount = memSize,
       idWidth = 4,
-      onChipRamHexFile = onChipRamHexFile
+      memFile = memFile,
+      memFileType = memFileType
     )
 
     val sdramCtrl = Axi4Ddr(axiClockDomain, memClockDomain)
@@ -277,7 +278,7 @@ class cyberwithddrlcd(config: cyberwithddrlcdConfig) extends Component {
     val axiCrossbar = Axi4CrossbarFactory()
 
     axiCrossbar.addSlaves(
-      ram.io.axi -> (0x00000000L, onChipRamSize),
+      ram.io.axi -> (0x00000000L, memSize),
       sdramCtrl.io.axi -> (0x40000000L, 128 MiB),
       apbBridge.io.axi -> (0xf0000000L, 1 MiB)
     )
@@ -355,8 +356,13 @@ object cyberwithddrlcd {
       InOutWrapper(
         new cyberwithddrlcd(
           cyberwithddrlcdConfig.default.copy(
-            onChipRamSize = 32 kB,
-            onChipRamHexFile = "test/cyberwithddr/build/mem/demo.bin"
+            memSize = 32 kB,
+            memFile = "test/cyberwithddr/build/demo.hex",
+            memFileType = "rawhex"
+            // memFile = "test/cyberwithddr/build/mem/demo.bin",
+            // memFileType = "bin"
+            // memFile = "test/cyberwithddr/build/mem/demo.hex",
+            // memFileType = "hex"
           )
         )
       )

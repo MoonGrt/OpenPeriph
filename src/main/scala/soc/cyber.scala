@@ -18,13 +18,13 @@ import spinal.lib.cpu.riscv.impl.extension.{
 import spinal.lib.cpu.riscv.impl._
 import spinal.lib.io.{TriStateArray, InOutWrapper}
 import spinal.lib.system.debugger.{JtagAxi4SharedDebugger, SystemDebuggerConfig}
-import spinal.lib.misc.{InterruptCtrl, Timer, Prescaler}
 
 
 case class cyberConfig(
     axiFrequency: HertzNumber,
-    onChipRamSize: BigInt,
-    onChipRamHexFile: String,
+    memSize: BigInt,
+    memFile: String,
+    memFileType: String,
     cpu: RiscvCoreConfig,
     iCache: InstructionCacheConfig
 )
@@ -33,8 +33,9 @@ object cyberConfig {
   def default = {
     val config = cyberConfig(
       axiFrequency = 100 MHz,
-      onChipRamSize = 4 KiB,
-      onChipRamHexFile = null,
+      memSize = 32 KiB,
+      memFile = null,
+      memFileType = "rawhex",
       cpu = RiscvCoreConfig(
         pcWidth = 32,
         addrWidth = 32,
@@ -146,9 +147,10 @@ class cyber(config: cyberConfig) extends Component {
 
     val ram = Axi4Ram(
       dataWidth = 32,
-      byteCount = onChipRamSize,
+      byteCount = memSize,
       idWidth = 4,
-      onChipRamHexFile = onChipRamHexFile
+      memFile = memFile,
+      memFileType = memFileType
     )
 
     val jtagCtrl = JtagAxi4SharedDebugger(
@@ -224,7 +226,7 @@ class cyber(config: cyberConfig) extends Component {
     val axiCrossbar = Axi4CrossbarFactory()
 
     axiCrossbar.addSlaves(
-      ram.io.axi -> (0x00000000L, onChipRamSize),
+      ram.io.axi -> (0x00000000L, memSize),
       apbBridge.io.axi -> (0xf0000000L, 1 MiB)
     )
 
@@ -289,8 +291,12 @@ object cyber {
       InOutWrapper(
         new cyber(
           cyberConfig.default.copy(
-            onChipRamSize = 32 kB,
-            onChipRamHexFile = "test/cyber/build/mem/demo.bin"
+            memFile = "test/cyber/build/demo.hex",
+            memFileType = "rawhex"
+            // memFile = "test/cyber/build/mem/demo.bin",
+            // memFileType = "bin"
+            // memFile = "test/cyber/build/mem/demo.hex",
+            // memFileType = "hex"
           )
         )
       )

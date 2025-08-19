@@ -4,7 +4,6 @@ import spinal.core._
 import spinal.core.fiber._
 import spinal.lib._
 import spinal.lib.bus.amba4.axi._
-import spinal.lib.misc.HexTools
 
 object Axi4RamPort {
   def apply(config: Axi4Config, ram: Mem[Bits]) = {
@@ -136,7 +135,8 @@ case class Axi4Ram(
     byteCount: BigInt,
     idWidth: Int,
     arwStage: Boolean = false,
-    onChipRamHexFile: String = null,
+    memFile: String = null,
+    memFileType: String = "hex",
     bigEndian: Boolean = false
 ) extends Component {
   val axiConfig = Axi4Ram.getAxiConfig(dataWidth, byteCount, idWidth)
@@ -149,15 +149,15 @@ case class Axi4Ram(
   val ram = Mem(axiConfig.dataType, wordCount.toInt)
   val wordRange = log2Up(wordCount) + log2Up(axiConfig.bytePerWord) - 1 downto log2Up(axiConfig.bytePerWord)
 
-  if (onChipRamHexFile != null) {
-    HexTools.initRam(ram, onChipRamHexFile, 0x80000000L)
-    if (bigEndian)
-      // HexTools.initRam (incorrectly) assumes little endian byte ordering
-      for ((word, wordIndex) <- ram.initialContent.zipWithIndex)
-        ram.initialContent(wordIndex) = ((word & 0xffL) << 24) |
-          ((word & 0xff00L) << 8) |
-          ((word & 0xff0000L) >> 8) |
-          ((word & 0xff000000L) >> 24)
+  if (memFile != null) {
+    MemTools.initMem(ram, memFile, memFileType, bigEndian)
+    // if (bigEndian)
+    //   for ((word, wordIndex) <- ram.initialContent.zipWithIndex)
+    //     ram.initialContent(wordIndex) = 
+    //       ((word & 0xffL) << 24) |
+    //       ((word & 0xff00L) << 8) |
+    //       ((word & 0xff0000L) >> 8) |
+    //       ((word & 0xff000000L) >> 24)
   }
 
   val arw =
@@ -196,6 +196,6 @@ case class Axi4Ram(
 /* ----------------------------------------------------------------------------- */
 // object Axi4RamGen {
 //   def main(args: Array[String]) {
-//     SpinalConfig(targetDirectory = "rtl").generateVerilog(Axi4Ram(32,1024,4))
+//     SpinalConfig(targetDirectory = "rtl").generateVerilog(Axi4Ram(32, 1024, 4))
 //   }
 // }
