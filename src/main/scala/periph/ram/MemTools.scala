@@ -1,4 +1,4 @@
-package periph
+package misc
 
 import spinal.core._
 import scala.io.Source
@@ -73,6 +73,32 @@ object MemTools {
       }.toArray
   }
 
+  // 5. Processed DEC (One unsigned decimal number per line)
+  def loadProcessedDecFile(
+      path: String,
+      wordSize: Int = 4,
+      bigEndian: Boolean = false
+  ): Array[BigInt] = {
+    Source.fromFile(path).getLines().filter(_.nonEmpty)
+      .map { line =>
+        val value = BigInt(line.trim, 10)  // 无符号十进制
+        reorderBytes(value, wordSize, bigEndian)
+      }.toArray
+  }
+
+  // 6. Processed SDEC (One signed decimal number per line)
+  def loadProcessedSignedDecFile(
+      path: String,
+      wordSize: Int = 4,
+      bigEndian: Boolean = false
+  ): Array[BigInt] = {
+    Source.fromFile(path).getLines().filter(_.nonEmpty)
+      .map { line =>
+        val value = BigInt(line.trim)  // 带符号十进制（BigInt会识别负号）
+        reorderBytes(value, wordSize, bigEndian)
+      }.toArray
+  }
+
   // -------------------------------
   // Auxiliary function
   // -------------------------------
@@ -113,6 +139,12 @@ object MemTools {
         padArray(raw, ram.wordCount)
       case "bin" => // processed bin
         val raw = loadProcessedBinFile(file, wordSize, bigEndian)
+        padArray(raw, ram.wordCount)
+      case "dec" => // processed unsigned decimal
+        val raw = loadProcessedDecFile(file, wordSize, bigEndian)
+        padArray(raw, ram.wordCount)
+      case "sdec" => // processed signed decimal
+        val raw = loadProcessedSignedDecFile(file, wordSize, bigEndian)
         padArray(raw, ram.wordCount)
       case _ =>
         throw new IllegalArgumentException(s"Unsupported file type: $memFileType")
