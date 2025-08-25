@@ -1,4 +1,4 @@
-package misc
+package periph
 
 import spinal.core._
 import scala.io.Source

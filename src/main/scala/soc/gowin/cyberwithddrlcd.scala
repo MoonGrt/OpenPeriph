@@ -236,10 +236,10 @@ class cyberwithddrlcd(config: cyberwithddrlcdConfig) extends Component {
     val systickCtrl = Apb3SysTick()
     val systickInterrupt = systickCtrl.io.interrupt.asBits.orR // 按位“或”
 
-    val uartCtrl = ApbUartArray(
-      uartCount = 2,
+    val uartCtrl = Apb3UartArray(
+      uartCnt = 2,
       groupSpace = 0x1000,
-      uartConfig = ApbUartCtrlConfig(
+      uartConfig = Apb3UartCtrlConfig(
         uartCtrlGenerics = UartCtrlGenerics(
           dataWidthMax = 9,
           clockDividerWidth = 20,

@@ -115,7 +115,7 @@
 //       polynomialWidth = 32
 //     )
     
-//     val uart = ApbUart(ApbUartCtrlConfig(
+//     val uart = Apb3Uart(Apb3UartCtrlConfig(
 //       uartCtrlGenerics = UartCtrlGenerics(
 //         dataWidthMax = 8,
 //         clockDividerWidth = 20,

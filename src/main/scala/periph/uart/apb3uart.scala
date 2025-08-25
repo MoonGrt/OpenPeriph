@@ -6,7 +6,7 @@ import spinal.lib.com.uart._
 import spinal.lib.bus.amba3.apb._
 import spinal.lib.bus.misc.SizeMapping
 
-case class ApbUartCtrlConfig(
+case class Apb3UartCtrlConfig(
     uartCtrlGenerics: UartCtrlGenerics,
     txFifoDepth: Int = 16,
     rxFifoDepth: Int = 16,
@@ -15,7 +15,7 @@ case class ApbUartCtrlConfig(
     apbAddressWidth: Int = 5,
     apbDataWidth: Int = 32
 )
-case class ApbUart(config: ApbUartCtrlConfig) extends Component {
+case class Apb3Uart(config: Apb3UartCtrlConfig) extends Component {
   import config._
   val io = new Bundle {
     val apb = slave(
@@ -118,28 +118,28 @@ case class ApbUart(config: ApbUartCtrlConfig) extends Component {
   ctrl.readAndWrite(GTPR, 0x18)
 }
 
-object ApbUartArray {
-  def apb3Config(uartCount: Int, groupSpace: Int, dataWidth: Int) =
+object Apb3UartArray {
+  def apb3Config(uartCnt: Int, groupSpace: Int, dataWidth: Int) =
     Apb3Config(
-      addressWidth = log2Up(uartCount) + log2Up(groupSpace),
+      addressWidth = log2Up(uartCnt) + log2Up(groupSpace),
       dataWidth = dataWidth
     )
 }
-case class ApbUartArray(
-    uartCount: Int = 4,
+case class Apb3UartArray(
+    uartCnt: Int = 4,
     groupSpace: Int = 0x20,
     addressWidth: Int = log2Up(0x20),
     dataWidth: Int = 32,
-    uartConfig: ApbUartCtrlConfig
+    uartConfig: Apb3UartCtrlConfig
 ) extends Component {
   val io = new Bundle {
-    val apb = slave(Apb3(ApbUartArray.apb3Config(uartCount, groupSpace, dataWidth)))
-    val uarts = Vec(master(Uart(ctsGen = uartConfig.ctsGen, rtsGen = uartConfig.rtsGen)), uartCount)
-    val interrupt = out(Bits(uartCount bits))
+    val apb = slave(Apb3(Apb3UartArray.apb3Config(uartCnt, groupSpace, dataWidth)))
+    val uarts = Vec(master(Uart(ctsGen = uartConfig.ctsGen, rtsGen = uartConfig.rtsGen)), uartCnt)
+    val interrupt = out(Bits(uartCnt bits))
   }
 
   // 创建多个 UART 控制器
-  val UART = for (_ <- 0 until uartCount) yield ApbUart(uartConfig)
+  val UART = for (_ <- 0 until uartCnt) yield Apb3Uart(uartConfig)
 
   // 地址映射表：每个 UART 模块分配 groupSpace 地址空间
   val apbMap = UART.zipWithIndex.map { case (uart, idx) =>
@@ -167,8 +167,8 @@ case class ApbUartArray(
 // object Apb3UartGen {
 //   def main(args: Array[String]): Unit = {
 //     SpinalConfig(targetDirectory = "rtl").generateVerilog(
-//       ApbUart(
-//         ApbUartCtrlConfig(
+//       Apb3Uart(
+//         Apb3UartCtrlConfig(
 //           uartCtrlGenerics = UartCtrlGenerics(
 //             dataWidthMax = 9,
 //             clockDividerWidth = 20,
@@ -187,10 +187,10 @@ case class ApbUartArray(
 // object Apb3UartArrayGen {
 //   def main(args: Array[String]): Unit = {
 //     SpinalConfig(targetDirectory = "rtl").generateVerilog(
-//       ApbUartArray(
-//         uartCount = 4,
+//       Apb3UartArray(
+//         uartCnt = 4,
 //         groupSpace = 0x20,
-//         uartConfig = ApbUartCtrlConfig(
+//         uartConfig = Apb3UartCtrlConfig(
 //           uartCtrlGenerics = UartCtrlGenerics(
 //             dataWidthMax = 9,
 //             clockDividerWidth = 20,

@@ -151,13 +151,6 @@ case class Axi4Ram(
 
   if (memFile != null) {
     MemTools.initMem(ram, memFile, memFileType, bigEndian)
-    // if (bigEndian)
-    //   for ((word, wordIndex) <- ram.initialContent.zipWithIndex)
-    //     ram.initialContent(wordIndex) = 
-    //       ((word & 0xffL) << 24) |
-    //       ((word & 0xff00L) << 8) |
-    //       ((word & 0xff0000L) >> 8) |
-    //       ((word & 0xff000000L) >> 24)
   }
 
   val arw =

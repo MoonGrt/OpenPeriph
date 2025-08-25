@@ -218,10 +218,10 @@ class cyberwithddr(config: cyberwithddrConfig) extends Component {
     val systickCtrl = Apb3SysTick()
     val systickInterrupt = systickCtrl.io.interrupt.asBits.orR // 按位“或”
 
-    val uartCtrl = ApbUartArray(
-      uartCount = 2,
+    val uartCtrl = Apb3UartArray(
+      uartCnt = 2,
       groupSpace = 0x1000,
-      uartConfig = ApbUartCtrlConfig(
+      uartConfig = Apb3UartCtrlConfig(
         uartCtrlGenerics = UartCtrlGenerics(
           dataWidthMax = 9,
           clockDividerWidth = 20,
@@ -315,23 +315,23 @@ class cyberwithddr(config: cyberwithddrConfig) extends Component {
 /* ----------------------------------------------------------------------------- */
 /* ---------------------------------- Demo Gen --------------------------------- */
 /* ----------------------------------------------------------------------------- */
-object cyberwithddr {
-  def main(args: Array[String]) {
-    val config =
-      SpinalConfig(verbose = true, targetDirectory = "rtl").dumpWave()
-    val report = config.generateVerilog(
-      InOutWrapper(
-        new cyberwithddr(
-          cyberwithddrConfig.default.copy(
-            memFile = "test/cyberwithddr/build/demo.hex",
-            memFileType = "rawhex"
-            // memFile = "test/cyberwithddr/build/mem/demo.bin",
-            // memFileType = "bin"
-            // memFile = "test/cyberwithddr/build/mem/demo.hex",
-            // memFileType = "hex"
-          )
-        )
-      )
-    )
-  }
-}
+// object cyberwithddr {
+//   def main(args: Array[String]) {
+//     val config =
+//       SpinalConfig(verbose = true, targetDirectory = "rtl").dumpWave()
+//     val report = config.generateVerilog(
+//       InOutWrapper(
+//         new cyberwithddr(
+//           cyberwithddrConfig.default.copy(
+//             memFile = "test/cyberwithddr/build/demo.hex",
+//             memFileType = "rawhex"
+//             // memFile = "test/cyberwithddr/build/mem/demo.bin",
+//             // memFileType = "bin"
+//             // memFile = "test/cyberwithddr/build/mem/demo.hex",
+//             // memFileType = "hex"
+//           )
+//         )
+//       )
+//     )
+//   }
+// }
