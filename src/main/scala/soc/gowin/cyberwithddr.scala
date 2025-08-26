@@ -220,7 +220,7 @@ class cyberwithddr(config: cyberwithddrConfig) extends Component {
 
     val uartCtrl = Apb3UartArray(
       uartCnt = 2,
-      groupSpace = 0x1000,
+      uartSpace = 0x1000,
       uartConfig = Apb3UartCtrlConfig(
         uartCtrlGenerics = UartCtrlGenerics(
           dataWidthMax = 9,

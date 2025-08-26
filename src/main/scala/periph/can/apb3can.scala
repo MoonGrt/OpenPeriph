@@ -370,15 +370,15 @@ case class Apb3Can(
 }
 
 object Apb3CanArray {
-  def apb3Config(canCnt: Int, groupSpace: Int, dataWidth: Int) =
+  def apb3Config(canCnt: Int, canSpace: Int, dataWidth: Int) =
     Apb3Config(
-      addressWidth = log2Up(canCnt) + log2Up(groupSpace),
+      addressWidth = log2Up(canCnt) + log2Up(canSpace),
       dataWidth = dataWidth
     )
 }
 case class Apb3CanArray(
     canCnt: Int = 4,
-    groupSpace: Int = 0x800,
+    canSpace: Int = 0x800,
     addressWidth: Int = log2Up(0x800),
     dataWidth: Int = 32,
     dataWidthMax: Int = 128,
@@ -386,7 +386,7 @@ case class Apb3CanArray(
     rxFifoDepth: Int = 16
 ) extends Component {
   val io = new Bundle {
-    val apb = slave(Apb3(Apb3CanArray.apb3Config(canCnt, groupSpace, dataWidth)))
+    val apb = slave(Apb3(Apb3CanArray.apb3Config(canCnt, canSpace, dataWidth)))
     val cans = Vec(master(Can()), canCnt)
     val interrupt = out(Bits(canCnt bits))
   }
@@ -394,9 +394,9 @@ case class Apb3CanArray(
   // 创建多个 CAN 控制器
   val CAN = for (_ <- 0 until canCnt) yield Apb3Can(addressWidth, dataWidth, dataWidthMax, txFifoDepth, rxFifoDepth)
 
-  // 地址映射表：每个 CAN 模块分配 groupSpace 地址空间
+  // 地址映射表：每个 CAN 模块分配 canSpace 地址空间
   val apbMap = CAN.zipWithIndex.map { case (can, idx) =>
-    can.io.apb -> SizeMapping(idx * groupSpace, groupSpace)
+    can.io.apb -> SizeMapping(idx * canSpace, canSpace)
   }
 
   // 地址解码器

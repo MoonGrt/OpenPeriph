@@ -1,5 +1,6 @@
 package soc
 
+import cpu._
 import periph._
 
 import spinal.core._
@@ -9,7 +10,6 @@ import spinal.lib.bus.amba4.axi._
 import spinal.lib.com.uart.{UartCtrlGenerics}
 import spinal.lib.com.jtag.Jtag
 import spinal.lib.cpu.riscv.impl.Utils.BR
-import spinal.lib.cpu.riscv.impl.build.RiscvAxi4
 import spinal.lib.cpu.riscv.impl.extension.{
   BarrelShifterFullExtension,
   DivExtension,
@@ -135,7 +135,7 @@ class cyber(config: cyberConfig) extends Component {
 
   val axi = new ClockingArea(axiClockDomain) {
     val core = coreClockDomain {
-      new RiscvAxi4(
+      new Axi4Riscv(
         coreConfig = config.cpu,
         // iCacheConfig = config.iCache, // 目前上板有问题，仿真正常
         iCacheConfig = null,
@@ -191,13 +191,13 @@ class cyber(config: cyberConfig) extends Component {
     val timCtrl = Apb3TimArray(timCnt = 2, timSpace = 0x1000)
     val timInterrupt = timCtrl.io.interrupt.asBits.orR // 按位“或”
     val wdgCtrl = coreClockDomain(Apb3Wdg(memSize = 0x1000))
-    resetCtrl.coreResetUnbuffered setWhen (wdgCtrl.io.iwdgRst || wdgCtrl.io.wwdgRst)
+    resetCtrl.coreResetUnbuffered.setWhen(wdgCtrl.io.iwdgRst || wdgCtrl.io.wwdgRst)
     val systickCtrl = Apb3SysTick()
     val systickInterrupt = systickCtrl.io.interrupt.asBits.orR // 按位“或”
 
     val uartCtrl = Apb3UartArray(
       uartCnt = 2,
-      groupSpace = 0x1000,
+      uartSpace = 0x1000,
       uartConfig = Apb3UartCtrlConfig(
         uartCtrlGenerics = UartCtrlGenerics(
           dataWidthMax = 9,
@@ -212,8 +212,26 @@ class cyber(config: cyberConfig) extends Component {
     )
     val uartInterrupt = uartCtrl.io.interrupt.asBits.orR // 按位“或”
 
-    afioCtrl.io.device.read := 
-      B(0, 12 bits) ## // 20 - 31: 保留空位
+    val i2cCtrl = Apb3I2cArray(i2cCnt = 2, i2cSpace = 0x1000)
+    val i2cInterrupt = i2cCtrl.io.interrupt.asBits.orR // 按位“或”
+
+    val spiCtrl = Apb3SpiArray(spiCnt = 2, spiSpace = 0x1000)
+    val spiInterrupt = spiCtrl.io.interrupt.asBits.orR // 按位“或”
+
+    afioCtrl.io.device.read :=
+      spiCtrl.io.spis(1).sclk ## // 31
+      spiCtrl.io.spis(1).ss ## // 30
+      spiCtrl.io.spis(1).mosi ## // 29
+      False ## // 28
+      spiCtrl.io.spis(0).sclk ## // 27
+      spiCtrl.io.spis(0).ss ## // 26
+      spiCtrl.io.spis(0).mosi ## // 25
+      False ## // 24
+      i2cCtrl.io.i2cs(1).scl ## // 23
+      i2cCtrl.io.i2cs(1).sda ## // 22
+      i2cCtrl.io.i2cs(0).scl ## // 21
+      i2cCtrl.io.i2cs(1).sda ## // 20
+      // B(0, 4 bits) ##
       False ## // 19
       uartCtrl.io.uarts(1).txd ## // 18
       False ## // 17
@@ -222,6 +240,8 @@ class cyber(config: cyberConfig) extends Component {
       B(0, 8 bits) // 0 - 7: 保留空位
     uartCtrl.io.uarts(0).rxd := afioCtrl.io.device.write(17)
     uartCtrl.io.uarts(1).rxd := afioCtrl.io.device.write(19)
+    spiCtrl.io.spis(0).miso := afioCtrl.io.device.write(25)
+    spiCtrl.io.spis(1).miso := afioCtrl.io.device.write(27)
 
     val axiCrossbar = Axi4CrossbarFactory()
 
@@ -250,6 +270,8 @@ class cyber(config: cyberConfig) extends Component {
       slaves = List(
         gpioCtrl.io.apb -> (0x00000, 64 KiB),
         uartCtrl.io.apb -> (0x10000, 64 KiB),
+        i2cCtrl.io.apb -> (0x30000, 64 KiB),
+        spiCtrl.io.apb -> (0x20000, 64 KiB),
         timCtrl.io.apb -> (0x40000, 64 KiB),
         wdgCtrl.io.apb -> (0x50000, 64 KiB),
         systickCtrl.io.apb -> (0x60000, 64 KiB),
@@ -265,6 +287,8 @@ class cyber(config: cyberConfig) extends Component {
         (1 -> timInterrupt),
         (2 -> systickInterrupt),
         (3 -> extiInterrupt),
+        (4 -> i2cInterrupt),
+        (5 -> spiInterrupt),
         (default -> false)
       )
     }

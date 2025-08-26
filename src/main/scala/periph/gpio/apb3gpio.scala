@@ -14,7 +14,6 @@ case class Apb3Gpio(
     dataWidth: Int = 32
 ) extends Component {
   require(gpioWidth == 16, "This module assumes 16 GPIO pins")
-
   val io = new Bundle {
     val apb = slave(Apb3(Apb3Config(addressWidth, dataWidth)))
     val gpio = master(TriStateArray(gpioWidth bits))

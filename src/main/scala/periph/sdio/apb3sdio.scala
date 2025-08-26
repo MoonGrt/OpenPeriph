@@ -327,10 +327,10 @@ case class Apb3Sdio(
 /* ----------------------------------------------------------------------------- */
 /* ---------------------------------- Demo Gen --------------------------------- */
 /* ----------------------------------------------------------------------------- */
-object Apb3SdioGen {
-  def main(args: Array[String]): Unit = {
-    SpinalConfig(targetDirectory = "rtl").generateVerilog(
-      Apb3Sdio()
-    )
-  }
-}
+// object Apb3SdioGen {
+//   def main(args: Array[String]): Unit = {
+//     SpinalConfig(targetDirectory = "rtl").generateVerilog(
+//       Apb3Sdio()
+//     )
+//   }
+// }

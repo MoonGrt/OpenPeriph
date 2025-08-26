@@ -42,14 +42,14 @@ case class Apb3I2c(
   val ctrl = Apb3SlaveFactory(io.apb)
 
   // 寄存器定义 - 按照STM32 I2C寄存器布局
-  val CR1 = Reg(UInt(16 bits)) init(0) // 控制寄存器1
-  val CR2 = Reg(UInt(16 bits)) init(0) // 控制寄存器2
-  val OAR1 = Reg(UInt(16 bits)) init(0) // 自身地址寄存器1
-  val OAR2 = Reg(UInt(16 bits)) init(0) // 自身地址寄存器2
-  val DR = Reg(UInt(16 bits)) init(0)   // 数据寄存器
-  val SR1 = Reg(UInt(16 bits)) init(0)  // 状态寄存器1
-  val SR2 = Reg(UInt(16 bits)) init(0)  // 状态寄存器2
-  val CCR = Reg(UInt(16 bits)) init(0)  // 时钟控制寄存器
+  val CR1 = Reg(UInt(16 bits)) init(0)   // 控制寄存器1
+  val CR2 = Reg(UInt(16 bits)) init(0)   // 控制寄存器2
+  val OAR1 = Reg(UInt(16 bits)) init(0)  // 自身地址寄存器1
+  val OAR2 = Reg(UInt(16 bits)) init(0)  // 自身地址寄存器2
+  val DR = Reg(UInt(16 bits)) init(0)    // 数据寄存器
+  val SR1 = Reg(UInt(16 bits)) init(0)   // 状态寄存器1
+  val SR2 = Reg(UInt(16 bits)) init(0)   // 状态寄存器2
+  val CCR = Reg(UInt(16 bits)) init(0)   // 时钟控制寄存器
   val TRISE = Reg(UInt(16 bits)) init(0) // TRISE寄存器
 
   // CR1位域解析
@@ -76,6 +76,14 @@ case class Apb3I2c(
   val DMAEN = CR2(11)    // DMA请求使能
   val LAST = CR2(12)     // DMA最后一个传输
 
+  // OAR1位域解析
+  val ADDMODE = OAR1(15) // 地址模式
+  val ADD = OAR1(9 downto 0) // 10位地址
+
+  // OAR2位域解析
+  val ADD2 = OAR2(7 downto 1) // 7位地址
+  val ENDUAL = OAR2(0) // 双地址模式
+
   // SR1位域解析
   val SB = SR1(0)        // 起始位
   val ADDR = SR1(1)      // 地址发送
@@ -93,14 +101,19 @@ case class Apb3I2c(
   val SMBALERT = SR1(15) // SMBus警告
 
   // SR2位域解析
-  val MSL = SR2(0) // 主/从
-  val BUSY = SR2(1) // 总线忙
-  val TRA = SR2(2) // 发送器/接收器
-  val GENCALL = SR2(4) // 广播呼叫地址
+  val MSL = SR2(0)        // 主/从
+  val BUSY = SR2(1)       // 总线忙
+  val TRA = SR2(2)        // 发送器/接收器
+  val GENCALL = SR2(4)    // 广播呼叫地址
   val SMBDEFAULT = SR2(5) // SMBus设备默认地址
-  val SMBHOST = SR2(6) // SMBus主机头
-  val DUALF = SR2(7) // 双标志
+  val SMBHOST = SR2(6)    // SMBus主机头
+  val DUALF = SR2(7)      // 双标志
   val SR2PEC = SR2(15 downto 8) // 数据包错误检查
+
+  // CCR位域解析
+  val CCR_FS = CCR(15) // 外设时钟频率
+  val CCR_DUTY = CCR(14) // 空闲时钟占空比
+  val CCR_CCR = CCR(11 downto 0) // 时钟控制寄存器
 
   // FIFO实现
   val txFifo = StreamFifo(Bits(dataWidthMax bits), txFifoDepth)
@@ -108,21 +121,20 @@ case class Apb3I2c(
 
   // I2C状态机
   val i2cState = Reg(UInt(4 bits)) init(0)
-  val bitCounter = Reg(UInt(3 bits)) init(0)
+  val bitCounter = Reg(UInt(4 bits)) init(0)
   val txShiftReg = Reg(Bits(dataWidthMax bits)) init(0)
   val rxShiftReg = Reg(Bits(dataWidthMax bits)) init(0)
-  val addressReg = Reg(Bits(7 bits)) init(0)
   val isRead = Reg(Bool()) init(False)
+  isRead := False // TODO
 
   // 时钟分频器
-  val clockDivider = Reg(UInt(12 bits)) init(0)
   val clockCounter = Reg(UInt(12 bits)) init(0)
   val clockTick = clockCounter === 0
 
   // 根据CCR计算时钟分频
   when(PE) {
     clockCounter := clockCounter - 1
-    when(clockTick) { clockCounter := clockDivider }
+    when(clockTick) { clockCounter := CCR_CCR }
   }
 
   // I2C状态机逻辑
@@ -139,16 +151,30 @@ case class Apb3I2c(
     }
     is(1) { // 发送地址
       when(clockTick) {
-        when(bitCounter < 7) {
-          io.i2c.sda := addressReg(6 - bitCounter)
-          bitCounter := bitCounter + 1
-        }.elsewhen(bitCounter === 7) {
-          io.i2c.sda := isRead
-          bitCounter := bitCounter + 1
-          SR1(1) := True // ADDR = 1
+        when(ADDMODE) {
+          when(bitCounter < 10) {
+            io.i2c.sda := ADD(9 - bitCounter)
+            bitCounter := bitCounter + 1
+          }.elsewhen(bitCounter === 10) {
+            io.i2c.sda := isRead
+            bitCounter := bitCounter + 1
+            SR1(1) := True // ADDR = 1
+          }.otherwise {
+            i2cState := 2
+            SR1(1) := False // ADDR = 0
+          }
         }.otherwise {
-          i2cState := 2
-          SR1(1) := False // ADDR = 0
+          when(bitCounter < 7) {
+            io.i2c.sda := ADD(7 - bitCounter)
+            bitCounter := bitCounter + 1
+          }.elsewhen(bitCounter === 7) {
+            io.i2c.sda := isRead
+            bitCounter := bitCounter + 1
+            SR1(1) := True // ADDR = 1
+          }.otherwise {
+            i2cState := 2
+            SR1(1) := False // ADDR = 0
+          }
         }
       }
     }
@@ -197,7 +223,7 @@ case class Apb3I2c(
     }
     is(6) { // 发送进行中
       when(clockTick) {
-        io.i2c.sda := txShiftReg(7 - bitCounter)
+        io.i2c.sda := txShiftReg((7 - bitCounter).resized)
         bitCounter := bitCounter + 1
         when(bitCounter === 7) {
           SR1(2) := True // BTF = 1
@@ -263,24 +289,23 @@ case class Apb3I2c(
   io.i2c.sda := True // 默认高电平
 }
 
-
 object Apb3I2cArray {
-  def apb3Config(i2cCnt: Int, groupSpace: Int, dataWidth: Int) =
+  def apb3Config(i2cCnt: Int, i2cSpace: Int, dataWidth: Int) =
     Apb3Config(
-      addressWidth = log2Up(i2cCnt) + log2Up(groupSpace),
+      addressWidth = log2Up(i2cCnt) + log2Up(i2cSpace),
       dataWidth = dataWidth
     )
 }
 case class Apb3I2cArray(
     i2cCnt: Int = 4,
-    groupSpace: Int = 0x40,
+    i2cSpace: Int = 0x40,
     addressWidth: Int = log2Up(0x40),
     dataWidth: Int = 32,
     txFifoDepth: Int = 16,
     rxFifoDepth: Int = 16
 ) extends Component {
   val io = new Bundle {
-    val apb = slave(Apb3(Apb3I2cArray.apb3Config(i2cCnt, groupSpace, dataWidth)))
+    val apb = slave(Apb3(Apb3I2cArray.apb3Config(i2cCnt, i2cSpace, dataWidth)))
     val i2cs = Vec(master(I2c()), i2cCnt)
     val interrupt = out(Bits(i2cCnt bits))
   }
@@ -288,9 +313,9 @@ case class Apb3I2cArray(
   // 创建多个 I2C 控制器
   val I2C = for (_ <- 0 until i2cCnt) yield Apb3I2c(addressWidth, dataWidth, txFifoDepth, rxFifoDepth)
 
-  // 地址映射表：每个 I2C 模块分配 groupSpace 地址空间
+  // 地址映射表：每个 I2C 模块分配 i2cSpace 地址空间
   val apbMap = I2C.zipWithIndex.map { case (i2c, idx) =>
-    i2c.io.apb -> SizeMapping(idx * groupSpace, groupSpace)
+    i2c.io.apb -> SizeMapping(idx * i2cSpace, i2cSpace)
   }
 
   // 地址解码器
@@ -313,7 +338,7 @@ case class Apb3I2cArray(
 // object Apb3I2cGen {
 //   def main(args: Array[String]): Unit = {
 //     SpinalConfig(targetDirectory = "rtl").generateVerilog(
-//       Apb3I2c(addressWidth = 7, dataWidth = 32)
+//       Apb3I2c()
 //     )
 //   }
 // }
@@ -321,7 +346,7 @@ case class Apb3I2cArray(
 // object Apb3I2cArrayGen {
 //   def main(args: Array[String]): Unit = {
 //     SpinalConfig(targetDirectory = "rtl").generateVerilog(
-//       Apb3I2cArray(i2cCnt = 4, groupSpace = 0x40, dataWidth = 32)
+//       Apb3I2cArray()
 //     )
 //   }
 // }

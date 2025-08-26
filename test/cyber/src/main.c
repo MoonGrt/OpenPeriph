@@ -17,16 +17,16 @@ void led_breathe(void);
 
 void main()
 {
-    delay_init();
-    delay_ms(10); // 等待系统稳定
+    // delay_init();
+    // delay_ms(10); // 等待系统稳定
 
     demo_USART();
-    for (uint16_t i = 0;; printf("time: %us\r\n", i++), delay_ms(1000));
+    // for (uint16_t i = 0;; printf("time: %us\r\n", i++), delay_ms(1000));
     // demo_GPIO();
     // demo_EXTI();
     // demo_SysTick();
-    // demo_I2C();
-    // demo_SPI();
+    demo_I2C();
+    demo_SPI();
     // demo_TIM();
     // demo_PWM();
     // demo_WDG();

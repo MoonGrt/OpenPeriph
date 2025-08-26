@@ -96,6 +96,16 @@ case class Apb3Spi(
   val txFifo = StreamFifo(Bits(dataWidthMax bits), txFifoDepth)
   val rxFifo = StreamFifo(Bits(dataWidthMax bits), rxFifoDepth)
 
+  // CRC 更新函数（按字节更新）
+  def crcUpdate(crc: UInt, data: Bits): UInt = {
+    var next = crc
+    for (i <- 0 until data.getWidth) {
+      val xorBit = next.msb ^ data(i)
+      next = (next << 1).resized ^ (CRCPR & U(xorBit ? B"16'hFFFF" | B"16'h0000"))
+    }
+    next
+  }
+
   // SPI主控制器
   val spiMaster = new Area {
     val txValid = txFifo.io.pop.valid
@@ -143,6 +153,11 @@ case class Apb3Spi(
           txShiftReg := txShiftReg(dataWidthMax - 2 downto 0) ## B"0"
           // 接收数据
           rxShiftReg := rxShiftReg(dataWidthMax - 2 downto 0) ## io.spi.miso
+          // CRC 更新
+          when(CRCEN) {
+            TXCRCR := crcUpdate(TXCRCR, io.spi.mosi.asBits)
+            RXCRCR := crcUpdate(RXCRCR, io.spi.miso.asBits)
+          }
           // 计数器更新
           bitCounter := bitCounter + 1
           when(bitCounter === Mux(DFF, U(15), U(7))) {
@@ -206,22 +221,22 @@ case class Apb3Spi(
 }
 
 object Apb3SpiArray {
-  def apb3Config(spiCnt: Int, groupSpace: Int, dataWidth: Int) =
+  def apb3Config(spiCnt: Int, spiSpace: Int, dataWidth: Int) =
     Apb3Config(
-      addressWidth = log2Up(spiCnt) + log2Up(groupSpace),
+      addressWidth = log2Up(spiCnt) + log2Up(spiSpace),
       dataWidth = dataWidth
     )
 }
 case class Apb3SpiArray(
     spiCnt: Int = 4,
-    groupSpace: Int = 0x40,
+    spiSpace: Int = 0x40,
     addressWidth: Int = log2Up(0x40),
     dataWidth: Int = 32,
     txFifoDepth: Int = 16,
     rxFifoDepth: Int = 16
 ) extends Component {
   val io = new Bundle {
-    val apb = slave(Apb3(Apb3SpiArray.apb3Config(spiCnt, groupSpace, dataWidth)))
+    val apb = slave(Apb3(Apb3SpiArray.apb3Config(spiCnt, spiSpace, dataWidth)))
     val spis = Vec(master(Spi()), spiCnt)
     val interrupt = out(Bits(spiCnt bits))
   }
@@ -229,9 +244,9 @@ case class Apb3SpiArray(
   // 创建多个 SPI 控制器
   val SPI = for (_ <- 0 until spiCnt) yield Apb3Spi(addressWidth, dataWidth, txFifoDepth, rxFifoDepth)
 
-  // 地址映射表：每个 SPI 模块分配 groupSpace 地址空间
+  // 地址映射表：每个 SPI 模块分配 spiSpace 地址空间
   val apbMap = SPI.zipWithIndex.map { case (spi, idx) =>
-    spi.io.apb -> SizeMapping(idx * groupSpace, groupSpace)
+    spi.io.apb -> SizeMapping(idx * spiSpace, spiSpace)
   }
 
   // 地址解码器
@@ -254,7 +269,7 @@ case class Apb3SpiArray(
 // object Apb3SpiGen {
 //   def main(args: Array[String]): Unit = {
 //     SpinalConfig(targetDirectory = "rtl").generateVerilog(
-//       Apb3Spi(addressWidth = 7, dataWidth = 32)
+//       Apb3Spi()
 //     )
 //   }
 // }
@@ -262,7 +277,7 @@ case class Apb3SpiArray(
 // object Apb3SpiArrayGen {
 //   def main(args: Array[String]): Unit = {
 //     SpinalConfig(targetDirectory = "rtl").generateVerilog(
-//       Apb3SpiArray(spiCnt = 4, groupSpace = 0x40, dataWidth = 32)
+//       Apb3SpiArray()
 //     )
 //   }
 // }

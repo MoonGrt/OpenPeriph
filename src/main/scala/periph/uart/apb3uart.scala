@@ -119,21 +119,21 @@ case class Apb3Uart(config: Apb3UartCtrlConfig) extends Component {
 }
 
 object Apb3UartArray {
-  def apb3Config(uartCnt: Int, groupSpace: Int, dataWidth: Int) =
+  def apb3Config(uartCnt: Int, uartSpace: Int, dataWidth: Int) =
     Apb3Config(
-      addressWidth = log2Up(uartCnt) + log2Up(groupSpace),
+      addressWidth = log2Up(uartCnt) + log2Up(uartSpace),
       dataWidth = dataWidth
     )
 }
 case class Apb3UartArray(
     uartCnt: Int = 4,
-    groupSpace: Int = 0x20,
+    uartSpace: Int = 0x20,
     addressWidth: Int = log2Up(0x20),
     dataWidth: Int = 32,
     uartConfig: Apb3UartCtrlConfig
 ) extends Component {
   val io = new Bundle {
-    val apb = slave(Apb3(Apb3UartArray.apb3Config(uartCnt, groupSpace, dataWidth)))
+    val apb = slave(Apb3(Apb3UartArray.apb3Config(uartCnt, uartSpace, dataWidth)))
     val uarts = Vec(master(Uart(ctsGen = uartConfig.ctsGen, rtsGen = uartConfig.rtsGen)), uartCnt)
     val interrupt = out(Bits(uartCnt bits))
   }
@@ -141,9 +141,9 @@ case class Apb3UartArray(
   // 创建多个 UART 控制器
   val UART = for (_ <- 0 until uartCnt) yield Apb3Uart(uartConfig)
 
-  // 地址映射表：每个 UART 模块分配 groupSpace 地址空间
+  // 地址映射表：每个 UART 模块分配 uartSpace 地址空间
   val apbMap = UART.zipWithIndex.map { case (uart, idx) =>
-    uart.io.apb -> SizeMapping(idx * groupSpace, groupSpace)
+    uart.io.apb -> SizeMapping(idx * uartSpace, uartSpace)
   }
 
   // 地址解码器
@@ -189,7 +189,7 @@ case class Apb3UartArray(
 //     SpinalConfig(targetDirectory = "rtl").generateVerilog(
 //       Apb3UartArray(
 //         uartCnt = 4,
-//         groupSpace = 0x20,
+//         uartSpace = 0x20,
 //         uartConfig = Apb3UartCtrlConfig(
 //           uartCtrlGenerics = UartCtrlGenerics(
 //             dataWidthMax = 9,
