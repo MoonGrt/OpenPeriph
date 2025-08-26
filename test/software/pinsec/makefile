@@ -124,6 +124,6 @@ clean:
 
 mem: $(OBJDIR)/$(PROJ_NAME).hex
 	@echo "\nGenerating .mem from .hex..."
-	@../../scripts/InstExtractor.sh $< $(OBJDIR)/$(PROJ_NAME) 1024
+	@../../../scripts/InstExtractor.sh $< $(OBJDIR)/$(PROJ_NAME) 1024
 
 .SECONDARY: $(OBJS)

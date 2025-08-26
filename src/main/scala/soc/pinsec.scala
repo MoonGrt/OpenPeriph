@@ -319,7 +319,7 @@ case class pinsecTimerCtrl() extends Component {
 //     val config =
 //       SpinalConfig(verbose = true, targetDirectory = "rtl").dumpWave()
 //     val report = config.generateVerilog(
-//       InOutWrapper(new pinsec(pinsecConfig.default.copy(memFile = "test/pinsec/build/demo.hex")))
+//       InOutWrapper(new pinsec(pinsecConfig.default.copy(memFile = "test/software/cyber/build/demo.hex")))
 //     )
 //   }
 // }

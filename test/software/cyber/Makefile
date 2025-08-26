@@ -1,30 +1,19 @@
-# make clean && make -j $(nproc) && make mem
+# make clean && make -j $(nproc)
 
-DDREN = yes
-DDR_TEST = no
 PROJ_NAME = demo
 DEBUG = yes
 BENCH = no
 FUNC_OPT = yes
 MULDIV = yes
 
-ifeq ($(DDREN),yes)
-    LDSCRIPT = linkerddr.ld
-else
-	LDSCRIPT = linker.ld
-endif
+SRCS = $(wildcard libs/*.c) \
+       $(wildcard libs/*.S) \
+       $(wildcard src/*.c) \
+       $(wildcard src/*.S) \
+       $(wildcard src/ov5640/*.c) \
 
-ifeq ($(DDR_TEST),yes)
-    SRCS = $(wildcard src/ddr_test.S)
-else
-    INC += -I./libs -I./src -I./src/ov5640 -I./src/lcd
-    SRCS = $(wildcard libs/*.c) \
-           $(wildcard libs/*.S) \
-           $(wildcard src/*.c) \
-           $(wildcard src/*.S) \
-           $(wildcard src/ov5640/*.c) \
-		   $(wildcard src/lcd/*.c)
-endif
+INC += -I./libs -I./src -I./src/ov5640
+LDSCRIPT = linker.ld
 
 # Set it to yes if you are using the sifive precompiled GCC pack
 SIFIVE_GCC_PACK ?= yes
@@ -135,6 +124,6 @@ clean:
 
 mem: $(OBJDIR)/$(PROJ_NAME).hex
 	@echo "\nGenerating .mem from .hex..."
-	@../../scripts/InstExtractor.sh $< $(OBJDIR)/$(PROJ_NAME) 8192
+	@../../../scripts/InstExtractor.sh $< $(OBJDIR)/$(PROJ_NAME) 8192
 
 .SECONDARY: $(OBJS)

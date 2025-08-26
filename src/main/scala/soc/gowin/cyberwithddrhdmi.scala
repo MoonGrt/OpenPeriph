@@ -365,11 +365,11 @@ object cyberwithddrhdmi {
       InOutWrapper(
         new cyberwithddrhdmi(
           cyberwithddrhdmiConfig.default.copy(
-            memFile = "test/cyberwithddr/build/demo.hex",
+            memFile = "test/software/cyber/build/demo.hex",
             memFileType = "rawhex"
-            // memFile = "test/cyberwithddr/build/mem/demo.bin",
+            // memFile = "test/software/cyber/build/mem/demo.bin",
             // memFileType = "bin"
-            // memFile = "test/cyberwithddr/build/mem/demo.hex",
+            // memFile = "test/software/cyber/build/mem/demo.hex",
             // memFileType = "hex"
           )
         )

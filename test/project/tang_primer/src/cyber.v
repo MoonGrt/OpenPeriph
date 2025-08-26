@@ -5341,10 +5341,10 @@ module Axi4Ram (
   assign _zz_Axi4Incr_result_11 = Axi4Incr_base[11 : 6];
   assign _zz_Axi4Incr_result_12 = Axi4Incr_baseIncr[5 : 0];
   initial begin
-    $readmemb("G:/VM/share/OpenPeriph/test/cyberwithddr/build/mem/demo1.bin",ram_symbol0);
-    $readmemb("G:/VM/share/OpenPeriph/test/cyberwithddr/build/mem/demo2.bin",ram_symbol1);
-    $readmemb("G:/VM/share/OpenPeriph/test/cyberwithddr/build/mem/demo3.bin",ram_symbol2);
-    $readmemb("G:/VM/share/OpenPeriph/test/cyberwithddr/build/mem/demo4.bin",ram_symbol3);
+    $readmemb("G:/VM/share/OpenPeriph/test/software/cyberwithddr/build/mem/demo1.bin",ram_symbol0);
+    $readmemb("G:/VM/share/OpenPeriph/test/software/cyberwithddr/build/mem/demo2.bin",ram_symbol1);
+    $readmemb("G:/VM/share/OpenPeriph/test/software/cyberwithddr/build/mem/demo3.bin",ram_symbol2);
+    $readmemb("G:/VM/share/OpenPeriph/test/software/cyberwithddr/build/mem/demo4.bin",ram_symbol3);
   end
   always @(*) begin
     ram_spinal_port0 = {_zz_ramsymbol_read_3, _zz_ramsymbol_read_2, _zz_ramsymbol_read_1, _zz_ramsymbol_read};
