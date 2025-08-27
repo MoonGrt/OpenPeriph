@@ -15,6 +15,14 @@ void demo_DVP(void);
 void led_flow(void);
 void led_breathe(void);
 
+#define SPILCD
+#ifdef SPILCD
+#include "st7789_soft.h"
+void demo_ST7789_SOFT(void);
+#include "st7789_hard.h"
+void demo_ST7789_HARD(void);
+#endif
+
 void main()
 {
     // delay_init();
@@ -26,7 +34,7 @@ void main()
     // demo_EXTI();
     // demo_SysTick();
     // demo_I2C();
-    demo_SPI();
+    // demo_SPI();
     // demo_TIM();
     // demo_PWM();
     // demo_WDG();
@@ -34,6 +42,9 @@ void main()
 
     // led_flow();
     // led_breathe();
+
+    demo_ST7789_SOFT();
+    // demo_ST7789_HARD();
 }
 
 uint8_t Serial_RxData; // 定义串口接收的数据变量
@@ -643,4 +654,35 @@ void demo_DVP(void)
     // 配置 TH
     DVP_VP_SetThreshold(DVP, 0x40, 0x80);
 }
+#endif
+
+#ifdef SPILCD
+void ST7789_SOFT_Fill_ColorBar(void)
+{
+    for (uint16_t i = 0; i < 32400; i++) // 135 * 240
+    {
+        uint16_t pixel;
+        if (i >= 21600)
+            pixel = 0x001F; // 0xF800
+        else if (i >= 10800)
+            pixel = 0xF800; // 0x07E0
+        else
+            pixel = 0x07E0; // 0x001F
+        ST7789_SOFT_WriteData(pixel >> 8);
+        ST7789_SOFT_WriteData(pixel & 0xFF);
+    }
+}
+
+void demo_ST7789_SOFT()
+{
+    delay_init();
+    delay_ms(10); // 等待系统稳定
+    demo_USART();
+    ST7789_SOFT_GPIO_Init();     // 初始化 ST7789_SOFT 引脚
+    ST7789_SOFT_Init();          // 初始化 ST7789_SOFT 控制器
+    ST7789_SOFT_Fill_ColorBar(); // 显示彩条
+}
+
+
+
 #endif

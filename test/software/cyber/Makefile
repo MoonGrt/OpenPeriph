@@ -11,8 +11,9 @@ SRCS = $(wildcard libs/*.c) \
        $(wildcard src/*.c) \
        $(wildcard src/*.S) \
        $(wildcard src/ov5640/*.c) \
+	   $(wildcard src/st7789/*.c) \
 
-INC += -I./libs -I./src -I./src/ov5640
+INC += -I./libs -I./src -I./src/ov5640 -I./src/st7789
 LDSCRIPT = linker.ld
 
 # Set it to yes if you are using the sifive precompiled GCC pack
