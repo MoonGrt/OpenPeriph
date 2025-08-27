@@ -67,6 +67,21 @@ static void printf_u(unsigned int val)
         printf_c(*(--p));
 }
 
+static void printf_x(unsigned int val, int uppercase)
+{
+    char buffer[32];
+    char *p = buffer;
+    const char *digits = uppercase ? "0123456789ABCDEF" : "0123456789abcdef";
+
+    while (val || p == buffer)
+    {
+        *(p++) = digits[val % 16];
+        val = val / 16;
+    }
+    while (p != buffer)
+        printf_c(*(--p));
+}
+
 int printf(const char *format, ...)
 {
     int i;
@@ -97,6 +112,16 @@ int printf(const char *format, ...)
                 if (format[i] == 'u')
                 {
                     printf_u(va_arg(ap, unsigned int));
+                    break;
+                }
+                if (format[i] == 'x')
+                {
+                    printf_x(va_arg(ap, unsigned int), 0);
+                    break;
+                }
+                if (format[i] == 'X')
+                {
+                    printf_x(va_arg(ap, unsigned int), 1);
                     break;
                 }
             }

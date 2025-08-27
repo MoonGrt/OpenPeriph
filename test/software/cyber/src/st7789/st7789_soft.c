@@ -47,11 +47,12 @@ void ST7789_SOFT_GPIO_Init(void)
                                   ST7789_SOFT_RS_PIN | ST7789_SOFT_BL_PIN | ST7789_SOFT_RST_PIN;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOA, &GPIO_InitStructure);
+    GPIO_Init(GPIOB, &GPIO_InitStructure);
 
     // 初始状态
     ST7789_SOFT_CLK_L();
     ST7789_SOFT_BL_L(); // <<<< 打开背光
+    ST7789_SOFT_CS_H();
 }
 
 void ST7789_SOFT_WriteCmd(uint8_t cmd)

@@ -26,8 +26,6 @@ void demo_ST7789_HARD(void);
 void main()
 {
     // delay_init();
-    // delay_ms(10); // 等待系统稳定
-
     // demo_USART();
     // for (uint16_t i = 0;; printf("time: %us\r\n", i++), delay_ms(1000));
     // demo_GPIO();
@@ -43,8 +41,8 @@ void main()
     // led_flow();
     // led_breathe();
 
-    demo_ST7789_SOFT();
-    // demo_ST7789_HARD();
+    // demo_ST7789_SOFT();
+    demo_ST7789_HARD();
 }
 
 uint8_t Serial_RxData; // 定义串口接收的数据变量
@@ -676,13 +674,35 @@ void ST7789_SOFT_Fill_ColorBar(void)
 void demo_ST7789_SOFT()
 {
     delay_init();
-    delay_ms(10); // 等待系统稳定
     demo_USART();
     ST7789_SOFT_GPIO_Init();     // 初始化 ST7789_SOFT 引脚
     ST7789_SOFT_Init();          // 初始化 ST7789_SOFT 控制器
     ST7789_SOFT_Fill_ColorBar(); // 显示彩条
 }
 
+void ST7789_HARD_Fill_ColorBar(void)
+{
+    for (uint16_t i = 0; i < 32400; i++) // 135 * 240
+    {
+        uint16_t pixel;
+        if (i >= 21600)
+            pixel = 0x001F; // 0xF800
+        else if (i >= 10800)
+            pixel = 0xF800; // 0x07E0
+        else
+            pixel = 0x07E0; // 0x001F
+        ST7789_HARD_WriteData(pixel >> 8);
+        ST7789_HARD_WriteData(pixel & 0xFF);
+    }
+}
 
+void demo_ST7789_HARD()
+{
+    delay_init();
+    // demo_USART();
+    ST7789_HARD_GPIO_Init();     // 初始化 ST7789_HARD 引脚
+    ST7789_HARD_Init();          // 初始化 ST7789_HARD 控制器
+    ST7789_HARD_Fill_ColorBar(); // 显示彩条
+}
 
 #endif

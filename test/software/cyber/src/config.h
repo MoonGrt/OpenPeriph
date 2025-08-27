@@ -1,7 +1,7 @@
 #ifndef __CONFIG_H_
 #define __CONFIG_H_
 
-#define CORE_HZ 50000000
+#define CORE_HZ 27000000
 
 #define CYBER_AFIO
 #define CYBER_EXTI

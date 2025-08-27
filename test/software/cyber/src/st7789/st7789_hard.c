@@ -80,9 +80,9 @@ void ST7789_HARD_Reset(void)
 
 void ST7789_HARD_Init(void)
 {
-    ST7789_HARD_Reset();
+    // ST7789_HARD_Reset();
     ST7789_HARD_WriteCmd(0x11);
-    delay_ms(120);
+    // delay_ms(120);
 
     for (int i = 0; i < sizeof(init_cmds) / sizeof(init_cmds[0]); i++)
     {

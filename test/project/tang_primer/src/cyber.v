@@ -355,7 +355,6 @@ module cyber (
   wire       [31:0]   apb3Router_7_io_outputs_9_PWDATA;
   wire       [5:0]    _zz_io_device_read;
   wire       [0:0]    _zz_io_device_read_1;
-  wire                _zz_io_device_read_2;
   reg                 _zz_io_gpio;
   reg                 _zz_io_gpio_1;
   reg                 _zz_io_gpio_2;
@@ -517,9 +516,8 @@ module cyber (
   wire                when_InOutWrapper_l15_30;
   wire                when_InOutWrapper_l15_31;
 
-  assign _zz_io_device_read = {{{{{axi_spiCtrl_io_spis_1_sclk,axi_spiCtrl_io_spis_1_ss},axi_spiCtrl_io_spis_1_mosi},1'b0},axi_spiCtrl_io_spis_0_sclk},axi_spiCtrl_io_spis_0_ss};
-  assign _zz_io_device_read_1 = axi_spiCtrl_io_spis_0_mosi;
-  assign _zz_io_device_read_2 = 1'b0;
+  assign _zz_io_device_read = {{{{{1'b0,axi_spiCtrl_io_spis_1_mosi},axi_spiCtrl_io_spis_1_ss},axi_spiCtrl_io_spis_0_sclk},1'b0},axi_spiCtrl_io_spis_0_mosi};
+  assign _zz_io_device_read_1 = axi_spiCtrl_io_spis_0_ss;
   (* keep_hierarchy = "TRUE" *) BufferCC_5 bufferCC_6 (
     .io_dataIn  (bufferCC_6_io_dataIn ), //i
     .io_dataOut (bufferCC_6_io_dataOut), //o
@@ -1494,11 +1492,11 @@ module cyber (
   assign axi_uartInterrupt = (|axi_uartCtrl_io_interrupt);
   assign axi_i2cInterrupt = (|axi_i2cCtrl_io_interrupt);
   assign axi_spiInterrupt = (|axi_spiCtrl_io_interrupt);
-  assign axi_afioCtrl_io_device_read = {{{{{{{{{{{{_zz_io_device_read,_zz_io_device_read_1},_zz_io_device_read_2},axi_i2cCtrl_io_i2cs_1_scl},axi_i2cCtrl_io_i2cs_1_sda_write},axi_i2cCtrl_io_i2cs_0_scl},axi_i2cCtrl_io_i2cs_0_sda_write},1'b0},axi_uartCtrl_io_uarts_1_txd},1'b0},axi_uartCtrl_io_uarts_0_txd},axi_timCtrl_io_tim_ch},8'h0};
+  assign axi_afioCtrl_io_device_read = {{{{{{{{{{{{_zz_io_device_read,_zz_io_device_read_1},axi_spiCtrl_io_spis_0_sclk},axi_i2cCtrl_io_i2cs_1_scl},axi_i2cCtrl_io_i2cs_1_sda_write},axi_i2cCtrl_io_i2cs_0_scl},axi_i2cCtrl_io_i2cs_0_sda_write},1'b0},axi_uartCtrl_io_uarts_1_txd},1'b0},axi_uartCtrl_io_uarts_0_txd},axi_timCtrl_io_tim_ch},8'h0};
   assign axi_uartCtrl_io_uarts_0_rxd = axi_afioCtrl_io_device_write[17];
   assign axi_uartCtrl_io_uarts_1_rxd = axi_afioCtrl_io_device_write[19];
-  assign axi_spiCtrl_io_spis_0_miso = axi_afioCtrl_io_device_write[25];
-  assign axi_spiCtrl_io_spis_1_miso = axi_afioCtrl_io_device_write[27];
+  assign axi_spiCtrl_io_spis_0_miso = axi_afioCtrl_io_device_write[27];
+  assign axi_spiCtrl_io_spis_1_miso = axi_afioCtrl_io_device_write[31];
   assign axi_i2cCtrl_io_i2cs_0_sda_read = axi_afioCtrl_io_device_write[20];
   assign axi_i2cCtrl_io_i2cs_1_sda_read = axi_afioCtrl_io_device_write[22];
   assign io_outputs_0_ar_validPipe_fire = (io_outputs_0_ar_validPipe_valid && io_outputs_0_ar_validPipe_ready);
@@ -1584,7 +1582,7 @@ module cyber (
     axi_core_io_interrupt[2] = axi_systickInterrupt;
     axi_core_io_interrupt[3] = axi_extiInterrupt;
     axi_core_io_interrupt[4] = axi_i2cInterrupt;
-    axi_core_io_interrupt[5] = axi_spiInterrupt;
+    axi_core_io_interrupt[15] = axi_spiInterrupt;
   end
 
   assign _zz_io_gpio_32 = axi_gpioCtrl_io_gpio_write;
@@ -2012,8 +2010,8 @@ module Apb3Decoder_6 (
   always @(*) begin
     io_output_PSEL[0] = (((io_input_PADDR & (~ 20'h0ffff)) == 20'h0) && io_input_PSEL[0]);
     io_output_PSEL[1] = (((io_input_PADDR & (~ 20'h0ffff)) == 20'h10000) && io_input_PSEL[0]);
-    io_output_PSEL[2] = (((io_input_PADDR & (~ 20'h0ffff)) == 20'h30000) && io_input_PSEL[0]);
-    io_output_PSEL[3] = (((io_input_PADDR & (~ 20'h0ffff)) == 20'h20000) && io_input_PSEL[0]);
+    io_output_PSEL[2] = (((io_input_PADDR & (~ 20'h0ffff)) == 20'h20000) && io_input_PSEL[0]);
+    io_output_PSEL[3] = (((io_input_PADDR & (~ 20'h0ffff)) == 20'h30000) && io_input_PSEL[0]);
     io_output_PSEL[4] = (((io_input_PADDR & (~ 20'h0ffff)) == 20'h40000) && io_input_PSEL[0]);
     io_output_PSEL[5] = (((io_input_PADDR & (~ 20'h0ffff)) == 20'h50000) && io_input_PSEL[0]);
     io_output_PSEL[6] = (((io_input_PADDR & (~ 20'h0ffff)) == 20'h60000) && io_input_PSEL[0]);
@@ -3656,7 +3654,7 @@ module Apb3SpiArray (
     .io_clk             (io_clk                                ), //i
     .resetCtrl_axiReset (resetCtrl_axiReset                    )  //i
   );
-  Apb3Spi SPI_1 (
+  Apb3Spi_1 SPI_1 (
     .io_apb_PADDR       (SPI_1_io_apb_PADDR[5:0]               ), //i
     .io_apb_PSEL        (apb3Router_7_io_outputs_1_PSEL        ), //i
     .io_apb_PENABLE     (apb3Router_7_io_outputs_1_PENABLE     ), //i
@@ -6005,22 +6003,22 @@ module Axi4Riscv (
   input  wire          resetCtrl_coreReset
 );
 
+  wire                core_io_interrupt_8;
+  wire                core_io_interrupt_11;
+  wire                core_io_interrupt_2;
+  wire                core_io_interrupt_5;
+  wire                core_io_interrupt_14;
   wire                core_io_interrupt_13;
   wire                core_io_interrupt_4;
   wire                core_io_interrupt_7;
   wire                core_io_interrupt_1;
   wire                core_io_interrupt_10;
-  wire                core_io_interrupt_0;
   wire                core_io_interrupt_9;
   wire                core_io_interrupt_3;
   wire                core_io_interrupt_12;
-  wire                core_io_interrupt_6;
   wire                core_io_interrupt_15;
-  wire                core_io_interrupt_14;
-  wire                core_io_interrupt_5;
-  wire                core_io_interrupt_8;
-  wire                core_io_interrupt_2;
-  wire                core_io_interrupt_11;
+  wire                core_io_interrupt_6;
+  wire                core_io_interrupt_0;
   wire                core_io_i_branchCachePort_cmd_valid;
   wire       [6:0]    core_io_i_branchCachePort_cmd_payload;
   wire       [31:0]   core_io_i_rsp_payload_instruction;
@@ -6181,22 +6179,22 @@ module Axi4Riscv (
   assign _zz_io_i_branchCachePort_cmd_payload = (_zz_io_i_ar_payload_addr >>> 2'd2);
   assign _zz_dBridge_mm_w_payload_strb_1 = ({3'd0,_zz_dBridge_mm_w_payload_strb} <<< dBridge_dataStage_payload_address[1 : 0]);
   RiscvCore core (
+    .io_interrupt_8                           (core_io_interrupt_8                               ), //i
+    .io_interrupt_11                          (core_io_interrupt_11                              ), //i
+    .io_interrupt_2                           (core_io_interrupt_2                               ), //i
+    .io_interrupt_5                           (core_io_interrupt_5                               ), //i
+    .io_interrupt_14                          (core_io_interrupt_14                              ), //i
     .io_interrupt_13                          (core_io_interrupt_13                              ), //i
     .io_interrupt_4                           (core_io_interrupt_4                               ), //i
     .io_interrupt_7                           (core_io_interrupt_7                               ), //i
     .io_interrupt_1                           (core_io_interrupt_1                               ), //i
     .io_interrupt_10                          (core_io_interrupt_10                              ), //i
-    .io_interrupt_0                           (core_io_interrupt_0                               ), //i
     .io_interrupt_9                           (core_io_interrupt_9                               ), //i
     .io_interrupt_3                           (core_io_interrupt_3                               ), //i
     .io_interrupt_12                          (core_io_interrupt_12                              ), //i
-    .io_interrupt_6                           (core_io_interrupt_6                               ), //i
     .io_interrupt_15                          (core_io_interrupt_15                              ), //i
-    .io_interrupt_14                          (core_io_interrupt_14                              ), //i
-    .io_interrupt_5                           (core_io_interrupt_5                               ), //i
-    .io_interrupt_8                           (core_io_interrupt_8                               ), //i
-    .io_interrupt_2                           (core_io_interrupt_2                               ), //i
-    .io_interrupt_11                          (core_io_interrupt_11                              ), //i
+    .io_interrupt_6                           (core_io_interrupt_6                               ), //i
+    .io_interrupt_0                           (core_io_interrupt_0                               ), //i
     .io_i_cmd_valid                           (core_io_i_cmd_valid                               ), //o
     .io_i_cmd_ready                           (_zz_io_i_cmd_ready                                ), //i
     .io_i_cmd_payload_pc                      (core_io_i_cmd_payload_pc[31:0]                    ), //o
@@ -6235,22 +6233,22 @@ module Axi4Riscv (
   `endif
   end
 
+  assign core_io_interrupt_8 = io_interrupt[8];
+  assign core_io_interrupt_11 = io_interrupt[11];
+  assign core_io_interrupt_2 = io_interrupt[2];
+  assign core_io_interrupt_5 = io_interrupt[5];
+  assign core_io_interrupt_14 = io_interrupt[14];
   assign core_io_interrupt_13 = io_interrupt[13];
   assign core_io_interrupt_4 = io_interrupt[4];
   assign core_io_interrupt_7 = io_interrupt[7];
   assign core_io_interrupt_1 = io_interrupt[1];
   assign core_io_interrupt_10 = io_interrupt[10];
-  assign core_io_interrupt_0 = io_interrupt[0];
   assign core_io_interrupt_9 = io_interrupt[9];
   assign core_io_interrupt_3 = io_interrupt[3];
   assign core_io_interrupt_12 = io_interrupt[12];
-  assign core_io_interrupt_6 = io_interrupt[6];
   assign core_io_interrupt_15 = io_interrupt[15];
-  assign core_io_interrupt_14 = io_interrupt[14];
-  assign core_io_interrupt_5 = io_interrupt[5];
-  assign core_io_interrupt_8 = io_interrupt[8];
-  assign core_io_interrupt_2 = io_interrupt[2];
-  assign core_io_interrupt_11 = io_interrupt[11];
+  assign core_io_interrupt_6 = io_interrupt[6];
+  assign core_io_interrupt_0 = io_interrupt[0];
   assign core__zz_9 = (io_debugBus_PSEL[0] && (! io_debugBus_PENABLE));
   assign core__zz_decode_regFileReadAddress0 = _zz__zz_decode_regFileReadAddress0[7:0];
   assign io_debugBus_PSLVERROR = 1'b0;
@@ -7100,9 +7098,7 @@ endmodule
 
 //Apb3Decoder_5 replaced by Apb3Decoder
 
-//Apb3Spi_1 replaced by Apb3Spi
-
-module Apb3Spi (
+module Apb3Spi_1 (
   input  wire [5:0]    io_apb_PADDR,
   input  wire [0:0]    io_apb_PSEL,
   input  wire          io_apb_PENABLE,
@@ -7112,13 +7108,17 @@ module Apb3Spi (
   output reg  [31:0]   io_apb_PRDATA,
   output wire          io_apb_PSLVERROR,
   output wire          io_spi_sclk,
-  output reg           io_spi_mosi,
+  output wire          io_spi_mosi,
   input  wire          io_spi_miso,
   output wire          io_spi_ss,
   output wire          io_interrupt,
   input  wire          io_clk,
   input  wire          resetCtrl_axiReset
 );
+  localparam SpiState_IDLE = 2'd0;
+  localparam SpiState_LOAD = 2'd1;
+  localparam SpiState_SHIFT = 2'd2;
+  localparam SpiState_DONE = 2'd3;
 
   reg                 txFifo_io_push_valid;
   reg        [15:0]   txFifo_io_push_payload;
@@ -7136,14 +7136,16 @@ module Apb3Spi (
   wire       [15:0]   rxFifo_io_pop_payload;
   wire       [4:0]    rxFifo_io_occupancy;
   wire       [4:0]    rxFifo_io_availability;
-  reg        [7:0]    _zz_spiMaster_clockDivider;
-  wire       [7:0]    _zz_spiMaster_clockDivider_1;
-  wire       [7:0]    _zz_spiMaster_clockDivider_2;
-  wire       [7:0]    _zz_spiMaster_clockDivider_3;
-  wire       [7:0]    _zz_spiMaster_clockDivider_4;
-  wire       [7:0]    _zz_spiMaster_clockDivider_5;
-  wire       [7:0]    _zz_spiMaster_clockDivider_6;
-  wire       [7:0]    _zz_spiMaster_clockDivider_7;
+  wire       [7:0]    _zz_spiMaster_clockDivider;
+  wire       [2:0]    _zz_spiMaster_clockDivider_1;
+  wire       [15:0]   _zz_spiMaster_txShiftReg;
+  wire       [7:0]    _zz_spiMaster_txShiftReg_1;
+  wire       [15:0]   _zz_spiMaster_txShiftReg_2;
+  wire       [7:0]    _zz_spiMaster_txShiftReg_3;
+  wire       [15:0]   _zz_spiMaster_rxShiftReg;
+  wire       [7:0]    _zz_spiMaster_rxShiftReg_1;
+  wire       [15:0]   _zz_spiMaster_rxShiftReg_2;
+  wire       [7:0]    _zz_spiMaster_rxShiftReg_3;
   wire       [15:0]   _zz_TXCRCR;
   wire       [16:0]   _zz_TXCRCR_1;
   wire       [0:0]    _zz_TXCRCR_2;
@@ -7165,66 +7167,69 @@ module Apb3Spi (
   reg        [15:0]   TXCRCR;
   reg        [15:0]   I2SCFGR;
   reg        [15:0]   I2SPR;
-  wire                SPE;
+  wire                CPHA;
+  wire                CPOL;
   wire                MSTR;
   wire       [2:0]    BR_1;
-  wire                CPOL;
-  wire                CPHA;
+  wire                SPE;
+  wire                LSBFIRST;
+  reg                 SSI;
+  wire                SSM;
+  wire                RXONLY;
   wire                DFF;
   wire                CRCNEXT;
   wire                CRCEN;
   wire                BIDIOE;
   wire                BIDIMODE;
-  wire                RXONLY;
-  wire                SSM;
-  wire                SSI;
-  wire                LSBFIRST;
+  wire                RXDMAEN;
+  wire                TXDMAEN;
+  wire                SSOE;
   wire                ERRIE;
   wire                RXEIE;
   wire                TXEIE;
-  wire                TXDMAEN;
-  wire                RXDMAEN;
-  wire                SSOE;
-  wire                FRF;
-  wire                ERRIE_CR2;
-  wire                RXNEIE;
-  wire                TXEIE_CR2;
-  wire                BSY;
-  wire                OVR;
-  wire                MODF;
-  wire                CRCERR;
-  wire                UDR;
-  wire                CHSIDE;
-  wire                TXE;
   wire                RXNE;
+  wire                TXE;
+  wire                CHSIDE;
+  wire                UDR;
+  wire                CRCERR;
+  wire                MODF;
+  wire                OVR;
+  wire                BSY;
   reg        [7:0]    spiMaster_clockDivider;
-  (* altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" , altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" *) reg        [7:0]    spiMaster_clockCounter;
-  wire                spiMaster_clockTick;
-  wire       [0:0]    spiMaster_dividerValues_0;
-  wire       [1:0]    spiMaster_dividerValues_1;
-  wire       [2:0]    spiMaster_dividerValues_2;
-  wire       [3:0]    spiMaster_dividerValues_3;
-  wire       [4:0]    spiMaster_dividerValues_4;
-  wire       [5:0]    spiMaster_dividerValues_5;
-  wire       [6:0]    spiMaster_dividerValues_6;
-  wire       [7:0]    spiMaster_dividerValues_7;
+  reg        [7:0]    spiMaster_clockCounter;
+  wire                spiMaster_sclkToggle;
+  reg                 spiMaster_sclkReg;
+  wire       [4:0]    spiMaster_frameLength;
   (* altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" , altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" *) reg        [1:0]    spiMaster_state;
-  reg        [3:0]    spiMaster_bitCounter;
-  (* altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" , altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" *) reg        [15:0]   spiMaster_txShiftReg;
   reg        [15:0]   spiMaster_rxShiftReg;
-  wire                when_apb3spi_l142;
-  wire                when_apb3spi_l163;
+  reg        [15:0]   spiMaster_txShiftReg;
+  reg        [4:0]    spiMaster_txBitCnt;
+  reg        [4:0]    spiMaster_rxBitCnt;
+  (* altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" , altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" *) reg                 spiMaster_mosiReg;
+  wire                when_apb3spi_l157;
+  wire                when_apb3spi_l167;
+  wire                when_apb3spi_l169;
+  wire                when_apb3spi_l177;
+  wire                when_apb3spi_l179;
+  wire                when_apb3spi_l181;
   wire                txEmptyInterrupt;
   wire                rxNotEmptyInterrupt;
   wire                errorInterrupt;
+  `ifndef SYNTHESIS
+  reg [39:0] spiMaster_state_string;
+  `endif
 
-  assign _zz_spiMaster_clockDivider_1 = {7'd0, spiMaster_dividerValues_0};
-  assign _zz_spiMaster_clockDivider_2 = {6'd0, spiMaster_dividerValues_1};
-  assign _zz_spiMaster_clockDivider_3 = {5'd0, spiMaster_dividerValues_2};
-  assign _zz_spiMaster_clockDivider_4 = {4'd0, spiMaster_dividerValues_3};
-  assign _zz_spiMaster_clockDivider_5 = {3'd0, spiMaster_dividerValues_4};
-  assign _zz_spiMaster_clockDivider_6 = {2'd0, spiMaster_dividerValues_5};
-  assign _zz_spiMaster_clockDivider_7 = {1'd0, spiMaster_dividerValues_6};
+
+  assign _zz_spiMaster_clockDivider = ({7'd0,1'b1} <<< _zz_spiMaster_clockDivider_1);
+  assign _zz_spiMaster_clockDivider_1 = (BR_1 + 3'b001);
+  assign _zz_spiMaster_txShiftReg_1 = {1'b0,spiMaster_txShiftReg[7 : 1]};
+  assign _zz_spiMaster_txShiftReg = {8'd0, _zz_spiMaster_txShiftReg_1};
+  assign _zz_spiMaster_txShiftReg_3 = {spiMaster_txShiftReg[6 : 0],1'b0};
+  assign _zz_spiMaster_txShiftReg_2 = {8'd0, _zz_spiMaster_txShiftReg_3};
+  assign _zz_spiMaster_rxShiftReg_1 = {io_spi_miso,spiMaster_rxShiftReg[7 : 1]};
+  assign _zz_spiMaster_rxShiftReg = {8'd0, _zz_spiMaster_rxShiftReg_1};
+  assign _zz_spiMaster_rxShiftReg_3 = {spiMaster_rxShiftReg[6 : 0],io_spi_miso};
+  assign _zz_spiMaster_rxShiftReg_2 = {8'd0, _zz_spiMaster_rxShiftReg_3};
   assign _zz_TXCRCR_1 = ({1'd0,TXCRCR} <<< 1'd1);
   assign _zz_TXCRCR = _zz_TXCRCR_1[15:0];
   assign _zz_TXCRCR_2 = io_spi_mosi;
@@ -7257,18 +7262,17 @@ module Apb3Spi (
     .io_clk             (io_clk                      ), //i
     .resetCtrl_axiReset (resetCtrl_axiReset          )  //i
   );
+  `ifndef SYNTHESIS
   always @(*) begin
-    case(BR_1)
-      3'b000 : _zz_spiMaster_clockDivider = _zz_spiMaster_clockDivider_1;
-      3'b001 : _zz_spiMaster_clockDivider = _zz_spiMaster_clockDivider_2;
-      3'b010 : _zz_spiMaster_clockDivider = _zz_spiMaster_clockDivider_3;
-      3'b011 : _zz_spiMaster_clockDivider = _zz_spiMaster_clockDivider_4;
-      3'b100 : _zz_spiMaster_clockDivider = _zz_spiMaster_clockDivider_5;
-      3'b101 : _zz_spiMaster_clockDivider = _zz_spiMaster_clockDivider_6;
-      3'b110 : _zz_spiMaster_clockDivider = _zz_spiMaster_clockDivider_7;
-      default : _zz_spiMaster_clockDivider = spiMaster_dividerValues_7;
+    case(spiMaster_state)
+      SpiState_IDLE : spiMaster_state_string = "IDLE ";
+      SpiState_LOAD : spiMaster_state_string = "LOAD ";
+      SpiState_SHIFT : spiMaster_state_string = "SHIFT";
+      SpiState_DONE : spiMaster_state_string = "DONE ";
+      default : spiMaster_state_string = "?????";
     endcase
   end
+  `endif
 
   assign ctrl_readErrorFlag = 1'b0;
   assign ctrl_writeErrorFlag = 1'b0;
@@ -7318,54 +7322,41 @@ module Apb3Spi (
   assign ctrl_doRead = (((io_apb_PSEL[0] && io_apb_PENABLE) && io_apb_PREADY) && (! io_apb_PWRITE));
   assign io_apb_PSLVERROR = ((ctrl_doWrite && ctrl_writeErrorFlag) || (ctrl_doRead && ctrl_readErrorFlag));
   assign DR = 16'h0;
-  assign SPE = CR1[6];
+  assign CPHA = CR1[0];
+  assign CPOL = CR1[1];
   assign MSTR = CR1[2];
   assign BR_1 = CR1[5 : 3];
-  assign CPOL = CR1[1];
-  assign CPHA = CR1[0];
+  assign SPE = CR1[6];
+  assign LSBFIRST = CR1[7];
+  assign SSM = CR1[9];
+  assign RXONLY = CR1[10];
   assign DFF = CR1[11];
   assign CRCNEXT = CR1[12];
   assign CRCEN = CR1[13];
   assign BIDIOE = CR1[14];
   assign BIDIMODE = CR1[15];
-  assign RXONLY = CR1[10];
-  assign SSM = CR1[8];
-  assign SSI = CR1[7];
-  assign LSBFIRST = CR1[7];
-  assign ERRIE = CR1[5];
-  assign RXEIE = CR1[6];
-  assign TXEIE = CR1[7];
-  assign TXDMAEN = CR2[1];
   assign RXDMAEN = CR2[0];
+  assign TXDMAEN = CR2[1];
   assign SSOE = CR2[2];
-  assign FRF = CR2[4];
-  assign ERRIE_CR2 = CR2[5];
-  assign RXNEIE = CR2[6];
-  assign TXEIE_CR2 = CR2[7];
-  assign BSY = SR[7];
-  assign OVR = SR[6];
-  assign MODF = SR[5];
-  assign CRCERR = SR[4];
-  assign UDR = SR[3];
-  assign CHSIDE = SR[2];
-  assign TXE = SR[1];
+  assign ERRIE = CR2[5];
+  assign RXEIE = CR2[6];
+  assign TXEIE = CR2[7];
   assign RXNE = SR[0];
-  assign spiMaster_clockTick = (spiMaster_clockCounter == 8'h0);
-  assign spiMaster_dividerValues_0 = 1'b1;
-  assign spiMaster_dividerValues_1 = 2'b11;
-  assign spiMaster_dividerValues_2 = 3'b111;
-  assign spiMaster_dividerValues_3 = 4'b1111;
-  assign spiMaster_dividerValues_4 = 5'h1f;
-  assign spiMaster_dividerValues_5 = 6'h3f;
-  assign spiMaster_dividerValues_6 = 7'h7f;
-  assign spiMaster_dividerValues_7 = 8'hff;
+  assign TXE = SR[1];
+  assign CHSIDE = SR[2];
+  assign UDR = SR[3];
+  assign CRCERR = SR[4];
+  assign MODF = SR[5];
+  assign OVR = SR[6];
+  assign BSY = SR[7];
+  assign spiMaster_sclkToggle = (spiMaster_clockCounter == 8'h0);
+  assign io_spi_sclk = (spiMaster_sclkReg ^ CPOL);
+  assign spiMaster_frameLength = (DFF ? 5'h10 : 5'h08);
   always @(*) begin
-    io_spi_mosi = 1'b0;
+    SSI = 1'b1;
     case(spiMaster_state)
-      2'b01 : begin
-        if(spiMaster_clockTick) begin
-          io_spi_mosi = spiMaster_txShiftReg[15];
-        end
+      SpiState_SHIFT : begin
+        SSI = 1'b0;
       end
       default : begin
       end
@@ -7375,8 +7366,8 @@ module Apb3Spi (
   always @(*) begin
     txFifo_io_pop_ready = 1'b0;
     case(spiMaster_state)
-      2'b00 : begin
-        if(when_apb3spi_l142) begin
+      SpiState_IDLE : begin
+        if(when_apb3spi_l157) begin
           txFifo_io_pop_ready = 1'b1;
         end
       end
@@ -7388,14 +7379,7 @@ module Apb3Spi (
   always @(*) begin
     rxFifo_io_push_valid = 1'b0;
     case(spiMaster_state)
-      2'b01 : begin
-        if(spiMaster_clockTick) begin
-          if(when_apb3spi_l163) begin
-            rxFifo_io_push_valid = 1'b1;
-          end
-        end
-      end
-      2'b10 : begin
+      SpiState_DONE : begin
         rxFifo_io_push_valid = 1'b1;
       end
       default : begin
@@ -7406,21 +7390,20 @@ module Apb3Spi (
   always @(*) begin
     rxFifo_io_push_payload = 16'h0;
     case(spiMaster_state)
-      2'b01 : begin
-        if(spiMaster_clockTick) begin
-          if(when_apb3spi_l163) begin
-            rxFifo_io_push_payload = spiMaster_rxShiftReg;
-          end
-        end
+      SpiState_DONE : begin
+        rxFifo_io_push_payload = spiMaster_rxShiftReg;
       end
       default : begin
       end
     endcase
   end
 
-  assign when_apb3spi_l142 = (txFifo_io_pop_valid && spiMaster_clockTick);
-  assign when_apb3spi_l163 = (spiMaster_bitCounter == (DFF ? 4'b1111 : 4'b0111));
-  assign io_spi_sclk = (CPOL ? (! spiMaster_clockTick) : spiMaster_clockTick);
+  assign when_apb3spi_l157 = ((txFifo_io_pop_valid && spiMaster_sclkToggle) && (spiMaster_sclkReg == CPOL));
+  assign when_apb3spi_l167 = (spiMaster_sclkToggle && (spiMaster_sclkReg != (CPHA ^ CPOL)));
+  assign when_apb3spi_l169 = (spiMaster_frameLength == 5'h08);
+  assign when_apb3spi_l177 = (spiMaster_txBitCnt == spiMaster_frameLength);
+  assign when_apb3spi_l179 = (spiMaster_sclkToggle && (spiMaster_sclkReg == (CPHA ^ CPOL)));
+  assign when_apb3spi_l181 = (spiMaster_frameLength == 5'h08);
   assign txEmptyInterrupt = (TXEIE && TXE);
   assign rxNotEmptyInterrupt = (RXEIE && RXNE);
   assign errorInterrupt = (ERRIE && (((OVR || MODF) || CRCERR) || UDR));
@@ -7470,7 +7453,8 @@ module Apb3Spi (
     endcase
   end
 
-  assign io_spi_ss = (! SSOE);
+  assign io_spi_ss = (((! SSM) && SSOE) ? SSI : 1'b1);
+  assign io_spi_mosi = spiMaster_mosiReg;
   always @(posedge io_clk or posedge resetCtrl_axiReset) begin
     if(resetCtrl_axiReset) begin
       CR1 <= 16'h0;
@@ -7483,49 +7467,548 @@ module Apb3Spi (
       I2SPR <= 16'h0;
       spiMaster_clockDivider <= 8'h0;
       spiMaster_clockCounter <= 8'h0;
-      spiMaster_state <= 2'b00;
-      spiMaster_bitCounter <= 4'b0000;
-      spiMaster_txShiftReg <= 16'h0;
+      spiMaster_sclkReg <= 1'b0;
+      spiMaster_state <= SpiState_IDLE;
       spiMaster_rxShiftReg <= 16'h0;
+      spiMaster_txShiftReg <= 16'h0;
+      spiMaster_txBitCnt <= 5'h0;
+      spiMaster_rxBitCnt <= 5'h0;
+      spiMaster_mosiReg <= 1'b0;
     end else begin
-      spiMaster_clockDivider <= _zz_spiMaster_clockDivider;
+      spiMaster_clockDivider <= (_zz_spiMaster_clockDivider - 8'h01);
       if(SPE) begin
         spiMaster_clockCounter <= (spiMaster_clockCounter - 8'h01);
-        if(spiMaster_clockTick) begin
+        if(spiMaster_sclkToggle) begin
           spiMaster_clockCounter <= spiMaster_clockDivider;
+          spiMaster_sclkReg <= (! spiMaster_sclkReg);
         end
       end
       case(spiMaster_state)
-        2'b00 : begin
-          if(when_apb3spi_l142) begin
-            spiMaster_state <= 2'b01;
+        SpiState_IDLE : begin
+          spiMaster_mosiReg <= 1'b1;
+          if(when_apb3spi_l157) begin
             spiMaster_txShiftReg <= txFifo_io_pop_payload;
-            spiMaster_bitCounter <= 4'b0000;
+            spiMaster_txBitCnt <= 5'h0;
+            spiMaster_rxBitCnt <= 5'h0;
+            spiMaster_state <= SpiState_SHIFT;
           end
         end
-        2'b01 : begin
-          if(spiMaster_clockTick) begin
-            spiMaster_txShiftReg <= {spiMaster_txShiftReg[14 : 0],1'b0};
-            spiMaster_rxShiftReg <= {spiMaster_rxShiftReg[14 : 0],io_spi_miso};
-            if(CRCEN) begin
-              TXCRCR <= (_zz_TXCRCR ^ (CRCPR & ((TXCRCR[15] ^ _zz_TXCRCR_2[0]) ? 16'hffff : 16'h0)));
-              RXCRCR <= (_zz_RXCRCR ^ (CRCPR & ((RXCRCR[15] ^ _zz_RXCRCR_2[0]) ? 16'hffff : 16'h0)));
+        SpiState_SHIFT : begin
+          if(when_apb3spi_l167) begin
+            if(when_apb3spi_l169) begin
+              spiMaster_mosiReg <= (LSBFIRST ? spiMaster_txShiftReg[0] : spiMaster_txShiftReg[7]);
+              spiMaster_txShiftReg <= (LSBFIRST ? _zz_spiMaster_txShiftReg : _zz_spiMaster_txShiftReg_2);
+            end else begin
+              spiMaster_mosiReg <= (LSBFIRST ? spiMaster_txShiftReg[0] : spiMaster_txShiftReg[15]);
+              spiMaster_txShiftReg <= (LSBFIRST ? {1'b0,spiMaster_txShiftReg[15 : 1]} : {spiMaster_txShiftReg[14 : 0],1'b0});
             end
-            spiMaster_bitCounter <= (spiMaster_bitCounter + 4'b0001);
-            if(when_apb3spi_l163) begin
-              spiMaster_state <= 2'b10;
+            spiMaster_txBitCnt <= (spiMaster_txBitCnt + 5'h01);
+            if(when_apb3spi_l177) begin
+              spiMaster_state <= SpiState_DONE;
             end
           end
+          if(when_apb3spi_l179) begin
+            if(when_apb3spi_l181) begin
+              spiMaster_rxShiftReg <= (LSBFIRST ? _zz_spiMaster_rxShiftReg : _zz_spiMaster_rxShiftReg_2);
+            end else begin
+              spiMaster_rxShiftReg <= (LSBFIRST ? {io_spi_miso,spiMaster_rxShiftReg[15 : 1]} : {spiMaster_rxShiftReg[14 : 0],io_spi_miso});
+            end
+            spiMaster_rxBitCnt <= (spiMaster_rxBitCnt + 5'h01);
+          end
         end
-        2'b10 : begin
-          spiMaster_state <= 2'b00;
+        SpiState_DONE : begin
+          spiMaster_state <= SpiState_IDLE;
         end
         default : begin
         end
       endcase
-      SR[1] <= txFifo_io_pop_ready;
-      SR[0] <= rxFifo_io_pop_valid;
-      SR[7] <= (spiMaster_state != 2'b00);
+      if(spiMaster_sclkToggle) begin
+        if(CRCEN) begin
+          TXCRCR <= (_zz_TXCRCR ^ (CRCPR & ((TXCRCR[15] ^ _zz_TXCRCR_2[0]) ? 16'hffff : 16'h0)));
+          RXCRCR <= (_zz_RXCRCR ^ (CRCPR & ((RXCRCR[15] ^ _zz_RXCRCR_2[0]) ? 16'hffff : 16'h0)));
+        end
+      end
+      SR[0] <= (rxFifo_io_occupancy != 5'h0);
+      SR[1] <= txFifo_io_push_ready;
+      SR[2] <= 1'b0;
+      SR[3] <= 1'b0;
+      SR[4] <= (CRCEN ? (RXCRCR != TXCRCR) : 1'b0);
+      SR[5] <= 1'b0;
+      SR[6] <= 1'b0;
+      SR[7] <= (spiMaster_state != SpiState_IDLE);
+      case(io_apb_PADDR)
+        6'h0 : begin
+          if(ctrl_doWrite) begin
+            CR1 <= io_apb_PWDATA[15 : 0];
+          end
+        end
+        6'h04 : begin
+          if(ctrl_doWrite) begin
+            CR2 <= io_apb_PWDATA[15 : 0];
+          end
+        end
+        6'h10 : begin
+          if(ctrl_doWrite) begin
+            CRCPR <= io_apb_PWDATA[15 : 0];
+          end
+        end
+        6'h1c : begin
+          if(ctrl_doWrite) begin
+            I2SCFGR <= io_apb_PWDATA[15 : 0];
+          end
+        end
+        6'h20 : begin
+          if(ctrl_doWrite) begin
+            I2SPR <= io_apb_PWDATA[15 : 0];
+          end
+        end
+        default : begin
+        end
+      endcase
+    end
+  end
+
+
+endmodule
+
+module Apb3Spi (
+  input  wire [5:0]    io_apb_PADDR,
+  input  wire [0:0]    io_apb_PSEL,
+  input  wire          io_apb_PENABLE,
+  output wire          io_apb_PREADY,
+  input  wire          io_apb_PWRITE,
+  input  wire [31:0]   io_apb_PWDATA,
+  output reg  [31:0]   io_apb_PRDATA,
+  output wire          io_apb_PSLVERROR,
+  output wire          io_spi_sclk,
+  output wire          io_spi_mosi,
+  input  wire          io_spi_miso,
+  output wire          io_spi_ss,
+  output wire          io_interrupt,
+  input  wire          io_clk,
+  input  wire          resetCtrl_axiReset
+);
+  localparam SpiState_IDLE = 2'd0;
+  localparam SpiState_LOAD = 2'd1;
+  localparam SpiState_SHIFT = 2'd2;
+  localparam SpiState_DONE = 2'd3;
+
+  reg                 txFifo_io_push_valid;
+  reg        [15:0]   txFifo_io_push_payload;
+  reg                 txFifo_io_pop_ready;
+  reg                 rxFifo_io_push_valid;
+  reg        [15:0]   rxFifo_io_push_payload;
+  reg                 rxFifo_io_pop_ready;
+  wire                txFifo_io_push_ready;
+  wire                txFifo_io_pop_valid;
+  wire       [15:0]   txFifo_io_pop_payload;
+  wire       [4:0]    txFifo_io_occupancy;
+  wire       [4:0]    txFifo_io_availability;
+  wire                rxFifo_io_push_ready;
+  wire                rxFifo_io_pop_valid;
+  wire       [15:0]   rxFifo_io_pop_payload;
+  wire       [4:0]    rxFifo_io_occupancy;
+  wire       [4:0]    rxFifo_io_availability;
+  wire       [7:0]    _zz_spiMaster_clockDivider;
+  wire       [2:0]    _zz_spiMaster_clockDivider_1;
+  wire       [15:0]   _zz_spiMaster_txShiftReg;
+  wire       [7:0]    _zz_spiMaster_txShiftReg_1;
+  wire       [15:0]   _zz_spiMaster_txShiftReg_2;
+  wire       [7:0]    _zz_spiMaster_txShiftReg_3;
+  wire       [15:0]   _zz_spiMaster_rxShiftReg;
+  wire       [7:0]    _zz_spiMaster_rxShiftReg_1;
+  wire       [15:0]   _zz_spiMaster_rxShiftReg_2;
+  wire       [7:0]    _zz_spiMaster_rxShiftReg_3;
+  wire       [15:0]   _zz_TXCRCR;
+  wire       [16:0]   _zz_TXCRCR_1;
+  wire       [0:0]    _zz_TXCRCR_2;
+  wire       [15:0]   _zz_RXCRCR;
+  wire       [16:0]   _zz_RXCRCR_1;
+  wire       [0:0]    _zz_RXCRCR_2;
+  wire                ctrl_readErrorFlag;
+  wire                ctrl_writeErrorFlag;
+  wire                ctrl_askWrite;
+  wire                ctrl_askRead;
+  wire                ctrl_doWrite;
+  wire                ctrl_doRead;
+  (* altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" , altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" *) reg        [15:0]   CR1;
+  (* altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" , altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" *) reg        [15:0]   CR2;
+  reg        [15:0]   SR;
+  wire       [15:0]   DR;
+  reg        [15:0]   CRCPR;
+  reg        [15:0]   RXCRCR;
+  reg        [15:0]   TXCRCR;
+  reg        [15:0]   I2SCFGR;
+  reg        [15:0]   I2SPR;
+  wire                CPHA;
+  wire                CPOL;
+  wire                MSTR;
+  wire       [2:0]    BR_1;
+  wire                SPE;
+  wire                LSBFIRST;
+  reg                 SSI;
+  wire                SSM;
+  wire                RXONLY;
+  wire                DFF;
+  wire                CRCNEXT;
+  wire                CRCEN;
+  wire                BIDIOE;
+  wire                BIDIMODE;
+  wire                RXDMAEN;
+  wire                TXDMAEN;
+  wire                SSOE;
+  wire                ERRIE;
+  wire                RXEIE;
+  wire                TXEIE;
+  wire                RXNE;
+  wire                TXE;
+  wire                CHSIDE;
+  wire                UDR;
+  wire                CRCERR;
+  wire                MODF;
+  wire                OVR;
+  wire                BSY;
+  reg        [7:0]    spiMaster_clockDivider;
+  reg        [7:0]    spiMaster_clockCounter;
+  wire                spiMaster_sclkToggle;
+  (* altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" , altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" *) reg                 spiMaster_sclkReg;
+  wire       [4:0]    spiMaster_frameLength;
+  (* altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" , altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" *) reg        [1:0]    spiMaster_state;
+  reg        [15:0]   spiMaster_rxShiftReg;
+  reg        [15:0]   spiMaster_txShiftReg;
+  reg        [4:0]    spiMaster_txBitCnt;
+  reg        [4:0]    spiMaster_rxBitCnt;
+  (* altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" , altera_attribute = "-name ADV_NETLIST_OPT_ALLOWED NEVER_ALLOW" *) reg                 spiMaster_mosiReg;
+  wire                when_apb3spi_l157;
+  wire                when_apb3spi_l167;
+  wire                when_apb3spi_l169;
+  wire                when_apb3spi_l177;
+  wire                when_apb3spi_l179;
+  wire                when_apb3spi_l181;
+  wire                txEmptyInterrupt;
+  wire                rxNotEmptyInterrupt;
+  wire                errorInterrupt;
+  `ifndef SYNTHESIS
+  reg [39:0] spiMaster_state_string;
+  `endif
+
+
+  assign _zz_spiMaster_clockDivider = ({7'd0,1'b1} <<< _zz_spiMaster_clockDivider_1);
+  assign _zz_spiMaster_clockDivider_1 = (BR_1 + 3'b001);
+  assign _zz_spiMaster_txShiftReg_1 = {1'b0,spiMaster_txShiftReg[7 : 1]};
+  assign _zz_spiMaster_txShiftReg = {8'd0, _zz_spiMaster_txShiftReg_1};
+  assign _zz_spiMaster_txShiftReg_3 = {spiMaster_txShiftReg[6 : 0],1'b0};
+  assign _zz_spiMaster_txShiftReg_2 = {8'd0, _zz_spiMaster_txShiftReg_3};
+  assign _zz_spiMaster_rxShiftReg_1 = {io_spi_miso,spiMaster_rxShiftReg[7 : 1]};
+  assign _zz_spiMaster_rxShiftReg = {8'd0, _zz_spiMaster_rxShiftReg_1};
+  assign _zz_spiMaster_rxShiftReg_3 = {spiMaster_rxShiftReg[6 : 0],io_spi_miso};
+  assign _zz_spiMaster_rxShiftReg_2 = {8'd0, _zz_spiMaster_rxShiftReg_3};
+  assign _zz_TXCRCR_1 = ({1'd0,TXCRCR} <<< 1'd1);
+  assign _zz_TXCRCR = _zz_TXCRCR_1[15:0];
+  assign _zz_TXCRCR_2 = io_spi_mosi;
+  assign _zz_RXCRCR_1 = ({1'd0,RXCRCR} <<< 1'd1);
+  assign _zz_RXCRCR = _zz_RXCRCR_1[15:0];
+  assign _zz_RXCRCR_2 = io_spi_miso;
+  StreamFifo_5 txFifo (
+    .io_push_valid      (txFifo_io_push_valid        ), //i
+    .io_push_ready      (txFifo_io_push_ready        ), //o
+    .io_push_payload    (txFifo_io_push_payload[15:0]), //i
+    .io_pop_valid       (txFifo_io_pop_valid         ), //o
+    .io_pop_ready       (txFifo_io_pop_ready         ), //i
+    .io_pop_payload     (txFifo_io_pop_payload[15:0] ), //o
+    .io_flush           (1'b0                        ), //i
+    .io_occupancy       (txFifo_io_occupancy[4:0]    ), //o
+    .io_availability    (txFifo_io_availability[4:0] ), //o
+    .io_clk             (io_clk                      ), //i
+    .resetCtrl_axiReset (resetCtrl_axiReset          )  //i
+  );
+  StreamFifo_5 rxFifo (
+    .io_push_valid      (rxFifo_io_push_valid        ), //i
+    .io_push_ready      (rxFifo_io_push_ready        ), //o
+    .io_push_payload    (rxFifo_io_push_payload[15:0]), //i
+    .io_pop_valid       (rxFifo_io_pop_valid         ), //o
+    .io_pop_ready       (rxFifo_io_pop_ready         ), //i
+    .io_pop_payload     (rxFifo_io_pop_payload[15:0] ), //o
+    .io_flush           (1'b0                        ), //i
+    .io_occupancy       (rxFifo_io_occupancy[4:0]    ), //o
+    .io_availability    (rxFifo_io_availability[4:0] ), //o
+    .io_clk             (io_clk                      ), //i
+    .resetCtrl_axiReset (resetCtrl_axiReset          )  //i
+  );
+  `ifndef SYNTHESIS
+  always @(*) begin
+    case(spiMaster_state)
+      SpiState_IDLE : spiMaster_state_string = "IDLE ";
+      SpiState_LOAD : spiMaster_state_string = "LOAD ";
+      SpiState_SHIFT : spiMaster_state_string = "SHIFT";
+      SpiState_DONE : spiMaster_state_string = "DONE ";
+      default : spiMaster_state_string = "?????";
+    endcase
+  end
+  `endif
+
+  assign ctrl_readErrorFlag = 1'b0;
+  assign ctrl_writeErrorFlag = 1'b0;
+  assign io_apb_PREADY = 1'b1;
+  always @(*) begin
+    io_apb_PRDATA = 32'h0;
+    case(io_apb_PADDR)
+      6'h0 : begin
+        io_apb_PRDATA[15 : 0] = CR1;
+      end
+      6'h04 : begin
+        io_apb_PRDATA[15 : 0] = CR2;
+      end
+      6'h08 : begin
+        io_apb_PRDATA[15 : 0] = SR;
+      end
+      6'h0c : begin
+        if(ctrl_doRead) begin
+          if(RXNE) begin
+            io_apb_PRDATA = {16'd0, rxFifo_io_pop_payload};
+          end
+        end
+      end
+      6'h10 : begin
+        io_apb_PRDATA[15 : 0] = CRCPR;
+      end
+      6'h14 : begin
+        io_apb_PRDATA[15 : 0] = RXCRCR;
+      end
+      6'h18 : begin
+        io_apb_PRDATA[15 : 0] = TXCRCR;
+      end
+      6'h1c : begin
+        io_apb_PRDATA[15 : 0] = I2SCFGR;
+      end
+      6'h20 : begin
+        io_apb_PRDATA[15 : 0] = I2SPR;
+      end
+      default : begin
+      end
+    endcase
+  end
+
+  assign ctrl_askWrite = ((io_apb_PSEL[0] && io_apb_PENABLE) && io_apb_PWRITE);
+  assign ctrl_askRead = ((io_apb_PSEL[0] && io_apb_PENABLE) && (! io_apb_PWRITE));
+  assign ctrl_doWrite = (((io_apb_PSEL[0] && io_apb_PENABLE) && io_apb_PREADY) && io_apb_PWRITE);
+  assign ctrl_doRead = (((io_apb_PSEL[0] && io_apb_PENABLE) && io_apb_PREADY) && (! io_apb_PWRITE));
+  assign io_apb_PSLVERROR = ((ctrl_doWrite && ctrl_writeErrorFlag) || (ctrl_doRead && ctrl_readErrorFlag));
+  assign DR = 16'h0;
+  assign CPHA = CR1[0];
+  assign CPOL = CR1[1];
+  assign MSTR = CR1[2];
+  assign BR_1 = CR1[5 : 3];
+  assign SPE = CR1[6];
+  assign LSBFIRST = CR1[7];
+  assign SSM = CR1[9];
+  assign RXONLY = CR1[10];
+  assign DFF = CR1[11];
+  assign CRCNEXT = CR1[12];
+  assign CRCEN = CR1[13];
+  assign BIDIOE = CR1[14];
+  assign BIDIMODE = CR1[15];
+  assign RXDMAEN = CR2[0];
+  assign TXDMAEN = CR2[1];
+  assign SSOE = CR2[2];
+  assign ERRIE = CR2[5];
+  assign RXEIE = CR2[6];
+  assign TXEIE = CR2[7];
+  assign RXNE = SR[0];
+  assign TXE = SR[1];
+  assign CHSIDE = SR[2];
+  assign UDR = SR[3];
+  assign CRCERR = SR[4];
+  assign MODF = SR[5];
+  assign OVR = SR[6];
+  assign BSY = SR[7];
+  assign spiMaster_sclkToggle = (spiMaster_clockCounter == 8'h0);
+  assign io_spi_sclk = (spiMaster_sclkReg ^ CPOL);
+  assign spiMaster_frameLength = (DFF ? 5'h10 : 5'h08);
+  always @(*) begin
+    SSI = 1'b1;
+    case(spiMaster_state)
+      SpiState_SHIFT : begin
+        SSI = 1'b0;
+      end
+      default : begin
+      end
+    endcase
+  end
+
+  always @(*) begin
+    txFifo_io_pop_ready = 1'b0;
+    case(spiMaster_state)
+      SpiState_IDLE : begin
+        if(when_apb3spi_l157) begin
+          txFifo_io_pop_ready = 1'b1;
+        end
+      end
+      default : begin
+      end
+    endcase
+  end
+
+  always @(*) begin
+    rxFifo_io_push_valid = 1'b0;
+    case(spiMaster_state)
+      SpiState_DONE : begin
+        rxFifo_io_push_valid = 1'b1;
+      end
+      default : begin
+      end
+    endcase
+  end
+
+  always @(*) begin
+    rxFifo_io_push_payload = 16'h0;
+    case(spiMaster_state)
+      SpiState_DONE : begin
+        rxFifo_io_push_payload = spiMaster_rxShiftReg;
+      end
+      default : begin
+      end
+    endcase
+  end
+
+  assign when_apb3spi_l157 = ((txFifo_io_pop_valid && spiMaster_sclkToggle) && (spiMaster_sclkReg == CPOL));
+  assign when_apb3spi_l167 = (spiMaster_sclkToggle && (spiMaster_sclkReg != (CPHA ^ CPOL)));
+  assign when_apb3spi_l169 = (spiMaster_frameLength == 5'h08);
+  assign when_apb3spi_l177 = (spiMaster_txBitCnt == spiMaster_frameLength);
+  assign when_apb3spi_l179 = (spiMaster_sclkToggle && (spiMaster_sclkReg == (CPHA ^ CPOL)));
+  assign when_apb3spi_l181 = (spiMaster_frameLength == 5'h08);
+  assign txEmptyInterrupt = (TXEIE && TXE);
+  assign rxNotEmptyInterrupt = (RXEIE && RXNE);
+  assign errorInterrupt = (ERRIE && (((OVR || MODF) || CRCERR) || UDR));
+  assign io_interrupt = ((txEmptyInterrupt || rxNotEmptyInterrupt) || errorInterrupt);
+  always @(*) begin
+    txFifo_io_push_valid = 1'b0;
+    case(io_apb_PADDR)
+      6'h0c : begin
+        if(ctrl_doWrite) begin
+          if(TXE) begin
+            txFifo_io_push_valid = 1'b1;
+          end
+        end
+      end
+      default : begin
+      end
+    endcase
+  end
+
+  always @(*) begin
+    txFifo_io_push_payload = 16'h0;
+    case(io_apb_PADDR)
+      6'h0c : begin
+        if(ctrl_doWrite) begin
+          if(TXE) begin
+            txFifo_io_push_payload = io_apb_PWDATA[15 : 0];
+          end
+        end
+      end
+      default : begin
+      end
+    endcase
+  end
+
+  always @(*) begin
+    rxFifo_io_pop_ready = 1'b0;
+    case(io_apb_PADDR)
+      6'h0c : begin
+        if(ctrl_doRead) begin
+          if(RXNE) begin
+            rxFifo_io_pop_ready = 1'b1;
+          end
+        end
+      end
+      default : begin
+      end
+    endcase
+  end
+
+  assign io_spi_ss = (((! SSM) && SSOE) ? SSI : 1'b1);
+  assign io_spi_mosi = spiMaster_mosiReg;
+  always @(posedge io_clk or posedge resetCtrl_axiReset) begin
+    if(resetCtrl_axiReset) begin
+      CR1 <= 16'h0;
+      CR2 <= 16'h0;
+      SR <= 16'h0;
+      CRCPR <= 16'h0;
+      RXCRCR <= 16'h0;
+      TXCRCR <= 16'h0;
+      I2SCFGR <= 16'h0;
+      I2SPR <= 16'h0;
+      spiMaster_clockDivider <= 8'h0;
+      spiMaster_clockCounter <= 8'h0;
+      spiMaster_sclkReg <= 1'b0;
+      spiMaster_state <= SpiState_IDLE;
+      spiMaster_rxShiftReg <= 16'h0;
+      spiMaster_txShiftReg <= 16'h0;
+      spiMaster_txBitCnt <= 5'h0;
+      spiMaster_rxBitCnt <= 5'h0;
+      spiMaster_mosiReg <= 1'b0;
+    end else begin
+      spiMaster_clockDivider <= (_zz_spiMaster_clockDivider - 8'h01);
+      if(SPE) begin
+        spiMaster_clockCounter <= (spiMaster_clockCounter - 8'h01);
+        if(spiMaster_sclkToggle) begin
+          spiMaster_clockCounter <= spiMaster_clockDivider;
+          spiMaster_sclkReg <= (! spiMaster_sclkReg);
+        end
+      end
+      case(spiMaster_state)
+        SpiState_IDLE : begin
+          spiMaster_mosiReg <= 1'b1;
+          if(when_apb3spi_l157) begin
+            spiMaster_txShiftReg <= txFifo_io_pop_payload;
+            spiMaster_txBitCnt <= 5'h0;
+            spiMaster_rxBitCnt <= 5'h0;
+            spiMaster_state <= SpiState_SHIFT;
+          end
+        end
+        SpiState_SHIFT : begin
+          if(when_apb3spi_l167) begin
+            if(when_apb3spi_l169) begin
+              spiMaster_mosiReg <= (LSBFIRST ? spiMaster_txShiftReg[0] : spiMaster_txShiftReg[7]);
+              spiMaster_txShiftReg <= (LSBFIRST ? _zz_spiMaster_txShiftReg : _zz_spiMaster_txShiftReg_2);
+            end else begin
+              spiMaster_mosiReg <= (LSBFIRST ? spiMaster_txShiftReg[0] : spiMaster_txShiftReg[15]);
+              spiMaster_txShiftReg <= (LSBFIRST ? {1'b0,spiMaster_txShiftReg[15 : 1]} : {spiMaster_txShiftReg[14 : 0],1'b0});
+            end
+            spiMaster_txBitCnt <= (spiMaster_txBitCnt + 5'h01);
+            if(when_apb3spi_l177) begin
+              spiMaster_state <= SpiState_DONE;
+            end
+          end
+          if(when_apb3spi_l179) begin
+            if(when_apb3spi_l181) begin
+              spiMaster_rxShiftReg <= (LSBFIRST ? _zz_spiMaster_rxShiftReg : _zz_spiMaster_rxShiftReg_2);
+            end else begin
+              spiMaster_rxShiftReg <= (LSBFIRST ? {io_spi_miso,spiMaster_rxShiftReg[15 : 1]} : {spiMaster_rxShiftReg[14 : 0],io_spi_miso});
+            end
+            spiMaster_rxBitCnt <= (spiMaster_rxBitCnt + 5'h01);
+          end
+        end
+        SpiState_DONE : begin
+          spiMaster_state <= SpiState_IDLE;
+        end
+        default : begin
+        end
+      endcase
+      if(spiMaster_sclkToggle) begin
+        if(CRCEN) begin
+          TXCRCR <= (_zz_TXCRCR ^ (CRCPR & ((TXCRCR[15] ^ _zz_TXCRCR_2[0]) ? 16'hffff : 16'h0)));
+          RXCRCR <= (_zz_RXCRCR ^ (CRCPR & ((RXCRCR[15] ^ _zz_RXCRCR_2[0]) ? 16'hffff : 16'h0)));
+        end
+      end
+      SR[0] <= (rxFifo_io_occupancy != 5'h0);
+      SR[1] <= txFifo_io_push_ready;
+      SR[2] <= 1'b0;
+      SR[3] <= 1'b0;
+      SR[4] <= (CRCEN ? (RXCRCR != TXCRCR) : 1'b0);
+      SR[5] <= 1'b0;
+      SR[6] <= 1'b0;
+      SR[7] <= (spiMaster_state != SpiState_IDLE);
       case(io_apb_PADDR)
         6'h0 : begin
           if(ctrl_doWrite) begin
@@ -10472,22 +10955,22 @@ module JtagBridge (
 endmodule
 
 module RiscvCore (
+  input  wire          io_interrupt_8,
+  input  wire          io_interrupt_11,
+  input  wire          io_interrupt_2,
+  input  wire          io_interrupt_5,
+  input  wire          io_interrupt_14,
   input  wire          io_interrupt_13,
   input  wire          io_interrupt_4,
   input  wire          io_interrupt_7,
   input  wire          io_interrupt_1,
   input  wire          io_interrupt_10,
-  input  wire          io_interrupt_0,
   input  wire          io_interrupt_9,
   input  wire          io_interrupt_3,
   input  wire          io_interrupt_12,
-  input  wire          io_interrupt_6,
   input  wire          io_interrupt_15,
-  input  wire          io_interrupt_14,
-  input  wire          io_interrupt_5,
-  input  wire          io_interrupt_8,
-  input  wire          io_interrupt_2,
-  input  wire          io_interrupt_11,
+  input  wire          io_interrupt_6,
+  input  wire          io_interrupt_0,
   output wire          io_i_cmd_valid,
   input  wire          io_i_cmd_ready,
   output wire [31:0]   io_i_cmd_payload_pc,
@@ -11257,9 +11740,9 @@ module RiscvCore (
   reg        [31:0]   execute1_outInst_rData_dCmdAddress;
   reg                 writeBack_throwIt;
   reg                 writeBack_halt;
-  reg        [19:0]   writeBack_irq_sources;
-  reg        [19:0]   writeBack_irq_mask;
-  wire       [19:0]   writeBack_irq_masked;
+  reg        [15:0]   writeBack_irq_sources;
+  reg        [15:0]   writeBack_irq_mask;
+  wire       [15:0]   writeBack_irq_masked;
   reg                 writeBack_irq_inhibate;
   wire                when_RiscvCore_l828;
   wire                when_RiscvCore_l834;
@@ -11413,9 +11896,7 @@ module RiscvCore (
   reg        [31:0]   _zz_execute1_outInst_payload_result;
   reg                 SimpleInterrupExtension_inIrq;
   reg        [31:0]   SimpleInterrupExtension_exitPc;
-  reg        [19:0]   SimpleInterrupExtension_irqValue;
-  wire                when_SimpleInterruptExtension_l34;
-  reg                 _zz_SimpleInterrupExtension_irqValue;
+  reg        [15:0]   SimpleInterrupExtension_irqValue;
   wire                when_SimpleInterruptExtension_l38;
   wire                when_SimpleInterruptExtension_l39;
   wire                when_SimpleInterruptExtension_l48;
@@ -14785,12 +15266,12 @@ end
           2'b00 : begin
           end
           2'b01 : begin
-            execute1_outInst_payload_result = {12'd0, SimpleInterrupExtension_irqValue};
+            execute1_outInst_payload_result = {16'd0, SimpleInterrupExtension_irqValue};
           end
           2'b10 : begin
           end
           default : begin
-            execute1_outInst_payload_result = {12'd0, writeBack_irq_mask};
+            execute1_outInst_payload_result = {16'd0, writeBack_irq_mask};
           end
         endcase
       end
@@ -14904,7 +15385,7 @@ end
   end
 
   always @(*) begin
-    writeBack_irq_sources = 20'h0;
+    writeBack_irq_sources = 16'h0;
     if(writeBack_inInst_valid) begin
       if(when_RiscvCore_l834) begin
         writeBack_irq_sources[0] = 1'b1;
@@ -14913,22 +15394,22 @@ end
         writeBack_irq_sources[1] = 1'b1;
       end
     end
-    writeBack_irq_sources[17] = io_interrupt_13;
-    writeBack_irq_sources[8] = io_interrupt_4;
-    writeBack_irq_sources[11] = io_interrupt_7;
-    writeBack_irq_sources[5] = io_interrupt_1;
-    writeBack_irq_sources[14] = io_interrupt_10;
-    writeBack_irq_sources[4] = io_interrupt_0;
-    writeBack_irq_sources[13] = io_interrupt_9;
-    writeBack_irq_sources[7] = io_interrupt_3;
-    writeBack_irq_sources[16] = io_interrupt_12;
-    writeBack_irq_sources[10] = io_interrupt_6;
-    writeBack_irq_sources[19] = io_interrupt_15;
-    writeBack_irq_sources[18] = io_interrupt_14;
-    writeBack_irq_sources[9] = io_interrupt_5;
-    writeBack_irq_sources[12] = io_interrupt_8;
-    writeBack_irq_sources[6] = io_interrupt_2;
-    writeBack_irq_sources[15] = io_interrupt_11;
+    writeBack_irq_sources[8] = io_interrupt_8;
+    writeBack_irq_sources[11] = io_interrupt_11;
+    writeBack_irq_sources[2] = io_interrupt_2;
+    writeBack_irq_sources[5] = io_interrupt_5;
+    writeBack_irq_sources[14] = io_interrupt_14;
+    writeBack_irq_sources[13] = io_interrupt_13;
+    writeBack_irq_sources[4] = io_interrupt_4;
+    writeBack_irq_sources[7] = io_interrupt_7;
+    writeBack_irq_sources[1] = io_interrupt_1;
+    writeBack_irq_sources[10] = io_interrupt_10;
+    writeBack_irq_sources[9] = io_interrupt_9;
+    writeBack_irq_sources[3] = io_interrupt_3;
+    writeBack_irq_sources[12] = io_interrupt_12;
+    writeBack_irq_sources[15] = io_interrupt_15;
+    writeBack_irq_sources[6] = io_interrupt_6;
+    writeBack_irq_sources[0] = io_interrupt_0;
   end
 
   assign writeBack_irq_masked = (writeBack_irq_sources & writeBack_irq_mask);
@@ -14939,7 +15420,7 @@ end
     end
   end
 
-  assign when_RiscvCore_l828 = (((writeBack_irq_sources & (~ writeBack_irq_mask)) & 20'h00002) != 20'h0);
+  assign when_RiscvCore_l828 = (((writeBack_irq_sources & (~ writeBack_irq_mask)) & 16'h0) != 16'h0);
   assign when_RiscvCore_l834 = (! writeBack_inInst_payload_ctrl_instVal);
   always @(*) begin
     writeBack_pcLoad_valid = 1'b0;
@@ -15420,29 +15901,27 @@ end
   end
 
   always @(*) begin
-    SimpleInterrupExtension_irqValue = 20'h0;
-    SimpleInterrupExtension_irqValue[17] = writeBack_irq_masked[17];
+    SimpleInterrupExtension_irqValue = 16'h0;
     SimpleInterrupExtension_irqValue[8] = writeBack_irq_masked[8];
     SimpleInterrupExtension_irqValue[11] = writeBack_irq_masked[11];
+    SimpleInterrupExtension_irqValue[2] = writeBack_irq_masked[2];
     SimpleInterrupExtension_irqValue[5] = writeBack_irq_masked[5];
     SimpleInterrupExtension_irqValue[14] = writeBack_irq_masked[14];
-    SimpleInterrupExtension_irqValue[4] = writeBack_irq_masked[4];
     SimpleInterrupExtension_irqValue[13] = writeBack_irq_masked[13];
+    SimpleInterrupExtension_irqValue[4] = writeBack_irq_masked[4];
     SimpleInterrupExtension_irqValue[7] = writeBack_irq_masked[7];
-    SimpleInterrupExtension_irqValue[16] = writeBack_irq_masked[16];
-    SimpleInterrupExtension_irqValue[1] = _zz_SimpleInterrupExtension_irqValue;
+    SimpleInterrupExtension_irqValue[1] = writeBack_irq_masked[1];
     SimpleInterrupExtension_irqValue[10] = writeBack_irq_masked[10];
-    SimpleInterrupExtension_irqValue[19] = writeBack_irq_masked[19];
     SimpleInterrupExtension_irqValue[9] = writeBack_irq_masked[9];
-    SimpleInterrupExtension_irqValue[18] = writeBack_irq_masked[18];
+    SimpleInterrupExtension_irqValue[3] = writeBack_irq_masked[3];
     SimpleInterrupExtension_irqValue[12] = writeBack_irq_masked[12];
-    SimpleInterrupExtension_irqValue[6] = writeBack_irq_masked[6];
     SimpleInterrupExtension_irqValue[15] = writeBack_irq_masked[15];
+    SimpleInterrupExtension_irqValue[6] = writeBack_irq_masked[6];
+    SimpleInterrupExtension_irqValue[0] = writeBack_irq_masked[0];
   end
 
-  assign when_SimpleInterruptExtension_l34 = (! SimpleInterrupExtension_inIrq);
   assign when_SimpleInterruptExtension_l38 = ((! SimpleInterrupExtension_inIrq) && (! writeBack_irq_inhibate));
-  assign when_SimpleInterruptExtension_l39 = ((writeBack_irq_masked & 20'h00002) != 20'h0);
+  assign when_SimpleInterruptExtension_l39 = ((writeBack_irq_masked & 16'h0) != 16'h0);
   assign when_SimpleInterruptExtension_l48 = (((decode_inInst_valid && (! execute0_inInst_valid)) && (! execute1_inInst_valid)) && (! writeBack_inInst_valid));
   assign when_SimpleInterruptExtension_l57 = (execute1_inInst_payload_ctrl_extensionTag == 3'b011);
   assign switch_SimpleInterruptExtension_l58 = execute1_inInst_payload_instruction[26 : 25];
@@ -15502,7 +15981,7 @@ end
       execute0_pendingDataCmd_readCount <= 2'b00;
       execute0_outInst_rValid <= 1'b0;
       execute1_outInst_rValid <= 1'b0;
-      writeBack_irq_mask <= 20'h0;
+      writeBack_irq_mask <= 16'h0;
       writeBack_flushMemoryResponse <= 1'b0;
       writeBack_outInst_rValid <= 1'b0;
       DivExtension_rspReady <= 1'b0;
@@ -15576,7 +16055,7 @@ end
             2'b01 : begin
             end
             2'b10 : begin
-              writeBack_irq_mask <= execute1_inInst_payload_result[19:0];
+              writeBack_irq_mask <= execute1_inInst_payload_result[15:0];
             end
             default : begin
             end
@@ -15737,9 +16216,6 @@ end
     if(execute0_outInst_ready) begin
       BarrelShifterFullExtension_s2_shiftRight <= BarrelShifterFullExtension_s1_shiftRight;
     end
-    if(when_SimpleInterruptExtension_l34) begin
-      _zz_SimpleInterrupExtension_irqValue <= writeBack_irq_masked[1];
-    end
     if(when_SimpleInterruptExtension_l38) begin
       if(when_SimpleInterruptExtension_l39) begin
         SimpleInterrupExtension_exitPc <= writeBack_inInst_payload_pc;
@@ -15767,7 +16243,7 @@ end
   end
 
   always @(posedge io_clk) begin
-    _zz_7 <= ((writeBack_irq_masked & (~ 20'h00002)) != 20'h0);
+    _zz_7 <= ((writeBack_irq_masked & (~ 16'h0)) != 16'h0);
   end
 
   always @(posedge io_clk) begin
