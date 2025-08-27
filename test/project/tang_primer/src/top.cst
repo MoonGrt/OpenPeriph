@@ -1,3 +1,96 @@
+// -----------------------------------------------------------------------
+// -------------------------------- Cyber --------------------------------
+// -----------------------------------------------------------------------
+// ============ SYS ===============
+IO_LOC "io_clk" H11;  // 27MHz
+IO_PORT "io_clk" IO_TYPE=LVCMOS33;
+IO_LOC "io_rstn" C7;
+IO_PORT "io_rstn" IO_TYPE=LVCMOS33;
+
+// ============ JTAG ===============
+IO_LOC "io_jtag_tdi" T8;
+IO_PORT "io_jtag_tdi" IO_TYPE=LVCMOS33 PULL_MODE=NONE;
+IO_LOC "io_jtag_tdo" P8;
+IO_PORT "io_jtag_tdo" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8;
+IO_LOC "io_jtag_tck" P9;
+IO_PORT "io_jtag_tck" IO_TYPE=LVCMOS33 PULL_MODE=NONE;
+IO_LOC "io_jtag_tms" T9;
+IO_PORT "io_jtag_tms" IO_TYPE=LVCMOS33 PULL_MODE=NONE;
+
+// ============ io_gpio ===============
+IO_LOC "io_gpio[0]" L16;  // LED1
+IO_PORT "io_gpio[0]" IO_TYPE=LVCMOS33;
+IO_LOC "io_gpio[1]" L14;  // LED2
+IO_PORT "io_gpio[1]" IO_TYPE=LVCMOS33;
+IO_LOC "io_gpio[2]" N14;  // LED3
+IO_PORT "io_gpio[2]" IO_TYPE=LVCMOS33;
+IO_LOC "io_gpio[3]" N16;  // LED4
+IO_PORT "io_gpio[3]" IO_TYPE=LVCMOS33;
+IO_LOC "io_gpio[4]" T10;  // BUTTOM1
+IO_PORT "io_gpio[4]" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "io_gpio[5]" T3 ;  // BUTTOM2
+IO_PORT "io_gpio[5]" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "io_gpio[6]" T2 ;  // BUTTOM3
+IO_PORT "io_gpio[6]" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "io_gpio[7]" D7 ;  // BUTTOM4
+IO_PORT "io_gpio[7]" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "io_gpio[8]" F12;  // lcd_clk
+IO_PORT "io_gpio[8]" IO_TYPE=LVCMOS33 PULL_MODE=UP DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "io_gpio[9]" L15;  // lcd_data
+IO_PORT "io_gpio[9]" IO_TYPE=LVCMOS33 PULL_MODE=UP DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "io_gpio[10]" C16;  // lcd_cs
+IO_PORT "io_gpio[10]" IO_TYPE=LVCMOS33 PULL_MODE=UP DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "io_gpio[11]" J13;  // lcd_rs
+IO_PORT "io_gpio[11]" IO_TYPE=LVCMOS33 PULL_MODE=UP DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "io_gpio[12]" P12;  // lcd_bl
+IO_PORT "io_gpio[12]" IO_TYPE=LVCMOS33 PULL_MODE=UP DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "io_gpio[13]" G13;  // lcd_rst
+IO_PORT "io_gpio[13]" IO_TYPE=LVCMOS33 PULL_MODE=UP DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "io_gpio[14]" A13;  // LED5
+IO_PORT "io_gpio[14]" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "io_gpio[15]" C13;  // LED6
+IO_PORT "io_gpio[15]" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+
+
+// ============ io_gpio ===============
+IO_LOC "io_gpio[16]" M11;  // UART_TX
+IO_PORT "io_gpio[16]" IO_TYPE=LVCMOS33 PULL_MODE=UP DRIVE=8;
+IO_LOC "io_gpio[17]" T13;  // UART_RX
+IO_PORT "io_gpio[17]" IO_TYPE=LVCMOS33;
+IO_LOC "io_gpio[18]" N9;
+IO_PORT "io_gpio[18]" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "io_gpio[19]" N7;
+IO_PORT "io_gpio[19]" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "io_gpio[20]" N6;
+IO_PORT "io_gpio[20]" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "io_gpio[21]" D11;
+IO_PORT "io_gpio[21]" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "io_gpio[22]" A11;
+IO_PORT "io_gpio[22]" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "io_gpio[23]" B11;
+IO_PORT "io_gpio[23]" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "io_gpio[24]" B12;
+IO_PORT "io_gpio[24]" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "io_gpio[25]" C12;
+IO_PORT "io_gpio[25]" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "io_gpio[26]" B13;
+IO_PORT "io_gpio[26]" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "io_gpio[27]" A14;
+IO_PORT "io_gpio[27]" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "io_gpio[28]" B14;
+IO_PORT "io_gpio[28]" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "io_gpio[29]" A15;
+IO_PORT "io_gpio[29]" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "io_gpio[30]" D14;
+IO_PORT "io_gpio[30]" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "io_gpio[31]" E15;
+IO_PORT "io_gpio[31]" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8 BANK_VCCIO=3.3;
+
+
+/*
+// ----------------------------------------------------------------------
+// --------------------------- Cyber with DDR ---------------------------
+// ----------------------------------------------------------------------
 // ============ SYS ===============
 IO_LOC "io_clk" H11;  // 27MHz
 IO_PORT "io_clk" IO_TYPE=LVCMOS33;
@@ -229,3 +322,4 @@ IO_LOC "io_sdram_IO_ddr_dqs[1]" J5,K6;
 IO_PORT "io_sdram_IO_ddr_dqs[1]" IO_TYPE=SSTL15D PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
 IO_LOC "io_sdram_IO_ddr_dqs[0]" G2,G3;
 IO_PORT "io_sdram_IO_ddr_dqs[0]" IO_TYPE=SSTL15D PULL_MODE=NONE DRIVE=8 BANK_VCCIO=1.5;
+*/

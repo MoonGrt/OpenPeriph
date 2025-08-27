@@ -128,10 +128,10 @@ object Apb3GpioArray {
     )
 }
 case class Apb3GpioArray(
-    gpioWidth: Int,
-    gpioGroupCnt: Int,
+    gpioWidth: Int = 16,
+    gpioGroupCnt: Int = 4,
     groupSpace: Int = 0x20,
-    withReadSync: Boolean,
+    withReadSync: Boolean = true,
     addressWidth: Int = log2Up(0x20),
     dataWidth: Int = 32
 ) extends Component {
@@ -180,16 +180,12 @@ case class Apb3GpioArray(
 /* ----------------------------------------------------------------------------- */
 // object Apb3GpioGen {
 //   def main(args: Array[String]): Unit = {
-//     SpinalConfig(targetDirectory = "rtl").generateVerilog(
-//       InOutWrapper(Apb3Gpio(gpioWidth = 16, withReadSync = true))
-//     )
+//     SpinalConfig(targetDirectory = "rtl").generateVerilog(new Apb3Gpio())
 //   }
 // }
 
 // object Apb3GpioArrayGen {
 //   def main(args: Array[String]): Unit = {
-//     SpinalConfig(targetDirectory = "rtl").generateVerilog(
-//       InOutWrapper(Apb3GpioArray(gpioWidth = 16, gpioGroupCnt = 4, withReadSync = true))
-//     )
+//     SpinalConfig(targetDirectory = "rtl").generateVerilog(new Apb3GpioArray())
 //   }
 // }

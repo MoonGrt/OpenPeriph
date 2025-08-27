@@ -23,7 +23,7 @@ module tb_top;
         #48000 sim_uart_tx(8'b10101010);  // 调用task 模拟 UART 发送数据
     end
 
-    cyberwithddrlcd cyber (
+    cyber cyber (
         .io_clk   (clk),
         .io_rstn  (rst_n)
     );

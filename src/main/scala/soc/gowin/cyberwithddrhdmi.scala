@@ -72,7 +72,6 @@ object cyberwithddrhdmiConfig {
     config.cpu.add(new MulExtension)
     config.cpu.add(new DivExtension)
     config.cpu.add(new BarrelShifterFullExtension)
-
     config
   }
 }
@@ -219,7 +218,6 @@ class cyberwithddrhdmi(config: cyberwithddrhdmiConfig) extends Component {
     val afioCtrl = Apb3Afio(
       gpioWidth = 16,
       gpioGroupCnt = 2,
-      // afioConfig = BigInt("0005FFF00", 16),
       addressWidth = 5,
       dataWidth = 32
     )
@@ -365,11 +363,11 @@ object cyberwithddrhdmi {
       InOutWrapper(
         new cyberwithddrhdmi(
           cyberwithddrhdmiConfig.default.copy(
-            memFile = "test/software/cyber/build/demo.hex",
+            memFile = "test/software/cyberwithddr/build/demo.hex",
             memFileType = "rawhex"
-            // memFile = "test/software/cyber/build/mem/demo.bin",
+            // memFile = "test/software/cyberwithddr/build/mem/demo.bin",
             // memFileType = "bin"
-            // memFile = "test/software/cyber/build/mem/demo.hex",
+            // memFile = "test/software/cyberwithddr/build/mem/demo.hex",
             // memFileType = "hex"
           )
         )

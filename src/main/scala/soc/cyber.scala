@@ -65,7 +65,6 @@ object cyberConfig {
     config.cpu.add(new MulExtension)
     config.cpu.add(new DivExtension)
     config.cpu.add(new BarrelShifterFullExtension)
-
     config
   }
 }
@@ -81,8 +80,8 @@ class cyber(config: cyberConfig) extends Component {
 
   val io = new Bundle {
     // Clocks / reset
-    val asyncReset = in Bool ()
-    val axiClk = in Bool ()
+    val rstn = in Bool ()
+    val clk = in Bool ()
     // Main components IO
     val jtag = slave(Jtag())
     // Peripherals IO
@@ -90,7 +89,7 @@ class cyber(config: cyberConfig) extends Component {
   }
 
   val resetCtrlClockDomain = ClockDomain(
-    clock = io.axiClk,
+    clock = io.clk,
     config = ClockDomainConfig(
       resetKind = BOOT
     )
@@ -106,7 +105,7 @@ class cyber(config: cyberConfig) extends Component {
       axiResetCounter := axiResetCounter + 1
       axiResetUnbuffered := True
     }
-    when(BufferCC(io.asyncReset)) {
+    when(BufferCC(~io.rstn)) {
       axiResetCounter := 0
     }
     // When an axiResetOrder happen, the core reset will as well
@@ -119,13 +118,13 @@ class cyber(config: cyberConfig) extends Component {
   }
 
   val axiClockDomain = ClockDomain(
-    clock = io.axiClk,
+    clock = io.clk,
     reset = resetCtrl.axiReset,
     frequency = FixedFrequency(axiFrequency)
   )
 
   val coreClockDomain = ClockDomain(
-    clock = io.axiClk,
+    clock = io.clk,
     reset = resetCtrl.coreReset
   )
 
@@ -170,7 +169,6 @@ class cyber(config: cyberConfig) extends Component {
     val afioCtrl = Apb3Afio(
       gpioWidth = 16,
       gpioGroupCnt = 2,
-      // afioConfig = BigInt("0005FFF00", 16),
       addressWidth = 5,
       dataWidth = 32
     )
@@ -219,18 +217,18 @@ class cyber(config: cyberConfig) extends Component {
     val spiInterrupt = spiCtrl.io.interrupt.asBits.orR // 按位“或”
 
     afioCtrl.io.device.read :=
-      spiCtrl.io.spis(1).sclk ## // 31
-      spiCtrl.io.spis(1).ss ## // 30
-      spiCtrl.io.spis(1).mosi ## // 29
-      False ## // 28
-      spiCtrl.io.spis(0).sclk ## // 27
-      spiCtrl.io.spis(0).ss ## // 26
-      spiCtrl.io.spis(0).mosi ## // 25
-      False ## // 24
+      False ## // 31
+      spiCtrl.io.spis(1).mosi ## // 30
+      spiCtrl.io.spis(1).ss ## // 29
+      spiCtrl.io.spis(0).sclk ## // 28
+      False ## // 27
+      spiCtrl.io.spis(0).mosi ## // 26
+      spiCtrl.io.spis(0).ss ## // 25
+      spiCtrl.io.spis(0).sclk ## // 24
       i2cCtrl.io.i2cs(1).scl ## // 23
-      i2cCtrl.io.i2cs(1).sda ## // 22
+      i2cCtrl.io.i2cs(1).sda.write ## // 22
       i2cCtrl.io.i2cs(0).scl ## // 21
-      i2cCtrl.io.i2cs(1).sda ## // 20
+      i2cCtrl.io.i2cs(0).sda.write ## // 20
       // B(0, 4 bits) ##
       False ## // 19
       uartCtrl.io.uarts(1).txd ## // 18
@@ -238,10 +236,13 @@ class cyber(config: cyberConfig) extends Component {
       uartCtrl.io.uarts(0).txd ## // 16
       timCtrl.io.tim_ch ## // 8 - 15: 定时器通道
       B(0, 8 bits) // 0 - 7: 保留空位
+
     uartCtrl.io.uarts(0).rxd := afioCtrl.io.device.write(17)
     uartCtrl.io.uarts(1).rxd := afioCtrl.io.device.write(19)
-    spiCtrl.io.spis(0).miso := afioCtrl.io.device.write(25)
-    spiCtrl.io.spis(1).miso := afioCtrl.io.device.write(27)
+    spiCtrl.io.spis(0).miso := afioCtrl.io.device.write(27)
+    spiCtrl.io.spis(1).miso := afioCtrl.io.device.write(31)
+    i2cCtrl.io.i2cs(0).sda.read := afioCtrl.io.device.write(20).asBits
+    i2cCtrl.io.i2cs(1).sda.read := afioCtrl.io.device.write(22).asBits
 
     val axiCrossbar = Axi4CrossbarFactory()
 
@@ -270,8 +271,8 @@ class cyber(config: cyberConfig) extends Component {
       slaves = List(
         gpioCtrl.io.apb -> (0x00000, 64 KiB),
         uartCtrl.io.apb -> (0x10000, 64 KiB),
-        i2cCtrl.io.apb -> (0x30000, 64 KiB),
-        spiCtrl.io.apb -> (0x20000, 64 KiB),
+        i2cCtrl.io.apb -> (0x20000, 64 KiB),
+        spiCtrl.io.apb -> (0x30000, 64 KiB),
         timCtrl.io.apb -> (0x40000, 64 KiB),
         wdgCtrl.io.apb -> (0x50000, 64 KiB),
         systickCtrl.io.apb -> (0x60000, 64 KiB),
@@ -288,7 +289,7 @@ class cyber(config: cyberConfig) extends Component {
         (2 -> systickInterrupt),
         (3 -> extiInterrupt),
         (4 -> i2cInterrupt),
-        (5 -> spiInterrupt),
+        (15 -> spiInterrupt),
         (default -> false)
       )
     }

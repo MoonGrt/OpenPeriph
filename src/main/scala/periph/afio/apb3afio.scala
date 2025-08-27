@@ -15,7 +15,6 @@ case class Apb3Afio(
   val selWidth = log2Up(gpioGroupCnt)
   val io = new Bundle {
     val apb = slave(Apb3(Apb3Config(addressWidth, dataWidth)))
-    // val device = in(Bits(gpioWidth * gpioGroupCnt bits))
     val device = master(TriStateArray(gpioWidth * gpioGroupCnt bits))
     val afio = master(TriStateArray(gpioWidth * gpioGroupCnt bits))
     val afioExti = out(Bits(gpioWidth bits))
@@ -60,6 +59,7 @@ case class Apb3Afio(
   io.device.write := io.afio.read
   io.afio.writeEnable := B(1, gpioWidth * gpioGroupCnt bits)
   io.device.writeEnable := B(1, gpioWidth * gpioGroupCnt bits)
+
   // // 使用 afioConfig 的每一位作为写使能控制位
   // val afioEnableVec = B(afioConfig, gpioWidth * gpioGroupCnt bits)
   // for (i <- 0 until gpioWidth * gpioGroupCnt) {
@@ -74,8 +74,6 @@ case class Apb3Afio(
 /* ----------------------------------------------------------------------------- */
 // object Apb3AfioGen {
 //   def main(args: Array[String]): Unit = {
-//     SpinalConfig(targetDirectory = "rtl").generateVerilog(
-//       InOutWrapper(Apb3Afio(gpioWidth = 16, gpioGroupCnt = 4))
-//     )
+//     SpinalConfig(targetDirectory = "rtl").generateVerilog(new Apb3Afio())
 //   }
 // }

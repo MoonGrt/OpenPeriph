@@ -16,4 +16,10 @@
         <File path="src/top.sdc" type="file.sdc" enable="1"/>
         <File path="src/top.rao" type="file.gao" enable="0"/>
     </FileList>
+    <BinFileList>
+        <BinFile path="G:/VM/share/OpenPeriph/rtl/cyber.v_toplevel_axi_ram_ram_symbol0.bin" type="file.bin" enable="1"/>
+        <BinFile path="G:/VM/share/OpenPeriph/rtl/cyber.v_toplevel_axi_ram_ram_symbol1.bin" type="file.bin" enable="1"/>
+        <BinFile path="G:/VM/share/OpenPeriph/rtl/cyber.v_toplevel_axi_ram_ram_symbol2.bin" type="file.bin" enable="1"/>
+        <BinFile path="G:/VM/share/OpenPeriph/rtl/cyber.v_toplevel_axi_ram_ram_symbol3.bin" type="file.bin" enable="1"/>
+    </BinFileList>
 </Project>

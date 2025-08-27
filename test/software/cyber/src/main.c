@@ -20,12 +20,12 @@ void main()
     // delay_init();
     // delay_ms(10); // 等待系统稳定
 
-    demo_USART();
+    // demo_USART();
     // for (uint16_t i = 0;; printf("time: %us\r\n", i++), delay_ms(1000));
     // demo_GPIO();
     // demo_EXTI();
     // demo_SysTick();
-    demo_I2C();
+    // demo_I2C();
     demo_SPI();
     // demo_TIM();
     // demo_PWM();
@@ -51,6 +51,14 @@ void irqCallback()
         // USART_ClearITPendingBit(USART1, USART_IT_RXNE); // 清除USART1的RXNE标志位
         //                                                 // 读取数据寄存器会自动清除此标志位
         //                                                 // 如果已经读取了数据寄存器，也可以不执行此代码
+    }
+#endif
+
+#ifdef CYBER_SPI
+    /*!< SPI */
+    if (SPI_I2S_GetITStatus(SPI1, SPI_I2S_IT_RXNE) == SET) // 判断是否是SPI1的接收事件触发的中断
+    {
+        Serial_RxData = SPI_I2S_ReceiveData(SPI1); // 读取数据寄存器，存放在接收的数据变量
     }
 #endif
 
@@ -375,6 +383,7 @@ void demo_I2C(void)
  * 参    数：ByteSend 要发送的一个字节
  * 返 回 值：接收的一个字节
  */
+#define SPI_IRQ // 定义SPI_IRQ，使能SPI中断
 uint8_t SPI_SwapByte(uint8_t ByteSend)
 {
     while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) != SET)
@@ -388,38 +397,41 @@ void demo_SPI(void)
 {
     /*GPIO初始化*/
     GPIO_InitTypeDef GPIO_InitStructure;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOB, &GPIO_InitStructure); // 将PA4引脚初始化为推挽输出 CS
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_9;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOB, &GPIO_InitStructure); // 将PA5和PA7引脚初始化为复用推挽输出 SCK MOSI
+    GPIO_Init(GPIOB, &GPIO_InitStructure); // 将PB8、PB9和PB10引脚初始化为复用推挽输出 SCK MOSI CS
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOB, &GPIO_InitStructure); // 将PA6引脚初始化为上拉输入 MISO
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11;
+    GPIO_Init(GPIOB, &GPIO_InitStructure); // 将PB11引脚初始化为上拉输入 MISO
 
     /*SPI初始化*/
-    SPI_InitTypeDef SPI_InitStructure;                                   // 定义结构体变量
-    SPI_InitStructure.SPI_Mode = SPI_Mode_Master;                        // 模式，选择为SPI主模式
-    SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;   // 方向，选择2线全双工
-    SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;                    // 数据宽度，选择为8位
-    SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;                   // 先行位，选择高位先行
-    SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_128; // 波特率分频，选择128分频
-    SPI_InitStructure.SPI_CPOL = SPI_CPOL_Low;                           // SPI极性，选择低极性
-    SPI_InitStructure.SPI_CPHA = SPI_CPHA_1Edge;                         // SPI相位，选择第一个时钟边沿采样，极性和相位决定选择SPI模式0
-    SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;                            // NSS，选择由软件控制
-    SPI_InitStructure.SPI_CRCPolynomial = 7;                             // CRC多项式，暂时用不到，给默认值7
-    SPI_Init(SPI1, &SPI_InitStructure);                                  // 将结构体变量交给SPI_Init，配置SPI1
+    SPI_InitTypeDef SPI_InitStructure;                                 // 定义结构体变量
+    SPI_InitStructure.SPI_Mode = SPI_Mode_Master;                      // 模式，选择为SPI主模式
+    SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex; // 方向，选择2线全双工
+    SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;                  // 数据宽度，选择为8位
+    SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;                 // 先行位，选择高位先行
+    SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_2; // 波特率分频，选择128分频
+    SPI_InitStructure.SPI_CPOL = SPI_CPOL_Low;                         // SPI极性，选择低极性
+    SPI_InitStructure.SPI_CPHA = SPI_CPHA_1Edge;                       // SPI相位，选择第一个时钟边沿采样，极性和相位决定选择SPI模式0
+    SPI_InitStructure.SPI_NSS = SPI_NSS_Hard;                          // NSS，选择由软件控制
+    SPI_InitStructure.SPI_CRCPolynomial = 7;                           // CRC多项式，暂时用不到，给默认值7
+    SPI_Init(SPI1, &SPI_InitStructure);                                // 将结构体变量交给SPI_Init，配置SPI1
+    SPI_SSOutputCmd(SPI1, ENABLE);                                     // 使能片选输出
+#ifdef SPI_IRQ
+    /*SPI中断配置*/
+    SPI_I2S_ITConfig(SPI1, SPI_I2S_IT_RXNE, ENABLE); // 开启串口接收数据的中断
+#endif
 
     /*SPI使能*/
     SPI_Cmd(SPI1, ENABLE); // 使能SPI1，开始运行
-    /*设置默认电平*/
-    GPIO_WriteBit(GPIOA, GPIO_Pin_4, (BitAction)1); // SS默认高电平
+#ifdef SPI_IRQ
+    /*SPI发送*/
+    SPI_I2S_SendData(SPI1, 0x36);
+#else
     /*SPI交换数据*/
-    SPI_SwapByte(0xbb);
+    SPI_SwapByte(0x36);
+#endif
 }
 #endif
 

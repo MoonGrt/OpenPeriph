@@ -84,7 +84,7 @@ ctors_loop:
 ctors_done:
   addi sp,sp,4
 
-  li x1, 0xF0
+  li x1, 0xFFFF
   .word 0x0400800B // write interrupt mask
 
   /* 跳转到 main */

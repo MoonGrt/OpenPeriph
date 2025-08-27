@@ -4,19 +4,20 @@ import spinal.core._
 import spinal.lib._
 import spinal.lib.bus.amba3.apb._
 import spinal.lib.bus.misc.SizeMapping
+import spinal.lib.io.{TriStateArray, InOutWrapper}
 
 // I2C主接口定义
 case class I2c() extends Bundle with IMasterSlave {
   val scl = Bool()
-  val sda = Analog(Bool())
+  val sda = TriStateArray(1 bits)
 
   override def asMaster(): Unit = {
-    out(scl)
-    inout(sda)
+    out(scl, sda.write, sda.writeEnable)
+    in(sda.read)
   }
   override def asSlave(): Unit = {
-    in(scl)
-    inout(sda)
+    in(scl, sda.write, sda.writeEnable)
+    out(sda.read)
   }
   override def clone = I2c()
 }
@@ -141,6 +142,8 @@ case class Apb3I2c(
   txFifo.io.pop.ready := False
   rxFifo.io.push.valid := False
   rxFifo.io.push.payload := 0
+  io.i2c.sda.write := True.asBits // 默认高电平
+  io.i2c.sda.writeEnable := False.asBits
   switch(i2cState) {
     is(0) { // 空闲状态
       when(START && PE) {
@@ -153,10 +156,11 @@ case class Apb3I2c(
       when(clockTick) {
         when(ADDMODE) {
           when(bitCounter < 10) {
-            io.i2c.sda := ADD(9 - bitCounter)
+            io.i2c.sda.write := ADD(9 - bitCounter).asBits
+            io.i2c.sda.writeEnable := True.asBits
             bitCounter := bitCounter + 1
           }.elsewhen(bitCounter === 10) {
-            io.i2c.sda := isRead
+            io.i2c.sda.write := isRead.asBits
             bitCounter := bitCounter + 1
             SR1(1) := True // ADDR = 1
           }.otherwise {
@@ -165,10 +169,12 @@ case class Apb3I2c(
           }
         }.otherwise {
           when(bitCounter < 7) {
-            io.i2c.sda := ADD(7 - bitCounter)
+            io.i2c.sda.write := ADD(7 - bitCounter).asBits
+            io.i2c.sda.writeEnable := True.asBits
             bitCounter := bitCounter + 1
           }.elsewhen(bitCounter === 7) {
-            io.i2c.sda := isRead
+            io.i2c.sda.write := isRead.asBits
+            io.i2c.sda.writeEnable := True.asBits
             bitCounter := bitCounter + 1
             SR1(1) := True // ADDR = 1
           }.otherwise {
@@ -180,7 +186,7 @@ case class Apb3I2c(
     }
     is(2) { // 等待应答
       when(clockTick) {
-        when(io.i2c.sda === False) { // ACK received
+        when(io.i2c.sda.read === False.asBits) { // ACK received
           when(isRead) { i2cState := 3 } // 进入接收模式
           .otherwise { i2cState := 4 } // 进入发送模式
         }.otherwise { // NACK received
@@ -191,7 +197,7 @@ case class Apb3I2c(
     }
     is(3) { // 接收数据
       when(clockTick) {
-        rxShiftReg := rxShiftReg(dataWidthMax - 2 downto 0) ## io.i2c.sda
+        rxShiftReg := rxShiftReg(dataWidthMax - 2 downto 0) ## io.i2c.sda.read
         bitCounter := bitCounter + 1
         when(bitCounter === 7) {
           // 将接收到的数据放入RX FIFO
@@ -205,7 +211,8 @@ case class Apb3I2c(
     is(4) { // 发送数据
       when(txFifo.io.pop.valid && clockTick) {
         txShiftReg := txFifo.io.pop.payload
-        io.i2c.sda := txShiftReg(7)
+        io.i2c.sda.write := txShiftReg(7).asBits
+        io.i2c.sda.writeEnable := True.asBits
         bitCounter := 1
         txFifo.io.pop.ready := True
         i2cState := 6
@@ -223,7 +230,8 @@ case class Apb3I2c(
     }
     is(6) { // 发送进行中
       when(clockTick) {
-        io.i2c.sda := txShiftReg((7 - bitCounter).resized)
+        io.i2c.sda.write := txShiftReg((7 - bitCounter).resized).asBits
+        io.i2c.sda.writeEnable := True.asBits
         bitCounter := bitCounter + 1
         when(bitCounter === 7) {
           SR1(2) := True // BTF = 1
@@ -286,7 +294,6 @@ case class Apb3I2c(
   txFifo.io.push.payload := 0
   rxFifo.io.pop.ready := False
   io.i2c.scl := clockTick
-  io.i2c.sda := True // 默认高电平
 }
 
 object Apb3I2cArray {
@@ -337,16 +344,12 @@ case class Apb3I2cArray(
 /* ----------------------------------------------------------------------------- */
 // object Apb3I2cGen {
 //   def main(args: Array[String]): Unit = {
-//     SpinalConfig(targetDirectory = "rtl").generateVerilog(
-//       Apb3I2c()
-//     )
+//     SpinalConfig(targetDirectory = "rtl").generateVerilog(new Apb3I2c())
 //   }
 // }
 
 // object Apb3I2cArrayGen {
 //   def main(args: Array[String]): Unit = {
-//     SpinalConfig(targetDirectory = "rtl").generateVerilog(
-//       Apb3I2cArray()
-//     )
+//     SpinalConfig(targetDirectory = "rtl").generateVerilog(new Apb3I2cArray())
 //   }
 // }

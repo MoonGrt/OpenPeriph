@@ -68,7 +68,6 @@ object cyberwithddrConfig {
     config.cpu.add(new MulExtension)
     config.cpu.add(new DivExtension)
     config.cpu.add(new BarrelShifterFullExtension)
-
     config
   }
 }
@@ -193,7 +192,6 @@ class cyberwithddr(config: cyberwithddrConfig) extends Component {
     val afioCtrl = Apb3Afio(
       gpioWidth = 16,
       gpioGroupCnt = 2,
-      // afioConfig = BigInt("0005FFF00", 16),
       addressWidth = 5,
       dataWidth = 32
     )
@@ -315,23 +313,23 @@ class cyberwithddr(config: cyberwithddrConfig) extends Component {
 /* ----------------------------------------------------------------------------- */
 /* ---------------------------------- Demo Gen --------------------------------- */
 /* ----------------------------------------------------------------------------- */
-// object cyberwithddr {
-//   def main(args: Array[String]) {
-//     val config =
-//       SpinalConfig(verbose = true, targetDirectory = "rtl").dumpWave()
-//     val report = config.generateVerilog(
-//       InOutWrapper(
-//         new cyberwithddr(
-//           cyberwithddrConfig.default.copy(
-//             memFile = "test/software/cyber/build/demo.hex",
-//             memFileType = "rawhex"
-//             // memFile = "test/software/cyber/build/mem/demo.bin",
-//             // memFileType = "bin"
-//             // memFile = "test/software/cyber/build/mem/demo.hex",
-//             // memFileType = "hex"
-//           )
-//         )
-//       )
-//     )
-//   }
-// }
+object cyberwithddr {
+  def main(args: Array[String]) {
+    val config =
+      SpinalConfig(verbose = true, targetDirectory = "rtl").dumpWave()
+    val report = config.generateVerilog(
+      InOutWrapper(
+        new cyberwithddr(
+          cyberwithddrConfig.default.copy(
+            memFile = "test/software/cyberwithddr/build/demo.hex",
+            memFileType = "rawhex"
+            // memFile = "test/software/cyberwithddr/build/mem/demo.bin",
+            // memFileType = "bin"
+            // memFile = "test/software/cyberwithddr/build/mem/demo.hex",
+            // memFileType = "hex"
+          )
+        )
+      )
+    )
+  }
+}

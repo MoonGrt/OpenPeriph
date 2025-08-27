@@ -23,6 +23,14 @@ case class Spi() extends Bundle with IMasterSlave {
   override def clone = Spi()
 }
 
+// 定义两个状态机的状态
+object SpiState extends SpinalEnum {
+  val IDLE, LOAD, SHIFT, DONE = newElement()
+}
+object RxState extends SpinalEnum {
+  val IDLE, SHIFT, DONE = newElement()
+}
+
 object Apb3Spi {
   def apb3Config(addressWidth: Int, dataWidth: Int) =
     Apb3Config(addressWidth = addressWidth, dataWidth = dataWidth)
@@ -31,7 +39,6 @@ object Apb3Spi {
 case class Apb3Spi(
     addressWidth: Int = 7,
     dataWidth: Int = 32,
-    dataWidthMax: Int = 16,
     txFifoDepth: Int = 16,
     rxFifoDepth: Int = 16
 ) extends Component {
@@ -55,46 +62,42 @@ case class Apb3Spi(
   val I2SPR = Reg(UInt(16 bits)) init(0) // I2S预分频寄存器
 
   // CR1位域解析
-  val SPE = CR1(6)    // SPI使能
-  val MSTR = CR1(2)   // 主模式选择
+  val CPHA = CR1(0)        // 时钟相位
+  val CPOL = CR1(1)        // 时钟极性
+  val MSTR = CR1(2)        // 主模式选择
   val BR = CR1(5 downto 3) // 波特率控制
-  val CPOL = CR1(1)   // 时钟极性
-  val CPHA = CR1(0)   // 时钟相位
-  val DFF = CR1(11)   // 数据帧格式
-  val CRCNEXT = CR1(12) // 下一个发送CRC
-  val CRCEN = CR1(13) // 硬件CRC计算使能
-  val BIDIOE = CR1(14) // 双向数据模式输出使能
-  val BIDIMODE = CR1(15) // 双向数据模式使能
-  val RXONLY = CR1(10) // 仅接收模式
-  val SSM = CR1(8)     // 软件从机管理
-  val SSI = CR1(7)     // 内部从机选择
-  val LSBFIRST = CR1(7) // LSB优先
-  val ERRIE = CR1(5)   // 错误中断使能
-  val RXEIE = CR1(6)   // RX缓冲区非空中断使能
-  val TXEIE = CR1(7)   // TX缓冲区空中断使能
+  val SPE = CR1(6)         // SPI使能
+  val LSBFIRST = CR1(7)    // LSB优先
+  val SSI = Bool()         // 内部从机选择 - CR1(8)
+  val SSM = CR1(9)         // 软件从机管理
+  val RXONLY = CR1(10)     // 仅接收模式
+  val DFF = CR1(11)        // 数据帧格式
+  val CRCNEXT = CR1(12)    // 下一个发送CRC
+  val CRCEN = CR1(13)      // 硬件CRC计算使能
+  val BIDIOE = CR1(14)     // 双向数据模式输出使能
+  val BIDIMODE = CR1(15)   // 双向数据模式使能
 
   // CR2位域解析
-  val TXDMAEN = CR2(1) // TX DMA使能
   val RXDMAEN = CR2(0) // RX DMA使能
+  val TXDMAEN = CR2(1) // TX DMA使能
   val SSOE = CR2(2)    // 从机选择输出使能
-  val FRF = CR2(4)     // 帧格式
-  val ERRIE_CR2 = CR2(5) // 错误中断使能
-  val RXNEIE = CR2(6)  // RX缓冲区非空中断使能
-  val TXEIE_CR2 = CR2(7) // TX缓冲区空中断使能
+  val ERRIE = CR2(5)   // 错误中断使能
+  val RXEIE = CR2(6)   // RX缓冲区非空中断使能
+  val TXEIE = CR2(7)   // TX缓冲区空中断使能
 
   // SR位域解析
-  val BSY = SR(7)      // 忙标志
-  val OVR = SR(6)      // 溢出标志
-  val MODF = SR(5)     // 模式错误
-  val CRCERR = SR(4)   // CRC错误标志
-  val UDR = SR(3)      // 下溢标志
-  val CHSIDE = SR(2)   // 通道边
-  val TXE = SR(1)      // 发送缓冲区空
-  val RXNE = SR(0)     // 接收缓冲区非空
+  val RXNE = SR(0)   // 接收缓冲区非空
+  val TXE = SR(1)    // 发送缓冲区空
+  val CHSIDE = SR(2) // 通道边
+  val UDR = SR(3)    // 下溢标志
+  val CRCERR = SR(4) // CRC错误标志
+  val MODF = SR(5)   // 模式错误
+  val OVR = SR(6)    // 溢出标志
+  val BSY = SR(7)    // 忙标志
 
   // FIFO实现
-  val txFifo = StreamFifo(Bits(dataWidthMax bits), txFifoDepth)
-  val rxFifo = StreamFifo(Bits(dataWidthMax bits), rxFifoDepth)
+  val txFifo = StreamFifo(Bits(16 bits), txFifoDepth)
+  val rxFifo = StreamFifo(Bits(16 bits), rxFifoDepth)
 
   // CRC 更新函数（按字节更新）
   def crcUpdate(crc: UInt, data: Bits): UInt = {
@@ -108,79 +111,106 @@ case class Apb3Spi(
 
   // SPI主控制器
   val spiMaster = new Area {
+    // === FIFO 接口 ===
     val txValid = txFifo.io.pop.valid
     val txReady = txFifo.io.pop.ready
+    val txData  = txFifo.io.pop.payload
     val rxValid = rxFifo.io.push.valid
     val rxReady = rxFifo.io.push.ready
-    val rxData = rxFifo.io.push.payload
+    val rxData  = rxFifo.io.push.payload
 
-    // 时钟分频器
+    // === 分频器和SCLK ===
     val clockDivider = Reg(UInt(8 bits)) init(0)
     val clockCounter = Reg(UInt(8 bits)) init(0)
-    val clockTick = clockCounter === 0
-    // 根据BR位计算分频值
-    val dividerValues = Vec(U(2-1), U(4-1), U(8-1), U(16-1), U(32-1), U(64-1), U(128-1), U(256-1))
-    clockDivider := dividerValues(BR)
+    val sclkToggle   = clockCounter === 0
+    val sclkReg      = Reg(Bool) init(False)
+
+    clockDivider := (U(1) << (BR + 1)) - 1
+
     when(SPE) {
       clockCounter := clockCounter - 1
-      when(clockTick) { clockCounter := clockDivider }
+      when(sclkToggle) {
+        clockCounter := clockDivider
+        sclkReg := ~sclkReg
+      }
     }
+    io.spi.sclk := sclkReg ^ CPOL
 
-    // SPI状态机
-    val state = Reg(UInt(2 bits)) init(0)
-    val bitCounter = Reg(UInt(4 bits)) init(0)
-    val txShiftReg = Reg(Bits(dataWidthMax bits)) init(0)
-    val rxShiftReg = Reg(Bits(dataWidthMax bits)) init(0)
+    // === 通用寄存器 ===
+    val frameLength = Mux(DFF, U(16), U(8))
 
-    // 状态机逻辑
-    io.spi.mosi := False
+    // ================ SPI 状态机 ================
+    val state      = RegInit(SpiState.IDLE)
+    val rxShiftReg = Reg(Bits(16 bits)) init(0)
+    val txShiftReg = Reg(Bits(16 bits)) init(0)
+    val txBitCnt   = Reg(UInt(5 bits)) init(0)
+    val rxBitCnt   = Reg(UInt(5 bits)) init(0)
+    val mosiReg    = Reg(Bool) init(False)
+
+    SSI := True
     txFifo.io.pop.ready := False
     rxFifo.io.push.valid := False
     rxFifo.io.push.payload := 0
     switch(state) {
-      is(0) { // 空闲状态
-        when(txValid && clockTick) {
-          state := 1
-          txShiftReg := txFifo.io.pop.payload
-          bitCounter := 0
-          txReady := True
+      is(SpiState.IDLE) { // Idle
+        mosiReg := True
+        when(txValid && sclkToggle && (sclkReg === CPOL)) {
+          txShiftReg := txData
+          txBitCnt := 0
+          rxBitCnt := 0
+          state := SpiState.SHIFT
+          txFifo.io.pop.ready := True
         }
       }
-      is(1) { // 发送状态
-        when(clockTick) {
-          // 发送数据
-          io.spi.mosi := txShiftReg(dataWidthMax - 1)
-          txShiftReg := txShiftReg(dataWidthMax - 2 downto 0) ## B"0"
-          // 接收数据
-          rxShiftReg := rxShiftReg(dataWidthMax - 2 downto 0) ## io.spi.miso
-          // CRC 更新
-          when(CRCEN) {
-            TXCRCR := crcUpdate(TXCRCR, io.spi.mosi.asBits)
-            RXCRCR := crcUpdate(RXCRCR, io.spi.miso.asBits)
+      is(SpiState.SHIFT) { // Shift out
+        SSI := False
+        when(sclkToggle && (sclkReg =/= (CPHA ^ CPOL))) {
+          // 输出 MOSI
+          when(frameLength === U(8)) {
+            mosiReg := (LSBFIRST ? txShiftReg(0) | txShiftReg(7))
+            txShiftReg := LSBFIRST ? (B"0" ## txShiftReg(7 downto 1)).resize(16) | (txShiftReg(6 downto 0) ## B"0").resize(16)
+          } .otherwise {
+            mosiReg := (LSBFIRST ? txShiftReg(0) | txShiftReg(15))
+            txShiftReg := LSBFIRST ? (B"0" ## txShiftReg(15 downto 1)) | (txShiftReg(14 downto 0) ## B"0")
           }
-          // 计数器更新
-          bitCounter := bitCounter + 1
-          when(bitCounter === Mux(DFF, U(15), U(7))) {
-            state := 2
-            // 将接收到的数据放入RX FIFO
-            rxFifo.io.push.valid := True
-            rxFifo.io.push.payload := rxShiftReg
+          txBitCnt := txBitCnt + 1
+          when(txBitCnt === frameLength) { state := SpiState.DONE }
+        }
+        when(sclkToggle && (sclkReg === (CPHA ^ CPOL))) {
+          // 输出 MOSI
+          when(frameLength === U(8)) {
+            rxShiftReg := LSBFIRST ? (io.spi.miso ## rxShiftReg(7 downto 1)).resize(16) | (rxShiftReg(6 downto 0) ## io.spi.miso.asBits).resize(16)
+          } .otherwise {
+            rxShiftReg := LSBFIRST ? (io.spi.miso ## rxShiftReg(15 downto 1)) | (rxShiftReg(14 downto 0) ## io.spi.miso.asBits)
           }
+          rxBitCnt := rxBitCnt + 1
         }
       }
-      is(2) { // 完成状态
-        state := 0
-        rxValid := True
+      is(SpiState.DONE) {
+        rxFifo.io.push.valid   := True
+        rxFifo.io.push.payload := rxShiftReg
+        state := SpiState.IDLE
       }
     }
-    // 时钟输出
-    io.spi.sclk := Mux(CPOL, !clockTick, clockTick)
+
+    // ================ CRC 更新 (可选) ================
+    when(sclkToggle) {
+      when(CRCEN) {
+        TXCRCR := crcUpdate(TXCRCR, io.spi.mosi.asBits)
+        RXCRCR := crcUpdate(RXCRCR, io.spi.miso.asBits)
+      }
+    }
   }
 
   // 状态寄存器更新
-  SR(1) := txFifo.io.pop.ready // TXE
-  SR(0) := rxFifo.io.pop.valid // RXNE
-  SR(7) := spiMaster.state =/= 0 // BSY
+  SR(0) := rxFifo.io.occupancy =/= 0 // RXNE
+  SR(1) := txFifo.io.push.ready // TXE
+  SR(2) := False // CHSIDE
+  SR(3) := False // UDR
+  SR(4) := CRCEN ? (RXCRCR =/= TXCRCR) | False // CRCERR
+  SR(5) := False // MODF
+  SR(6) := False // OVR
+  SR(7) := spiMaster.state =/= SpiState.IDLE // BSY
 
   // 中断生成
   val txEmptyInterrupt = TXEIE && TXE
@@ -197,7 +227,7 @@ case class Apb3Spi(
   ctrl.onWrite(0x0C) {
     when(TXE) {
       txFifo.io.push.valid := True
-      txFifo.io.push.payload := io.apb.PWDATA(dataWidthMax-1 downto 0).asBits
+      txFifo.io.push.payload := io.apb.PWDATA(15 downto 0).asBits
     }
   }
   ctrl.onRead(0x0C) {
@@ -217,7 +247,8 @@ case class Apb3Spi(
   txFifo.io.push.valid := False
   txFifo.io.push.payload := 0
   rxFifo.io.pop.ready := False
-  io.spi.ss := !SSOE
+  io.spi.ss := (~SSM & SSOE) ? SSI | True
+  io.spi.mosi := spiMaster.mosiReg
 }
 
 object Apb3SpiArray {

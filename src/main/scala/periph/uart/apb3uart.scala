@@ -18,15 +18,8 @@ case class Apb3UartCtrlConfig(
 case class Apb3Uart(config: Apb3UartCtrlConfig) extends Component {
   import config._
   val io = new Bundle {
-    val apb = slave(
-      Apb3(Apb3Config(addressWidth = apbAddressWidth, dataWidth = apbDataWidth))
-    )
-    val uart = master(
-      Uart(
-        ctsGen = ctsGen,
-        rtsGen = rtsGen
-      )
-    )
+    val apb = slave(Apb3(Apb3Config(addressWidth = apbAddressWidth, dataWidth = apbDataWidth)))
+    val uart = master(Uart(ctsGen = ctsGen, rtsGen = rtsGen))
     val interrupt = out(Bool)
   }
 
@@ -65,7 +58,7 @@ case class Apb3Uart(config: Apb3UartCtrlConfig) extends Component {
   // 状态寄存器
   SR := 0
   SR(7) := txFifo.io.push.ready // TXE
-  SR(6) := txFifo.io.availability =/= 0 // TC: 有空位可写
+  SR(6) := txFifo.io.availability =/= 0 // TC
   SR(5) := rxFifo.io.occupancy =/= 0 // RXNE: 有数据可读
   SR(3) := rx.io.error // FE
 
@@ -75,9 +68,7 @@ case class Apb3Uart(config: Apb3UartCtrlConfig) extends Component {
     val tick = counter === 0
     val tickReg = RegNext(tick) init (False)
     counter := counter - 1
-    when(tick) {
-      counter := BRR(15 downto 4).resized
-    }
+    when(tick) { counter := BRR(15 downto 4).resized }
   }
   tx.io.samplingTick := clockDivider.tickReg
   rx.io.samplingTick := clockDivider.tickReg
@@ -97,9 +88,7 @@ case class Apb3Uart(config: Apb3UartCtrlConfig) extends Component {
   // DR 写入 -> 进入 TX FIFO
   txFifo.io.push.valid := False
   txFifo.io.push.payload := io.apb.PWDATA(uartCtrlGenerics.dataWidthMax-1 downto 0).asBits
-  ctrl.onWrite(0x04) {
-    txFifo.io.push.valid := True
-  }
+  ctrl.onWrite(0x04) { txFifo.io.push.valid := True }
 
   // DR 读取 -> 从 RX FIFO
   rxFifo.io.pop.ready := False
