@@ -699,7 +699,7 @@ void ST7789_HARD_Fill_ColorBar(void)
 void demo_ST7789_HARD()
 {
     delay_init();
-    // demo_USART();
+    demo_USART();
     ST7789_HARD_GPIO_Init();     // 初始化 ST7789_HARD 引脚
     ST7789_HARD_Init();          // 初始化 ST7789_HARD 控制器
     ST7789_HARD_Fill_ColorBar(); // 显示彩条

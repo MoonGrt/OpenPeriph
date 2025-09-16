@@ -89,7 +89,7 @@ class cyberwithddrlcd(config: cyberwithddrlcdConfig) extends Component {
     val rstn = in Bool ()
     val clk = in Bool ()
     // Main components IO
-    // val jtag = slave(Jtag()) // Tang Primer has limited IOBUF(s)
+    val jtag = slave(Jtag()) // Tang Primer has limited IOBUF(s)
     val sdram = master(DDR3_Interface())
     // Peripherals IO
     // val gpio = master(TriStateArray(32 bits)) // Tang Primer has limited IOBUF(s)
@@ -166,9 +166,9 @@ class cyberwithddrlcd(config: cyberwithddrlcdConfig) extends Component {
     reset = resetCtrl.axiReset
   )
 
-  // val jtagClockDomain = ClockDomain(
-  //   clock = io.jtag.tck
-  // )
+  val jtagClockDomain = ClockDomain(
+    clock = io.jtag.tck
+  )
 
   val axi = new ClockingArea(axiClockDomain) {
     val core = coreClockDomain {
@@ -193,13 +193,13 @@ class cyberwithddrlcd(config: cyberwithddrlcdConfig) extends Component {
     val sdramCtrl = Axi4Ddr(axiClockDomain, memClockDomain)
     sdramCtrl.io.pll_lock := memclk.lock && sysclk.lock
 
-    // val jtagCtrl = JtagAxi4SharedDebugger(
-    //   SystemDebuggerConfig(
-    //     memAddressWidth = 32,
-    //     memDataWidth = 32,
-    //     remoteCmdWidth = 1
-    //   )
-    // )
+    val jtagCtrl = JtagAxi4SharedDebugger(
+      SystemDebuggerConfig(
+        memAddressWidth = 32,
+        memDataWidth = 32,
+        remoteCmdWidth = 1
+      )
+    )
 
     val apbBridge = Axi4SharedToApb3Bridge(
       addressWidth = 20,
@@ -284,7 +284,7 @@ class cyberwithddrlcd(config: cyberwithddrlcdConfig) extends Component {
     axiCrossbar.addConnections(
       core.io.i -> List(ram.io.axi, sdramCtrl.io.axi),
       core.io.d -> List(ram.io.axi, sdramCtrl.io.axi, apbBridge.io.axi),
-      // jtagCtrl.io.axi -> List(ram.io.axi, sdramCtrl.io.axi, apbBridge.io.axi),
+      jtagCtrl.io.axi -> List(ram.io.axi, sdramCtrl.io.axi, apbBridge.io.axi),
       lcdCtrl.io.axi -> List(sdramCtrl.io.axi)
     )
 
@@ -337,7 +337,7 @@ class cyberwithddrlcd(config: cyberwithddrlcdConfig) extends Component {
 
   axi.gpioCtrl.io.gpio.read := B(0, 32 bits)
   io.uart_tx <> axi.uartCtrl.io.uarts(0).txd
-  // io.jtag <> axi.jtagCtrl.io.jtag
+  io.jtag <> axi.jtagCtrl.io.jtag
   io.sdram <> axi.sdramCtrl.io.ddr_iface
   io.dvti <> axi.lcdCtrl.io.dvti
 }
