@@ -78,12 +78,10 @@ class pinsec(config: pinsecConfig) extends Component {
 
   val io = new Bundle {
     // Clocks / reset
-    val asyncReset = in Bool ()
-    val axiClk = in Bool ()
-
+    val rstn = in Bool ()
+    val clk = in Bool ()
     // Main components IO
     val jtag = slave(Jtag())
-
     // Peripherals IO
     val gpioA = master(TriStateArray(32 bits))
     val gpioB = master(TriStateArray(32 bits))
@@ -92,7 +90,7 @@ class pinsec(config: pinsecConfig) extends Component {
   }
 
   val resetCtrlClockDomain = ClockDomain(
-    clock = io.axiClk,
+    clock = io.clk,
     config = ClockDomainConfig(
       resetKind = BOOT
     )
@@ -109,7 +107,7 @@ class pinsec(config: pinsecConfig) extends Component {
       axiResetCounter := axiResetCounter + 1
       axiResetUnbuffered := True
     }
-    when(BufferCC(io.asyncReset)) {
+    when(BufferCC(~io.rstn)) {
       axiResetCounter := 0
     }
 
@@ -124,13 +122,13 @@ class pinsec(config: pinsecConfig) extends Component {
   }
 
   val axiClockDomain = ClockDomain(
-    clock = io.axiClk,
+    clock = io.clk,
     reset = resetCtrl.axiReset,
     frequency = FixedFrequency(axiFrequency)
   )
 
   val coreClockDomain = ClockDomain(
-    clock = io.axiClk,
+    clock = io.clk,
     reset = resetCtrl.coreReset
   )
 
@@ -314,12 +312,12 @@ case class pinsecTimerCtrl() extends Component {
 /* ----------------------------------------------------------------------------- */
 /* ---------------------------------- Demo Gen --------------------------------- */
 /* ----------------------------------------------------------------------------- */
-// object pinsec {
-//   def main(args: Array[String]) {
-//     val config =
-//       SpinalConfig(verbose = true, targetDirectory = "rtl").dumpWave()
-//     val report = config.generateVerilog(
-//       InOutWrapper(new pinsec(pinsecConfig.default.copy(memFile = "test/software/cyber/build/demo.hex")))
-//     )
-//   }
-// }
+object pinsec {
+  def main(args: Array[String]) {
+    val config =
+      SpinalConfig(verbose = true, targetDirectory = "rtl").dumpWave()
+    val report = config.generateVerilog(
+      InOutWrapper(new pinsec(pinsecConfig.default.copy(memFile = "test/software/pinsec/build/demo.hex")))
+    )
+  }
+}

@@ -1,7 +1,5 @@
 #include <stdint.h>
-
 #include <pinsec.h>
-
 
 void main() {
 	volatile uint32_t a = 1, b = 2, c = 3;
