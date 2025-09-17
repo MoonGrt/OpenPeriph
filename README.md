@@ -200,6 +200,12 @@ git clone https://github.com/MoonGrt/OpenPeriph.git
 cd OpenPeriph
 sbt compile
 ```
+5. ***VexRiscv** (optional)
+```bash
+$ git clone https://github.com/SpinalHDL/VexRiscv.git
+$ cd VexRiscv
+$ sbt publishLocal
+```
 
 <!-- FILE TREE -->
 ## File Tree

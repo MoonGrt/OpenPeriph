@@ -104,9 +104,7 @@ class cyberwithddr(config: cyberwithddrConfig) extends Component {
 
   val resetCtrlClockDomain = ClockDomain(
     clock = sysclk.clkout,
-    config = ClockDomainConfig(
-      resetKind = BOOT
-    )
+    config = ClockDomainConfig( resetKind = BOOT )
   )
 
   val resetCtrl = new ClockingArea(resetCtrlClockDomain) {
@@ -119,13 +117,9 @@ class cyberwithddr(config: cyberwithddrConfig) extends Component {
       axiResetCounter := axiResetCounter + 1
       axiResetUnbuffered := True
     }
-    when(BufferCC(~io.rstn)) {
-      axiResetCounter := 0
-    }
+    when(BufferCC(~io.rstn)) { axiResetCounter := 0 }
     // When an axiResetOrder happen, the core reset will as well
-    when(axiResetUnbuffered) {
-      coreResetUnbuffered := True
-    }
+    when(axiResetUnbuffered) { coreResetUnbuffered := True }
     // Create all reset used later in the design
     val axiReset = RegNext(axiResetUnbuffered)
     val coreReset = RegNext(coreResetUnbuffered)
@@ -183,6 +177,7 @@ class cyberwithddr(config: cyberwithddrConfig) extends Component {
       )
     )
 
+    /* ------------------------ APB BUS ------------------------ */
     val apbBridge = Axi4SharedToApb3Bridge(
       addressWidth = 20,
       dataWidth = 32,
@@ -244,6 +239,21 @@ class cyberwithddr(config: cyberwithddrConfig) extends Component {
     uartCtrl.io.uarts(0).rxd := afioCtrl.io.device.write(17)
     uartCtrl.io.uarts(1).rxd := afioCtrl.io.device.write(19)
 
+    val apbDecoder = Apb3Decoder(
+      master = apbBridge.io.apb,
+      slaves = List(
+        gpioCtrl.io.apb -> (0x00000, 64 KiB),
+        uartCtrl.io.apb -> (0x10000, 64 KiB),
+        timCtrl.io.apb -> (0x40000, 64 KiB),
+        wdgCtrl.io.apb -> (0x50000, 64 KiB),
+        systickCtrl.io.apb -> (0x60000, 64 KiB),
+        afioCtrl.io.apb -> (0xd0000, 64 KiB),
+        extiCtrl.io.apb -> (0xe0000, 64 KiB),
+        core.io.debugBus -> (0xf0000, 64 KiB)
+      )
+    )
+
+    /* ------------------------ AXI BUS ------------------------ */
     val axiCrossbar = Axi4CrossbarFactory()
 
     axiCrossbar.addSlaves(
@@ -273,20 +283,6 @@ class cyberwithddr(config: cyberwithddrConfig) extends Component {
     })
 
     axiCrossbar.build()
-
-    val apbDecoder = Apb3Decoder(
-      master = apbBridge.io.apb,
-      slaves = List(
-        gpioCtrl.io.apb -> (0x00000, 64 KiB),
-        uartCtrl.io.apb -> (0x10000, 64 KiB),
-        timCtrl.io.apb -> (0x40000, 64 KiB),
-        wdgCtrl.io.apb -> (0x50000, 64 KiB),
-        systickCtrl.io.apb -> (0x60000, 64 KiB),
-        afioCtrl.io.apb -> (0xd0000, 64 KiB),
-        extiCtrl.io.apb -> (0xe0000, 64 KiB),
-        core.io.debugBus -> (0xf0000, 64 KiB)
-      )
-    )
 
     if (interruptCount != 0) {
       core.io.interrupt := (

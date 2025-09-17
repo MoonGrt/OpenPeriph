@@ -9,7 +9,7 @@ object MemTools {
   // File Loador
   // -------------------------------
   // Raw HEX (Intel HEX Format)
-  def loadRawHexFile(path: String, wordSize: Int, bigEndian: Boolean, hexOffset: BigInt, wordCount: Int, allowOverflow: Boolean): Array[BigInt] = {
+  def loadRawHexFile(path: String, wordSize: Int, bigEndian: Boolean, memOffset: BigInt, wordCount: Int, allowOverflow: Boolean): Array[BigInt] = {
     def hToI(that: String, start: Int, size: Int) = Integer.parseInt(that.substring(start, start + size), 16)
     val tmp = Array.fill[BigInt](wordCount)(0)
     var offset = 0
@@ -22,7 +22,7 @@ object MemTools {
           case 0 =>
             for (i <- 0 until byteCount) {
               val address = nextAddr + i
-              val addressWithoutOffset = ((address.toLong & 0xffffffffL) - hexOffset).toLong
+              val addressWithoutOffset = ((address.toLong & 0xffffffffL) - memOffset).toLong
               val addressWord = addressWithoutOffset / wordSize
               if (addressWord < 0 || addressWord >= tmp.size) {
                 assert(allowOverflow)
@@ -122,14 +122,14 @@ object MemTools {
       ram: Mem[T],
       file: String,
       memFileType: String = "rawhex",
+      memOffset: BigInt = 0,
       bigEndian: Boolean = true,
-      hexOffset: BigInt = 0,
       allowOverflow: Boolean = false
   ): Unit = {
     val wordSize = ram.wordType.getBitsWidth / 8
     val initContent = memFileType match {
       case "rawhex" => // raw hex file
-        val raw = loadRawHexFile(file, wordSize, bigEndian, hexOffset, ram.wordCount, allowOverflow)
+        val raw = loadRawHexFile(file, wordSize, bigEndian, memOffset, ram.wordCount, allowOverflow)
         padArray(raw, ram.wordCount)
       case "rawbin" => // raw binary file
         val raw = loadRawBinFile(file, wordSize, bigEndian)

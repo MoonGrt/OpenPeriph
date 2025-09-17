@@ -91,9 +91,7 @@ class pinsec(config: pinsecConfig) extends Component {
 
   val resetCtrlClockDomain = ClockDomain(
     clock = io.clk,
-    config = ClockDomainConfig(
-      resetKind = BOOT
-    )
+    config = ClockDomainConfig( resetKind = BOOT )
   )
 
   val resetCtrl = new ClockingArea(resetCtrlClockDomain) {
@@ -107,15 +105,9 @@ class pinsec(config: pinsecConfig) extends Component {
       axiResetCounter := axiResetCounter + 1
       axiResetUnbuffered := True
     }
-    when(BufferCC(~io.rstn)) {
-      axiResetCounter := 0
-    }
-
+    when(BufferCC(~io.rstn)) { axiResetCounter := 0 }
     // When an axiResetOrder happen, the core reset will as well
-    when(axiResetUnbuffered) {
-      coreResetUnbuffered := True
-    }
-
+    when(axiResetUnbuffered) { coreResetUnbuffered := True }
     // Create all reset used later in the design
     val axiReset = RegNext(axiResetUnbuffered)
     val coreReset = RegNext(coreResetUnbuffered)
@@ -163,6 +155,7 @@ class pinsec(config: pinsecConfig) extends Component {
       )
     )
 
+    /* ------------------------ APB BUS ------------------------ */
     val apbBridge = Axi4SharedToApb3Bridge(
       addressWidth = 20,
       dataWidth = 32,
@@ -198,6 +191,18 @@ class pinsec(config: pinsecConfig) extends Component {
     )
     val uartCtrl = Apb3UartCtrl(uartCtrlConfig)
 
+    val apbDecoder = Apb3Decoder(
+      master = apbBridge.io.apb,
+      slaves = List(
+        gpioACtrl.io.apb -> (0x00000, 4 KiB),
+        gpioBCtrl.io.apb -> (0x01000, 4 KiB),
+        uartCtrl.io.apb -> (0x10000, 4 KiB),
+        timerCtrl.io.apb -> (0x20000, 4 KiB),
+        core.io.debugBus -> (0xf0000, 4 KiB)
+      )
+    )
+
+    /* ------------------------ AXI BUS ------------------------ */
     val axiCrossbar = Axi4CrossbarFactory()
 
     axiCrossbar.addSlaves(
@@ -219,17 +224,6 @@ class pinsec(config: pinsecConfig) extends Component {
     })
 
     axiCrossbar.build()
-
-    val apbDecoder = Apb3Decoder(
-      master = apbBridge.io.apb,
-      slaves = List(
-        gpioACtrl.io.apb -> (0x00000, 4 KiB),
-        gpioBCtrl.io.apb -> (0x01000, 4 KiB),
-        uartCtrl.io.apb -> (0x10000, 4 KiB),
-        timerCtrl.io.apb -> (0x20000, 4 KiB),
-        core.io.debugBus -> (0xf0000, 4 KiB)
-      )
-    )
 
     if (interruptCount != 0) {
       core.io.interrupt := (

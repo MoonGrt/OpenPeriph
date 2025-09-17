@@ -1,77 +1,142 @@
-package soc
+// VexRiscv CyberPlus demo
+package vexriscv.demo
 
-import cpu._
 import periph._
 
+import vexriscv.plugin._
+import vexriscv._
+import vexriscv.ip.{DataCacheConfig, InstructionCacheConfig}
 import spinal.core._
 import spinal.lib._
 import spinal.lib.bus.amba3.apb._
 import spinal.lib.bus.amba4.axi._
-import spinal.lib.com.uart.{UartCtrlGenerics}
 import spinal.lib.com.jtag.Jtag
-import spinal.lib.cpu.riscv.impl.Utils.BR
-import spinal.lib.cpu.riscv.impl.extension.{
-  BarrelShifterFullExtension,
-  DivExtension,
-  MulExtension
-}
-import spinal.lib.cpu.riscv.impl._
+import spinal.lib.com.jtag.sim.JtagTcp
+import spinal.lib.com.uart.{UartCtrlGenerics}
 import spinal.lib.io.{TriStateArray, InOutWrapper}
-import spinal.lib.system.debugger.{JtagAxi4SharedDebugger, SystemDebuggerConfig}
+import spinal.lib.soc.pinsec.{PinsecTimerCtrl, PinsecTimerCtrlExternal}
+import spinal.lib.system.debugger.{
+  JtagAxi4SharedDebugger,
+  JtagBridge,
+  SystemDebugger,
+  SystemDebuggerConfig
+}
+import scala.collection.mutable.ArrayBuffer
+import scala.collection.Seq
 
-
-case class cyberConfig(
+case class CyberPlusConfig(
     axiFrequency: HertzNumber,
     memSize: BigInt,
     memFile: String,
     memFileType: String,
-    cpu: RiscvCoreConfig,
-    iCache: InstructionCacheConfig
+    cpuPlugins: ArrayBuffer[Plugin[VexRiscv]]
 )
 
-object cyberConfig {
+object CyberPlusConfig {
   def default = {
-    val config = cyberConfig(
+    val config = CyberPlusConfig(
       axiFrequency = 100 MHz,
       memSize = 32 KiB,
       memFile = null,
       memFileType = "rawhex",
-      cpu = RiscvCoreConfig(
-        pcWidth = 32,
-        addrWidth = 32,
-        startAddress = 0x00000000,
-        regFileReadyKind = sync,
-        branchPrediction = dynamic,
-        bypassExecute0 = true,
-        bypassExecute1 = true,
-        bypassWriteBack = true,
-        bypassWriteBackBuffer = true,
-        collapseBubble = false,
-        fastFetchCmdPcCalculation = true,
-        dynamicBranchPredictorCacheSizeLog2 = 7
-      ),
-      iCache = InstructionCacheConfig(
-        cacheSize = 4096,
-        bytePerLine = 32,
-        wayCount = 1, // Can only be one for the moment
-        wrappedMemAccess = true,
-        addressWidth = 32,
-        cpuDataWidth = 32,
-        memDataWidth = 32
+      cpuPlugins = ArrayBuffer(
+        new PcManagerSimplePlugin(0x80000000L, false),
+        new IBusCachedPlugin(
+          resetVector = 0x80000000L,
+          prediction = STATIC,
+          config = InstructionCacheConfig(
+            cacheSize = 4096,
+            bytePerLine = 32,
+            wayCount = 1,
+            addressWidth = 32,
+            cpuDataWidth = 32,
+            memDataWidth = 32,
+            catchIllegalAccess = true,
+            catchAccessFault = true,
+            asyncTagMemory = false,
+            twoCycleRam = true,
+            twoCycleCache = true
+          )
+        ),
+        new DBusCachedPlugin(
+          config = new DataCacheConfig(
+            cacheSize = 4096,
+            bytePerLine = 32,
+            wayCount = 1,
+            addressWidth = 32,
+            cpuDataWidth = 32,
+            memDataWidth = 32,
+            catchAccessError = true,
+            catchIllegal = true,
+            catchUnaligned = true
+          ),
+          memoryTranslatorPortConfig = null
+        ),
+        new StaticMemoryTranslatorPlugin(
+          ioRange = _(31 downto 28) === 0xf
+        ),
+        new DecoderSimplePlugin(
+          catchIllegalInstruction = true
+        ),
+        new RegFilePlugin(
+          regFileReadyKind = plugin.SYNC,
+          zeroBoot = false
+        ),
+        new IntAluPlugin,
+        new SrcPlugin(
+          separatedAddSub = false,
+          executeInsertion = true
+        ),
+        new FullBarrelShifterPlugin,
+        new MulPlugin,
+        new DivPlugin,
+        new HazardSimplePlugin(
+          bypassExecute = true,
+          bypassMemory = true,
+          bypassWriteBack = true,
+          bypassWriteBackBuffer = true,
+          pessimisticUseSrc = false,
+          pessimisticWriteRegFile = false,
+          pessimisticAddressMatch = false
+        ),
+        new BranchPlugin(
+          earlyBranch = false,
+          catchAddressMisaligned = true
+        ),
+        new CsrPlugin(
+          config = CsrPluginConfig(
+            catchIllegalAccess = false,
+            mvendorid = null,
+            marchid = null,
+            mimpid = null,
+            mhartid = null,
+            misaExtensionsInit = 66,
+            misaAccess = CsrAccess.NONE,
+            mtvecAccess = CsrAccess.NONE,
+            mtvecInit = 0x80000020L,
+            mepcAccess = CsrAccess.READ_WRITE,
+            mscratchGen = false,
+            mcauseAccess = CsrAccess.READ_ONLY,
+            mbadaddrAccess = CsrAccess.READ_ONLY,
+            mcycleAccess = CsrAccess.NONE,
+            minstretAccess = CsrAccess.NONE,
+            ecallGen = false,
+            wfiGenAsWait = false,
+            ucycleAccess = CsrAccess.NONE,
+            uinstretAccess = CsrAccess.NONE
+          )
+        ),
+        new YamlPlugin("cpu0.yaml")
       )
     )
-    // The CPU has a systems of plugin which allow to add new feature into the core.
-    // Those extension are not directly implemented into the core, but are kind of additive logic patch defined in a separated area.
-    config.cpu.add(new MulExtension)
-    config.cpu.add(new DivExtension)
-    config.cpu.add(new BarrelShifterFullExtension)
     config
   }
 }
 
-class cyber(config: cyberConfig) extends Component {
+class CyberPlus(config: CyberPlusConfig) extends Component {
+  // Legacy constructor
   def this(axiFrequency: HertzNumber) {
-    this(cyberConfig.default.copy(axiFrequency = axiFrequency))
+    this(CyberPlusConfig.default.copy(axiFrequency = axiFrequency))
   }
 
   import config._
@@ -123,35 +188,18 @@ class cyber(config: cyberConfig) extends Component {
   )
 
   val jtagClockDomain = ClockDomain(
-    clock = io.jtag.tck
+    clock = io.clk,
+    reset = resetCtrl.coreReset,
+    frequency = FixedFrequency(axiFrequency)
   )
 
   val axi = new ClockingArea(axiClockDomain) {
-    val core = coreClockDomain {
-      new Axi4Riscv(
-        coreConfig = config.cpu,
-        // iCacheConfig = config.iCache, // 目前上板有问题，仿真正常
-        iCacheConfig = null,
-        dCacheConfig = null,
-        debug = debug,
-        interruptCount = interruptCount
-      )
-    }
-
     val ram = Axi4Ram(
       dataWidth = 32,
       byteCount = memSize,
       idWidth = 4,
       memFile = memFile,
       memFileType = memFileType
-    )
-
-    val jtagCtrl = JtagAxi4SharedDebugger(
-      SystemDebuggerConfig(
-        memAddressWidth = 32,
-        memDataWidth = 32,
-        remoteCmdWidth = 1
-      )
     )
 
     /* ------------------------ APB BUS ------------------------ */
@@ -182,7 +230,7 @@ class cyber(config: cyberConfig) extends Component {
     afioCtrl.io.afio.read := gpioCtrl.io.gpio.read
 
     val timCtrl = Apb3TimArray(timCnt = 2, timSpace = 0x1000)
-    val timInterrupt = timCtrl.io.interrupt.asBits.orR // 按位“或”
+    val timerInterrupt = timCtrl.io.interrupt.asBits.orR // 按位“或”
     val wdgCtrl = coreClockDomain(Apb3Wdg(memSize = 0x1000))
     resetCtrl.coreResetUnbuffered.setWhen(wdgCtrl.io.iwdgRst || wdgCtrl.io.wwdgRst)
     val systickCtrl = Apb3SysTick()
@@ -250,23 +298,57 @@ class cyber(config: cyberConfig) extends Component {
         wdgCtrl.io.apb -> (0x50000, 64 KiB),
         systickCtrl.io.apb -> (0x60000, 64 KiB),
         afioCtrl.io.apb -> (0xd0000, 64 KiB),
-        extiCtrl.io.apb -> (0xe0000, 64 KiB),
-        core.io.debugBus -> (0xf0000, 64 KiB)
+        extiCtrl.io.apb -> (0xe0000, 64 KiB)
       )
     )
+
+    val externalInterrupt = Bool()  // 提前声明
+    if (interruptCount > 0) {
+      val externalBits = Reg(Bits(interruptCount bits)) init(0)
+      externalBits(0) := uartInterrupt
+      externalBits(1) := timerInterrupt
+      externalBits(2) := systickInterrupt
+      externalBits(3) := extiInterrupt
+      externalBits(4) := i2cInterrupt
+      externalBits(15) := spiInterrupt
+      externalInterrupt := externalBits.orR
+    } else { externalInterrupt := False }
+
+    /* ------------------------ Vexriscv ------------------------ */
+    val core = new Area {
+      val config = VexRiscvConfig(plugins = cpuPlugins += new DebugPlugin(jtagClockDomain))
+      val cpu = new VexRiscv(config)
+      var iBus: Axi4ReadOnly = null
+      var dBus: Axi4Shared = null
+      for (plugin <- config.plugins) plugin match {
+        case plugin: IBusSimplePlugin => iBus = plugin.iBus.toAxi4ReadOnly()
+        case plugin: IBusCachedPlugin => iBus = plugin.iBus.toAxi4ReadOnly()
+        case plugin: DBusSimplePlugin => dBus = plugin.dBus.toAxi4Shared()
+        case plugin: DBusCachedPlugin => dBus = plugin.dBus.toAxi4Shared(true)
+        case plugin: CsrPlugin => {
+          plugin.externalInterrupt := externalInterrupt
+          plugin.timerInterrupt := timerInterrupt
+        }
+        case plugin: DebugPlugin =>
+          jtagClockDomain {
+            resetCtrl.axiReset setWhen (RegNext(plugin.io.resetOut))
+            io.jtag <> plugin.io.bus.fromJtag()
+          }
+        case _ =>
+      }
+    }
 
     /* ------------------------ AXI BUS ------------------------ */
     val axiCrossbar = Axi4CrossbarFactory()
 
     axiCrossbar.addSlaves(
-      ram.io.axi -> (0x00000000L, memSize),
-      apbBridge.io.axi -> (0xf0000000L, 1 MiB)
+      ram.io.axi -> (0x80000000L, memSize),
+      apbBridge.io.axi -> (0xf0000000L, 1 MB)
     )
 
     axiCrossbar.addConnections(
-      core.io.i -> List(ram.io.axi),
-      core.io.d -> List(ram.io.axi, apbBridge.io.axi),
-      jtagCtrl.io.axi -> List(ram.io.axi, apbBridge.io.axi)
+      core.iBus -> List(ram.io.axi), 
+      core.dBus -> List(ram.io.axi, apbBridge.io.axi)
     )
 
     axiCrossbar.addPipelining(apbBridge.io.axi)((crossbar, bridge) => {
@@ -276,42 +358,38 @@ class cyber(config: cyberConfig) extends Component {
       crossbar.readRsp << bridge.readRsp
     })
 
+    axiCrossbar.addPipelining(ram.io.axi)((crossbar, ctrl) => {
+      crossbar.sharedCmd.halfPipe() >> ctrl.sharedCmd
+      crossbar.writeData >/-> ctrl.writeData
+      crossbar.writeRsp << ctrl.writeRsp
+      crossbar.readRsp << ctrl.readRsp
+    })
+
+    axiCrossbar.addPipelining(core.dBus)((cpu, crossbar) => {
+      cpu.sharedCmd >> crossbar.sharedCmd
+      cpu.writeData >> crossbar.writeData
+      cpu.writeRsp << crossbar.writeRsp
+      cpu.readRsp <-< crossbar.readRsp
+    })
+
     axiCrossbar.build()
-
-    if (interruptCount != 0) {
-      core.io.interrupt := (
-        (0 -> uartInterrupt),
-        (1 -> timInterrupt),
-        (2 -> systickInterrupt),
-        (3 -> extiInterrupt),
-        (4 -> i2cInterrupt),
-        (15 -> spiInterrupt),
-        (default -> false)
-      )
-    }
-
-    if (debug) {
-      core.io.debugResetIn := resetCtrl.axiReset
-      resetCtrl.coreResetUnbuffered setWhen (core.io.debugResetOut)
-    }
   }
-
   io.gpio <> axi.gpioCtrl.io.gpio
-  io.jtag <> axi.jtagCtrl.io.jtag
 }
 
 
 /* ----------------------------------------------------------------------------- */
 /* ---------------------------------- Demo Gen --------------------------------- */
 /* ----------------------------------------------------------------------------- */
-object cyber {
+// CyberPlus-SoC with memory init
+object CyberPlus {
   def main(args: Array[String]) {
     val config =
       SpinalConfig(verbose = true, targetDirectory = "rtl").dumpWave()
     val report = config.generateVerilog(
       InOutWrapper(
-        new cyber(
-          cyberConfig.default.copy(
+        new CyberPlus(
+          CyberPlusConfig.default.copy(
             memFile = "test/software/cyber/build/demo.hex",
             memFileType = "rawhex"
             // memFile = "test/software/cyber/build/mem/demo.bin",

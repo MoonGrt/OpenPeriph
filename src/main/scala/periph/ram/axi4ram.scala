@@ -25,7 +25,6 @@ object Axi4RamPort {
 case class Axi4RamPort(config: Axi4Config) extends ImplicitArea[Axi4Shared] {
   val axi = Axi4Shared(config)
   override def implicitValue: Axi4Shared = this.axi
-
   val ram = Handle[Mem[Bits]]
 
   val logic = Handle {
@@ -137,6 +136,7 @@ case class Axi4Ram(
     arwStage: Boolean = false,
     memFile: String = null,
     memFileType: String = "hex",
+    memOffset: BigInt = 0,
     bigEndian: Boolean = false
 ) extends Component {
   val axiConfig = Axi4Ram.getAxiConfig(dataWidth, byteCount, idWidth)
@@ -150,7 +150,7 @@ case class Axi4Ram(
   val wordRange = log2Up(wordCount) + log2Up(axiConfig.bytePerWord) - 1 downto log2Up(axiConfig.bytePerWord)
 
   if (memFile != null) {
-    MemTools.initMem(ram, memFile, memFileType, bigEndian)
+    MemTools.initMem(ram, memFile, memFileType, memOffset, bigEndian)
   }
 
   val arw =
