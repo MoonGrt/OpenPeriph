@@ -74,11 +74,11 @@ case class Apb3Uart(config: Apb3UartCtrlConfig) extends Component {
   rx.io.samplingTick := clockDivider.tickReg
 
   // 中断
-  val rxneInterrupt = CR1(5) && SR(5) // RXNE中断
-  val txeInterrupt  = CR1(7) && SR(7) // TXE中断
-  val tcInterrupt   = CR1(6) && SR(6) // TC中断
-  val peInterrupt   = CR1(8) && SR(1) // 奇偶校验错误中断
   val feInterrupt   = CR1(4) && SR(3) // 帧错误中断
+  val rxneInterrupt = CR1(5) && SR(5) // RXNE中断
+  val tcInterrupt   = CR1(6) && SR(6) // TC中断
+  val txeInterrupt  = CR1(7) && SR(7) // TXE中断
+  val peInterrupt   = CR1(8) && SR(1) // 奇偶校验错误中断
 
   // 总中断输出：五种中断 OR 组合
   io.interrupt := rxneInterrupt || txeInterrupt || tcInterrupt || peInterrupt || feInterrupt

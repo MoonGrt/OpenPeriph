@@ -157,6 +157,7 @@ class CyberPlusWithDdrLcd(config: CyberPlusWithDdrLcdConfig) extends Component {
     // Peripherals IO
     // val gpio = master(TriStateArray(32 bits)) // Tang Primer has limited IOBUF(s)
     val uart_tx = out(Bool)
+    val uart_rx = in(Bool)
     // Graphics IO
     val dvti = master(DVTI(colorCfg.getWidth))
     val lcdclk = out Bool ()
@@ -435,7 +436,9 @@ class CyberPlusWithDdrLcd(config: CyberPlusWithDdrLcdConfig) extends Component {
 
     axiCrossbar.build()
   }
-  axi.gpioCtrl.io.gpio.read := B(0, 32 bits)
+  val gpioRead = B(0, 32 bits)
+  gpioRead(17) := io.uart_rx
+  axi.gpioCtrl.io.gpio.read := gpioRead
   io.uart_tx <> axi.uartCtrl.io.uarts(0).txd
   io.sdram <> axi.sdramCtrl.io.ddr_iface
   io.dvti <> axi.lcdCtrl.io.dvti

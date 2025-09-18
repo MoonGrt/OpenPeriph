@@ -1,39 +1,11 @@
-G:/VM/share/OpenPeriph/test/project/tang_primer/src/pll/hdmipll.v {1 {vlog -work work -vopt -stats=none G:/VM/share/OpenPeriph/test/project/tang_primer/src/pll/hdmipll.v
-Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
--- Compiling module hdmipll
-
-Top level modules:
-	hdmipll
-
-} {} {}} G:/VM/share/OpenPeriph/test/project/tang_primer/modelsim/tb_top.v {1 {vlog -work work -vopt -stats=none G:/VM/share/OpenPeriph/test/project/tang_primer/modelsim/tb_top.v
+D:/MoonGrt/Desktop/riscv/modelsim/tb_top.v {1 {vlog -work work -vopt -stats=none D:/MoonGrt/Desktop/riscv/modelsim/tb_top.v
 Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
 -- Compiling module tb_top
 
 Top level modules:
 	tb_top
 
-} {} {}} G:/VM/share/OpenPeriph/test/project/tang_primer/src/pll/syspll.v {1 {vlog -work work -vopt -stats=none G:/VM/share/OpenPeriph/test/project/tang_primer/src/pll/syspll.v
-Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
--- Compiling module syspll
-
-Top level modules:
-	syspll
-
-} {} {}} G:/VM/share/OpenPeriph/test/project/tang_primer/src/pll/mempll.v {1 {vlog -work work -vopt -stats=none G:/VM/share/OpenPeriph/test/project/tang_primer/src/pll/mempll.v
-Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
--- Compiling module mempll
-
-Top level modules:
-	mempll
-
-} {} {}} G:/VM/share/OpenPeriph/test/project/tang_primer/src/pll/lcdpll.v {1 {vlog -work work -vopt -stats=none G:/VM/share/OpenPeriph/test/project/tang_primer/src/pll/lcdpll.v
-Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
--- Compiling module lcdpll
-
-Top level modules:
-	lcdpll
-
-} {} {}} G:/VM/share/OpenPeriph/test/project/tang_primer/modelsim/prim_sim.v {1 {vlog -work work -vopt -stats=none G:/VM/share/OpenPeriph/test/project/tang_primer/modelsim/prim_sim.v
+} {} {}} D:/MoonGrt/Desktop/riscv/modelsim/prim_sim.v {1 {vlog -work work -vopt -stats=none D:/MoonGrt/Desktop/riscv/modelsim/prim_sim.v
 Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
 -- Compiling UDP mux2
 -- Compiling module MUX2
