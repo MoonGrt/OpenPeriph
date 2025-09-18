@@ -20,7 +20,7 @@ import spinal.lib.io.{TriStateArray, InOutWrapper}
 import spinal.lib.system.debugger.{JtagAxi4SharedDebugger, SystemDebuggerConfig}
 
 
-case class cyberConfig(
+case class CyberConfig(
     axiFrequency: HertzNumber,
     memSize: BigInt,
     memFile: String,
@@ -29,9 +29,9 @@ case class cyberConfig(
     iCache: InstructionCacheConfig
 )
 
-object cyberConfig {
+object CyberConfig {
   def default = {
-    val config = cyberConfig(
+    val config = CyberConfig(
       axiFrequency = 100 MHz,
       memSize = 32 KiB,
       memFile = null,
@@ -69,9 +69,9 @@ object cyberConfig {
   }
 }
 
-class cyber(config: cyberConfig) extends Component {
+class Cyber(config: CyberConfig) extends Component {
   def this(axiFrequency: HertzNumber) {
-    this(cyberConfig.default.copy(axiFrequency = axiFrequency))
+    this(CyberConfig.default.copy(axiFrequency = axiFrequency))
   }
 
   import config._
@@ -304,14 +304,14 @@ class cyber(config: cyberConfig) extends Component {
 /* ----------------------------------------------------------------------------- */
 /* ---------------------------------- Demo Gen --------------------------------- */
 /* ----------------------------------------------------------------------------- */
-object cyber {
+object Cyber {
   def main(args: Array[String]) {
     val config =
       SpinalConfig(verbose = true, targetDirectory = "rtl").dumpWave()
     val report = config.generateVerilog(
       InOutWrapper(
-        new cyber(
-          cyberConfig.default.copy(
+        new Cyber(
+          CyberConfig.default.copy(
             memFile = "test/software/cyber/build/demo.hex",
             memFileType = "rawhex"
             // memFile = "test/software/cyber/build/mem/demo.bin",

@@ -23,7 +23,7 @@ import spinal.lib.io.{TriStateArray, InOutWrapper}
 import spinal.lib.system.debugger.{JtagAxi4SharedDebugger, SystemDebuggerConfig}
 
 
-case class cyberwithddrlcdConfig(
+case class CyberWithDdrLcdConfig(
     axiFrequency: HertzNumber,
     memFrequency: HertzNumber,
     memSize: BigInt,
@@ -33,9 +33,9 @@ case class cyberwithddrlcdConfig(
     iCache: InstructionCacheConfig
 )
 
-object cyberwithddrlcdConfig {
+object CyberWithDdrLcdConfig {
   def default = {
-    val config = cyberwithddrlcdConfig(
+    val config = CyberWithDdrLcdConfig(
       axiFrequency = 100 MHz,
       memFrequency = 400 MHz,
       memSize = 32 KiB,
@@ -74,9 +74,9 @@ object cyberwithddrlcdConfig {
   }
 }
 
-class cyberwithddrlcd(config: cyberwithddrlcdConfig) extends Component {
+class CyberWithDdrLcd(config: CyberWithDdrLcdConfig) extends Component {
   def this(axiFrequency: HertzNumber) {
-    this(cyberwithddrlcdConfig.default.copy(axiFrequency = axiFrequency))
+    this(CyberWithDdrLcdConfig.default.copy(axiFrequency = axiFrequency))
   }
 
   import config._
@@ -89,7 +89,7 @@ class cyberwithddrlcd(config: cyberwithddrlcdConfig) extends Component {
     val rstn = in Bool ()
     val clk = in Bool ()
     // Main components IO
-    val jtag = slave(Jtag()) // Tang Primer has limited IOBUF(s)
+    val jtag = slave(Jtag())
     val sdram = master(DDR3_Interface())
     // Peripherals IO
     // val gpio = master(TriStateArray(32 bits)) // Tang Primer has limited IOBUF(s)
@@ -130,13 +130,9 @@ class cyberwithddrlcd(config: cyberwithddrlcdConfig) extends Component {
       axiResetCounter := axiResetCounter + 1
       axiResetUnbuffered := True
     }
-    when(BufferCC(~io.rstn)) {
-      axiResetCounter := 0
-    }
+    when(BufferCC(~io.rstn)) { axiResetCounter := 0 }
     // When an axiResetOrder happen, the core reset will as well
-    when(axiResetUnbuffered) {
-      coreResetUnbuffered := True
-    }
+    when(axiResetUnbuffered) { coreResetUnbuffered := True }
     // Create all reset used later in the design
     val axiReset = RegNext(axiResetUnbuffered)
     val coreReset = RegNext(coreResetUnbuffered)
@@ -346,14 +342,14 @@ class cyberwithddrlcd(config: cyberwithddrlcdConfig) extends Component {
 /* ----------------------------------------------------------------------------- */
 /* ---------------------------------- Demo Gen --------------------------------- */
 /* ----------------------------------------------------------------------------- */
-object cyberwithddrlcd {
+object CyberWithDdrLcd {
   def main(args: Array[String]) {
     val config =
       SpinalConfig(verbose = true, targetDirectory = "rtl").dumpWave()
     val report = config.generateVerilog(
       InOutWrapper(
-        new cyberwithddrlcd(
-          cyberwithddrlcdConfig.default.copy(
+        new CyberWithDdrLcd(
+          CyberWithDdrLcdConfig.default.copy(
             memSize = 32 kB,
             memFile = "test/software/cyberwithddr/build/demo.hex",
             memFileType = "rawhex"

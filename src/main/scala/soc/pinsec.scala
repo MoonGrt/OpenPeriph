@@ -18,7 +18,7 @@ import spinal.lib.io.{TriStateArray, InOutWrapper}
 import spinal.lib.system.debugger.{JtagAxi4SharedDebugger, SystemDebuggerConfig}
 import spinal.lib.misc.{HexTools, InterruptCtrl, Timer, Prescaler}
 
-case class pinsecConfig(
+case class PinsecConfig(
     axiFrequency: HertzNumber,
     memSize: BigInt,
     memFile: String,
@@ -26,9 +26,9 @@ case class pinsecConfig(
     iCache: InstructionCacheConfig
 )
 
-object pinsecConfig {
+object PinsecConfig {
   def default = {
-    val config = pinsecConfig(
+    val config = PinsecConfig(
       axiFrequency = 100 MHz,
       memSize = 32 KiB,
       memFile = null,
@@ -66,10 +66,10 @@ object pinsecConfig {
   }
 }
 
-class pinsec(config: pinsecConfig) extends Component {
+class Pinsec(config: PinsecConfig) extends Component {
   // Legacy constructor
   def this(axiFrequency: HertzNumber) {
-    this(pinsecConfig.default.copy(axiFrequency = axiFrequency))
+    this(PinsecConfig.default.copy(axiFrequency = axiFrequency))
   }
 
   import config._
@@ -86,7 +86,7 @@ class pinsec(config: pinsecConfig) extends Component {
     val gpioA = master(TriStateArray(32 bits))
     val gpioB = master(TriStateArray(32 bits))
     val uart = master(Uart())
-    val timerExternal = in(pinsecTimerCtrlExternal())
+    val timerExternal = in(PinsecTimerCtrlExternal())
   }
 
   val resetCtrlClockDomain = ClockDomain(
@@ -170,7 +170,7 @@ class pinsec(config: pinsecConfig) extends Component {
       gpioWidth = 32,
       withReadSync = true
     )
-    val timerCtrl = pinsecTimerCtrl()
+    val timerCtrl = PinsecTimerCtrl()
 
     val uartCtrlConfig = UartCtrlMemoryMappedConfig(
       uartCtrlConfig = UartCtrlGenerics(
@@ -246,22 +246,22 @@ class pinsec(config: pinsecConfig) extends Component {
   io.uart <> axi.uartCtrl.io.uart
 }
 
-object pinsecTimerCtrl {
+object PinsecTimerCtrl {
   def getApb3Config() = new Apb3Config(
     addressWidth = 8,
     dataWidth = 32
   )
 }
 
-case class pinsecTimerCtrlExternal() extends Bundle {
+case class PinsecTimerCtrlExternal() extends Bundle {
   val clear = Bool()
   val tick = Bool()
 }
 
-case class pinsecTimerCtrl() extends Component {
+case class PinsecTimerCtrl() extends Component {
   val io = new Bundle {
-    val apb = slave(Apb3(pinsecTimerCtrl.getApb3Config()))
-    val external = in(pinsecTimerCtrlExternal())
+    val apb = slave(Apb3(PinsecTimerCtrl.getApb3Config()))
+    val external = in(PinsecTimerCtrlExternal())
     val interrupt = out Bool ()
   }
   val external = BufferCC(io.external)
@@ -306,12 +306,12 @@ case class pinsecTimerCtrl() extends Component {
 /* ----------------------------------------------------------------------------- */
 /* ---------------------------------- Demo Gen --------------------------------- */
 /* ----------------------------------------------------------------------------- */
-object pinsec {
+object Pinsec {
   def main(args: Array[String]) {
     val config =
       SpinalConfig(verbose = true, targetDirectory = "rtl").dumpWave()
     val report = config.generateVerilog(
-      InOutWrapper(new pinsec(pinsecConfig.default.copy(memFile = "test/software/pinsec/build/demo.hex")))
+      InOutWrapper(new Pinsec(PinsecConfig.default.copy(memFile = "test/software/pinsec/build/demo.hex")))
     )
   }
 }

@@ -149,9 +149,7 @@ case class Axi4Ram(
   val ram = Mem(axiConfig.dataType, wordCount.toInt)
   val wordRange = log2Up(wordCount) + log2Up(axiConfig.bytePerWord) - 1 downto log2Up(axiConfig.bytePerWord)
 
-  if (memFile != null) {
-    MemTools.initMem(ram, memFile, memFileType, memOffset, bigEndian)
-  }
+  if (memFile != null) { MemTools.initMem(ram, memFile, memFileType, memOffset, bigEndian) }
 
   val arw =
     if (arwStage) io.axi.arw.s2mPipe().unburstify.m2sPipe()

@@ -1,8 +1,7 @@
 // VexRiscv CyberPlus demo
-package vexriscv.demo
+package soc
 
 import periph._
-
 import vexriscv.plugin._
 import vexriscv._
 import vexriscv.ip.{DataCacheConfig, InstructionCacheConfig}
@@ -14,7 +13,6 @@ import spinal.lib.com.jtag.Jtag
 import spinal.lib.com.jtag.sim.JtagTcp
 import spinal.lib.com.uart.{UartCtrlGenerics}
 import spinal.lib.io.{TriStateArray, InOutWrapper}
-import spinal.lib.soc.pinsec.{PinsecTimerCtrl, PinsecTimerCtrlExternal}
 import spinal.lib.system.debugger.{
   JtagAxi4SharedDebugger,
   JtagBridge,
@@ -199,7 +197,8 @@ class CyberPlus(config: CyberPlusConfig) extends Component {
       byteCount = memSize,
       idWidth = 4,
       memFile = memFile,
-      memFileType = memFileType
+      memFileType = memFileType,
+      memOffset = 0x80000000L
     )
 
     /* ------------------------ APB BUS ------------------------ */
@@ -302,7 +301,7 @@ class CyberPlus(config: CyberPlusConfig) extends Component {
       )
     )
 
-    val externalInterrupt = Bool()  // 提前声明
+    val externalInterrupt = Bool()
     if (interruptCount > 0) {
       val externalBits = Reg(Bits(interruptCount bits)) init(0)
       externalBits(0) := uartInterrupt
@@ -390,11 +389,11 @@ object CyberPlus {
       InOutWrapper(
         new CyberPlus(
           CyberPlusConfig.default.copy(
-            memFile = "test/software/cyber/build/demo.hex",
+            memFile = "test/software/cyberplus/build/demo.hex",
             memFileType = "rawhex"
-            // memFile = "test/software/cyber/build/mem/demo.bin",
+            // memFile = "test/software/cyberplus/build/mem/demo.bin",
             // memFileType = "bin"
-            // memFile = "test/software/cyber/build/mem/demo.hex",
+            // memFile = "test/software/cyberplus/build/mem/demo.hex",
             // memFileType = "hex"
           )
         )

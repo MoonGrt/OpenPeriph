@@ -18,6 +18,7 @@ object MemTools {
         val byteCount = hToI(line, 1, 2)
         val nextAddr = hToI(line, 3, 4) + offset
         val key = hToI(line, 7, 2)
+        // println(s"$line -> byteCount: $byteCount, nextAddr: $nextAddr, key: $key, offset: $offset")
         key match {
           case 0 =>
             for (i <- 0 until byteCount) {
@@ -25,6 +26,7 @@ object MemTools {
               val addressWithoutOffset = ((address.toLong & 0xffffffffL) - memOffset).toLong
               val addressWord = addressWithoutOffset / wordSize
               if (addressWord < 0 || addressWord >= tmp.size) {
+                println(s"Warning: Address 0x${addressWord} out of range 0x${tmp.size}, ignored.")
                 assert(allowOverflow)
               } else {
                 tmp(addressWord.toInt) |= BigInt(hToI(line, 9 + i * 2, 2)) << ((addressWithoutOffset.toInt % wordSize) * 8)

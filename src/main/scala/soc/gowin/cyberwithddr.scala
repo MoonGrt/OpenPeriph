@@ -21,7 +21,7 @@ import spinal.lib.io.{TriStateArray, InOutWrapper}
 import spinal.lib.system.debugger.{JtagAxi4SharedDebugger, SystemDebuggerConfig}
 
 
-case class cyberwithddrConfig(
+case class CyberWithDdrConfig(
     axiFrequency: HertzNumber,
     memFrequency: HertzNumber,
     memSize: BigInt,
@@ -31,9 +31,9 @@ case class cyberwithddrConfig(
     iCache: InstructionCacheConfig
 )
 
-object cyberwithddrConfig {
+object CyberWithDdrConfig {
   def default = {
-    val config = cyberwithddrConfig(
+    val config = CyberWithDdrConfig(
       axiFrequency = 100 MHz,
       memFrequency = 400 MHz,
       memSize = 32 KiB,
@@ -72,9 +72,9 @@ object cyberwithddrConfig {
   }
 }
 
-class cyberwithddr(config: cyberwithddrConfig) extends Component {
+class CyberWithDdr(config: CyberWithDdrConfig) extends Component {
   def this(axiFrequency: HertzNumber) {
-    this(cyberwithddrConfig.default.copy(axiFrequency = axiFrequency))
+    this(CyberWithDdrConfig.default.copy(axiFrequency = axiFrequency))
   }
 
   import config._
@@ -309,14 +309,14 @@ class cyberwithddr(config: cyberwithddrConfig) extends Component {
 /* ----------------------------------------------------------------------------- */
 /* ---------------------------------- Demo Gen --------------------------------- */
 /* ----------------------------------------------------------------------------- */
-object cyberwithddr {
+object CyberWithDdr {
   def main(args: Array[String]) {
     val config =
       SpinalConfig(verbose = true, targetDirectory = "rtl").dumpWave()
     val report = config.generateVerilog(
       InOutWrapper(
-        new cyberwithddr(
-          cyberwithddrConfig.default.copy(
+        new CyberWithDdr(
+          CyberWithDdrConfig.default.copy(
             memFile = "test/software/cyberwithddr/build/demo.hex",
             memFileType = "rawhex"
             // memFile = "test/software/cyberwithddr/build/mem/demo.bin",

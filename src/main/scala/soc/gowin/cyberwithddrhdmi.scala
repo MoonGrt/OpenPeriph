@@ -25,7 +25,7 @@ import spinal.lib.graphic.vga.{Axi4VgaCtrl, Axi4VgaCtrlGenerics, Vga}
 import spinal.lib.graphic.hdmi.VgaToHdmiEcp5
 
 
-case class cyberwithddrhdmiConfig(
+case class CyberWithDdrHdmiConfig(
     axiFrequency: HertzNumber,
     memFrequency: HertzNumber,
     memSize: BigInt,
@@ -35,9 +35,9 @@ case class cyberwithddrhdmiConfig(
     iCache: InstructionCacheConfig
 )
 
-object cyberwithddrhdmiConfig {
+object CyberWithDdrHdmiConfig {
   def default = {
-    val config = cyberwithddrhdmiConfig(
+    val config = CyberWithDdrHdmiConfig(
       axiFrequency = 100 MHz,
       memFrequency = 400 MHz,
       memSize = 32 KiB,
@@ -76,9 +76,9 @@ object cyberwithddrhdmiConfig {
   }
 }
 
-class cyberwithddrhdmi(config: cyberwithddrhdmiConfig) extends Component {
+class CyberWithDdrHdmi(config: CyberWithDdrHdmiConfig) extends Component {
   def this(axiFrequency: HertzNumber) {
-    this(cyberwithddrhdmiConfig.default.copy(axiFrequency = axiFrequency))
+    this(CyberWithDdrHdmiConfig.default.copy(axiFrequency = axiFrequency))
   }
 
   import config._
@@ -351,14 +351,14 @@ class cyberwithddrhdmi(config: cyberwithddrhdmiConfig) extends Component {
 /* ----------------------------------------------------------------------------- */
 /* ---------------------------------- Demo Gen --------------------------------- */
 /* ----------------------------------------------------------------------------- */
-object cyberwithddrhdmi {
+object CyberWithDdrHdmi {
   def main(args: Array[String]) {
     val config =
       SpinalConfig(verbose = true, targetDirectory = "rtl").dumpWave()
     val report = config.generateVerilog(
       InOutWrapper(
-        new cyberwithddrhdmi(
-          cyberwithddrhdmiConfig.default.copy(
+        new CyberWithDdrHdmi(
+          CyberWithDdrHdmiConfig.default.copy(
             memFile = "test/software/cyberwithddr/build/demo.hex",
             memFileType = "rawhex"
             // memFile = "test/software/cyberwithddr/build/mem/demo.bin",
