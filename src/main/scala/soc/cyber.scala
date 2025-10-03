@@ -312,11 +312,11 @@ object Cyber {
       InOutWrapper(
         new Cyber(
           CyberConfig.default.copy(
-            memFile = "test/software/cyber/build/demo.hex",
+            memFile = "test/software/bare/cyber/build/demo.hex",
             memFileType = "rawhex"
-            // memFile = "test/software/cyber/build/mem/demo.bin",
+            // memFile = "test/software/bare/cyber/build/mem/demo.bin",
             // memFileType = "bin"
-            // memFile = "test/software/cyber/build/mem/demo.hex",
+            // memFile = "test/software/bare/cyber/build/mem/demo.hex",
             // memFileType = "hex"
           )
         )

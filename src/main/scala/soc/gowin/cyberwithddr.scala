@@ -317,11 +317,11 @@ object CyberWithDdr {
       InOutWrapper(
         new CyberWithDdr(
           CyberWithDdrConfig.default.copy(
-            memFile = "test/software/cyberwithddr/build/demo.hex",
+            memFile = "test/software/bare/cyberwithddr/build/demo.hex",
             memFileType = "rawhex"
-            // memFile = "test/software/cyberwithddr/build/mem/demo.bin",
+            // memFile = "test/software/bare/cyberwithddr/build/mem/demo.bin",
             // memFileType = "bin"
-            // memFile = "test/software/cyberwithddr/build/mem/demo.hex",
+            // memFile = "test/software/bare/cyberwithddr/build/mem/demo.hex",
             // memFileType = "hex"
           )
         )

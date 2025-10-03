@@ -311,7 +311,7 @@ object Pinsec {
     val config =
       SpinalConfig(verbose = true, targetDirectory = "rtl").dumpWave()
     val report = config.generateVerilog(
-      InOutWrapper(new Pinsec(PinsecConfig.default.copy(memFile = "test/software/pinsec/build/demo.hex")))
+      InOutWrapper(new Pinsec(PinsecConfig.default.copy(memFile = "test/software/bare/pinsec/build/demo.hex")))
     )
   }
 }

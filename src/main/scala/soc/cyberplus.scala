@@ -34,7 +34,7 @@ object CyberPlusConfig {
   def default = {
     val config = CyberPlusConfig(
       axiFrequency = 100 MHz,
-      memSize = 32 KiB,
+      memSize = 64 KiB,
       memFile = null,
       memFileType = "rawhex",
       cpuPlugins = ArrayBuffer(
@@ -389,11 +389,13 @@ object CyberPlus {
       InOutWrapper(
         new CyberPlus(
           CyberPlusConfig.default.copy(
-            memFile = "test/software/cyberplus/build/demo.hex",
+            memFile = "test/software/rt-thread/cyberplus/build/demo.hex",
             memFileType = "rawhex"
-            // memFile = "test/software/cyberplus/build/mem/demo.bin",
+            // memFile = "test/software/bare/cyberplus/build/demo.hex",
+            // memFileType = "rawhex"
+            // memFile = "test/software/bare/cyberplus/build/mem/demo.bin",
             // memFileType = "bin"
-            // memFile = "test/software/cyberplus/build/mem/demo.hex",
+            // memFile = "test/software/bare/cyberplus/build/mem/demo.hex",
             // memFileType = "hex"
           )
         )
