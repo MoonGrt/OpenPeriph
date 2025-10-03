@@ -115,7 +115,7 @@ object CyberPlusWithDdrLcdConfig {
             mhartid = null,
             misaExtensionsInit = 66,
             misaAccess = CsrAccess.NONE,
-            mtvecAccess = CsrAccess.NONE,
+            mtvecAccess = CsrAccess.READ_WRITE,
             mtvecInit = 0x80000020L,
             mepcAccess = CsrAccess.READ_WRITE,
             mscratchGen = false,
@@ -123,7 +123,7 @@ object CyberPlusWithDdrLcdConfig {
             mbadaddrAccess = CsrAccess.READ_ONLY,
             mcycleAccess = CsrAccess.NONE,
             minstretAccess = CsrAccess.NONE,
-            ecallGen = false,
+            ecallGen = true,
             wfiGenAsWait = false,
             ucycleAccess = CsrAccess.NONE,
             uinstretAccess = CsrAccess.NONE
@@ -359,8 +359,6 @@ class CyberPlusWithDdrLcd(config: CyberPlusWithDdrLcdConfig) extends Component {
     if (interruptCount > 0) {
       val externalBits = Reg(Bits(interruptCount bits)) init(0)
       externalBits(0) := uartInterrupt
-      externalBits(1) := timerInterrupt
-      externalBits(2) := systickInterrupt
       externalBits(3) := extiInterrupt
       externalBits(4) := i2cInterrupt
       externalBits(15) := spiInterrupt
@@ -380,7 +378,7 @@ class CyberPlusWithDdrLcd(config: CyberPlusWithDdrLcdConfig) extends Component {
         case plugin: DBusCachedPlugin => dBus = plugin.dBus.toAxi4Shared(true)
         case plugin: CsrPlugin => {
           plugin.externalInterrupt := externalInterrupt
-          plugin.timerInterrupt := timerInterrupt
+          plugin.timerInterrupt := timerInterrupt | systickInterrupt
         }
         case plugin: DebugPlugin =>
           jtagClockDomain {

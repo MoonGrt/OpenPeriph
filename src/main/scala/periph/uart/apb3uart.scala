@@ -88,13 +88,16 @@ case class Apb3Uart(config: Apb3UartCtrlConfig) extends Component {
   // DR 写入 -> 进入 TX FIFO
   txFifo.io.push.valid := False
   txFifo.io.push.payload := io.apb.PWDATA(uartCtrlGenerics.dataWidthMax-1 downto 0).asBits
-  ctrl.onWrite(0x04) { txFifo.io.push.valid := True }
+  ctrl.onWrite(0x04) { when(txFifo.io.push.ready) { txFifo.io.push.valid := True } } // 只有当FIFO有空间时才能写
 
   // DR 读取 -> 从 RX FIFO
   rxFifo.io.pop.ready := False
   ctrl.onRead(0x04) {
-    rxFifo.io.pop.ready := True
-    io.apb.PRDATA(uartCtrlGenerics.dataWidthMax-1 downto 0) := rxFifo.io.pop.payload.asBits
+    io.apb.PRDATA := 0 // 默认读0
+    when(rxFifo.io.pop.valid) { // 如果FIFO非空
+      io.apb.PRDATA(uartCtrlGenerics.dataWidthMax-1 downto 0) := rxFifo.io.pop.payload.asBits
+      rxFifo.io.pop.ready := True
+    }
   }
 
   // 映射寄存器
