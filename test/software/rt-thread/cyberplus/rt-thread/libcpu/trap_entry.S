@@ -41,7 +41,7 @@ trap_entry:
 
     /* 保存当前栈指针，利用当前线程栈来处理中断 */
     move s0, sp
-	
+
     la   sp, _sp
 
     /* 将 mcause 与 mepc 寄存器的内容作为参数传给 trap_handler 函数 */
@@ -87,7 +87,7 @@ spurious_interrupt:
     li t0, 0x00001800
     csrs mstatus, t0
     lw t0,   2 * 4(sp)
-    csrs mstatus, t0 
+    csrs mstatus, t0
 
     lw x4,   4 * 4(sp)
     lw x5,   5 * 4(sp)

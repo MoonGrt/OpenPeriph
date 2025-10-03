@@ -61,10 +61,8 @@ void led_flow_breathe(int led_index, int increasing) {
 void th_led_en(void *p_arg)
 {
     uint8_t pulse;
-
     GPIO_init();
     PWM_init();
-
     for (;;)
     {
         led_flow_breathe(0, 1); // LED 0; 逐渐变亮

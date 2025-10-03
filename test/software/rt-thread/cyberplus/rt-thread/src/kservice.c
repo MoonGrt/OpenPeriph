@@ -103,7 +103,6 @@ char *rt_strncpy(char *dst, const char *src, rt_ubase_t n)
     {
         char *d = dst;
         const char *s = src;
-
         do
         {
             if ((*d++ = *s++) == 0)
@@ -176,14 +175,12 @@ const rt_uint8_t __lowest_bit_bitmap[] =
 int __rt_ffs(int value)
 {
     if (value == 0) return 0;
-
     if (value & 0xff)
         return __lowest_bit_bitmap[value & 0xff] + 1;
     if (value & 0xff00)
         return __lowest_bit_bitmap[(value & 0xff00) >> 8] + 9;
     if (value & 0xff0000)
         return __lowest_bit_bitmap[(value & 0xff0000) >> 16] + 17;
-
     return __lowest_bit_bitmap[(value & 0xff000000) >> 24] + 25;
 }
 
@@ -200,7 +197,6 @@ int __rt_ffs(int value)
 void *rt_memmove(void *dest, const void *src, rt_ubase_t n)
 {
     char *tmp = (char *)dest, *s = (char *)src;
-
     if (s < tmp && tmp < s + n)
     {
         tmp += n;
@@ -214,7 +210,6 @@ void *rt_memmove(void *dest, const void *src, rt_ubase_t n)
         while (n--)
             *tmp++ = *s++;
     }
-
     return dest;
 }
 

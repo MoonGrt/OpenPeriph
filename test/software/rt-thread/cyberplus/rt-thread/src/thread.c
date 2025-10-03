@@ -36,7 +36,7 @@ rt_err_t _rt_thread_init(struct rt_thread *thread,
     thread->current_priority = priority;
 
     thread->number_mask = 0;
-    
+
     /* 时间片初始化 */
     thread->init_tick = tick;
     thread->remaining_tick = tick;
@@ -80,15 +80,7 @@ rt_err_t rt_thread_init(struct rt_thread *thread,
 {
     /* 线程对象初始化，线程结构体开头部分的四个成员就是 rt_object */
     rt_object_init((rt_object_t)thread, RT_Object_Class_Thread, name);
-
-    return _rt_thread_init(thread,
-                           name,
-                           entry,
-                           parameter,
-                           stack_start,
-                           stack_size,
-                           priority,
-                           tick);
+    return _rt_thread_init(thread, name, entry, parameter, stack_start, stack_size, priority, tick);
 }
 
 /**
@@ -112,22 +104,17 @@ rt_err_t rt_thread_startup(rt_thread_t thread)
 {
     /* 将当前优先级设置为初始优先级 */
     thread->current_priority = thread->init_priority;
-
     /* 计算优先级掩码 */
     thread->number_mask = 1L << thread->current_priority;
-
     /* 改变线程状态为挂起态 */
     thread->stat = RT_THREAD_SUSPEND;
-
     /* 恢复线程 */
     rt_thread_resume(thread);
-
     if (rt_thread_self() != RT_NULL)
     {
         /* 系统调度 */
         rt_schedule();
     }
-
     return RT_EOK;
 }
 
@@ -144,27 +131,20 @@ rt_err_t rt_thread_startup(rt_thread_t thread)
 rt_err_t rt_thread_suspend(rt_thread_t thread)
 {
     register rt_base_t temp;
-
     if ((thread->stat & RT_THREAD_STAT_MASK) != RT_THREAD_READY)
     {
         return -RT_ERROR;
     }
-    
     /* 关中断 */
     temp = rt_hw_interrupt_disable();
-
     /* 将线程从就绪列表中移除 */
     rt_schedule_remove_thread(thread);
-
     /* 改变线程状态 */
     thread->stat = RT_THREAD_SUSPEND | (thread->stat & ~RT_THREAD_STAT_MASK);
-
     /* 停止线程定时器 */
     rt_timer_stop(&(thread->thread_timer));
-
     /* 恢复中断 */
     rt_hw_interrupt_enable(temp);
-
     return RT_EOK;
 }
 
@@ -178,25 +158,19 @@ rt_err_t rt_thread_suspend(rt_thread_t thread)
 rt_err_t rt_thread_resume(rt_thread_t thread)
 {
     register rt_base_t temp;
-
     /* 被恢复的线程必须在挂起态，否则返回错误码 */
     if ((thread->stat & RT_THREAD_STAT_MASK) != RT_THREAD_SUSPEND)
     {
         return -RT_ERROR;
     }
-
     /* 关中断 */
     temp = rt_hw_interrupt_disable();
-
     /* 从挂起队列中移除 */
     rt_list_remove(&(thread->tlist));
-
     /* 恢复中断 */
     rt_hw_interrupt_enable(temp);
-
     /* 插入就绪列表 */
     rt_schedule_insert_thread(thread);
-
     return RT_EOK;
 }
 
@@ -224,23 +198,18 @@ rt_err_t rt_thread_yield(void)
     {
         /* 将线程移出就绪列表 */
         rt_list_remove(&(thread->tlist));
-
         /* 将线程插入对应优先级就绪列表尾部 */
         rt_list_insert_before(&(rt_thread_priority_table[thread->current_priority]),
                               &(thread->tlist));
-
         /* 恢复中断 */
         rt_hw_interrupt_enable(level);
-
         /* 调度 */
         rt_schedule();
-
         return RT_EOK;
     }
 
     /* 恢复中断 */
     rt_hw_interrupt_enable(level);
-    
     return RT_EOK;
 }
 
@@ -258,25 +227,18 @@ rt_err_t rt_thread_sleep(rt_tick_t tick)
 
     /* 关中断 */
     temp = rt_hw_interrupt_disable();
-
     /* 获取当前线程的线程控制块 */
     thread = rt_current_thread;
-
     /* 挂起线程 */
     rt_thread_suspend(thread);
-
     /* 设置延时时间 */
     rt_timer_control(&(thread->thread_timer), RT_TIMER_CTRL_SET_TIME, &tick);
-
     /* 启动定时器 */
     rt_timer_start(&(thread->thread_timer));
-
     /* 恢复中断 */
     rt_hw_interrupt_enable(temp);
-
     /* 进行系统调度 */
     rt_schedule();
-
     /* 如果超时则改变线程的错误码为 RT_EOK */
     if (thread->error == -RT_ETIMEOUT)
         thread->error = RT_EOK;
@@ -305,18 +267,13 @@ rt_err_t rt_thread_delay(rt_tick_t tick)
 void rt_thread_timeout(void *parameter)
 {
     struct rt_thread *thread;
-
     thread = (struct rt_thread *)parameter;
-
     /* 设置错误码为超时 */
     thread->error = -RT_ETIMEOUT;
-
     /* 将线程从挂起队列中移除 */
     rt_list_remove(&(thread->tlist));
-
     /* 将线程插入到就绪队列 */
     rt_schedule_insert_thread(thread);
-
     /* 系统调度 */
     rt_schedule();
 }

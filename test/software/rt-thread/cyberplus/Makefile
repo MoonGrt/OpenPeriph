@@ -7,11 +7,11 @@ BENCH = no
 FUNC_OPT = yes
 MULDIV = yes
 
-ifeq ($(DDREN),yes)
-    LDSCRIPT = linkerddr.ld
-else
-    LDSCRIPT = linker.ld
-endif
+# ifeq ($(DDREN),yes)
+#     LDSCRIPT = linkerddr.ld
+# else
+#     LDSCRIPT = link.lds
+# endif
 
 SRCS = $(wildcard libs/*.c) \
        $(wildcard user/*.c) \

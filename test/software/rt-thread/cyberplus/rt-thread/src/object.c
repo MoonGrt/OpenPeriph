@@ -115,11 +115,11 @@ static struct rt_object_information rt_object_container[RT_Object_Info_Unknown] 
     },
 #endif
     /* 初始化定时器对象容器 */
-    //{
-    //    RT_Object_Class_Timer, 
-    //    _OBJ_CONTAINER_LIST_INIT(RT_Object_Info_Timer),
-    //    sizeof(struct rt_timer)
-    //},
+    {
+       RT_Object_Class_Timer, 
+       _OBJ_CONTAINER_LIST_INIT(RT_Object_Info_Timer),
+       sizeof(struct rt_timer)
+    },
 };
 
 /**
@@ -161,19 +161,14 @@ void rt_object_init(struct rt_object         *object,
 
     /* 获取对象信息，即从 rt_object_container 里拿到对应对象头节点指针 */
     information = rt_object_get_information(type);
-
     /* 设置对象类型为静态 */
     object->type = type | RT_Object_Class_Static;
-
     /* 拷贝名字 */
     rt_strncpy(object->name, name, RT_NAME_MAX);
-
     /* 关中断 */
     temp = rt_hw_interrupt_disable();
-
     /* 将对象插入到容器的对应列表中，不同类型的对象所在的列表不一样 */
     rt_list_insert_after(&(information->object_list), &(object->list));
-
     /* 恢复中断 */
     rt_hw_interrupt_enable(temp);
 }

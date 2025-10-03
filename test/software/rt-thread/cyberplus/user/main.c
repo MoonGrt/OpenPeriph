@@ -6,6 +6,18 @@
 #include "cyber.h"
 #include "hw_timer.h"
 
+extern void trap_entry(void) __attribute__((weak));
+
+void _init()
+{
+    /* 设置中断入口函数 */
+    asm volatile("csrw mtvec, %0" :: "r" (&trap_entry));
+    /* 使能 CPU全局中断，设置权限为 Machine，MPP = 11, MPIE = 1, MIE = 1 */
+    asm volatile("csrw mstatus, %0" :: "r" (0x1888));
+    /* 使能外部中断，设置权限为 Machine，MEIE = 1, MTIE = 1 */
+    asm volatile("csrw mie, %0" :: "r" (0x880));
+}
+
 /* USART 初始化 */
 void USART_init(void)
 {
@@ -35,7 +47,7 @@ void USART_init(void)
     /*USART使能*/
     USART_Cmd(USART1, ENABLE); // 使能USART1，串口开始运行
     // /*USART发送*/
-    // printf("Cyber USART Test\r\n");
+    printf("Cyber USART Test\r\n");
 }
 
 /* main 函数 */
@@ -55,11 +67,4 @@ int main(void)
     finsh_system_init();
     /* 启动系统调度器 */
     rt_system_scheduler_start();
-}
-
-/* SysTick 中断处理函数 */
-void SysTick_Handler(void)
-{
-    /* 时基更新 */
-    rt_tick_increase();
 }

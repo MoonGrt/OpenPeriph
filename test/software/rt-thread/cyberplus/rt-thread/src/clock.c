@@ -34,26 +34,19 @@ void rt_tick_set(rt_tick_t tick)
 void rt_tick_increase(void)
 {
     struct rt_thread *thread;
-
     /* 系统时基计数器加 1 */
     ++ rt_tick;
-
     thread = rt_thread_self();
-
     /* 时间片递减 */
     -- thread->remaining_tick;
-
     /* 检查当前线程的时间片是否用尽 */
     if (thread->remaining_tick == 0)
     {
         /* 重置时间片 */
         thread->remaining_tick = thread->init_tick;
-
         /* 让出处理器 */
         rt_thread_yield();
     }
-    
-
     /* 扫描定时器列表 */
     rt_timer_check();
 }

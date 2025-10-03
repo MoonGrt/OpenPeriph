@@ -42,3 +42,10 @@ void hw_timer_irq_handler()
         SysTick_Handler();
     }
 }
+
+/* SysTick 中断处理函数 */
+void SysTick_Handler(void)
+{
+    /* 时基更新 */
+    rt_tick_increase();
+}

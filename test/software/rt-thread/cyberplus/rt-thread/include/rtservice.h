@@ -4,7 +4,6 @@
 /**
  * rt_container_of - return the member address of ptr, if the type of ptr is the
  * struct type.
- * 这个宏函数的用法可以参考我的博客：https://blog.csdn.net/qq_51103378/article/details/132853627?spm=1001.2014.3001.5501
  */
 #define rt_container_of(ptr, type, member) \
     ((type *)((char *)(ptr) - (unsigned long)(&((type *)0)->member)))
@@ -44,7 +43,6 @@ rt_inline void rt_list_insert_before(rt_list_t *l, rt_list_t *n)
 {
     l->prev->next = n;
     n->prev = l->prev;
-
     l->prev = n;
     n->next = l;
 }

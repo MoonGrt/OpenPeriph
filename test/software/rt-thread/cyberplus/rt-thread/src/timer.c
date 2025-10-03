@@ -35,12 +35,10 @@ static void _rt_timer_init(rt_timer_t timer,
 rt_inline void _rt_timer_remove(rt_timer_t timer)
 {
     int i;
-
     for (i = 0; i < RT_TIMER_SKIP_LIST_LEVEL; i++)
     {
         rt_list_remove(&(timer->row[i]));
     }
-    
 }
 
 /**
@@ -51,7 +49,6 @@ rt_inline void _rt_timer_remove(rt_timer_t timer)
 void rt_system_timer_init(void)
 {
     int i;
-
     for (i = 0; i < RT_TIMER_SKIP_LIST_LEVEL; i++)
     {
         rt_list_init(&(rt_timer_list[i]));
@@ -78,7 +75,6 @@ void rt_timer_init(rt_timer_t  timer,
 {
     /* 定时器对象初始化 */
     rt_object_init((rt_object_t)timer, RT_Object_Class_Timer, name);
-    
     /* 定时器对象初始化 */
     _rt_timer_init(timer, timeout, parameter, time, flag);
 }
@@ -143,11 +139,11 @@ rt_err_t rt_timer_start(rt_timer_t timer)
     /* 静态变量，用于记录启动了多少定时器 */
     random_nr++;
     tst_nr = random_nr;
-    
+
     /* 将定时器插入到系统定时器列表中 */
     rt_list_insert_after(row_head[RT_TIMER_SKIP_LIST_LEVEL - 1],
                          &(timer->row[RT_TIMER_SKIP_LIST_LEVEL - 1]));
-    
+
     /* 当 RT_TIMER_SKIP_LIST_LEVEL 为 1 时，以下语句不会执行 */
     for (row_lvl = 2; row_lvl <= RT_TIMER_SKIP_LIST_LEVEL; row_lvl++)
     {
@@ -156,7 +152,7 @@ rt_err_t rt_timer_start(rt_timer_t timer)
                                  &(timer->row[RT_TIMER_SKIP_LIST_LEVEL - row_lvl]));
         else
             break;
-        
+
         tst_nr >>= (RT_TIMER_SKIP_LIST_MASK + 1) >> 1;
     }
 
@@ -183,7 +179,7 @@ rt_err_t rt_timer_stop(rt_timer_t timer)
     /* 只有处于激活态的定时器才能被停止 */
     if (!(timer->parent.flag & RT_TIMER_FLAG_ACTIVATED))
         return -RT_ERROR;
-    
+
     /* 关中断 */
     level = rt_hw_interrupt_disable();
 
@@ -220,7 +216,7 @@ rt_err_t rt_timer_control(rt_timer_t timer, int cmd, void *arg)
     case RT_TIMER_CTRL_GET_TIME:
         *(rt_tick_t *)arg = timer->init_tick;
         break;
-    
+
     case RT_TIMER_CTRL_SET_TIME:
         timer->init_tick = *(rt_tick_t *)arg;
         break;
@@ -243,7 +239,7 @@ rt_err_t rt_timer_control(rt_timer_t timer, int cmd, void *arg)
             *(rt_tick_t *)arg = RT_TIMER_FLAG_DEACTIVATED;
         }
         break;
-        
+
     default:
         break;
     }
@@ -281,7 +277,7 @@ void rt_timer_check(void)
         t = rt_list_entry(rt_timer_list[RT_TIMER_SKIP_LIST_LEVEL - 1].next,
                           struct rt_timer,
                           row[RT_TIMER_SKIP_LIST_LEVEL - 1]);
-        
+
         /* 如果当前定时器已超时 */
         if ((current_tick - t->timeout_tick) < RT_TICK_MAX / 2)
         {
@@ -318,13 +314,13 @@ void rt_timer_check(void)
                 /* 重新启动定时器 */
                 t->parent.flag &= ~RT_TIMER_FLAG_ACTIVATED;
                 rt_timer_start(t);
-            }  
+            }
         }
         else
             break;
-        
+
     }
-    
+
     /* 恢复中断 */
     rt_hw_interrupt_enable(level);
 }

@@ -30,11 +30,6 @@ bss_loop:
     j bss_loop
 bss_done:
 
-    li a0, 0x880     //880 enable timer + external interrupts
-    csrw mie,a0
-    li a0, 0x1808     //1808 enable interrupts
-    csrw mstatus,a0
-
     /* 调用初始化函数 */
     call _init
     /* 跳转到 main */
