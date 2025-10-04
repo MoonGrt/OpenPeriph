@@ -25,8 +25,8 @@ case class Apb3Uart(config: Apb3UartCtrlConfig) extends Component {
 
   val ctrl = Apb3SlaveFactory(io.apb)
 
-  val tx = new UartCtrlTx(uartCtrlGenerics)
-  val rx = new UartCtrlRx(uartCtrlGenerics)
+  val tx = new uartCtrlTx(uartCtrlGenerics)
+  val rx = new uartCtrlRx(uartCtrlGenerics)
 
   tx.io.break := False
   tx.io.cts := False

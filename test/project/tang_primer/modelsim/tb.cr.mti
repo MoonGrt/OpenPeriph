@@ -1,67 +1,4 @@
-G:/VM/share/OpenPeriph/test/project/tang_primer/src/cyber.v {1 {vlog -work work -vopt -stats=none G:/VM/share/OpenPeriph/test/project/tang_primer/src/cyber.v
-Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
--- Compiling module CyberPlus
--- Compiling module Axi4SharedArbiter_1
--- Compiling module Axi4SharedArbiter
--- Compiling module Axi4SharedDecoder
--- Compiling module Axi4ReadOnlyDecoder
--- Compiling module SystemDebugger
--- Compiling module JtagBridge
--- Compiling module VexRiscv
--- Compiling module Apb3Router_6
--- Compiling module Apb3Decoder_6
--- Compiling module Apb3SpiArray
--- Compiling module Apb3I2cArray
--- Compiling module Apb3UartArray
--- Compiling module Apb3SysTick
--- Compiling module Apb3Wdg
--- Compiling module Apb3TimArray
--- Compiling module Apb3GpioArray
--- Compiling module Apb3Exti
--- Compiling module Apb3Afio
--- Compiling module Axi4SharedToApb3Bridge
--- Compiling module Axi4Ram
--- Compiling module BufferCC_5
--- Compiling module StreamArbiter_1
--- Compiling module StreamFifoLowLatency
--- Compiling module StreamArbiter
--- Compiling module Axi4SharedErrorSlave
--- Compiling module Axi4ReadOnlyErrorSlave
--- Compiling module FlowCCUnsafeByToggle
--- Compiling module DataCache
--- Compiling module InstructionCache
--- Compiling module Apb3Spi_1
--- Compiling module Apb3Spi
--- Compiling module Apb3I2c
--- Compiling module Apb3Uart
--- Compiling module Apb3Router_2
--- Compiling module Apb3Wwdg
--- Compiling module Apb3Iwdg
--- Compiling module Apb3Tim
--- Compiling module Apb3Router
--- Compiling module Apb3Decoder
--- Compiling module Apb3Gpio
--- Compiling module StreamFifo_12
--- Compiling module BufferCC_4
--- Compiling module StreamFifo_5
--- Compiling module StreamFifo_4
--- Compiling module StreamFifo
--- Compiling module UartCtrlRx
--- Compiling module UartCtrlTx
--- Compiling module BufferCC
--- Compiling module BufferCC_2
-
-Top level modules:
-	CyberPlus
-
-} {} {}} G:/VM/share/OpenPeriph/test/project/tang_primer/modelsim/tb_top.v {1 {vlog -work work -vopt -stats=none G:/VM/share/OpenPeriph/test/project/tang_primer/modelsim/tb_top.v
-Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
--- Compiling module tb_top
-
-Top level modules:
-	tb_top
-
-} {} {}} G:/VM/share/OpenPeriph/test/project/tang_primer/modelsim/prim_sim.v {1 {vlog -work work -vopt -stats=none G:/VM/share/OpenPeriph/test/project/tang_primer/modelsim/prim_sim.v
+G:/VM/share/OpenPeriph/test/project/tang_primer/modelsim/prim_sim.v {1 {vlog -work work -vopt -stats=none G:/VM/share/OpenPeriph/test/project/tang_primer/modelsim/prim_sim.v
 Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
 -- Compiling UDP mux2
 -- Compiling module MUX2
@@ -356,5 +293,12 @@ Top level modules:
 	ELVDS_IBUF_MIPI
 	MIPI_IBUF
 	I3C_IOBUF
+
+} {} {}} G:/VM/share/OpenPeriph/test/project/tang_primer/modelsim/tb_top.v {1 {vlog -work work -vopt -stats=none G:/VM/share/OpenPeriph/test/project/tang_primer/modelsim/tb_top.v
+Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+-- Compiling module tb_top
+
+Top level modules:
+	tb_top
 
 } {} {}}

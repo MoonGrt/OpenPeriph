@@ -138,7 +138,7 @@ void USART_Init(USART_TypeDef *USARTx, USART_InitTypeDef *USART_InitStruct)
     /* Configure the USART Baud Rate -------------------------------------------*/
     integerdivider = CORE_HZ / UART_SAMPLE_PER_BAUD / USART_InitStruct->USART_BaudRate;
     tmpreg = integerdivider << 4;
-    USARTx->BRR = (uint16_t)tmpreg;
+    // USARTx->BRR = (uint16_t)tmpreg;
 
     // RCC_GetClocksFreq(&RCC_ClocksStatus);
     // if (usartxbase == USART1_BASE)
