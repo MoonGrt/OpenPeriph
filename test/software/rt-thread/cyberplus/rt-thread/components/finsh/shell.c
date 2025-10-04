@@ -46,13 +46,12 @@ const char *finsh_get_prompt()
 
 static int finsh_getchar(void)
 {
-    // int ch = uart_getc();
     int ch = USART_ReceiveData(USART1);
 
     /* 如果未获取到字符，则让出处理器 */
-    if (ch < 0)
+    if (ch == 0)
     {
-        rt_thread_delay(1);
+        rt_thread_delay(10);
     }
 
     return ch;
@@ -109,7 +108,7 @@ static void finsh_wait_auth(void)
             {
                 /* read one character from device */
                 ch = finsh_getchar();
-                if (ch < 0)
+                if (ch == 0)
                 {
                     continue;
                 }

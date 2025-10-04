@@ -47,7 +47,7 @@ void USART_init(void)
     /*USART使能*/
     USART_Cmd(USART1, ENABLE); // 使能USART1，串口开始运行
     // /*USART发送*/
-    printf("Cyber USART Test\r\n");
+    // printf("Cyber USART Test\r\n");
 }
 
 /* main 函数 */
@@ -63,6 +63,8 @@ int main(void)
     rt_system_timer_init();
     /* 调度器初始化 */
     rt_system_scheduler_init();
+    /* 初始化空闲线程 */
+    rt_thread_idle_init();
     /* 初始化 finsh 线程 */
     finsh_system_init();
     /* 启动系统调度器 */

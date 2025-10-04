@@ -30,7 +30,7 @@ reg_t trap_handler(reg_t mcause, reg_t mepc)
     {
         /* 同步中断 */
         /* 目前不需要用到同步中断 */
-        printf("Something wrong has happend\n");
+        // printf("Something wrong has happend\n");
     }
 
     return epc;

@@ -53,7 +53,7 @@ void led_flow_breathe(int led_index, int increasing) {
     GPIO_Write(GPIOA, ~(1 << led_index)); // 点亮对应的 LED
     for (int pulse = 0; pulse <= 100; pulse++) {
         TIM_SetCompare4(TIM2, increasing ? pulse : 100 - pulse); // 根据 increasing 控制亮度变化
-        rt_thread_delay(5); // 延时
+        rt_thread_delay(20); // 延时
     }
 }
 
@@ -77,7 +77,7 @@ long led_init(void)
 {
     /* 初始化线程 */
     rt_thread_init(&th_led,                /* 线程控制块 */
-                   "th_led ",              /* 线程名称，唯一 */
+                   "tled ",                /* 线程名称，唯一 */
                    th_led_en,              /* 线程入口地址 */
                    RT_NULL,                /* 线程形参 */
                    &rt_thled_stack[0],     /* 线程栈起始地址 */
