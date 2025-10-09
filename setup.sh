@@ -8,11 +8,14 @@ setenv(){
   echo "Try \"echo \$OPENPERIPH_HOME\" to check if it's set correctly."
 }
 
+<<<<<<< HEAD
 install_prequisites(){
   sudo apt-get update
   sudo apt-get install -y curl autoconf flex bison libtool libyaml-dev libudev-dev libusb-1.0-0-dev
 }
 
+=======
+>>>>>>> 420f69eee2895cc0cfd3262f5aeace538ffb4e13
 install_java(){
   # JAVA JDK 8
   sudo add-apt-repository -y ppa:openjdk-r/ppa
@@ -24,6 +27,10 @@ install_java(){
 
 install_sbt(){
   # Install SBT - https://www.scala-sbt.org/
+<<<<<<< HEAD
+=======
+  sudo apt install curl # If not installed already
+>>>>>>> 420f69eee2895cc0cfd3262f5aeace538ffb4e13
   echo "deb https://repo.scala-sbt.org/scalasbt/debian all main" | sudo tee /etc/apt/sources.list.d/sbt.list
   echo "deb https://repo.scala-sbt.org/scalasbt/debian /" | sudo tee /etc/apt/sources.list.d/sbt_old.list
   curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | sudo apt-key add
@@ -32,7 +39,11 @@ install_sbt(){
 }
 
 install_verilator(){
+<<<<<<< HEAD
   sudo apt install -y make autoconf g++ flex libfl-dev bison  # First time prerequisites
+=======
+  sudo apt install -y git make autoconf g++ flex libfl-dev bison  # First time prerequisites
+>>>>>>> 420f69eee2895cc0cfd3262f5aeace538ffb4e13
   git clone https://github.com/verilator/verilator.git  # Only first time
   unset VERILATOR_ROOT  # For bash
   cd verilator
@@ -47,7 +58,11 @@ install_verilator(){
 
 install_riscv_gcc(){
   # Download and install the Sifive GCC toolchain
+<<<<<<< HEAD
   sudo apt install -y libncurses5
+=======
+  sudo apt install libncurses5
+>>>>>>> 420f69eee2895cc0cfd3262f5aeace538ffb4e13
   version=riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14
   wget -O riscv64-unknown-elf-gcc.tar.gz riscv https://static.dev.sifive.com/dev-tools/$version.tar.gz
   tar -xzvf riscv64-unknown-elf-gcc.tar.gz
@@ -58,7 +73,11 @@ install_riscv_gcc(){
 
 install_hidapi(){
   # Install HIDAPI for OpenOCD
+<<<<<<< HEAD
   sudo apt-get install -y autotools-dev make libtool pkg-config autoconf automake texinfo libudev1 libudev-dev libusb-1.0-0-dev libfox-1.6-dev
+=======
+  sudo apt-get install autotools-dev make libtool pkg-config autoconf automake texinfo libudev1 libudev-dev libusb-1.0-0-dev libfox-1.6-dev
+>>>>>>> 420f69eee2895cc0cfd3262f5aeace538ffb4e13
   git clone https://github.com/signal11/hidapi.git
   cd hidapi/
   ./bootstrap
@@ -71,7 +90,11 @@ install_hidapi(){
 }
 
 install_openocd(){
+<<<<<<< HEAD
   sudo apt-get install -y libyaml-dev
+=======
+  sudo apt-get install libyaml-dev
+>>>>>>> 420f69eee2895cc0cfd3262f5aeace538ffb4e13
   git clone https://github.com/SpinalHDL/openocd_riscv.git
   cd openocd_riscv
   ./bootstrap
@@ -79,6 +102,10 @@ install_openocd(){
   make -j $(nproc)
   sudo make install
   cd .. && rm -rf openocd_riscv
+<<<<<<< HEAD
+=======
+  sudo chmod +x scripts/jtag/openocd
+>>>>>>> 420f69eee2895cc0cfd3262f5aeace538ffb4e13
 }
 
 install_vexriscv(){
@@ -101,9 +128,12 @@ install_iverilog(){
   cd .. && rm -rf iverilog-10_3
 }
 
+<<<<<<< HEAD
 if [ -z "$1" ]; then
   set -- all
 fi
+=======
+>>>>>>> 420f69eee2895cc0cfd3262f5aeace538ffb4e13
 case $1 in
   env)
     setenv

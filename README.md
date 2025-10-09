@@ -134,7 +134,12 @@ cd OpenPeriph
 
 # 2. Setup Development Environment
 # Run the automated setup script
+<<<<<<< HEAD
 bash setup.sh
+=======
+chmod +x scripts/setup.sh
+bash scripts/setup.sh all
+>>>>>>> 420f69eee2895cc0cfd3262f5aeace538ffb4e13
 
 # 3. Build and Test
 # Build the SpinalHDL project
