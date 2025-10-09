@@ -1,0 +1,3 @@
+#!/bin/bash
+# OpenOCD configuration file for cyber board
+openocd -f "$OPENPERIPH_HOME/scripts/cyber.cfg"
