@@ -8,6 +8,7 @@
 [![License][license-shield]][license-url]
 
 
+
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -30,14 +31,12 @@
 
 
 
-
 <!-- CONTENTS -->
 <details open>
   <summary>Contents</summary>
   <ol>
     <li><a href="#features">Features</a></li>
     <li><a href="#quick-start">Quick Start</a></li>
-    <li><a href="#system-requirements">System Requirements</a></li>
     <li><a href="#installation">Installation</a></li>
     <li><a href="#file-tree">File Tree</a></li>
     <li><a href="#about-the-project">About The Project</a></li>
@@ -53,79 +52,55 @@
   </ol>
 </details>
 
-<!-- FILE TREE -->
-## File Tree
 
-```
-└─ Project
-  ├─ /docs/
-  │ ├─ Openocd.md
-  │ └─ SpinalHDL.md
-  ├─ /scripts/
-  ├─ /src/
-  │ ├─ /main/
-  │ │ └─ /scala/
-  │ │   ├─ /core/
-  │ │   ├─ /graphic/
-  │ │   ├─ /periph/
-  │ │   └─ /soc/
-  └─ /test/
-    ├─ /project/
-    │ ├─ .gitignore
-    │ ├─ /tang_mega/
-    │ └─ /tang_primer/
-    └─ /software/
-      ├─ /bare/
-      │ ├─ /cyber/
-      │ ├─ /cyberpluswithddr/
-      │ ├─ /cyberwithddr/
-      │ └─ /pinsec/
-      └─ /rt-thread/
-        └─ /cyberplus/
-```
 
 <!-- FEATURES -->
-## Features
+### Features
 
-### 🚀 **STM32 Compatibility**
+#### 🚀 **STM32 Compatibility**
 - **Register-level compatibility** with STM32 peripherals
 - **Direct firmware portability** - minimal code changes required
 - **Complete peripheral library** ported from STM32 Standard Peripheral Library
 - **Interrupt handling** compatible with STM32 architecture
 
-### 🎯 **RISC-V SoC Platform**
+#### 🎯 **RISC-V SoC Platform**
 - **RISC-V RV32IM** processor core integration
 - **Modular SoC architecture** built with SpinalHDL
 - **Multiple SoC variants** for different use cases
 - **DDR memory support** for high-performance applications
 
-### 🎨 **Advanced Graphics Processing**
+#### 🎨 **Advanced Graphics Processing**
 - **HDMI/VGA/LCD** display interfaces
 - **Real-time video processing** algorithms
 - **Image filtering and convolution** operations
 - **Color space conversion** and blending
 - **Edge detection** and computer vision capabilities
 
-### 🔧 **Development Tools**
+#### 🔧 **Development Tools**
 - **Automated environment setup** scripts
 - **Verilog generation** from SpinalHDL
 - **Simulation support** with Verilator/GHDL
 - **FPGA synthesis** ready for Gowin devices
 - **Instruction extraction** tools for memory initialization
 
-### 📱 **Hardware Support**
+#### 📱 **Hardware Support**
 - **Gowin FPGA** development boards
 - **Tang Primer** and **Tang Mega** support
 - **DDR3 memory controller** integration
 - **Multiple clock domains** management
 
-<!-- QUICK START -->
-## Quick Start
 
-### Prerequisites
-- Ubuntu 16.04+ or similar Linux distribution
-- Git
-- Python 3.6+
+
+<!-- QUICK START -->
+### Quick Start
+
+#### Prerequisites
+- **Ubuntu 16.04+**
+- **Java 8+** (for SBT)
+- **Scala 2.12.18** (managed by SBT)
+- **SpinalHDL 1.12.0** (managed by SBT)
+- **RISC-V GCC Toolchain**
+- **Verilator 4.216+** (for simulation)
 
 ```bash
 # 1. Clone the Repository
@@ -134,157 +109,158 @@ cd OpenPeriph
 
 # 2. Setup Development Environment
 # Run the automated setup script
-<<<<<<< HEAD
 bash setup.sh
-=======
-chmod +x scripts/setup.sh
-bash scripts/setup.sh all
->>>>>>> 420f69eee2895cc0cfd3262f5aeace538ffb4e13
 
-# 3. Build and Test
-# Build the SpinalHDL project
+# 3. Build the Project
 sbt run
-# Run a simple peripheral test
-cd test/cyber
-make clean && make
 
-# 4. FPGA Project (Optional)
-# Open in Gowin IDE and synthesize
+# 4. Software Development
+# Open the relevant project file in test/software
+
+# 5. FPGA Synthesis (optional)
+# Open the relevant project file in test/project
 
 ```
 
-<!-- SYSTEM REQUIREMENTS -->
-## System Requirements
 
-### Development Environment
-- **OS**: Linux (Ubuntu 18.04+ recommended)
-- **RAM**: 4GB minimum, 8GB recommended
-- **Storage**: 10GB free space
-- **CPU**: Multi-core processor recommended
-
-### Required Tools
-- **Java 8+** (for SBT)
-- **Scala 2.12.18** (managed by SBT)
-- **SpinalHDL 1.12.0** (managed by SBT)
-- **RISC-V GCC Toolchain**
-- **Verilator 4.216+** (for simulation)
-- **GHDL** (optional, for VHDL simulation)
-
-### FPGA Development
-- **Gowin IDE** (for FPGA synthesis)
-- **Tang Primer** or **Tang Mega** development board
-- **USB connection** for programming
 
 <!-- INSTALLATION -->
-## Installation
+### Installation
 
-### Automated Installation (Recommended)
+#### Automated Installation (Recommended)
 The project includes an automated setup script that installs all required tools:
 
 ```bash
-bash scripts/setup.sh all
+bash setup.sh
 ```
 
 This script will install:
+- Java
 - SBT (Scala Build Tool)
 - RISC-V GNU toolchain
 - Verilator simulator
-- GHDL simulator
-- Cocotb testing framework
-- Required system packages
+- Openocd
+- VexRiscv (optional)
 
-### Manual Installation
+#### Manual Installation
 If you prefer manual installation, follow these steps:
 
 1. **Install SBT**
 ```bash
-echo "deb https://repo.scala-sbt.org/scalasbt/debian all main" | sudo tee /etc/apt/sources.list.d/sbt.list
-echo "deb https://repo.scala-sbt.org/scalasbt/debian /" | sudo tee /etc/apt/sources.list.d/sbt_old.list
-curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | sudo apt-key add
-sudo apt update
-sudo apt install sbt
+  # Install SBT - https://www.scala-sbt.org/
+  echo "deb https://repo.scala-sbt.org/scalasbt/debian all main" | sudo tee /etc/apt/sources.list.d/sbt.list
+  echo "deb https://repo.scala-sbt.org/scalasbt/debian /" | sudo tee /etc/apt/sources.list.d/sbt_old.list
+  curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | sudo apt-key add
+  sudo apt-get update
+  sudo apt-get install sbt
 ```
 
 2. **Install RISC-V Toolchain**
 ```bash
-sudo apt install gcc-riscv64-unknown-elf
+  # Download and install the Sifive GCC toolchain
+  sudo apt install -y libncurses5
+  version=riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14
+  wget -O riscv64-unknown-elf-gcc.tar.gz riscv https://static.dev.sifive.com/dev-tools/$version.tar.gz
+  tar -xzvf riscv64-unknown-elf-gcc.tar.gz
+  sudo mv $version /opt/riscv
+  echo 'export PATH=/opt/riscv/bin:$PATH' >> ~/.bashrc
+  rm riscv64-unknown-elf-gcc.tar.gz
 ```
 
 3. **Install Verilator**
 ```bash
-sudo apt install verilator
+  sudo apt install -y make autoconf g++ flex libfl-dev bison  # First time prerequisites
+  git clone https://github.com/verilator/verilator.git  # Only first time
+  unset VERILATOR_ROOT  # For bash
+  cd verilator
+  git pull  # Make sure we're up-to-date
+  git checkout v4.216
+  autoconf  # Create ./configure script
+  ./configure
+  make -j $(nproc)
+  sudo make install
+  cd .. && rm -rf verilator
 ```
 
-4. **Clone and Build**
+4. **Openocd**
 ```bash
-git clone https://github.com/MoonGrt/OpenPeriph.git
-cd OpenPeriph
-sbt compile
+  sudo apt-get install -y libyaml-dev
+  git clone https://github.com/SpinalHDL/openocd_riscv.git
+  cd openocd_riscv
+  ./bootstrap
+  ./configure --enable-cmsis-dap
+  make -j $(nproc)
+  sudo make install
+  cd .. && rm -rf openocd_riscv
 ```
-5. ***VexRiscv** (optional)
+
+5. **Clone and Build**
 ```bash
-$ git clone https://github.com/SpinalHDL/VexRiscv.git
-$ cd VexRiscv
-$ sbt publishLocal
+  git clone https://github.com/MoonGrt/OpenPeriph.git
+  cd OpenPeriph
+  sbt run
 ```
+
+6. ***VexRiscv** (optional)
+```bash
+  $ git clone https://github.com/SpinalHDL/VexRiscv.git
+  $ cd VexRiscv
+  $ sbt publishLocal
+```
+
+
 
 <!-- FILE TREE -->
-## File Tree
+### File Tree
 
 ```
 OpenPeriph/
-├── src/main/scala/
-│   ├── graphic/              # Graphics and video processing
-│   │   ├── algorithm/        # Video processing algorithms
-│   │   │   ├── FilterEngine/ # Convolution, filtering, edge detection
-│   │   │   └── PixelUnit/    # Color conversion and blending
-│   │   ├── base/             # Base graphics components
-│   │   │   ├── dvtc/         # Digital Video Timing Controller
-│   │   │   └── Color.scala   # Color space definitions
-│   │   ├── hdmi/             # HDMI interface modules
-│   │   ├── lcd/              # LCD interface modules
-│   │   └── vga/              # VGA interface modules
-│   ├── periph/               # STM32-compatible peripherals
-│   │   ├── afio/             # Alternate Function I/O
-│   │   ├── exit/             # External interrupts
-│   │   ├── gpio/             # General Purpose I/O
-│   │   ├── uart/             # Universal Asynchronous Receiver/Transmitter
-│   │   ├── tim/              # Timer modules
-│   │   ├── spi/              # Serial Peripheral Interface
-│   │   ├── i2c/              # Inter-Integrated Circuit
-│   │   ├── wdg/              # Watchdog timers
-│   │   ├── systick/          # System tick timer
-│   │   ├── ram/              # RAM controllers
-│   │   └── ddr/              # DDR memory controllers
-│   └── soc/                  # System-on-Chip integration
-│       ├── cyber.scala       # Basic RISC-V SoC
-│       ├── pinsec.scala      # SpinalHDL native SoC
-│       └── gowin/            # Gowin FPGA specific designs
-│           ├── cyberwithddr.scala
-│           ├── cyberwithddrhdmi.scala
-│           └── cyberwithddrlcd.scala
-├── test/                     # Test and example projects
-│   ├── cyber/                # Basic SoC software package
-│   │   ├── libs/             # STM32-compatible libraries
-│   │   ├── src/              # Example applications
-│   │   ├── Makefile          # Build configuration
-│   │   └── linker.ld         # Linker script
-│   ├── cyberwithddr/         # DDR-enabled SoC
-│   ├── pinsec/               # SpinalHDL native SoC
-│   └── tang_primer/          # Gowin FPGA project files
-├── scripts/                  # Development and build scripts
-│   ├── setup.sh              # Environment setup script
-│   ├── InstExtractor.py      # Instruction extraction tool
-│   └── InstExtractor.sh      # Shell wrapper for extraction
-├── docs/                     # Documentation
-├── build.sbt                 # SBT build configuration
-└── README.md                 # This file
+  ├─ /docs/
+  │ ├─ Openocd.md        # OpenOCD configuration
+  │ └─ SpinalHDL.md      # SpinalHDL usage guide
+  ├─ src/main/scala/     # Source code
+  │ ├─ graphic/          # Graphics and video processing
+  │ │ ├─ algorithm/      # Video processing algorithms
+  │ │ ├─ base/           # Base graphics components
+  │ │ ├─ hdmi/           # HDMI interface modules
+  │ │ ├─ lcd/            # LCD interface modules
+  │ │ └─ vga/            # VGA interface modules
+  │ ├─ periph/           # STM32-compatible peripherals
+  │ │ ├─ afio/           # Alternate Function I/O
+  │ │ ├─ exit/           # External interrupts
+  │ │ ├─ gpio/           # General Purpose I/O
+  │ │ ├─ uart/           # Universal Asynchronous Receiver/Transmitter
+  │ │ ├─ tim/            # Timer modules
+  │ │ ├─ spi/            # Serial Peripheral Interface
+  │ │ ├─ i2c/            # Inter-Integrated Circuit
+  │ │ ├─ wdg/            # Watchdog timers
+  │ │ ├─ systick/        # System tick timer
+  │ │ ├─ ram/            # RAM controllers
+  │ │ └─ ddr/            # DDR memory controllers
+  │ └─ soc/              # System-on-Chip with sample implementations
+  ├─ /test/              # Test and example projects
+  │ ├─ /project/         # FPGA project directories
+  │ │ ├─ /tang_mega/
+  │ │ └─ /tang_primer/
+  │ └─ /software/        # Software project
+  │   ├─ /bare/          # Bare-metal software package
+  │   │ ├─ /cyber/
+  │   │ ├─ /cyberwithddr/
+  │   │ └─ /pinsec/
+  │   └─ /rt-thread/     # RT-Thread RTOS support
+  │     └─ /cyberplus/
+  ├─ scripts/            # Development and build scripts
+  │ ├─ jtag/             # JTAG tools
+  │ ├─ InstExtractor.py  # Instruction extraction tool
+  │ └─ InstExtractor.sh  # Shell wrapper for extraction
+  ├─ build.sbt           # SBT build configuration
+  └─ setup.sh            # Environment setup script
 ```
 
 
 
 <!-- ABOUT THE PROJECT -->
-## About The Project
+### About The Project
 
 This project is based on the **STM32-compatible peripheral and register set** and uses **SpinalHDL** for hardware design and implementation, aiming to build a RISC-V SoC platform that supports **open-source, STM32-compatible firmware**.
 Its design objective is to enable developers to directly reuse STM32 standard peripheral libraries and firmware code on the RISC-V architecture, while providing a comprehensive hardware and software environment for FPGA and SoC prototype verification.
@@ -296,7 +272,7 @@ The project is divided into two main parts:
 
 The project includes minimal RISC-V SoC example code, a complete Gowin FPGA project, environment configuration scripts, and auxiliary tools to help users get started quickly and perform secondary development.
 
-### Background and Objectives
+#### Background and Objectives
 
 In the field of embedded development, the STM32 series of MCUs are widely used due to their rich peripherals and extensive software ecosystem. The objectives of this project are:
 
@@ -306,11 +282,11 @@ In the field of embedded development, the STM32 series of MCUs are widely used d
 
 ---
 
-### Hardware Design
+#### Hardware Design
 
 The hardware part was written using **SpinalHDL** and is divided into three major modules: **Peripherals (Periph)**, **Graphics Processing (Graphic)**, and **SoC Integration**.
 
-#### 1. Periph (Peripheral Module)
+##### 1. Periph (Peripheral Module)
 
 * Includes common MCU peripherals:
   `GPIO`, `EXTI`, `AFIO`, `UART`, `TIM`, `SPI`, `IIC`, `WDG`, `SysTick`, etc.
@@ -319,14 +295,14 @@ The hardware part was written using **SpinalHDL** and is divided into three majo
   * Register functions are almost completely replicated
   * Supports complex interrupts, timing, peripheral interaction, and other functions
 
-#### 2. Graphic (Graphics and Video Processing Module)
+##### 2. Graphic (Graphics and Video Processing Module)
 
 * Driver layer: `HDMI`, `VGA`, `LCD`
 * Algorithm layer: `convolution`, `filtering`, `edge detection`, `color conversion`, `color blending`, etc.
 * DVTC and other modules are designed based on the STM32 `LTDC + DMA2D` architecture and extended with video stream processing functionality
 * Suitable for image display, video rendering, embedded vision processing, and other scenarios
 
-#### 3. SoC (Integration and Platform Adaptation)
+##### 3. SoC (Integration and Platform Adaptation)
 
 * Integrates peripherals and graphics modules into the RISC-V SoC architecture
 * Customized design for **Gowin FPGA**:
@@ -336,7 +312,7 @@ The hardware part was written using **SpinalHDL** and is divided into three majo
 
 ---
 
-### Software Support Package
+#### Software Support Package
 
 The software component supports the STM32 compatibility features of the hardware and has ported the **STM32 Standard Peripheral Library**, providing multiple runtime environments:
 
@@ -350,28 +326,27 @@ The software component supports the STM32 compatibility features of the hardware
     * Boot file (`init.S`)
     * User example (`main.c`)
     * Ported STM32 standard library drivers (`libs/`)
-* **cyberwithddr**
-  * An upgraded version of `cyber`
-  * Supports hardware DDR, enabling data storage in the DDR address space
-  * Includes a simple DDR test program
 
 ---
 
-### Script Tools
+#### Script Tools
 
-* **Environment Initialization** — `scripts/setup.sh`
+* **Environment Initialization** — `setup.sh`
   * Automatically installs tools such as `sbt`, `verilator`, and `riscv-gnu-toolchain`
   * Downloads necessary dependencies and library files
 * **Instruction Extraction Tool** — `scripts/InstExtractor.py`
   * Extract instructions and data from the compiled binary files
   * Generate a Verilog-formatted `mem` initialization file
   * Can be run via `make mem` or manually
+* **JTAG Debugging Tools** — `scripts/jtag/`
+  * Includes `openocd` configuration and scripts for debugging and flashing
+  * Includes `gdb` configuration and scripts for debugging
 
 ---
 
-### Gowin FPGA Project
+#### Gowin FPGA Project
 
-The directory `test/tang_primer/` contains the complete Gowin FPGA project files:
+The directory `test/project/` contains the complete Gowin FPGA project files:
 
 * All hardware design and SoC integration code
 * Gowin official IP core files
@@ -379,10 +354,12 @@ The directory `test/tang_primer/` contains the complete Gowin FPGA project files
 
 This project can be directly compiled, synthesized, and burned to the target development board in the Gowin IDE.
 
-<!-- USAGE EXAMPLES -->
-## Usage Examples
 
-### Basic GPIO Control
+
+<!-- USAGE EXAMPLES -->
+### Usage Examples
+
+#### Basic GPIO Control
 ```c
 #include "gpio.h"
 #include "rcc.h"
@@ -408,7 +385,7 @@ int main() {
 }
 ```
 
-### UART Communication
+#### UART Communication
 ```c
 #include "usart.h"
 #include "gpio.h"
@@ -431,7 +408,7 @@ int main() {
 }
 ```
 
-### Timer Configuration
+#### Timer Configuration
 ```c
 #include "tim.h"
 
@@ -450,10 +427,12 @@ int main() {
 }
 ```
 
-<!-- SUPPORTED PERIPHERALS -->
-## Supported Peripherals
 
-### Core Peripherals
+
+<!-- SUPPORTED PERIPHERALS -->
+### Supported Peripherals
+
+#### Core Peripherals
 | Peripheral | Status | Features |
 |------------|--------|----------|
 | **GPIO** | ✅ Complete | Input/Output modes, interrupt support, alternate functions |
@@ -469,13 +448,13 @@ int main() {
 | **WDG** | ✅ Complete | Independent and window watchdog timers |
 | **SysTick** | ✅ Complete | System tick timer for RTOS support |
 
-### Memory Controllers
+#### Memory Controllers
 | Controller | Status | Features |
 |------------|--------|----------|
 | **RAM** | ✅ Complete | Internal RAM controller |
 | **DDR3** | ✅ Complete | DDR3 memory controller with AXI4 interface |
 
-### Graphics and Video
+#### Graphics and Video
 | Interface | Status | Features |
 |-----------|--------|----------|
 | **HDMI** | ✅ Complete | TMDS encoder, clock domain crossing |
@@ -483,45 +462,41 @@ int main() {
 | **LCD** | ✅ Complete | Parallel LCD interface |
 | **DVTC** | ✅ Complete | Digital video timing controller |
 
-<!-- GRAPHICS CAPABILITIES -->
-## Graphics Capabilities
 
-### Video Processing Algorithms
+
+<!-- GRAPHICS CAPABILITIES -->
+### Graphics Capabilities
+
+#### Video Processing Algorithms
 - **Convolution Filters**: 3x3 matrix operations for image filtering
 - **Edge Detection**: Sobel, Canny, and other edge detection algorithms
 - **Color Space Conversion**: RGB ↔ YUV, RGB ↔ HSV conversions
 - **Color Blending**: Alpha blending and color mixing operations
 - **Image Scaling**: Real-time image resizing capabilities
 
-### Display Interfaces
-- **HDMI 1.4**: Up to 1080p resolution support
+#### Display Interfaces
+- **HDMI**: Up to 1080p resolution support
 - **VGA**: Standard VGA output (640x480 to 1920x1080)
 - **LCD**: Parallel LCD interface with configurable timing
 - **DVI**: Digital video interface support
 
-### Performance Features
+#### Performance Features
 - **Real-time Processing**: Hardware-accelerated video operations
 - **DMA Support**: Direct memory access for efficient data transfer
 - **Multi-layer Support**: Overlay and blending capabilities
 - **Custom Timing**: Configurable video timing parameters
 
-<!-- FPGA SUPPORT -->
-## FPGA Support
 
-### Supported Boards
+
+<!-- FPGA SUPPORT -->
+### FPGA Support
+
+#### Supported Boards
 - **Tang Primer**: Entry-level development board
 - **Tang Mega**: High-performance development board
 - **Custom Designs**: Modular architecture supports custom implementations
 
-### FPGA Resources
-| Resource | Tang Primer | Tang Mega |
-|----------|-------------|-----------|
-| **Logic Cells** | 4.6K | 49.5K |
-| **BRAM** | 20 | 270 |
-| **DSP** | 4 | 144 |
-| **PLL** | 2 | 4 |
-
-### Development Workflow
+#### Development Workflow
 1. **Design Entry**: SpinalHDL code generation
 2. **Synthesis**: Gowin IDE synthesis and optimization
 3. **Place & Route**: Automatic placement and routing
@@ -529,62 +504,48 @@ int main() {
 5. **Bitstream Generation**: FPGA configuration file
 6. **Programming**: USB-based device programming
 
+
+
 <!-- DEVELOPMENT WORKFLOW -->
-## Development Workflow
+## D#evelopment Workflow
 
-### 1. Hardware Development
+#### 1. Hardware Development
 ```bash
-# Edit SpinalHDL source files
-vim src/main/scala/periph/gpio/apb3gpio.scala
-
-# Compile and generate Verilog
-sbt compile
-
-# Run simulation (if available)
-sbt test
+  # Edit SpinalHDL source files
+  vim src/main/scala/periph/gpio/apb3gpio.scala
+  # Compile and generate Verilog
+  sbt compile
+  # Run simulation (if available)
+  sbt test
 ```
 
-### 2. Software Development
+#### 2. Software Development
 ```bash
-# Navigate to test project
-cd test/cyber
-
-# Edit source files
-vim src/main.c
-
-# Build firmware
-make clean && make
-
-# Generate memory initialization file
-make mem
+  # Navigate to test project
+  cd test/software/cyber
+  # Edit source files
+  vim src/main.c
+  # Build firmware
+  make clean && make -j
+  # Generate memory initialization file
+  make mem
 ```
 
-### 3. FPGA Development
+#### 3. FPGA Development
 ```bash
-# Open Gowin IDE
-# Load project from test/tang_primer/
-# Run synthesis and implementation
-# Generate bitstream
-# Program FPGA
-```
-
-### 4. Testing and Verification
-```bash
-# Run unit tests
-sbt test
-
-# Run integration tests
-cd test/cyber
-make test
-
-# Simulate with Verilator
-verilator --lint-only --top-module cyber
+  # Open Gowin IDE
+  # Load project from test/tang_primer/
+  # Run synthesis and implementation
+  # Generate bitstream
+  # Program FPGA
 ```
 
 <p align="right">(<a href="#top">top</a>)</p>
 
+
+
 <!-- CONTRIBUTING -->
-## Contributing
+### Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
@@ -601,7 +562,7 @@ Don't forget to give the project a star! Thanks again!
 
 
 <!-- LICENSE -->
-## License
+### License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 <p align="right">(<a href="#top">top</a>)</p>
@@ -609,7 +570,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 
 <!-- CONTACT -->
-## Contact
+### Contact
 
 MoonGrt - 1561145394@qq.com
 Project Link: [MoonGrt/OpenPeriph](https://github.com/MoonGrt/OpenPeriph)
@@ -618,7 +579,7 @@ Project Link: [MoonGrt/OpenPeriph](https://github.com/MoonGrt/OpenPeriph)
 
 
 <!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
+### Acknowledgments
 
 Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
 
