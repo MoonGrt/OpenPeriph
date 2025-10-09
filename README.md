@@ -53,6 +53,37 @@
   </ol>
 </details>
 
+<!-- FILE TREE -->
+## File Tree
+
+```
+└─ Project
+  ├─ /docs/
+  │ ├─ Openocd.md
+  │ └─ SpinalHDL.md
+  ├─ /scripts/
+  ├─ /src/
+  │ ├─ /main/
+  │ │ └─ /scala/
+  │ │   ├─ /core/
+  │ │   ├─ /graphic/
+  │ │   ├─ /periph/
+  │ │   └─ /soc/
+  └─ /test/
+    ├─ /project/
+    │ ├─ .gitignore
+    │ ├─ /tang_mega/
+    │ └─ /tang_primer/
+    └─ /software/
+      ├─ /bare/
+      │ ├─ /cyber/
+      │ ├─ /cyberpluswithddr/
+      │ ├─ /cyberwithddr/
+      │ └─ /pinsec/
+      └─ /rt-thread/
+        └─ /cyberplus/
+```
+
 <!-- FEATURES -->
 ## Features
 
@@ -92,44 +123,29 @@
 ## Quick Start
 
 ### Prerequisites
-- Ubuntu 18.04+ or similar Linux distribution
+- Ubuntu 16.04+ or similar Linux distribution
 - Git
 - Python 3.6+
-- At least 4GB RAM and 10GB free disk space
 
-### 1. Clone the Repository
 ```bash
+# 1. Clone the Repository
 git clone https://github.com/MoonGrt/OpenPeriph.git
 cd OpenPeriph
-```
 
-### 2. Setup Development Environment
-```bash
+# 2. Setup Development Environment
 # Run the automated setup script
-chmod +x scripts/setup.sh
-./scripts/setup.sh
-```
+bash setup.sh
 
-### 3. Build and Test
-```bash
+# 3. Build and Test
 # Build the SpinalHDL project
-sbt compile
-
+sbt run
 # Run a simple peripheral test
 cd test/cyber
 make clean && make
 
-# Test SPI and I2C functionality
-# The project includes SPI and I2C examples in test/cyber/src/spi_i2c_example.c
-# Test SDIO, CAN and CRC functionality  
-# The project includes SDIO, CAN and CRC examples in test/cyber/src/sdio_can_crc_example.c
-```
-
-### 4. FPGA Synthesis (Optional)
-```bash
-# For Gowin FPGA users
-cd test/tang_primer
+# 4. FPGA Project (Optional)
 # Open in Gowin IDE and synthesize
+
 ```
 
 <!-- SYSTEM REQUIREMENTS -->
@@ -161,7 +177,7 @@ cd test/tang_primer
 The project includes an automated setup script that installs all required tools:
 
 ```bash
-./scripts/setup.sh
+bash scripts/setup.sh all
 ```
 
 This script will install:

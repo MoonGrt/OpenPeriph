@@ -1,4 +1,0 @@
-#!/bin/bash
-
-# OpenOCD configuration file for cyber board
-/home/moon/VexRiscv/openocd_riscv/src/openocd -f /mnt/hgfs/share/OpenPeriph/scripts/cyber.cfg

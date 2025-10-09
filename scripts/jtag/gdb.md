@@ -1,6 +1,6 @@
 # 启动GDB并自动执行烧录命令
 /opt/riscv/bin/riscv64-unknown-elf-gdb
-file /mnt/hgfs/share/OpenPeriph/test/software/rt-thread/cyberplus/build/demo.elf
+file $OPENPERIPH_HOME/test/software/rt-thread/cyberplus/build/demo.elf
 target extended-remote :3333
 monitor reset halt
 load
