@@ -1,7 +1,3 @@
 #!/bin/bash
 # OpenOCD configuration file for cyber board
-<<<<<<< HEAD
 openocd -f "$OPENPERIPH_HOME/scripts/jtag/cyber.cfg"
-=======
-openocd -f "$OPENPERIPH_HOME/scripts/cyber.cfg"
->>>>>>> 420f69eee2895cc0cfd3262f5aeace538ffb4e13

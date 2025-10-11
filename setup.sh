@@ -83,11 +83,10 @@ install_openocd(){
 
 install_vexriscv(){
   # Download and install the VexRiscv RISC-V softcore
-  mkdir -p ~/thirdparty
-  cd ~/thirdparty
   git clone https://github.com/SpinalHDL/VexRiscv.git
   cd VexRiscv
   sbt publishLocal
+  cd .. && rm -rf VexRiscv
 }
 
 install_iverilog(){

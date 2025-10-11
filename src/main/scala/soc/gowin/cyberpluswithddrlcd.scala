@@ -455,11 +455,11 @@ object CyberPlusWithDdrLcd {
       InOutWrapper(
         new CyberPlusWithDdrLcd(
           CyberPlusWithDdrLcdConfig.default.copy(
-            memFile = "test/software/bare/cyberplus/build/demo.hex",
+            memFile = "test/software/bare/cyberpluswithddr/build/demo.hex",
             memFileType = "rawhex"
-            // memFile = "test/software/bare/cyberplus/build/mem/demo.bin",
+            // memFile = "test/software/bare/cyberpluswithddr/build/mem/demo.bin",
             // memFileType = "bin"
-            // memFile = "test/software/bare/cyberplus/build/mem/demo.hex",
+            // memFile = "test/software/bare/cyberpluswithddr/build/mem/demo.hex",
             // memFileType = "hex"
           )
         )
