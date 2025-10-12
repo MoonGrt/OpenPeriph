@@ -121,7 +121,7 @@ case class Apb3Gpio(
 
 // 顶层：多个 GPIO 组统一在一个 APB3 接口中
 object Apb3GpioArray {
-  def apb3Config(gpioGroupCnt: Int, groupSpace: Int, dataWidth: Int) =
+  def apb3Config(gpioGroupCnt: Int, groupSpace: BigInt, dataWidth: Int) =
     Apb3Config(
       addressWidth = log2Up(gpioGroupCnt) + log2Up(groupSpace),
       dataWidth = dataWidth
@@ -130,7 +130,7 @@ object Apb3GpioArray {
 case class Apb3GpioArray(
     gpioWidth: Int = 16,
     gpioGroupCnt: Int = 4,
-    groupSpace: Int = 0x20,
+    groupSpace: BigInt = 0x20,
     withReadSync: Boolean = true,
     addressWidth: Int = log2Up(0x20),
     dataWidth: Int = 32

@@ -111,7 +111,7 @@ case class Apb3Uart(config: Apb3UartCtrlConfig) extends Component {
 }
 
 object Apb3UartArray {
-  def apb3Config(uartCnt: Int, uartSpace: Int, dataWidth: Int) =
+  def apb3Config(uartCnt: Int, uartSpace: BigInt, dataWidth: Int) =
     Apb3Config(
       addressWidth = log2Up(uartCnt) + log2Up(uartSpace),
       dataWidth = dataWidth
@@ -119,7 +119,7 @@ object Apb3UartArray {
 }
 case class Apb3UartArray(
     uartCnt: Int = 4,
-    uartSpace: Int = 0x20,
+    uartSpace: BigInt = 0x20,
     addressWidth: Int = log2Up(0x20),
     dataWidth: Int = 32,
     uartConfig: Apb3UartCtrlConfig

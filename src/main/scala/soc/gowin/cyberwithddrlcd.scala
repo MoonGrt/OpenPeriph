@@ -253,7 +253,7 @@ class CyberWithDdrLcd(config: CyberWithDdrLcdConfig) extends Component {
         uartCtrl.io.uarts(1).txd ## // 18
         False ## // 17
         uartCtrl.io.uarts(0).txd ## // 16
-        timCtrl.io.tim_ch ## // 8 - 15: 定时器通道
+        timCtrl.io.ch ## // 8 - 15: 定时器通道
         B(0, 8 bits) // 0 - 7: 保留空位
     uartCtrl.io.uarts(0).rxd := afioCtrl.io.device.write(17)
     uartCtrl.io.uarts(1).rxd := afioCtrl.io.device.write(19)

@@ -252,7 +252,7 @@ case class Apb3Spi(
 }
 
 object Apb3SpiArray {
-  def apb3Config(spiCnt: Int, spiSpace: Int, dataWidth: Int) =
+  def apb3Config(spiCnt: Int, spiSpace: BigInt, dataWidth: Int) =
     Apb3Config(
       addressWidth = log2Up(spiCnt) + log2Up(spiSpace),
       dataWidth = dataWidth
@@ -260,7 +260,7 @@ object Apb3SpiArray {
 }
 case class Apb3SpiArray(
     spiCnt: Int = 4,
-    spiSpace: Int = 0x40,
+    spiSpace: BigInt = 0x40,
     addressWidth: Int = log2Up(0x40),
     dataWidth: Int = 32,
     txFifoDepth: Int = 16,

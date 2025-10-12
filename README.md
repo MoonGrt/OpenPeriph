@@ -102,6 +102,7 @@
 - **RISC-V GCC Toolchain**
 - **Verilator 4.216+** (for simulation)
 
+#### Setup and Build
 ```bash
 # 1. Clone the Repository
 git clone https://github.com/MoonGrt/OpenPeriph.git
@@ -128,7 +129,7 @@ sbt run
 ### Installation
 
 #### Automated Installation (Recommended)
-The project includes an automated setup script that installs all required tools:
+The project includes an automated setup script that installs all required tools: (It is recommended to build the required tools step by step.)
 
 ```bash
 bash setup.sh

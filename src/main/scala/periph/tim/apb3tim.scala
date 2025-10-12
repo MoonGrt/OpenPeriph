@@ -13,7 +13,7 @@ case class Apb3Tim(addressWidth: Int = 7, dataWidth: Int = 32)
     extends Component {
   val io = new Bundle {
     val apb = slave(Apb3(Apb3Tim.apb3Config(addressWidth, dataWidth)))
-    val tim_ch = out Bits (4 bits)
+    val ch = out Bits (4 bits)
     val interrupt = out Bool ()
   }
 
@@ -133,12 +133,12 @@ case class Apb3Tim(addressWidth: Int = 7, dataWidth: Int = 32)
     val enable = CCER(i)
     val pwm = Reg(Bool()) init (False)
     pwm := (CNT < CCR(i)) && enable
-    io.tim_ch(i) := pwm
+    io.ch(i) := pwm
   }
 }
 
 object Apb3TimArray {
-  def apb3Config(timCnt: Int, timSpace: Int, dataWidth: Int) =
+  def apb3Config(timCnt: Int, timSpace: BigInt, dataWidth: Int) =
     Apb3Config(
       addressWidth = log2Up(timCnt) + log2Up(timSpace),
       dataWidth = dataWidth
@@ -146,13 +146,13 @@ object Apb3TimArray {
 }
 case class Apb3TimArray(
     timCnt: Int,
-    timSpace: Int = 0x80,
+    timSpace: BigInt = 0x80,
     addressWidth: Int = log2Up(0x80),
     dataWidth: Int = 32
 ) extends Component {
   val io = new Bundle {
     val apb = slave(Apb3(Apb3TimArray.apb3Config(timCnt, timSpace, dataWidth)))
-    val tim_ch = out Bits(timCnt * 4 bits)
+    val ch = out Bits(timCnt * 4 bits)
     val interrupt = out Bits(timCnt bits)
   }
 
@@ -174,7 +174,7 @@ case class Apb3TimArray(
 
   // 连接 PWM 输出和中断
   for ((tim, i) <- TIM.zipWithIndex) {
-    io.tim_ch(i * 4 + 3 downto i * 4) := tim.io.tim_ch
+    io.ch(i * 4 + 3 downto i * 4) := tim.io.ch
     io.interrupt(i) := tim.io.interrupt
   }
 }

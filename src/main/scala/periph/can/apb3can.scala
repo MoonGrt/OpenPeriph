@@ -370,7 +370,7 @@ case class Apb3Can(
 }
 
 object Apb3CanArray {
-  def apb3Config(canCnt: Int, canSpace: Int, dataWidth: Int) =
+  def apb3Config(canCnt: Int, canSpace: BigInt, dataWidth: Int) =
     Apb3Config(
       addressWidth = log2Up(canCnt) + log2Up(canSpace),
       dataWidth = dataWidth
@@ -378,7 +378,7 @@ object Apb3CanArray {
 }
 case class Apb3CanArray(
     canCnt: Int = 4,
-    canSpace: Int = 0x800,
+    canSpace: BigInt = 0x800,
     addressWidth: Int = log2Up(0x800),
     dataWidth: Int = 32,
     dataWidthMax: Int = 128,

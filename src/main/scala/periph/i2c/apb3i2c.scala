@@ -297,7 +297,7 @@ case class Apb3I2c(
 }
 
 object Apb3I2cArray {
-  def apb3Config(i2cCnt: Int, i2cSpace: Int, dataWidth: Int) =
+  def apb3Config(i2cCnt: Int, i2cSpace: BigInt, dataWidth: Int) =
     Apb3Config(
       addressWidth = log2Up(i2cCnt) + log2Up(i2cSpace),
       dataWidth = dataWidth
@@ -305,7 +305,7 @@ object Apb3I2cArray {
 }
 case class Apb3I2cArray(
     i2cCnt: Int = 4,
-    i2cSpace: Int = 0x40,
+    i2cSpace: BigInt = 0x40,
     addressWidth: Int = log2Up(0x40),
     dataWidth: Int = 32,
     txFifoDepth: Int = 16,

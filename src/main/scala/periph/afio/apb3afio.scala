@@ -29,11 +29,24 @@ case class Apb3Afio(
   val MAPR2 = Reg(UInt(32 bits)) init (0)
 
   ctrl.readAndWrite(EVCR, 0x00) // EVCR 未使用
-  ctrl.readAndWrite(MAPR, 0x04) // MAPR1 未使用
+  ctrl.readAndWrite(MAPR, 0x04)
   for (i <- 0 until 4)
     ctrl.readAndWrite(EXTICR(i), 0x08 + i * 4)
   // RESERVED 0x18
   ctrl.readAndWrite(MAPR2, 0x1c) // MAPR2 未使用
+
+  // --- MAPR 控制 GPIO 输出映射 (影响 GPIO 输出电平等) ---
+  io.afio.write := io.device.read
+  io.device.write := io.afio.read
+  io.afio.writeEnable := B(1, gpioWidth * gpioGroupCnt bits)
+  io.device.writeEnable := B(1, gpioWidth * gpioGroupCnt bits)
+
+  // // 使用 afioConfig 的每一位作为写使能控制位
+  // val afioEnableVec = B(afioConfig, gpioWidth * gpioGroupCnt bits)
+  // for (i <- 0 until gpioWidth * gpioGroupCnt) {
+  //   io.afio.writeEnable(i) := afioEnableVec(i)
+  //   io.device.writeEnable(i) := afioEnableVec(i)
+  // }
 
   // --- EXTICR 控制外设到 GPIO 输入映射 (影响中断线、事件控制等) ---
   val afioExti = Bits(gpioWidth bits)
@@ -53,19 +66,6 @@ case class Apb3Afio(
     afioExti(i) := extiSignal
   }
   io.afioExti := afioExti
-
-  // --- MAPR 控制 GPIO 输出映射 (影响 GPIO 输出电平等) ---
-  io.afio.write := io.device.read
-  io.device.write := io.afio.read
-  io.afio.writeEnable := B(1, gpioWidth * gpioGroupCnt bits)
-  io.device.writeEnable := B(1, gpioWidth * gpioGroupCnt bits)
-
-  // // 使用 afioConfig 的每一位作为写使能控制位
-  // val afioEnableVec = B(afioConfig, gpioWidth * gpioGroupCnt bits)
-  // for (i <- 0 until gpioWidth * gpioGroupCnt) {
-  //   io.afio.writeEnable(i) := afioEnableVec(i)
-  //   io.device.writeEnable(i) := afioEnableVec(i)
-  // }
 }
 
 

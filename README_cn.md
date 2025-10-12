@@ -8,6 +8,7 @@
 [![License][license-shield]][license-url]
 
 
+
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -30,14 +31,12 @@
 
 
 
-
 <!-- CONTENTS -->
 <details open>
   <summary>目录</summary>
   <ol>
     <li><a href="#功能特性">功能特性</a></li>
     <li><a href="#快速开始">快速开始</a></li>
-    <li><a href="#系统要求">系统要求</a></li>
     <li><a href="#安装指南">安装指南</a></li>
     <li><a href="#文件树">文件树</a></li>
     <li><a href="#关于本项目">关于本项目</a></li>
@@ -53,206 +52,216 @@
   </ol>
 </details>
 
-<!-- 功能特性 -->
-## 功能特性
 
-### 🚀 **STM32兼容性**
+
+<!-- 功能特性 -->
+### 功能特性
+
+#### 🚀 **STM32兼容性**
 - **寄存器级兼容** 与STM32外设完全兼容
 - **直接固件移植** 最小化代码修改即可运行
 - **完整外设库** 移植自STM32标准外设库
 - **中断处理** 兼容STM32架构
 
-### 🎯 **RISC-V SoC平台**
+#### 🎯 **RISC-V SoC平台**
 - **RISC-V RV32IM** 处理器核心集成
 - **模块化SoC架构** 基于SpinalHDL构建
 - **多种SoC变体** 适用于不同应用场景
 - **DDR内存支持** 高性能应用支持
 
-### 🎨 **高级图形处理**
+#### 🎨 **高级图形处理**
 - **HDMI/VGA/LCD** 显示接口
 - **实时视频处理** 算法
 - **图像滤波和卷积** 操作
 - **颜色空间转换** 和混合
 - **边缘检测** 和计算机视觉能力
 
-### 🔧 **开发工具**
+#### 🔧 **开发工具**
 - **自动化环境配置** 脚本
 - **Verilog生成** 从SpinalHDL
 - **仿真支持** 支持Verilator/GHDL
 - **FPGA综合** 支持Gowin器件
 - **指令提取** 内存初始化工具
 
-### 📱 **硬件支持**
+#### 📱 **硬件支持**
 - **Gowin FPGA** 开发板
 - **Tang Primer** 和 **Tang Mega** 支持
 - **DDR3内存控制器** 集成
 - **多时钟域** 管理
 
+
+
 <!-- 快速开始 -->
-## 快速开始
+### 快速开始
 
-### 前置要求
-- Ubuntu 18.04+ 或类似Linux发行版
-- Git
-- Python 3.6+
-- 至少4GB内存和10GB可用磁盘空间
+#### 前置要求
+- **Ubuntu 16.04及以上版本**
+- **Java 8及以上版本**（用于SBT）
+- **Scala 2.12.18**（由SBT管理）
+- **SpinalHDL 1.12.0**（由SBT管理）
+- **RISC-V GCC 工具链**
+- **Verilator 4.216+**（用于仿真）
 
-### 1. 克隆仓库
+#### 克隆项目并运行
 ```bash
+# 1. Clone the Repository
 git clone https://github.com/MoonGrt/OpenPeriph.git
 cd OpenPeriph
+
+# 2. Setup Development Environment
+# Run the automated setup script
+bash setup.sh
+
+# 3. Build the Project
+sbt run
+
+# 4. Software Development
+# Open the relevant project file in test/software
+
+# 5. FPGA Synthesis (optional)
+# Open the relevant project file in test/project
+
 ```
 
-### 2. 设置开发环境
-```bash
-# 运行自动化设置脚本
-chmod +x scripts/setup.sh
-./scripts/setup.sh
-```
 
-### 3. 编译和测试
-```bash
-# 编译SpinalHDL项目
-sbt compile
-
-# 运行简单外设测试
-cd test/cyber
-make clean && make
-```
-
-### 4. FPGA综合（可选）
-```bash
-# 对于Gowin FPGA用户
-cd test/tang_primer
-# 在Gowin IDE中打开并综合
-```
-
-<!-- 系统要求 -->
-## 系统要求
-
-### 开发环境
-- **操作系统**: Linux（推荐Ubuntu 18.04+）
-- **内存**: 最少4GB，推荐8GB
-- **存储**: 10GB可用空间
-- **CPU**: 推荐多核处理器
-
-### 必需工具
-- **Java 8+** （用于SBT）
-- **Scala 2.12.18** （由SBT管理）
-- **SpinalHDL 1.12.0** （由SBT管理）
-- **RISC-V GCC工具链**
-- **Verilator 4.216+** （用于仿真）
-- **GHDL** （可选，用于VHDL仿真）
-
-### FPGA开发
-- **Gowin IDE** （用于FPGA综合）
-- **Tang Primer** 或 **Tang Mega** 开发板
-- **USB连接** 用于编程
 
 <!-- 安装指南 -->
-## 安装指南
+### 安装指南
 
-### 自动化安装（推荐）
-项目包含自动化设置脚本，可安装所有必需工具：
+#### 自动化安装（推荐）
+项目包含自动化设置脚本，可安装所有必需工具：（建议还是一步步构建所需工具）
 
 ```bash
-./scripts/setup.sh
+bash setup.sh
 ```
 
 此脚本将安装：
-- SBT（Scala构建工具）
-- RISC-V GNU工具链
-- Verilator仿真器
-- GHDL仿真器
-- Cocotb测试框架
-- 必需的系统包
+- Java
+- SBT (Scala Build Tool)
+- RISC-V GNU toolchain
+- Verilator simulator
+- Openocd
+- VexRiscv (optional)
 
-### 手动安装
+#### 手动安装
 如果您偏好手动安装，请按照以下步骤：
 
 1. **安装SBT**
 ```bash
-echo "deb https://repo.scala-sbt.org/scalasbt/debian all main" | sudo tee /etc/apt/sources.list.d/sbt.list
-echo "deb https://repo.scala-sbt.org/scalasbt/debian /" | sudo tee /etc/apt/sources.list.d/sbt_old.list
-curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | sudo apt-key add
-sudo apt update
-sudo apt install sbt
+  # Install SBT - https://www.scala-sbt.org/
+  echo "deb https://repo.scala-sbt.org/scalasbt/debian all main" | sudo tee /etc/apt/sources.list.d/sbt.list
+  echo "deb https://repo.scala-sbt.org/scalasbt/debian /" | sudo tee /etc/apt/sources.list.d/sbt_old.list
+  curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | sudo apt-key add
+  sudo apt-get update
+  sudo apt-get install sbt
 ```
 
 2. **安装RISC-V工具链**
 ```bash
-sudo apt install gcc-riscv64-unknown-elf
+  # Download and install the Sifive GCC toolchain
+  sudo apt install -y libncurses5
+  version=riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14
+  wget -O riscv64-unknown-elf-gcc.tar.gz riscv https://static.dev.sifive.com/dev-tools/$version.tar.gz
+  tar -xzvf riscv64-unknown-elf-gcc.tar.gz
+  sudo mv $version /opt/riscv
+  echo 'export PATH=/opt/riscv/bin:$PATH' >> ~/.bashrc
+  rm riscv64-unknown-elf-gcc.tar.gz
 ```
 
 3. **安装Verilator**
 ```bash
-sudo apt install verilator
+  sudo apt install -y make autoconf g++ flex libfl-dev bison  # First time prerequisites
+  git clone https://github.com/verilator/verilator.git  # Only first time
+  unset VERILATOR_ROOT  # For bash
+  cd verilator
+  git pull  # Make sure we're up-to-date
+  git checkout v4.216
+  autoconf  # Create ./configure script
+  ./configure
+  make -j $(nproc)
+  sudo make install
+  cd .. && rm -rf verilator
 ```
 
-4. **克隆和编译**
+4. **Openocd**
 ```bash
-git clone https://github.com/MoonGrt/OpenPeriph.git
-cd OpenPeriph
-sbt compile
+  sudo apt-get install -y libyaml-dev
+  git clone https://github.com/SpinalHDL/openocd_riscv.git
+  cd openocd_riscv
+  ./bootstrap
+  ./configure --enable-cmsis-dap
+  make -j $(nproc)
+  sudo make install
+  cd .. && rm -rf openocd_riscv
 ```
+
+5. **克隆和编译**
+```bash
+  git clone https://github.com/MoonGrt/OpenPeriph.git
+  cd OpenPeriph
+  sbt run
+```
+
+6. ***VexRiscv** (可选)
+```bash
+  $ git clone https://github.com/SpinalHDL/VexRiscv.git
+  $ cd VexRiscv
+  $ sbt publishLocal
+```
+
+
 
 <!-- 文件树 -->
-## 文件树
+### 文件树
 
 ```
 OpenPeriph/
-├── src/main/scala/
-│   ├── graphic/              # 图形和视频处理
-│   │   ├── algorithm/        # 视频处理算法
-│   │   │   ├── FilterEngine/ # 卷积、滤波、边缘检测
-│   │   │   └── PixelUnit/    # 颜色转换和混合
-│   │   ├── base/             # 基础图形组件
-│   │   │   ├── dvtc/         # 数字视频时序控制器
-│   │   │   └── Color.scala   # 颜色空间定义
-│   │   ├── hdmi/             # HDMI接口模块
-│   │   ├── lcd/              # LCD接口模块
-│   │   └── vga/              # VGA接口模块
-│   ├── periph/               # STM32兼容外设
-│   │   ├── afio/             # 复用功能I/O
-│   │   ├── exit/             # 外部中断
-│   │   ├── gpio/             # 通用目的I/O
-│   │   ├── uart/             # 通用异步收发器
-│   │   ├── tim/              # 定时器模块
-│   │   ├── spi/              # 串行外设接口
-│   │   ├── i2c/              # 内部集成电路
-│   │   ├── wdg/              # 看门狗定时器
-│   │   ├── systick/          # 系统滴答定时器
-│   │   ├── ram/              # RAM控制器
-│   │   └── ddr/              # DDR内存控制器
-│   └── soc/                  # 片上系统集成
-│       ├── cyber.scala       # 基础RISC-V SoC
-│       ├── pinsec.scala      # SpinalHDL原生SoC
-│       └── gowin/            # Gowin FPGA特定设计
-│           ├── cyberwithddr.scala
-│           ├── cyberwithddrhdmi.scala
-│           └── cyberwithddrlcd.scala
-├── test/                     # 测试和示例项目
-│   ├── cyber/                # 基础SoC软件包
-│   │   ├── libs/             # STM32兼容库
-│   │   ├── src/              # 示例应用
-│   │   ├── Makefile          # 构建配置
-│   │   └── linker.ld         # 链接脚本
-│   ├── cyberwithddr/         # 支持DDR的SoC
-│   ├── pinsec/               # SpinalHDL原生SoC
-│   └── tang_primer/          # Gowin FPGA项目文件
-├── scripts/                  # 开发和构建脚本
-│   ├── setup.sh              # 环境设置脚本
-│   ├── InstExtractor.py      # 指令提取工具
-│   └── InstExtractor.sh      # 提取工具shell包装
-├── docs/                     # 文档
-├── build.sbt                 # SBT构建配置
-└── README.md                 # 本文件
+  ├─ /docs/
+  │ ├─ Openocd.md        # OpenOCD configuration
+  │ └─ SpinalHDL.md      # SpinalHDL usage guide
+  ├─ src/main/scala/     # Source code
+  │ ├─ graphic/          # Graphics and video processing
+  │ │ ├─ algorithm/      # Video processing algorithms
+  │ │ ├─ base/           # Base graphics components
+  │ │ ├─ hdmi/           # HDMI interface modules
+  │ │ ├─ lcd/            # LCD interface modules
+  │ │ └─ vga/            # VGA interface modules
+  │ ├─ periph/           # STM32-compatible peripherals
+  │ │ ├─ afio/           # Alternate Function I/O
+  │ │ ├─ exit/           # External interrupts
+  │ │ ├─ gpio/           # General Purpose I/O
+  │ │ ├─ uart/           # Universal Asynchronous Receiver/Transmitter
+  │ │ ├─ tim/            # Timer modules
+  │ │ ├─ spi/            # Serial Peripheral Interface
+  │ │ ├─ i2c/            # Inter-Integrated Circuit
+  │ │ ├─ wdg/            # Watchdog timers
+  │ │ ├─ systick/        # System tick timer
+  │ │ ├─ ram/            # RAM controllers
+  │ │ └─ ddr/            # DDR memory controllers
+  │ └─ soc/              # System-on-Chip with sample implementations
+  ├─ /test/              # Test and example projects
+  │ ├─ /project/         # FPGA project directories
+  │ │ ├─ /tang_mega/
+  │ │ └─ /tang_primer/
+  │ └─ /software/        # Software project
+  │   ├─ /bare/          # Bare-metal software package
+  │   │ ├─ /cyber/
+  │   │ ├─ /cyberwithddr/
+  │   │ └─ /pinsec/
+  │   └─ /rt-thread/     # RT-Thread RTOS support
+  │     └─ /cyberplus/
+  ├─ scripts/            # Development and build scripts
+  │ ├─ jtag/             # JTAG tools
+  │ ├─ InstExtractor.py  # Instruction extraction tool
+  │ └─ InstExtractor.sh  # Shell wrapper for extraction
+  ├─ build.sbt           # SBT build configuration
+  └─ setup.sh            # Environment setup script
 ```
 
 
 
 <!-- 关于本项目 -->
-## 关于本项目
+### 关于本项目
 
 本项目基于 **STM32 兼容的外设与寄存器集**，采用 **SpinalHDL** 进行硬件设计与实现，旨在构建一个支持 **开源、兼容 STM32 固件** 的 RISC-V SoC 平台。
 其设计目标是让开发者能够在 RISC-V 架构上直接复用 STM32 标准外设库及固件代码，同时为 FPGA 与 SoC 原型验证提供完善的硬件与软件环境。
@@ -264,7 +273,7 @@ OpenPeriph/
 
 项目内附带最小化 RISC-V SoC 示例代码、Gowin FPGA 完整工程、环境配置脚本与辅助工具，帮助用户快速上手与二次开发。
 
-### 背景与目标
+#### 背景与目标
 
 在嵌入式开发领域，STM32 系列 MCU 因其丰富的外设与广泛的软件生态被大量应用。本项目的目标是：
 
@@ -272,11 +281,11 @@ OpenPeriph/
 * **软件层面**：通过完全兼容 STM32 标准外设库，让已有 STM32 固件能够最小化改动直接运行在 RISC-V SoC 上。
 * **验证与实验**：提供适配 Gowin FPGA 的工程文件与测试固件，方便在实际硬件上进行 SoC 功能验证。
 
-### 硬件设计
+#### 硬件设计
 
 硬件部分由 **SpinalHDL** 编写，结构分为 **外设 (Periph)**、**图形处理 (Graphic)** 与 **SoC 集成** 三大模块。
 
-#### 1. Periph（外设模块）
+##### 1. Periph（外设模块）
 
 * 包含常用 MCU 外设：
   `GPIO`、`EXTI`、`AFIO`、`UART`、`TIM`、`SPI`、`IIC`、`WDG`、`SysTick` 等
@@ -285,14 +294,14 @@ OpenPeriph/
   * 寄存器功能几乎完全复现
   * 支持复杂中断、定时、外设交互等功能
 
-#### 2. Graphic（图形与视频处理模块）
+##### 2. Graphic（图形与视频处理模块）
 
 * 驱动层：`HDMI`、`VGA`、`LCD`
 * 算法层：`卷积`、`滤波`、`边缘检测`、`颜色转换`、`颜色混合` 等
 * DVTC 等模块设计参考 STM32 的 `LTDC + DMA2D` 架构，并扩展视频流处理功能
 * 可用于图像显示、视频渲染、嵌入式视觉处理等场景
 
-#### 3. SoC（集成与平台适配）
+##### 3. SoC（集成与平台适配）
 
 * 将外设与图形模块集成到 RISC-V SoC 架构中
 * 针对 **Gowin FPGA** 的定制设计：
@@ -302,7 +311,7 @@ OpenPeriph/
 
 ---
 
-### 软件支持包
+#### 软件支持包
 
 软件部分针对硬件的 STM32 兼容特性，移植了 **STM32 标准外设库**，并提供多种运行环境：
 
@@ -323,7 +332,7 @@ OpenPeriph/
 
 ---
 
-### 脚本工具
+#### 脚本工具
 
 * **环境初始化** — `scripts/setup.sh`
   * 自动安装 `sbt`、`verilator`、`riscv-gnu-toolchain` 等工具
@@ -335,7 +344,7 @@ OpenPeriph/
 
 ---
 
-### Gowin FPGA 工程
+#### Gowin FPGA 工程
 
 目录 `test/tang_primer/` 内包含完整的 Gowin FPGA 工程文件：
 
@@ -345,10 +354,12 @@ OpenPeriph/
 
 该工程可直接在 Gowin IDE 中编译、综合、烧录至目标开发板。
 
-<!-- 使用示例 -->
-## 使用示例
 
-### 基础GPIO控制
+
+<!-- 使用示例 -->
+### 使用示例
+
+#### 基础GPIO控制
 ```c
 #include "gpio.h"
 #include "rcc.h"
@@ -374,7 +385,7 @@ int main() {
 }
 ```
 
-### UART通信
+#### UART通信
 ```c
 #include "usart.h"
 #include "gpio.h"
@@ -397,7 +408,7 @@ int main() {
 }
 ```
 
-### 定时器配置
+#### 定时器配置
 ```c
 #include "tim.h"
 
@@ -416,10 +427,12 @@ int main() {
 }
 ```
 
-<!-- 支持的外设 -->
-## 支持的外设
 
-### 核心外设
+
+<!-- 支持的外设 -->
+### 支持的外设
+
+#### 核心外设
 | 外设 | 状态 | 功能特性 |
 |------|------|----------|
 | **GPIO** | ✅ 完整 | 输入/输出模式、中断支持、复用功能 |
@@ -432,13 +445,13 @@ int main() {
 | **WDG** | ✅ 完整 | 独立和窗口看门狗定时器 |
 | **SysTick** | ✅ 完整 | 系统滴答定时器，支持RTOS |
 
-### 内存控制器
+#### 内存控制器
 | 控制器 | 状态 | 功能特性 |
 |--------|------|----------|
 | **RAM** | ✅ 完整 | 内部RAM控制器 |
 | **DDR3** | ✅ 完整 | DDR3内存控制器，支持AXI4接口 |
 
-### 图形和视频
+#### 图形和视频
 | 接口 | 状态 | 功能特性 |
 |------|------|----------|
 | **HDMI** | ✅ 完整 | TMDS编码器、时钟域转换 |
@@ -446,37 +459,41 @@ int main() {
 | **LCD** | ✅ 完整 | 并行LCD接口 |
 | **DVTC** | ✅ 完整 | 数字视频时序控制器 |
 
-<!-- 图形处理能力 -->
-## 图形处理能力
 
-### 视频处理算法
+
+<!-- 图形处理能力 -->
+### 图形处理能力
+
+#### 视频处理算法
 - **卷积滤波器**: 3x3矩阵操作，用于图像滤波
 - **边缘检测**: Sobel、Canny等边缘检测算法
 - **颜色空间转换**: RGB ↔ YUV、RGB ↔ HSV转换
 - **颜色混合**: Alpha混合和颜色混合操作
 - **图像缩放**: 实时图像尺寸调整能力
 
-### 显示接口
+#### 显示接口
 - **HDMI 1.4**: 支持高达1080p分辨率
 - **VGA**: 标准VGA输出（640x480到1920x1080）
 - **LCD**: 并行LCD接口，可配置时序
 - **DVI**: 数字视频接口支持
 
-### 性能特性
+#### 性能特性
 - **实时处理**: 硬件加速视频操作
 - **DMA支持**: 直接内存访问，高效数据传输
 - **多层支持**: 覆盖和混合能力
 - **自定义时序**: 可配置视频时序参数
 
-<!-- FPGA支持 -->
-## FPGA支持
 
-### 支持的开发板
+
+<!-- FPGA支持 -->
+### FPGA支持
+
+#### 支持的开发板
 - **Tang Primer**: 入门级开发板
 - **Tang Mega**: 高性能开发板
 - **自定义设计**: 模块化架构支持自定义实现
 
-### FPGA资源
+#### FPGA资源
 | 资源 | Tang Primer | Tang Mega |
 |------|-------------|-----------|
 | **逻辑单元** | 4.6K | 49.5K |
@@ -484,7 +501,7 @@ int main() {
 | **DSP** | 4 | 144 |
 | **PLL** | 2 | 4 |
 
-### 开发工作流
+#### 开发工作流
 1. **设计输入**: SpinalHDL代码生成
 2. **综合**: Gowin IDE综合和优化
 3. **布局布线**: 自动布局和布线
@@ -492,10 +509,12 @@ int main() {
 5. **比特流生成**: FPGA配置文件
 6. **编程**: 基于USB的设备编程
 
-<!-- 开发工作流 -->
-## 开发工作流
 
-### 1. 硬件开发
+
+<!-- 开发工作流 -->
+### 开发工作流
+
+#### 1. 硬件开发
 ```bash
 # 编辑SpinalHDL源文件
 vim src/main/scala/periph/gpio/apb3gpio.scala
@@ -507,7 +526,7 @@ sbt compile
 sbt test
 ```
 
-### 2. 软件开发
+#### 2. 软件开发
 ```bash
 # 导航到测试项目
 cd test/cyber
@@ -522,7 +541,7 @@ make clean && make
 make mem
 ```
 
-### 3. FPGA开发
+#### 3. FPGA开发
 ```bash
 # 打开Gowin IDE
 # 从test/tang_primer/加载项目
@@ -531,7 +550,7 @@ make mem
 # 编程FPGA
 ```
 
-### 4. 测试和验证
+#### 4. 测试和验证
 ```bash
 # 运行单元测试
 sbt test
@@ -547,8 +566,9 @@ verilator --lint-only --top-module cyber
 <p align="right">(<a href="#top">top</a>)</p>
 
 
+
 <!-- 贡献 -->
-## 贡献
+### 贡献
 
 欢迎通过以下方式参与本项目：
 
@@ -569,7 +589,7 @@ verilator --lint-only --top-module cyber
 
 
 <!-- 许可证 -->
-## 许可证
+### 许可证
 
 根据 MIT 许可证分发。打开 [LICENSE](LICENSE) 查看更多内容。
 <p align="right">(<a href="#top">top</a>)</p>
@@ -577,7 +597,7 @@ verilator --lint-only --top-module cyber
 
 
 <!-- 联系我们 -->
-## 联系我们
+### 联系我们
 
 MoonGrt - 1561145394@qq.com
 Project Link: [MoonGrt/OpenPeriph](https://github.com/MoonGrt/OpenPeriph)
@@ -587,7 +607,7 @@ Project Link: [MoonGrt/OpenPeriph](https://github.com/MoonGrt/OpenPeriph)
 
 
 <!-- 致谢 -->
-## 致谢
+### 致谢
 
 * [Choose an Open Source License](https://choosealicense.com)
 * [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
@@ -596,7 +616,6 @@ Project Link: [MoonGrt/OpenPeriph](https://github.com/MoonGrt/OpenPeriph)
 * [RISC-V Foundation](https://riscv.org/) - 开放标准指令集架构
 * [STM32](https://www.st.com/en/microcontrollers-microprocessors/stm32-32-bit-arm-cortex-mcus.html) - 外设兼容性的参考架构
 <p align="right">(<a href="#top">top</a>)</p>
-
 
 
 

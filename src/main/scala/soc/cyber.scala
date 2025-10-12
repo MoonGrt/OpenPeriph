@@ -155,6 +155,52 @@ class Cyber(config: CyberConfig) extends Component {
     )
 
     /* ------------------------ APB BUS ------------------------ */
+    // val socPeriphConfig = PeriphConfig(Seq(
+    //   PeriphArrayConfig(PeriphType.UART, count = 2, base = 0x10000, space = 0x1000,
+    //     pinMap = Seq(
+    //       Map("txd" -> 16, "rxd" -> 17),
+    //       Map("txd" -> 18, "rxd" -> 19)
+    //     )
+    //   ),
+    //   PeriphArrayConfig(PeriphType.I2C, count = 2, base = 0x20000, space = 0x1000,
+    //     pinMap = Seq(
+    //       Map("scl" -> 21, "sda" -> 20),
+    //       Map("scl" -> 23, "sda" -> 22)
+    //     )
+    //   ),
+    //   PeriphArrayConfig(PeriphType.SPI, count = 2, base = 0x30000, space = 0x1000,
+    //     pinMap = Seq(
+    //       Map("sclk" -> 24, "mosi" -> 25, "miso" -> 27, "ss" -> 26),
+    //       Map("sclk" -> 28, "mosi" -> 30, "miso" -> 31, "ss" -> 29)
+    //     )
+    //   ),
+    //   PeriphArrayConfig(PeriphType.TIM, count = 2, base = 0x40000, space = 0x1000,
+    //     pinMap = Seq(
+    //       Map("ch0" -> 8, "ch1" -> 9, "ch2" -> 10, "ch3" -> 11),
+    //       Map("ch0" -> 12, "ch1" -> 13, "ch2" -> 14, "ch3" -> 15)
+    //     )
+    //   ),
+    //   PeriphArrayConfig(PeriphType.WDG, base = 0x50000, space = 0x1000),
+    //   PeriphArrayConfig(PeriphType.SYSTICK, base = 0x60000, space = 0x1000)
+    // ))
+
+    // // 自动实例化外设与映射
+    // val apbPeriph = Apb3(Apb3Config(addressWidth = 20, dataWidth = 32))
+    // val factory = new PeriphFactory(socPeriphConfig, apbPeriph, io.gpio)
+
+    // val apbBridge = Axi4SharedToApb3Bridge(
+    //   addressWidth = 32,
+    //   dataWidth = 32,
+    //   idWidth = 4
+    // )
+    // val apbDecoder = Apb3Decoder(
+    //   master = apbBridge.io.apb,
+    //   slaves = List(
+    //     apbPeriph -> (0x00000, 64 KiB),
+    //     core.io.debugBus -> (0xf0000, 64 KiB)
+    //   )
+    // )
+
     val apbBridge = Axi4SharedToApb3Bridge(
       addressWidth = 20,
       dataWidth = 32,
@@ -229,7 +275,7 @@ class Cyber(config: CyberConfig) extends Component {
       uartCtrl.io.uarts(1).txd ## // 18
       False ## // 17
       uartCtrl.io.uarts(0).txd ## // 16
-      timCtrl.io.tim_ch ## // 8 - 15: 定时器通道
+      timCtrl.io.ch ## // 8 - 15: 定时器通道
       B(0, 8 bits) // 0 - 7: 保留空位
 
     uartCtrl.io.uarts(0).rxd := afioCtrl.io.device.write(17)
@@ -279,6 +325,7 @@ class Cyber(config: CyberConfig) extends Component {
     axiCrossbar.build()
 
     if (interruptCount != 0) {
+      // core.io.interrupt := factory.interruptLines.resized
       core.io.interrupt := (
         (0 -> uartInterrupt),
         (1 -> timInterrupt),
@@ -296,7 +343,7 @@ class Cyber(config: CyberConfig) extends Component {
     }
   }
 
-  io.gpio <> axi.gpioCtrl.io.gpio
+  // io.gpio <> axi.gpioCtrl.io.gpio
   io.jtag <> axi.jtagCtrl.io.jtag
 }
 
