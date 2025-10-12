@@ -1,1 +1,52 @@
-*/impl/
+*build/
+*impl/
+*cache/
+*hw/
+*ip_user_files/
+*runs/
+*.sim/
+*.zip
+*vivado*
+*.Xil/
+work/
+
+# ================================
+# Vivado SDK / Xilinx SDK Ignore
+# ================================
+
+# Eclipse 工作区配置
+.metadata/
+.sdk/
+RemoteSystemsTempFiles/
+
+# BSP 和 Debug 输出
+**/bsp/**
+**/Debug/**
+**/Release/**
+**/ps7_cortexa9_0/lib/
+
+# 编译临时文件
+*.o
+*.elf
+*.log
+*.jou
+*.lst
+*.map
+
+# Vivado SDK 生成的垃圾文件
+*.swp
+*.bak
+*.tmp
+*.log
+*.zip
+*.crash
+*.Xil/
+
+# 不要提交 Eclipse 本地设置
+**/.settings/
+**/.externalToolBuilders/
+
+# OS / IDE 杂项
+.DS_Store
+Thumbs.db
+

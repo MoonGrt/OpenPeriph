@@ -343,7 +343,7 @@ class Cyber(config: CyberConfig) extends Component {
     }
   }
 
-  // io.gpio <> axi.gpioCtrl.io.gpio
+  io.gpio <> axi.gpioCtrl.io.gpio
   io.jtag <> axi.jtagCtrl.io.jtag
 }
 
