@@ -1,13 +1,13 @@
 -- Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
--- Date        : Sun Oct 12 15:04:04 2025
+-- Date        : Sun Oct 12 22:16:12 2025
 -- Host        : DESKTOP-MOONGRT running 64-bit major release  (build 9200)
--- Command     : write_vhdl -force -mode synth_stub -rename_top sys_rst_ps7_0_50M_0 -prefix
---               sys_rst_ps7_0_50M_0_ sys_rst_ps7_0_50M_0_stub.vhdl
+-- Command     : write_vhdl -force -mode synth_stub
+--               G:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/Zynq7020-BX71.srcs/bd/sys/ip/sys_rst_ps7_0_50M_0/sys_rst_ps7_0_50M_0_stub.vhdl
 -- Design      : sys_rst_ps7_0_50M_0
 -- Purpose     : Stub declaration of top-level module interface
--- Device      : xc7z010iclg225-1L
+-- Device      : xc7z020clg400-1
 -- --------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;

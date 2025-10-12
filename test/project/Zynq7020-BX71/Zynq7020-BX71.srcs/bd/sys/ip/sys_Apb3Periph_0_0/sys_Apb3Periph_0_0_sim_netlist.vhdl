@@ -1,14 +1,14 @@
 -- Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
--- Date        : Sun Oct 12 15:04:30 2025
+-- Date        : Sun Oct 12 22:49:14 2025
 -- Host        : DESKTOP-MOONGRT running 64-bit major release  (build 9200)
--- Command     : write_vhdl -force -mode funcsim -rename_top sys_Apb3Periph_0_0 -prefix
---               sys_Apb3Periph_0_0_ sys_Apb3Periph_0_0_sim_netlist.vhdl
+-- Command     : write_vhdl -force -mode funcsim
+--               G:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/Zynq7020-BX71.srcs/bd/sys/ip/sys_Apb3Periph_0_0/sys_Apb3Periph_0_0_sim_netlist.vhdl
 -- Design      : sys_Apb3Periph_0_0
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
--- Device      : xc7z010iclg225-1L
+-- Device      : xc7z020clg400-1
 -- --------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -93,6 +93,8 @@ entity sys_Apb3Periph_0_0_Apb3Afio is
     clk : in STD_LOGIC;
     reset : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of sys_Apb3Periph_0_0_Apb3Afio : entity is "Apb3Afio";
 end sys_Apb3Periph_0_0_Apb3Afio;
 
 architecture STRUCTURE of sys_Apb3Periph_0_0_Apb3Afio is
@@ -3595,6 +3597,8 @@ entity sys_Apb3Periph_0_0_Apb3Exti is
     clk : in STD_LOGIC;
     reset : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of sys_Apb3Periph_0_0_Apb3Exti : entity is "Apb3Exti";
 end sys_Apb3Periph_0_0_Apb3Exti;
 
 architecture STRUCTURE of sys_Apb3Periph_0_0_Apb3Exti is
@@ -5597,6 +5601,8 @@ entity sys_Apb3Periph_0_0_Apb3Iwdg is
     clk : in STD_LOGIC;
     reset : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of sys_Apb3Periph_0_0_Apb3Iwdg : entity is "Apb3Iwdg";
 end sys_Apb3Periph_0_0_Apb3Iwdg;
 
 architecture STRUCTURE of sys_Apb3Periph_0_0_Apb3Iwdg is
@@ -6036,6 +6042,8 @@ entity sys_Apb3Periph_0_0_Apb3Router is
     \io_apb_PRDATA[2]_INST_0_i_5\ : in STD_LOGIC;
     \io_apb_PRDATA[11]_INST_0_i_5_0\ : in STD_LOGIC_VECTOR ( 8 downto 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of sys_Apb3Periph_0_0_Apb3Router : entity is "Apb3Router";
 end sys_Apb3Periph_0_0_Apb3Router;
 
 architecture STRUCTURE of sys_Apb3Periph_0_0_Apb3Router is
@@ -7007,6 +7015,8 @@ entity sys_Apb3Periph_0_0_Apb3Router_6 is
     io_apb_decoder_io_output_PSEL : in STD_LOGIC_VECTOR ( 0 to 0 );
     clk : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of sys_Apb3Periph_0_0_Apb3Router_6 : entity is "Apb3Router_6";
 end sys_Apb3Periph_0_0_Apb3Router_6;
 
 architecture STRUCTURE of sys_Apb3Periph_0_0_Apb3Router_6 is
@@ -8048,6 +8058,8 @@ entity sys_Apb3Periph_0_0_Apb3SysTick is
     clk : in STD_LOGIC;
     reset : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of sys_Apb3Periph_0_0_Apb3SysTick : entity is "Apb3SysTick";
 end sys_Apb3Periph_0_0_Apb3SysTick;
 
 architecture STRUCTURE of sys_Apb3Periph_0_0_Apb3SysTick is
@@ -10364,6 +10376,8 @@ entity sys_Apb3Periph_0_0_Apb3Tim is
     io_apb_PWRITE : in STD_LOGIC;
     \SR_reg[0]_0\ : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of sys_Apb3Periph_0_0_Apb3Tim : entity is "Apb3Tim";
 end sys_Apb3Periph_0_0_Apb3Tim;
 
 architecture STRUCTURE of sys_Apb3Periph_0_0_Apb3Tim is
@@ -25869,6 +25883,8 @@ entity sys_Apb3Periph_0_0_Apb3Wwdg is
     clk : in STD_LOGIC;
     reset : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of sys_Apb3Periph_0_0_Apb3Wwdg : entity is "Apb3Wwdg";
 end sys_Apb3Periph_0_0_Apb3Wwdg;
 
 architecture STRUCTURE of sys_Apb3Periph_0_0_Apb3Wwdg is
@@ -27022,6 +27038,8 @@ entity sys_Apb3Periph_0_0_BufferCC is
     clk : in STD_LOGIC;
     reset : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of sys_Apb3Periph_0_0_BufferCC : entity is "BufferCC";
 end sys_Apb3Periph_0_0_BufferCC;
 
 architecture STRUCTURE of sys_Apb3Periph_0_0_BufferCC is
@@ -27366,6 +27384,8 @@ entity sys_Apb3Periph_0_0_BufferCC_2 is
     clk : in STD_LOGIC;
     reset : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of sys_Apb3Periph_0_0_BufferCC_2 : entity is "BufferCC_2";
 end sys_Apb3Periph_0_0_BufferCC_2;
 
 architecture STRUCTURE of sys_Apb3Periph_0_0_BufferCC_2 is
@@ -27834,6 +27854,8 @@ entity sys_Apb3Periph_0_0_StreamFifo is
     rx_io_read_valid : in STD_LOGIC;
     stateMachine_shifter : in STD_LOGIC_VECTOR ( 8 downto 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of sys_Apb3Periph_0_0_StreamFifo : entity is "StreamFifo";
 end sys_Apb3Periph_0_0_StreamFifo;
 
 architecture STRUCTURE of sys_Apb3Periph_0_0_StreamFifo is
@@ -40393,6 +40415,8 @@ entity sys_Apb3Periph_0_0_uartCtrlTx is
     \FSM_sequential_stateMachine_state[2]_i_3__0_0\ : in STD_LOGIC_VECTOR ( 0 to 0 );
     \when_uartCtrlRx_l126__0\ : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of sys_Apb3Periph_0_0_uartCtrlTx : entity is "uartCtrlTx";
 end sys_Apb3Periph_0_0_uartCtrlTx;
 
 architecture STRUCTURE of sys_Apb3Periph_0_0_uartCtrlTx is
@@ -41215,7 +41239,6 @@ library UNISIM;
 use UNISIM.VCOMPONENTS.ALL;
 entity sys_Apb3Periph_0_0_Apb3Gpio is
   port (
-    io_gpio_writeEnable : out STD_LOGIC_VECTOR ( 15 downto 0 );
     io_gpio_write : out STD_LOGIC_VECTOR ( 15 downto 0 );
     \CRL_reg[16]_0\ : out STD_LOGIC;
     \CRL_reg[17]_0\ : out STD_LOGIC;
@@ -41250,6 +41273,7 @@ entity sys_Apb3Periph_0_0_Apb3Gpio is
     \CRH_reg[14]_0\ : out STD_LOGIC;
     \CRH_reg[15]_0\ : out STD_LOGIC;
     Q : out STD_LOGIC_VECTOR ( 15 downto 0 );
+    io_gpio_readEnable : out STD_LOGIC_VECTOR ( 15 downto 0 );
     io_gpio_read : in STD_LOGIC_VECTOR ( 15 downto 0 );
     clk : in STD_LOGIC;
     reset : in STD_LOGIC;
@@ -41263,6 +41287,8 @@ entity sys_Apb3Periph_0_0_Apb3Gpio is
     \io_apb_PRDATA[15]_INST_0_i_27_0\ : in STD_LOGIC;
     io_apb_PWDATA : in STD_LOGIC_VECTOR ( 31 downto 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of sys_Apb3Periph_0_0_Apb3Gpio : entity is "Apb3Gpio";
 end sys_Apb3Periph_0_0_Apb3Gpio;
 
 architecture STRUCTURE of sys_Apb3Periph_0_0_Apb3Gpio is
@@ -41328,85 +41354,85 @@ architecture STRUCTURE of sys_Apb3Periph_0_0_Apb3Gpio is
   signal p_1_in : STD_LOGIC_VECTOR ( 15 downto 0 );
   attribute SOFT_HLUTNM : string;
   attribute SOFT_HLUTNM of \CRH[10]_i_1\ : label is "soft_lutpair37";
-  attribute SOFT_HLUTNM of \CRH[11]_i_1\ : label is "soft_lutpair14";
-  attribute SOFT_HLUTNM of \CRH[13]_i_1\ : label is "soft_lutpair39";
-  attribute SOFT_HLUTNM of \CRH[14]_i_1\ : label is "soft_lutpair39";
-  attribute SOFT_HLUTNM of \CRH[15]_i_1\ : label is "soft_lutpair13";
-  attribute SOFT_HLUTNM of \CRH[17]_i_1\ : label is "soft_lutpair38";
-  attribute SOFT_HLUTNM of \CRH[18]_i_1\ : label is "soft_lutpair38";
-  attribute SOFT_HLUTNM of \CRH[19]_i_1\ : label is "soft_lutpair12";
-  attribute SOFT_HLUTNM of \CRH[1]_i_1\ : label is "soft_lutpair40";
-  attribute SOFT_HLUTNM of \CRH[21]_i_1\ : label is "soft_lutpair36";
-  attribute SOFT_HLUTNM of \CRH[22]_i_1\ : label is "soft_lutpair36";
-  attribute SOFT_HLUTNM of \CRH[23]_i_1\ : label is "soft_lutpair11";
-  attribute SOFT_HLUTNM of \CRH[25]_i_1\ : label is "soft_lutpair35";
-  attribute SOFT_HLUTNM of \CRH[26]_i_1\ : label is "soft_lutpair35";
-  attribute SOFT_HLUTNM of \CRH[27]_i_1\ : label is "soft_lutpair10";
-  attribute SOFT_HLUTNM of \CRH[29]_i_1\ : label is "soft_lutpair34";
-  attribute SOFT_HLUTNM of \CRH[2]_i_1\ : label is "soft_lutpair40";
-  attribute SOFT_HLUTNM of \CRH[30]_i_1\ : label is "soft_lutpair34";
-  attribute SOFT_HLUTNM of \CRH[31]_i_2\ : label is "soft_lutpair22";
-  attribute SOFT_HLUTNM of \CRH[3]_i_1\ : label is "soft_lutpair16";
-  attribute SOFT_HLUTNM of \CRH[5]_i_1\ : label is "soft_lutpair41";
-  attribute SOFT_HLUTNM of \CRH[6]_i_1\ : label is "soft_lutpair41";
-  attribute SOFT_HLUTNM of \CRH[7]_i_1\ : label is "soft_lutpair15";
+  attribute SOFT_HLUTNM of \CRH[11]_i_1\ : label is "soft_lutpair36";
+  attribute SOFT_HLUTNM of \CRH[13]_i_1\ : label is "soft_lutpair35";
+  attribute SOFT_HLUTNM of \CRH[14]_i_1\ : label is "soft_lutpair35";
+  attribute SOFT_HLUTNM of \CRH[15]_i_1\ : label is "soft_lutpair34";
+  attribute SOFT_HLUTNM of \CRH[17]_i_1\ : label is "soft_lutpair33";
+  attribute SOFT_HLUTNM of \CRH[18]_i_1\ : label is "soft_lutpair33";
+  attribute SOFT_HLUTNM of \CRH[19]_i_1\ : label is "soft_lutpair21";
+  attribute SOFT_HLUTNM of \CRH[1]_i_1\ : label is "soft_lutpair41";
+  attribute SOFT_HLUTNM of \CRH[21]_i_1\ : label is "soft_lutpair32";
+  attribute SOFT_HLUTNM of \CRH[22]_i_1\ : label is "soft_lutpair32";
+  attribute SOFT_HLUTNM of \CRH[23]_i_1\ : label is "soft_lutpair19";
+  attribute SOFT_HLUTNM of \CRH[25]_i_1\ : label is "soft_lutpair31";
+  attribute SOFT_HLUTNM of \CRH[26]_i_1\ : label is "soft_lutpair31";
+  attribute SOFT_HLUTNM of \CRH[27]_i_1\ : label is "soft_lutpair12";
+  attribute SOFT_HLUTNM of \CRH[29]_i_1\ : label is "soft_lutpair30";
+  attribute SOFT_HLUTNM of \CRH[2]_i_1\ : label is "soft_lutpair41";
+  attribute SOFT_HLUTNM of \CRH[30]_i_1\ : label is "soft_lutpair30";
+  attribute SOFT_HLUTNM of \CRH[31]_i_2\ : label is "soft_lutpair29";
+  attribute SOFT_HLUTNM of \CRH[3]_i_1\ : label is "soft_lutpair40";
+  attribute SOFT_HLUTNM of \CRH[5]_i_1\ : label is "soft_lutpair39";
+  attribute SOFT_HLUTNM of \CRH[6]_i_1\ : label is "soft_lutpair39";
+  attribute SOFT_HLUTNM of \CRH[7]_i_1\ : label is "soft_lutpair38";
   attribute SOFT_HLUTNM of \CRH[9]_i_1\ : label is "soft_lutpair37";
-  attribute SOFT_HLUTNM of \CRL[0]_i_1\ : label is "soft_lutpair33";
-  attribute SOFT_HLUTNM of \CRL[10]_i_1\ : label is "soft_lutpair17";
-  attribute SOFT_HLUTNM of \CRL[11]_i_1\ : label is "soft_lutpair17";
-  attribute SOFT_HLUTNM of \CRL[12]_i_1\ : label is "soft_lutpair28";
-  attribute SOFT_HLUTNM of \CRL[13]_i_1\ : label is "soft_lutpair28";
-  attribute SOFT_HLUTNM of \CRL[14]_i_1\ : label is "soft_lutpair27";
-  attribute SOFT_HLUTNM of \CRL[15]_i_1\ : label is "soft_lutpair27";
-  attribute SOFT_HLUTNM of \CRL[16]_i_1\ : label is "soft_lutpair26";
-  attribute SOFT_HLUTNM of \CRL[17]_i_1\ : label is "soft_lutpair26";
-  attribute SOFT_HLUTNM of \CRL[18]_i_1\ : label is "soft_lutpair25";
-  attribute SOFT_HLUTNM of \CRL[19]_i_1\ : label is "soft_lutpair25";
-  attribute SOFT_HLUTNM of \CRL[1]_i_1\ : label is "soft_lutpair33";
-  attribute SOFT_HLUTNM of \CRL[20]_i_1\ : label is "soft_lutpair24";
-  attribute SOFT_HLUTNM of \CRL[21]_i_1\ : label is "soft_lutpair24";
-  attribute SOFT_HLUTNM of \CRL[22]_i_1\ : label is "soft_lutpair23";
-  attribute SOFT_HLUTNM of \CRL[23]_i_1\ : label is "soft_lutpair23";
-  attribute SOFT_HLUTNM of \CRL[24]_i_1\ : label is "soft_lutpair21";
-  attribute SOFT_HLUTNM of \CRL[25]_i_1\ : label is "soft_lutpair21";
-  attribute SOFT_HLUTNM of \CRL[26]_i_1\ : label is "soft_lutpair20";
-  attribute SOFT_HLUTNM of \CRL[27]_i_1\ : label is "soft_lutpair20";
-  attribute SOFT_HLUTNM of \CRL[28]_i_1\ : label is "soft_lutpair19";
-  attribute SOFT_HLUTNM of \CRL[29]_i_1\ : label is "soft_lutpair19";
-  attribute SOFT_HLUTNM of \CRL[2]_i_1\ : label is "soft_lutpair32";
-  attribute SOFT_HLUTNM of \CRL[30]_i_1\ : label is "soft_lutpair18";
-  attribute SOFT_HLUTNM of \CRL[31]_i_2\ : label is "soft_lutpair18";
-  attribute SOFT_HLUTNM of \CRL[3]_i_1\ : label is "soft_lutpair32";
-  attribute SOFT_HLUTNM of \CRL[4]_i_1\ : label is "soft_lutpair31";
-  attribute SOFT_HLUTNM of \CRL[5]_i_1\ : label is "soft_lutpair31";
-  attribute SOFT_HLUTNM of \CRL[6]_i_1\ : label is "soft_lutpair30";
-  attribute SOFT_HLUTNM of \CRL[7]_i_1\ : label is "soft_lutpair30";
-  attribute SOFT_HLUTNM of \CRL[8]_i_1\ : label is "soft_lutpair29";
-  attribute SOFT_HLUTNM of \CRL[9]_i_1\ : label is "soft_lutpair29";
-  attribute SOFT_HLUTNM of \io_gpio_writeEnable[0]_INST_0\ : label is "soft_lutpair2";
-  attribute SOFT_HLUTNM of \io_gpio_writeEnable[1]_INST_0\ : label is "soft_lutpair3";
-  attribute SOFT_HLUTNM of \io_gpio_writeEnable[2]_INST_0\ : label is "soft_lutpair4";
-  attribute SOFT_HLUTNM of \io_gpio_writeEnable[3]_INST_0\ : label is "soft_lutpair5";
-  attribute SOFT_HLUTNM of \io_gpio_writeEnable[4]_INST_0\ : label is "soft_lutpair6";
-  attribute SOFT_HLUTNM of \io_gpio_writeEnable[5]_INST_0\ : label is "soft_lutpair7";
-  attribute SOFT_HLUTNM of \io_gpio_writeEnable[6]_INST_0\ : label is "soft_lutpair8";
-  attribute SOFT_HLUTNM of \io_gpio_writeEnable[7]_INST_0\ : label is "soft_lutpair9";
-  attribute SOFT_HLUTNM of \io_gpio_write[0]_INST_0\ : label is "soft_lutpair2";
-  attribute SOFT_HLUTNM of \io_gpio_write[10]_INST_0\ : label is "soft_lutpair14";
-  attribute SOFT_HLUTNM of \io_gpio_write[11]_INST_0\ : label is "soft_lutpair13";
-  attribute SOFT_HLUTNM of \io_gpio_write[12]_INST_0\ : label is "soft_lutpair12";
-  attribute SOFT_HLUTNM of \io_gpio_write[13]_INST_0\ : label is "soft_lutpair11";
-  attribute SOFT_HLUTNM of \io_gpio_write[14]_INST_0\ : label is "soft_lutpair10";
-  attribute SOFT_HLUTNM of \io_gpio_write[15]_INST_0\ : label is "soft_lutpair22";
+  attribute SOFT_HLUTNM of \CRL[0]_i_1\ : label is "soft_lutpair28";
+  attribute SOFT_HLUTNM of \CRL[10]_i_1\ : label is "soft_lutpair23";
+  attribute SOFT_HLUTNM of \CRL[11]_i_1\ : label is "soft_lutpair23";
+  attribute SOFT_HLUTNM of \CRL[12]_i_1\ : label is "soft_lutpair22";
+  attribute SOFT_HLUTNM of \CRL[13]_i_1\ : label is "soft_lutpair22";
+  attribute SOFT_HLUTNM of \CRL[14]_i_1\ : label is "soft_lutpair20";
+  attribute SOFT_HLUTNM of \CRL[15]_i_1\ : label is "soft_lutpair20";
+  attribute SOFT_HLUTNM of \CRL[16]_i_1\ : label is "soft_lutpair18";
+  attribute SOFT_HLUTNM of \CRL[17]_i_1\ : label is "soft_lutpair18";
+  attribute SOFT_HLUTNM of \CRL[18]_i_1\ : label is "soft_lutpair17";
+  attribute SOFT_HLUTNM of \CRL[19]_i_1\ : label is "soft_lutpair17";
+  attribute SOFT_HLUTNM of \CRL[1]_i_1\ : label is "soft_lutpair28";
+  attribute SOFT_HLUTNM of \CRL[20]_i_1\ : label is "soft_lutpair16";
+  attribute SOFT_HLUTNM of \CRL[21]_i_1\ : label is "soft_lutpair16";
+  attribute SOFT_HLUTNM of \CRL[22]_i_1\ : label is "soft_lutpair15";
+  attribute SOFT_HLUTNM of \CRL[23]_i_1\ : label is "soft_lutpair15";
+  attribute SOFT_HLUTNM of \CRL[24]_i_1\ : label is "soft_lutpair14";
+  attribute SOFT_HLUTNM of \CRL[25]_i_1\ : label is "soft_lutpair14";
+  attribute SOFT_HLUTNM of \CRL[26]_i_1\ : label is "soft_lutpair13";
+  attribute SOFT_HLUTNM of \CRL[27]_i_1\ : label is "soft_lutpair13";
+  attribute SOFT_HLUTNM of \CRL[28]_i_1\ : label is "soft_lutpair11";
+  attribute SOFT_HLUTNM of \CRL[29]_i_1\ : label is "soft_lutpair11";
+  attribute SOFT_HLUTNM of \CRL[2]_i_1\ : label is "soft_lutpair27";
+  attribute SOFT_HLUTNM of \CRL[30]_i_1\ : label is "soft_lutpair10";
+  attribute SOFT_HLUTNM of \CRL[31]_i_2\ : label is "soft_lutpair10";
+  attribute SOFT_HLUTNM of \CRL[3]_i_1\ : label is "soft_lutpair27";
+  attribute SOFT_HLUTNM of \CRL[4]_i_1\ : label is "soft_lutpair26";
+  attribute SOFT_HLUTNM of \CRL[5]_i_1\ : label is "soft_lutpair26";
+  attribute SOFT_HLUTNM of \CRL[6]_i_1\ : label is "soft_lutpair25";
+  attribute SOFT_HLUTNM of \CRL[7]_i_1\ : label is "soft_lutpair25";
+  attribute SOFT_HLUTNM of \CRL[8]_i_1\ : label is "soft_lutpair24";
+  attribute SOFT_HLUTNM of \CRL[9]_i_1\ : label is "soft_lutpair24";
+  attribute SOFT_HLUTNM of \io_gpio_readEnable[0]_INST_0\ : label is "soft_lutpair4";
+  attribute SOFT_HLUTNM of \io_gpio_readEnable[1]_INST_0\ : label is "soft_lutpair3";
+  attribute SOFT_HLUTNM of \io_gpio_readEnable[2]_INST_0\ : label is "soft_lutpair2";
+  attribute SOFT_HLUTNM of \io_gpio_readEnable[3]_INST_0\ : label is "soft_lutpair9";
+  attribute SOFT_HLUTNM of \io_gpio_readEnable[4]_INST_0\ : label is "soft_lutpair8";
+  attribute SOFT_HLUTNM of \io_gpio_readEnable[5]_INST_0\ : label is "soft_lutpair7";
+  attribute SOFT_HLUTNM of \io_gpio_readEnable[6]_INST_0\ : label is "soft_lutpair6";
+  attribute SOFT_HLUTNM of \io_gpio_readEnable[7]_INST_0\ : label is "soft_lutpair5";
+  attribute SOFT_HLUTNM of \io_gpio_write[0]_INST_0\ : label is "soft_lutpair4";
+  attribute SOFT_HLUTNM of \io_gpio_write[10]_INST_0\ : label is "soft_lutpair36";
+  attribute SOFT_HLUTNM of \io_gpio_write[11]_INST_0\ : label is "soft_lutpair34";
+  attribute SOFT_HLUTNM of \io_gpio_write[12]_INST_0\ : label is "soft_lutpair21";
+  attribute SOFT_HLUTNM of \io_gpio_write[13]_INST_0\ : label is "soft_lutpair19";
+  attribute SOFT_HLUTNM of \io_gpio_write[14]_INST_0\ : label is "soft_lutpair12";
+  attribute SOFT_HLUTNM of \io_gpio_write[15]_INST_0\ : label is "soft_lutpair29";
   attribute SOFT_HLUTNM of \io_gpio_write[1]_INST_0\ : label is "soft_lutpair3";
-  attribute SOFT_HLUTNM of \io_gpio_write[2]_INST_0\ : label is "soft_lutpair4";
-  attribute SOFT_HLUTNM of \io_gpio_write[3]_INST_0\ : label is "soft_lutpair5";
-  attribute SOFT_HLUTNM of \io_gpio_write[4]_INST_0\ : label is "soft_lutpair6";
+  attribute SOFT_HLUTNM of \io_gpio_write[2]_INST_0\ : label is "soft_lutpair2";
+  attribute SOFT_HLUTNM of \io_gpio_write[3]_INST_0\ : label is "soft_lutpair9";
+  attribute SOFT_HLUTNM of \io_gpio_write[4]_INST_0\ : label is "soft_lutpair8";
   attribute SOFT_HLUTNM of \io_gpio_write[5]_INST_0\ : label is "soft_lutpair7";
-  attribute SOFT_HLUTNM of \io_gpio_write[6]_INST_0\ : label is "soft_lutpair8";
-  attribute SOFT_HLUTNM of \io_gpio_write[7]_INST_0\ : label is "soft_lutpair9";
-  attribute SOFT_HLUTNM of \io_gpio_write[8]_INST_0\ : label is "soft_lutpair16";
-  attribute SOFT_HLUTNM of \io_gpio_write[9]_INST_0\ : label is "soft_lutpair15";
+  attribute SOFT_HLUTNM of \io_gpio_write[6]_INST_0\ : label is "soft_lutpair6";
+  attribute SOFT_HLUTNM of \io_gpio_write[7]_INST_0\ : label is "soft_lutpair5";
+  attribute SOFT_HLUTNM of \io_gpio_write[8]_INST_0\ : label is "soft_lutpair40";
+  attribute SOFT_HLUTNM of \io_gpio_write[9]_INST_0\ : label is "soft_lutpair38";
 begin
   Q(15 downto 0) <= \^q\(15 downto 0);
 \CRH[0]_i_1\: unisim.vcomponents.LUT3
@@ -43600,16 +43626,9 @@ begin
       I5 => io_gpio_read_buffercc_io_dataOut(9),
       O => \CRH_reg[9]_0\
     );
-io_gpio_read_buffercc: entity work.\sys_Apb3Periph_0_0_BufferCC__1\
-     port map (
-      clk => clk,
-      io_dataIn(15 downto 0) => io_gpio_read(15 downto 0),
-      io_dataOut(15 downto 0) => io_gpio_read_buffercc_io_dataOut(15 downto 0),
-      reset => reset
-    );
-\io_gpio_writeEnable[0]_INST_0\: unisim.vcomponents.LUT5
+\io_gpio_readEnable[0]_INST_0\: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"EE0EEEEE"
+      INIT => X"11F11111"
     )
         port map (
       I0 => \CRL_reg_n_0_[0]\,
@@ -43617,11 +43636,11 @@ io_gpio_read_buffercc: entity work.\sys_Apb3Periph_0_0_BufferCC__1\
       I2 => gpioCfg_0_cnf(0),
       I3 => gpioCfg_0_cnf(1),
       I4 => p_1_in(0),
-      O => io_gpio_writeEnable(0)
+      O => io_gpio_readEnable(0)
     );
-\io_gpio_writeEnable[10]_INST_0\: unisim.vcomponents.LUT6
+\io_gpio_readEnable[10]_INST_0\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"47FF47FF47FF0000"
+      INIT => X"B800B800B800FFFF"
     )
         port map (
       I0 => io_ch(2),
@@ -43630,11 +43649,11 @@ io_gpio_read_buffercc: entity work.\sys_Apb3Periph_0_0_BufferCC__1\
       I3 => gpioCfg_10_cnf(0),
       I4 => \CRH_reg_n_0_[8]\,
       I5 => \CRH_reg_n_0_[9]\,
-      O => io_gpio_writeEnable(10)
+      O => io_gpio_readEnable(10)
     );
-\io_gpio_writeEnable[11]_INST_0\: unisim.vcomponents.LUT6
+\io_gpio_readEnable[11]_INST_0\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"47FF47FF47FF0000"
+      INIT => X"B800B800B800FFFF"
     )
         port map (
       I0 => io_ch(3),
@@ -43643,11 +43662,11 @@ io_gpio_read_buffercc: entity work.\sys_Apb3Periph_0_0_BufferCC__1\
       I3 => gpioCfg_11_cnf(0),
       I4 => \CRH_reg_n_0_[12]\,
       I5 => \CRH_reg_n_0_[13]\,
-      O => io_gpio_writeEnable(11)
+      O => io_gpio_readEnable(11)
     );
-\io_gpio_writeEnable[12]_INST_0\: unisim.vcomponents.LUT6
+\io_gpio_readEnable[12]_INST_0\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"47FF47FF47FF0000"
+      INIT => X"B800B800B800FFFF"
     )
         port map (
       I0 => io_ch(4),
@@ -43656,11 +43675,11 @@ io_gpio_read_buffercc: entity work.\sys_Apb3Periph_0_0_BufferCC__1\
       I3 => gpioCfg_12_cnf(0),
       I4 => \CRH_reg_n_0_[16]\,
       I5 => \CRH_reg_n_0_[17]\,
-      O => io_gpio_writeEnable(12)
+      O => io_gpio_readEnable(12)
     );
-\io_gpio_writeEnable[13]_INST_0\: unisim.vcomponents.LUT6
+\io_gpio_readEnable[13]_INST_0\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"47FF47FF47FF0000"
+      INIT => X"B800B800B800FFFF"
     )
         port map (
       I0 => io_ch(5),
@@ -43669,11 +43688,11 @@ io_gpio_read_buffercc: entity work.\sys_Apb3Periph_0_0_BufferCC__1\
       I3 => gpioCfg_13_cnf(0),
       I4 => \CRH_reg_n_0_[20]\,
       I5 => \CRH_reg_n_0_[21]\,
-      O => io_gpio_writeEnable(13)
+      O => io_gpio_readEnable(13)
     );
-\io_gpio_writeEnable[14]_INST_0\: unisim.vcomponents.LUT6
+\io_gpio_readEnable[14]_INST_0\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"47FF47FF47FF0000"
+      INIT => X"B800B800B800FFFF"
     )
         port map (
       I0 => io_ch(6),
@@ -43682,11 +43701,11 @@ io_gpio_read_buffercc: entity work.\sys_Apb3Periph_0_0_BufferCC__1\
       I3 => gpioCfg_14_cnf(0),
       I4 => \CRH_reg_n_0_[24]\,
       I5 => \CRH_reg_n_0_[25]\,
-      O => io_gpio_writeEnable(14)
+      O => io_gpio_readEnable(14)
     );
-\io_gpio_writeEnable[15]_INST_0\: unisim.vcomponents.LUT6
+\io_gpio_readEnable[15]_INST_0\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"47FF47FF47FF0000"
+      INIT => X"B800B800B800FFFF"
     )
         port map (
       I0 => io_ch(7),
@@ -43695,11 +43714,11 @@ io_gpio_read_buffercc: entity work.\sys_Apb3Periph_0_0_BufferCC__1\
       I3 => gpioCfg_15_cnf(0),
       I4 => \CRH_reg_n_0_[28]\,
       I5 => \CRH_reg_n_0_[29]\,
-      O => io_gpio_writeEnable(15)
+      O => io_gpio_readEnable(15)
     );
-\io_gpio_writeEnable[1]_INST_0\: unisim.vcomponents.LUT5
+\io_gpio_readEnable[1]_INST_0\: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"EE0EEEEE"
+      INIT => X"11F11111"
     )
         port map (
       I0 => \CRL_reg_n_0_[4]\,
@@ -43707,11 +43726,11 @@ io_gpio_read_buffercc: entity work.\sys_Apb3Periph_0_0_BufferCC__1\
       I2 => gpioCfg_1_cnf(0),
       I3 => gpioCfg_1_cnf(1),
       I4 => p_1_in(1),
-      O => io_gpio_writeEnable(1)
+      O => io_gpio_readEnable(1)
     );
-\io_gpio_writeEnable[2]_INST_0\: unisim.vcomponents.LUT5
+\io_gpio_readEnable[2]_INST_0\: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"EE0EEEEE"
+      INIT => X"11F11111"
     )
         port map (
       I0 => \CRL_reg_n_0_[8]\,
@@ -43719,11 +43738,11 @@ io_gpio_read_buffercc: entity work.\sys_Apb3Periph_0_0_BufferCC__1\
       I2 => gpioCfg_2_cnf(0),
       I3 => gpioCfg_2_cnf(1),
       I4 => p_1_in(2),
-      O => io_gpio_writeEnable(2)
+      O => io_gpio_readEnable(2)
     );
-\io_gpio_writeEnable[3]_INST_0\: unisim.vcomponents.LUT5
+\io_gpio_readEnable[3]_INST_0\: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"EE0EEEEE"
+      INIT => X"11F11111"
     )
         port map (
       I0 => \CRL_reg_n_0_[12]\,
@@ -43731,11 +43750,11 @@ io_gpio_read_buffercc: entity work.\sys_Apb3Periph_0_0_BufferCC__1\
       I2 => gpioCfg_3_cnf(0),
       I3 => gpioCfg_3_cnf(1),
       I4 => p_1_in(3),
-      O => io_gpio_writeEnable(3)
+      O => io_gpio_readEnable(3)
     );
-\io_gpio_writeEnable[4]_INST_0\: unisim.vcomponents.LUT5
+\io_gpio_readEnable[4]_INST_0\: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"EE0EEEEE"
+      INIT => X"11F11111"
     )
         port map (
       I0 => \CRL_reg_n_0_[16]\,
@@ -43743,11 +43762,11 @@ io_gpio_read_buffercc: entity work.\sys_Apb3Periph_0_0_BufferCC__1\
       I2 => gpioCfg_4_cnf(0),
       I3 => gpioCfg_4_cnf(1),
       I4 => p_1_in(4),
-      O => io_gpio_writeEnable(4)
+      O => io_gpio_readEnable(4)
     );
-\io_gpio_writeEnable[5]_INST_0\: unisim.vcomponents.LUT5
+\io_gpio_readEnable[5]_INST_0\: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"EE0EEEEE"
+      INIT => X"11F11111"
     )
         port map (
       I0 => \CRL_reg_n_0_[20]\,
@@ -43755,11 +43774,11 @@ io_gpio_read_buffercc: entity work.\sys_Apb3Periph_0_0_BufferCC__1\
       I2 => gpioCfg_5_cnf(0),
       I3 => gpioCfg_5_cnf(1),
       I4 => p_1_in(5),
-      O => io_gpio_writeEnable(5)
+      O => io_gpio_readEnable(5)
     );
-\io_gpio_writeEnable[6]_INST_0\: unisim.vcomponents.LUT5
+\io_gpio_readEnable[6]_INST_0\: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"EE0EEEEE"
+      INIT => X"11F11111"
     )
         port map (
       I0 => \CRL_reg_n_0_[24]\,
@@ -43767,11 +43786,11 @@ io_gpio_read_buffercc: entity work.\sys_Apb3Periph_0_0_BufferCC__1\
       I2 => gpioCfg_6_cnf(0),
       I3 => gpioCfg_6_cnf(1),
       I4 => p_1_in(6),
-      O => io_gpio_writeEnable(6)
+      O => io_gpio_readEnable(6)
     );
-\io_gpio_writeEnable[7]_INST_0\: unisim.vcomponents.LUT5
+\io_gpio_readEnable[7]_INST_0\: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"EE0EEEEE"
+      INIT => X"11F11111"
     )
         port map (
       I0 => \CRL_reg_n_0_[28]\,
@@ -43779,11 +43798,11 @@ io_gpio_read_buffercc: entity work.\sys_Apb3Periph_0_0_BufferCC__1\
       I2 => gpioCfg_7_cnf(0),
       I3 => gpioCfg_7_cnf(1),
       I4 => p_1_in(7),
-      O => io_gpio_writeEnable(7)
+      O => io_gpio_readEnable(7)
     );
-\io_gpio_writeEnable[8]_INST_0\: unisim.vcomponents.LUT6
+\io_gpio_readEnable[8]_INST_0\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"47FF47FF47FF0000"
+      INIT => X"B800B800B800FFFF"
     )
         port map (
       I0 => io_ch(0),
@@ -43792,11 +43811,11 @@ io_gpio_read_buffercc: entity work.\sys_Apb3Periph_0_0_BufferCC__1\
       I3 => gpioCfg_8_cnf(0),
       I4 => \CRH_reg_n_0_[0]\,
       I5 => \CRH_reg_n_0_[1]\,
-      O => io_gpio_writeEnable(8)
+      O => io_gpio_readEnable(8)
     );
-\io_gpio_writeEnable[9]_INST_0\: unisim.vcomponents.LUT6
+\io_gpio_readEnable[9]_INST_0\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"47FF47FF47FF0000"
+      INIT => X"B800B800B800FFFF"
     )
         port map (
       I0 => io_ch(1),
@@ -43805,7 +43824,14 @@ io_gpio_read_buffercc: entity work.\sys_Apb3Periph_0_0_BufferCC__1\
       I3 => gpioCfg_9_cnf(0),
       I4 => \CRH_reg_n_0_[4]\,
       I5 => \CRH_reg_n_0_[5]\,
-      O => io_gpio_writeEnable(9)
+      O => io_gpio_readEnable(9)
+    );
+io_gpio_read_buffercc: entity work.\sys_Apb3Periph_0_0_BufferCC__1\
+     port map (
+      clk => clk,
+      io_dataIn(15 downto 0) => io_gpio_read(15 downto 0),
+      io_dataOut(15 downto 0) => io_gpio_read_buffercc_io_dataOut(15 downto 0),
+      reset => reset
     );
 \io_gpio_write[0]_INST_0\: unisim.vcomponents.LUT2
     generic map(
@@ -43967,14 +43993,13 @@ use UNISIM.VCOMPONENTS.ALL;
 entity sys_Apb3Periph_0_0_Apb3Gpio_21 is
   port (
     io_gpio_write : out STD_LOGIC_VECTOR ( 9 downto 0 );
-    io_gpio_writeEnable : out STD_LOGIC_VECTOR ( 15 downto 0 );
-    Q : out STD_LOGIC_VECTOR ( 3 downto 0 );
-    \ODR_reg[13]_0\ : out STD_LOGIC_VECTOR ( 5 downto 0 );
     \CRH_reg[0]_0\ : out STD_LOGIC;
     \CRH_reg[1]_0\ : out STD_LOGIC;
     \CRH_reg[2]_0\ : out STD_LOGIC;
     \CRH_reg[3]_0\ : out STD_LOGIC;
+    Q : out STD_LOGIC_VECTOR ( 3 downto 0 );
     \CRH_reg[4]_0\ : out STD_LOGIC;
+    \ODR_reg[13]_0\ : out STD_LOGIC_VECTOR ( 5 downto 0 );
     \CRH_reg[5]_0\ : out STD_LOGIC;
     \CRH_reg[6]_0\ : out STD_LOGIC;
     \CRH_reg[7]_0\ : out STD_LOGIC;
@@ -43989,6 +44014,7 @@ entity sys_Apb3Periph_0_0_Apb3Gpio_21 is
     io_apb_decoder_io_output_PSEL : out STD_LOGIC_VECTOR ( 0 to 0 );
     \LCKR_reg[15]_0\ : out STD_LOGIC_VECTOR ( 15 downto 0 );
     \CRL_reg[27]_0\ : out STD_LOGIC_VECTOR ( 1 downto 0 );
+    io_gpio_readEnable : out STD_LOGIC_VECTOR ( 15 downto 0 );
     \CRL_reg[16]_0\ : out STD_LOGIC;
     \CRL_reg[17]_0\ : out STD_LOGIC;
     \CRL_reg[18]_0\ : out STD_LOGIC;
@@ -44009,8 +44035,6 @@ entity sys_Apb3Periph_0_0_Apb3Gpio_21 is
     clk : in STD_LOGIC;
     reset : in STD_LOGIC;
     spiCtrl_io_spis_1_mosi : in STD_LOGIC;
-    \io_gpio_writeEnable[29]\ : in STD_LOGIC_VECTOR ( 3 downto 0 );
-    spiCtrl_io_spis_0_sclk : in STD_LOGIC;
     spiCtrl_io_spis_0_mosi : in STD_LOGIC;
     i2cCtrl_io_i2cs_1_scl : in STD_LOGIC;
     i2cCtrl_io_i2cs_0_scl : in STD_LOGIC;
@@ -44023,6 +44047,8 @@ entity sys_Apb3Periph_0_0_Apb3Gpio_21 is
     io_apb_PWRITE : in STD_LOGIC;
     io_apb_PWDATA : in STD_LOGIC_VECTOR ( 31 downto 0 );
     io_apb_PSEL : in STD_LOGIC_VECTOR ( 0 to 0 );
+    \io_gpio_readEnable[29]\ : in STD_LOGIC_VECTOR ( 3 downto 0 );
+    spiCtrl_io_spis_0_sclk : in STD_LOGIC;
     \io_apb_PRDATA[16]_0\ : in STD_LOGIC;
     \io_apb_PRDATA[16]_1\ : in STD_LOGIC;
     \io_apb_PRDATA[31]\ : in STD_LOGIC_VECTOR ( 0 to 0 );
@@ -44112,78 +44138,78 @@ architecture STRUCTURE of sys_Apb3Periph_0_0_Apb3Gpio_21 is
   signal io_gpio_read_buffercc_io_dataOut : STD_LOGIC_VECTOR ( 15 downto 0 );
   signal p_1_in : STD_LOGIC_VECTOR ( 15 downto 0 );
   attribute SOFT_HLUTNM : string;
-  attribute SOFT_HLUTNM of \CRH[0]_i_1__0\ : label is "soft_lutpair75";
-  attribute SOFT_HLUTNM of \CRH[10]_i_1__0\ : label is "soft_lutpair71";
-  attribute SOFT_HLUTNM of \CRH[11]_i_1__0\ : label is "soft_lutpair70";
-  attribute SOFT_HLUTNM of \CRH[12]_i_1__0\ : label is "soft_lutpair69";
-  attribute SOFT_HLUTNM of \CRH[13]_i_1__0\ : label is "soft_lutpair69";
-  attribute SOFT_HLUTNM of \CRH[14]_i_1__0\ : label is "soft_lutpair68";
-  attribute SOFT_HLUTNM of \CRH[15]_i_1__0\ : label is "soft_lutpair68";
-  attribute SOFT_HLUTNM of \CRH[16]_i_1__0\ : label is "soft_lutpair67";
-  attribute SOFT_HLUTNM of \CRH[17]_i_1__0\ : label is "soft_lutpair67";
-  attribute SOFT_HLUTNM of \CRH[18]_i_1__0\ : label is "soft_lutpair66";
-  attribute SOFT_HLUTNM of \CRH[19]_i_1__0\ : label is "soft_lutpair66";
-  attribute SOFT_HLUTNM of \CRH[1]_i_1__0\ : label is "soft_lutpair75";
-  attribute SOFT_HLUTNM of \CRH[20]_i_1__0\ : label is "soft_lutpair65";
-  attribute SOFT_HLUTNM of \CRH[21]_i_1__0\ : label is "soft_lutpair65";
-  attribute SOFT_HLUTNM of \CRH[22]_i_1__0\ : label is "soft_lutpair64";
-  attribute SOFT_HLUTNM of \CRH[23]_i_1__0\ : label is "soft_lutpair64";
-  attribute SOFT_HLUTNM of \CRH[25]_i_1__0\ : label is "soft_lutpair63";
-  attribute SOFT_HLUTNM of \CRH[26]_i_1__0\ : label is "soft_lutpair63";
-  attribute SOFT_HLUTNM of \CRH[27]_i_1__0\ : label is "soft_lutpair47";
-  attribute SOFT_HLUTNM of \CRH[28]_i_1__0\ : label is "soft_lutpair62";
-  attribute SOFT_HLUTNM of \CRH[29]_i_1__0\ : label is "soft_lutpair62";
-  attribute SOFT_HLUTNM of \CRH[2]_i_1__0\ : label is "soft_lutpair74";
-  attribute SOFT_HLUTNM of \CRH[30]_i_1__0\ : label is "soft_lutpair61";
-  attribute SOFT_HLUTNM of \CRH[31]_i_2__0\ : label is "soft_lutpair61";
-  attribute SOFT_HLUTNM of \CRH[3]_i_1__0\ : label is "soft_lutpair74";
-  attribute SOFT_HLUTNM of \CRH[4]_i_1__0\ : label is "soft_lutpair73";
-  attribute SOFT_HLUTNM of \CRH[5]_i_1__0\ : label is "soft_lutpair73";
-  attribute SOFT_HLUTNM of \CRH[6]_i_1__0\ : label is "soft_lutpair72";
-  attribute SOFT_HLUTNM of \CRH[7]_i_1__0\ : label is "soft_lutpair72";
-  attribute SOFT_HLUTNM of \CRH[9]_i_1__0\ : label is "soft_lutpair71";
-  attribute SOFT_HLUTNM of \CRL[10]_i_1__0\ : label is "soft_lutpair56";
-  attribute SOFT_HLUTNM of \CRL[11]_i_1__0\ : label is "soft_lutpair55";
-  attribute SOFT_HLUTNM of \CRL[12]_i_1__0\ : label is "soft_lutpair53";
-  attribute SOFT_HLUTNM of \CRL[13]_i_1__0\ : label is "soft_lutpair53";
-  attribute SOFT_HLUTNM of \CRL[14]_i_1__0\ : label is "soft_lutpair52";
-  attribute SOFT_HLUTNM of \CRL[15]_i_1__0\ : label is "soft_lutpair52";
-  attribute SOFT_HLUTNM of \CRL[16]_i_1__0\ : label is "soft_lutpair51";
-  attribute SOFT_HLUTNM of \CRL[17]_i_1__0\ : label is "soft_lutpair51";
-  attribute SOFT_HLUTNM of \CRL[18]_i_1__0\ : label is "soft_lutpair50";
-  attribute SOFT_HLUTNM of \CRL[19]_i_1__0\ : label is "soft_lutpair50";
-  attribute SOFT_HLUTNM of \CRL[1]_i_1__0\ : label is "soft_lutpair60";
-  attribute SOFT_HLUTNM of \CRL[20]_i_1__0\ : label is "soft_lutpair49";
-  attribute SOFT_HLUTNM of \CRL[21]_i_1__0\ : label is "soft_lutpair49";
-  attribute SOFT_HLUTNM of \CRL[22]_i_1__0\ : label is "soft_lutpair48";
-  attribute SOFT_HLUTNM of \CRL[23]_i_1__0\ : label is "soft_lutpair48";
-  attribute SOFT_HLUTNM of \CRL[24]_i_1__0\ : label is "soft_lutpair46";
-  attribute SOFT_HLUTNM of \CRL[25]_i_1__0\ : label is "soft_lutpair54";
-  attribute SOFT_HLUTNM of \CRL[26]_i_1__0\ : label is "soft_lutpair54";
-  attribute SOFT_HLUTNM of \CRL[27]_i_1__0\ : label is "soft_lutpair46";
-  attribute SOFT_HLUTNM of \CRL[28]_i_1__0\ : label is "soft_lutpair76";
-  attribute SOFT_HLUTNM of \CRL[29]_i_1__0\ : label is "soft_lutpair77";
-  attribute SOFT_HLUTNM of \CRL[2]_i_1__0\ : label is "soft_lutpair60";
-  attribute SOFT_HLUTNM of \CRL[30]_i_1__0\ : label is "soft_lutpair77";
-  attribute SOFT_HLUTNM of \CRL[31]_i_2__0\ : label is "soft_lutpair76";
-  attribute SOFT_HLUTNM of \CRL[3]_i_1__0\ : label is "soft_lutpair59";
-  attribute SOFT_HLUTNM of \CRL[4]_i_1__0\ : label is "soft_lutpair58";
-  attribute SOFT_HLUTNM of \CRL[5]_i_1__0\ : label is "soft_lutpair58";
-  attribute SOFT_HLUTNM of \CRL[6]_i_1__0\ : label is "soft_lutpair57";
-  attribute SOFT_HLUTNM of \CRL[7]_i_1__0\ : label is "soft_lutpair57";
-  attribute SOFT_HLUTNM of \CRL[9]_i_1__0\ : label is "soft_lutpair56";
-  attribute SOFT_HLUTNM of \io_gpio_writeEnable[17]_INST_0\ : label is "soft_lutpair43";
-  attribute SOFT_HLUTNM of \io_gpio_writeEnable[19]_INST_0\ : label is "soft_lutpair44";
-  attribute SOFT_HLUTNM of \io_gpio_writeEnable[27]_INST_0\ : label is "soft_lutpair42";
-  attribute SOFT_HLUTNM of \io_gpio_writeEnable[31]_INST_0\ : label is "soft_lutpair45";
-  attribute SOFT_HLUTNM of \io_gpio_write[16]_INST_0\ : label is "soft_lutpair59";
-  attribute SOFT_HLUTNM of \io_gpio_write[17]_INST_0\ : label is "soft_lutpair43";
-  attribute SOFT_HLUTNM of \io_gpio_write[18]_INST_0\ : label is "soft_lutpair55";
+  attribute SOFT_HLUTNM of \CRH[0]_i_1__0\ : label is "soft_lutpair68";
+  attribute SOFT_HLUTNM of \CRH[10]_i_1__0\ : label is "soft_lutpair64";
+  attribute SOFT_HLUTNM of \CRH[11]_i_1__0\ : label is "soft_lutpair63";
+  attribute SOFT_HLUTNM of \CRH[12]_i_1__0\ : label is "soft_lutpair62";
+  attribute SOFT_HLUTNM of \CRH[13]_i_1__0\ : label is "soft_lutpair62";
+  attribute SOFT_HLUTNM of \CRH[14]_i_1__0\ : label is "soft_lutpair61";
+  attribute SOFT_HLUTNM of \CRH[15]_i_1__0\ : label is "soft_lutpair61";
+  attribute SOFT_HLUTNM of \CRH[16]_i_1__0\ : label is "soft_lutpair60";
+  attribute SOFT_HLUTNM of \CRH[17]_i_1__0\ : label is "soft_lutpair77";
+  attribute SOFT_HLUTNM of \CRH[18]_i_1__0\ : label is "soft_lutpair77";
+  attribute SOFT_HLUTNM of \CRH[19]_i_1__0\ : label is "soft_lutpair60";
+  attribute SOFT_HLUTNM of \CRH[1]_i_1__0\ : label is "soft_lutpair68";
+  attribute SOFT_HLUTNM of \CRH[20]_i_1__0\ : label is "soft_lutpair76";
+  attribute SOFT_HLUTNM of \CRH[21]_i_1__0\ : label is "soft_lutpair59";
+  attribute SOFT_HLUTNM of \CRH[22]_i_1__0\ : label is "soft_lutpair76";
+  attribute SOFT_HLUTNM of \CRH[23]_i_1__0\ : label is "soft_lutpair59";
+  attribute SOFT_HLUTNM of \CRH[25]_i_1__0\ : label is "soft_lutpair56";
+  attribute SOFT_HLUTNM of \CRH[26]_i_1__0\ : label is "soft_lutpair56";
+  attribute SOFT_HLUTNM of \CRH[27]_i_1__0\ : label is "soft_lutpair55";
+  attribute SOFT_HLUTNM of \CRH[28]_i_1__0\ : label is "soft_lutpair54";
+  attribute SOFT_HLUTNM of \CRH[29]_i_1__0\ : label is "soft_lutpair54";
+  attribute SOFT_HLUTNM of \CRH[2]_i_1__0\ : label is "soft_lutpair67";
+  attribute SOFT_HLUTNM of \CRH[30]_i_1__0\ : label is "soft_lutpair53";
+  attribute SOFT_HLUTNM of \CRH[31]_i_2__0\ : label is "soft_lutpair53";
+  attribute SOFT_HLUTNM of \CRH[3]_i_1__0\ : label is "soft_lutpair67";
+  attribute SOFT_HLUTNM of \CRH[4]_i_1__0\ : label is "soft_lutpair66";
+  attribute SOFT_HLUTNM of \CRH[5]_i_1__0\ : label is "soft_lutpair66";
+  attribute SOFT_HLUTNM of \CRH[6]_i_1__0\ : label is "soft_lutpair65";
+  attribute SOFT_HLUTNM of \CRH[7]_i_1__0\ : label is "soft_lutpair65";
+  attribute SOFT_HLUTNM of \CRH[9]_i_1__0\ : label is "soft_lutpair64";
+  attribute SOFT_HLUTNM of \CRL[10]_i_1__0\ : label is "soft_lutpair47";
+  attribute SOFT_HLUTNM of \CRL[11]_i_1__0\ : label is "soft_lutpair46";
+  attribute SOFT_HLUTNM of \CRL[12]_i_1__0\ : label is "soft_lutpair58";
+  attribute SOFT_HLUTNM of \CRL[13]_i_1__0\ : label is "soft_lutpair57";
+  attribute SOFT_HLUTNM of \CRL[14]_i_1__0\ : label is "soft_lutpair58";
+  attribute SOFT_HLUTNM of \CRL[15]_i_1__0\ : label is "soft_lutpair57";
+  attribute SOFT_HLUTNM of \CRL[16]_i_1__0\ : label is "soft_lutpair69";
+  attribute SOFT_HLUTNM of \CRL[17]_i_1__0\ : label is "soft_lutpair70";
+  attribute SOFT_HLUTNM of \CRL[18]_i_1__0\ : label is "soft_lutpair70";
+  attribute SOFT_HLUTNM of \CRL[19]_i_1__0\ : label is "soft_lutpair69";
+  attribute SOFT_HLUTNM of \CRL[1]_i_1__0\ : label is "soft_lutpair52";
+  attribute SOFT_HLUTNM of \CRL[20]_i_1__0\ : label is "soft_lutpair71";
+  attribute SOFT_HLUTNM of \CRL[21]_i_1__0\ : label is "soft_lutpair72";
+  attribute SOFT_HLUTNM of \CRL[22]_i_1__0\ : label is "soft_lutpair72";
+  attribute SOFT_HLUTNM of \CRL[23]_i_1__0\ : label is "soft_lutpair71";
+  attribute SOFT_HLUTNM of \CRL[24]_i_1__0\ : label is "soft_lutpair73";
+  attribute SOFT_HLUTNM of \CRL[25]_i_1__0\ : label is "soft_lutpair74";
+  attribute SOFT_HLUTNM of \CRL[26]_i_1__0\ : label is "soft_lutpair74";
+  attribute SOFT_HLUTNM of \CRL[27]_i_1__0\ : label is "soft_lutpair73";
+  attribute SOFT_HLUTNM of \CRL[28]_i_1__0\ : label is "soft_lutpair75";
+  attribute SOFT_HLUTNM of \CRL[2]_i_1__0\ : label is "soft_lutpair52";
+  attribute SOFT_HLUTNM of \CRL[30]_i_1__0\ : label is "soft_lutpair75";
+  attribute SOFT_HLUTNM of \CRL[31]_i_2__0\ : label is "soft_lutpair49";
+  attribute SOFT_HLUTNM of \CRL[3]_i_1__0\ : label is "soft_lutpair50";
+  attribute SOFT_HLUTNM of \CRL[4]_i_1__0\ : label is "soft_lutpair51";
+  attribute SOFT_HLUTNM of \CRL[5]_i_1__0\ : label is "soft_lutpair48";
+  attribute SOFT_HLUTNM of \CRL[6]_i_1__0\ : label is "soft_lutpair51";
+  attribute SOFT_HLUTNM of \CRL[7]_i_1__0\ : label is "soft_lutpair48";
+  attribute SOFT_HLUTNM of \CRL[8]_i_1__0\ : label is "soft_lutpair47";
+  attribute SOFT_HLUTNM of \CRL[9]_i_1__0\ : label is "soft_lutpair46";
+  attribute SOFT_HLUTNM of \io_gpio_readEnable[17]_INST_0\ : label is "soft_lutpair45";
+  attribute SOFT_HLUTNM of \io_gpio_readEnable[19]_INST_0\ : label is "soft_lutpair44";
+  attribute SOFT_HLUTNM of \io_gpio_readEnable[27]_INST_0\ : label is "soft_lutpair43";
+  attribute SOFT_HLUTNM of \io_gpio_readEnable[31]_INST_0\ : label is "soft_lutpair42";
+  attribute SOFT_HLUTNM of \io_gpio_write[16]_INST_0\ : label is "soft_lutpair50";
+  attribute SOFT_HLUTNM of \io_gpio_write[17]_INST_0\ : label is "soft_lutpair45";
   attribute SOFT_HLUTNM of \io_gpio_write[19]_INST_0\ : label is "soft_lutpair44";
-  attribute SOFT_HLUTNM of \io_gpio_write[26]_INST_0\ : label is "soft_lutpair70";
-  attribute SOFT_HLUTNM of \io_gpio_write[27]_INST_0\ : label is "soft_lutpair42";
-  attribute SOFT_HLUTNM of \io_gpio_write[30]_INST_0\ : label is "soft_lutpair47";
-  attribute SOFT_HLUTNM of \io_gpio_write[31]_INST_0\ : label is "soft_lutpair45";
+  attribute SOFT_HLUTNM of \io_gpio_write[23]_INST_0\ : label is "soft_lutpair49";
+  attribute SOFT_HLUTNM of \io_gpio_write[26]_INST_0\ : label is "soft_lutpair63";
+  attribute SOFT_HLUTNM of \io_gpio_write[27]_INST_0\ : label is "soft_lutpair43";
+  attribute SOFT_HLUTNM of \io_gpio_write[30]_INST_0\ : label is "soft_lutpair55";
+  attribute SOFT_HLUTNM of \io_gpio_write[31]_INST_0\ : label is "soft_lutpair42";
 begin
   \CRL_reg[27]_0\(1 downto 0) <= \^crl_reg[27]_0\(1 downto 0);
   \LCKR_reg[15]_0\(15 downto 0) <= \^lckr_reg[15]_0\(15 downto 0);
@@ -46425,16 +46451,9 @@ begin
       I5 => io_gpio_read_buffercc_io_dataOut(9),
       O => \CRH_reg[9]_0\
     );
-io_gpio_read_buffercc: entity work.sys_Apb3Periph_0_0_BufferCC
-     port map (
-      clk => clk,
-      io_dataIn(15 downto 0) => io_gpio_read(15 downto 0),
-      io_dataOut(15 downto 0) => io_gpio_read_buffercc_io_dataOut(15 downto 0),
-      reset => reset
-    );
-\io_gpio_writeEnable[16]_INST_0\: unisim.vcomponents.LUT6
+\io_gpio_readEnable[16]_INST_0\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"47FF47FF47FF0000"
+      INIT => X"B800B800B800FFFF"
     )
         port map (
       I0 => uartCtrl_io_uarts_0_txd,
@@ -46443,11 +46462,11 @@ io_gpio_read_buffercc: entity work.sys_Apb3Periph_0_0_BufferCC
       I3 => gpioCfg_0_cnf(0),
       I4 => \CRL_reg_n_0_[0]\,
       I5 => \CRL_reg_n_0_[1]\,
-      O => io_gpio_writeEnable(0)
+      O => io_gpio_readEnable(0)
     );
-\io_gpio_writeEnable[17]_INST_0\: unisim.vcomponents.LUT5
+\io_gpio_readEnable[17]_INST_0\: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"EE0EEEEE"
+      INIT => X"11F11111"
     )
         port map (
       I0 => \CRL_reg_n_0_[4]\,
@@ -46455,11 +46474,11 @@ io_gpio_read_buffercc: entity work.sys_Apb3Periph_0_0_BufferCC
       I2 => gpioCfg_1_cnf(0),
       I3 => gpioCfg_1_cnf(1),
       I4 => p_1_in(1),
-      O => io_gpio_writeEnable(1)
+      O => io_gpio_readEnable(1)
     );
-\io_gpio_writeEnable[18]_INST_0\: unisim.vcomponents.LUT6
+\io_gpio_readEnable[18]_INST_0\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"47FF47FF47FF0000"
+      INIT => X"B800B800B800FFFF"
     )
         port map (
       I0 => uartCtrl_io_uarts_1_txd,
@@ -46468,11 +46487,11 @@ io_gpio_read_buffercc: entity work.sys_Apb3Periph_0_0_BufferCC
       I3 => gpioCfg_2_cnf(0),
       I4 => \CRL_reg_n_0_[8]\,
       I5 => \CRL_reg_n_0_[9]\,
-      O => io_gpio_writeEnable(2)
+      O => io_gpio_readEnable(2)
     );
-\io_gpio_writeEnable[19]_INST_0\: unisim.vcomponents.LUT5
+\io_gpio_readEnable[19]_INST_0\: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"EE0EEEEE"
+      INIT => X"11F11111"
     )
         port map (
       I0 => \CRL_reg_n_0_[12]\,
@@ -46480,22 +46499,22 @@ io_gpio_read_buffercc: entity work.sys_Apb3Periph_0_0_BufferCC
       I2 => gpioCfg_3_cnf(0),
       I3 => gpioCfg_3_cnf(1),
       I4 => p_1_in(3),
-      O => io_gpio_writeEnable(3)
+      O => io_gpio_readEnable(3)
     );
-\io_gpio_writeEnable[20]_INST_0\: unisim.vcomponents.LUT4
+\io_gpio_readEnable[20]_INST_0\: unisim.vcomponents.LUT4
     generic map(
-      INIT => X"7770"
+      INIT => X"888F"
     )
         port map (
-      I0 => \io_gpio_writeEnable[29]\(0),
+      I0 => \io_gpio_readEnable[29]\(0),
       I1 => gpioCfg_4_cnf(0),
       I2 => \CRL_reg_n_0_[16]\,
       I3 => \CRL_reg_n_0_[17]\,
-      O => io_gpio_writeEnable(4)
+      O => io_gpio_readEnable(4)
     );
-\io_gpio_writeEnable[21]_INST_0\: unisim.vcomponents.LUT6
+\io_gpio_readEnable[21]_INST_0\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"47FF47FF47FF0000"
+      INIT => X"B800B800B800FFFF"
     )
         port map (
       I0 => i2cCtrl_io_i2cs_0_scl,
@@ -46504,22 +46523,22 @@ io_gpio_read_buffercc: entity work.sys_Apb3Periph_0_0_BufferCC
       I3 => gpioCfg_5_cnf(0),
       I4 => \CRL_reg_n_0_[20]\,
       I5 => \CRL_reg_n_0_[21]\,
-      O => io_gpio_writeEnable(5)
+      O => io_gpio_readEnable(5)
     );
-\io_gpio_writeEnable[22]_INST_0\: unisim.vcomponents.LUT4
+\io_gpio_readEnable[22]_INST_0\: unisim.vcomponents.LUT4
     generic map(
-      INIT => X"7770"
+      INIT => X"888F"
     )
         port map (
-      I0 => \io_gpio_writeEnable[29]\(1),
+      I0 => \io_gpio_readEnable[29]\(1),
       I1 => gpioCfg_6_cnf(0),
       I2 => \CRL_reg_n_0_[24]\,
       I3 => \CRL_reg_n_0_[25]\,
-      O => io_gpio_writeEnable(6)
+      O => io_gpio_readEnable(6)
     );
-\io_gpio_writeEnable[23]_INST_0\: unisim.vcomponents.LUT6
+\io_gpio_readEnable[23]_INST_0\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"47FF47FF47FF0000"
+      INIT => X"B800B800B800FFFF"
     )
         port map (
       I0 => i2cCtrl_io_i2cs_1_scl,
@@ -46528,11 +46547,11 @@ io_gpio_read_buffercc: entity work.sys_Apb3Periph_0_0_BufferCC
       I3 => gpioCfg_7_cnf(0),
       I4 => \CRL_reg_n_0_[28]\,
       I5 => \CRL_reg_n_0_[29]\,
-      O => io_gpio_writeEnable(7)
+      O => io_gpio_readEnable(7)
     );
-\io_gpio_writeEnable[24]_INST_0\: unisim.vcomponents.LUT6
+\io_gpio_readEnable[24]_INST_0\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"47FF47FF47FF0000"
+      INIT => X"B800B800B800FFFF"
     )
         port map (
       I0 => spiCtrl_io_spis_0_sclk,
@@ -46541,22 +46560,22 @@ io_gpio_read_buffercc: entity work.sys_Apb3Periph_0_0_BufferCC
       I3 => gpioCfg_8_cnf(0),
       I4 => \CRH_reg_n_0_[0]\,
       I5 => \CRH_reg_n_0_[1]\,
-      O => io_gpio_writeEnable(8)
+      O => io_gpio_readEnable(8)
     );
-\io_gpio_writeEnable[25]_INST_0\: unisim.vcomponents.LUT4
+\io_gpio_readEnable[25]_INST_0\: unisim.vcomponents.LUT4
     generic map(
-      INIT => X"7770"
+      INIT => X"888F"
     )
         port map (
-      I0 => \io_gpio_writeEnable[29]\(2),
+      I0 => \io_gpio_readEnable[29]\(2),
       I1 => gpioCfg_9_cnf(0),
       I2 => \CRH_reg_n_0_[4]\,
       I3 => \CRH_reg_n_0_[5]\,
-      O => io_gpio_writeEnable(9)
+      O => io_gpio_readEnable(9)
     );
-\io_gpio_writeEnable[26]_INST_0\: unisim.vcomponents.LUT6
+\io_gpio_readEnable[26]_INST_0\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"47FF47FF47FF0000"
+      INIT => X"B800B800B800FFFF"
     )
         port map (
       I0 => spiCtrl_io_spis_0_mosi,
@@ -46565,11 +46584,11 @@ io_gpio_read_buffercc: entity work.sys_Apb3Periph_0_0_BufferCC
       I3 => gpioCfg_10_cnf(0),
       I4 => \CRH_reg_n_0_[8]\,
       I5 => \CRH_reg_n_0_[9]\,
-      O => io_gpio_writeEnable(10)
+      O => io_gpio_readEnable(10)
     );
-\io_gpio_writeEnable[27]_INST_0\: unisim.vcomponents.LUT5
+\io_gpio_readEnable[27]_INST_0\: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"EE0EEEEE"
+      INIT => X"11F11111"
     )
         port map (
       I0 => \CRH_reg_n_0_[12]\,
@@ -46577,11 +46596,11 @@ io_gpio_read_buffercc: entity work.sys_Apb3Periph_0_0_BufferCC
       I2 => gpioCfg_11_cnf(0),
       I3 => gpioCfg_11_cnf(1),
       I4 => p_1_in(11),
-      O => io_gpio_writeEnable(11)
+      O => io_gpio_readEnable(11)
     );
-\io_gpio_writeEnable[28]_INST_0\: unisim.vcomponents.LUT6
+\io_gpio_readEnable[28]_INST_0\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"47FF47FF47FF0000"
+      INIT => X"B800B800B800FFFF"
     )
         port map (
       I0 => spiCtrl_io_spis_0_sclk,
@@ -46590,22 +46609,22 @@ io_gpio_read_buffercc: entity work.sys_Apb3Periph_0_0_BufferCC
       I3 => gpioCfg_12_cnf(0),
       I4 => \CRH_reg_n_0_[16]\,
       I5 => \CRH_reg_n_0_[17]\,
-      O => io_gpio_writeEnable(12)
+      O => io_gpio_readEnable(12)
     );
-\io_gpio_writeEnable[29]_INST_0\: unisim.vcomponents.LUT4
+\io_gpio_readEnable[29]_INST_0\: unisim.vcomponents.LUT4
     generic map(
-      INIT => X"7770"
+      INIT => X"888F"
     )
         port map (
-      I0 => \io_gpio_writeEnable[29]\(3),
+      I0 => \io_gpio_readEnable[29]\(3),
       I1 => gpioCfg_13_cnf(0),
       I2 => \CRH_reg_n_0_[20]\,
       I3 => \CRH_reg_n_0_[21]\,
-      O => io_gpio_writeEnable(13)
+      O => io_gpio_readEnable(13)
     );
-\io_gpio_writeEnable[30]_INST_0\: unisim.vcomponents.LUT6
+\io_gpio_readEnable[30]_INST_0\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"47FF47FF47FF0000"
+      INIT => X"B800B800B800FFFF"
     )
         port map (
       I0 => spiCtrl_io_spis_1_mosi,
@@ -46614,11 +46633,11 @@ io_gpio_read_buffercc: entity work.sys_Apb3Periph_0_0_BufferCC
       I3 => gpioCfg_14_cnf(0),
       I4 => \CRH_reg_n_0_[24]\,
       I5 => \CRH_reg_n_0_[25]\,
-      O => io_gpio_writeEnable(14)
+      O => io_gpio_readEnable(14)
     );
-\io_gpio_writeEnable[31]_INST_0\: unisim.vcomponents.LUT5
+\io_gpio_readEnable[31]_INST_0\: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"EE0EEEEE"
+      INIT => X"11F11111"
     )
         port map (
       I0 => \CRH_reg_n_0_[28]\,
@@ -46626,7 +46645,14 @@ io_gpio_read_buffercc: entity work.sys_Apb3Periph_0_0_BufferCC
       I2 => gpioCfg_15_cnf(0),
       I3 => gpioCfg_15_cnf(1),
       I4 => p_1_in(15),
-      O => io_gpio_writeEnable(15)
+      O => io_gpio_readEnable(15)
+    );
+io_gpio_read_buffercc: entity work.sys_Apb3Periph_0_0_BufferCC
+     port map (
+      clk => clk,
+      io_dataIn(15 downto 0) => io_gpio_read(15 downto 0),
+      io_dataOut(15 downto 0) => io_gpio_read_buffercc_io_dataOut(15 downto 0),
+      reset => reset
     );
 \io_gpio_write[16]_INST_0\: unisim.vcomponents.LUT3
     generic map(
@@ -46778,6 +46804,8 @@ entity sys_Apb3Periph_0_0_Apb3I2c is
     \io_interrupt[4]\ : in STD_LOGIC;
     \io_interrupt[4]_0\ : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of sys_Apb3Periph_0_0_Apb3I2c : entity is "Apb3I2c";
 end sys_Apb3Periph_0_0_Apb3I2c;
 
 architecture STRUCTURE of sys_Apb3Periph_0_0_Apb3I2c is
@@ -52830,6 +52858,8 @@ entity sys_Apb3Periph_0_0_Apb3Spi is
     \logic_ram_reg_0_15_0_5_i_3__3\ : in STD_LOGIC;
     io_gpio_read : in STD_LOGIC_VECTOR ( 0 to 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of sys_Apb3Periph_0_0_Apb3Spi : entity is "Apb3Spi";
 end sys_Apb3Periph_0_0_Apb3Spi;
 
 architecture STRUCTURE of sys_Apb3Periph_0_0_Apb3Spi is
@@ -53018,7 +53048,7 @@ architecture STRUCTURE of sys_Apb3Periph_0_0_Apb3Spi is
   attribute SOFT_HLUTNM of \TXCRCR[0]_i_1\ : label is "soft_lutpair141";
   attribute SOFT_HLUTNM of \TXCRCR[2]_i_1\ : label is "soft_lutpair141";
   attribute SOFT_HLUTNM of \io_apb_PRDATA[13]_INST_0_i_26\ : label is "soft_lutpair147";
-  attribute SOFT_HLUTNM of \io_gpio_writeEnable[28]_INST_0_i_1\ : label is "soft_lutpair138";
+  attribute SOFT_HLUTNM of \io_gpio_readEnable[28]_INST_0_i_1\ : label is "soft_lutpair138";
   attribute SOFT_HLUTNM of \spiMaster_clockCounter[0]_i_1\ : label is "soft_lutpair146";
   attribute SOFT_HLUTNM of \spiMaster_clockCounter[1]_i_1\ : label is "soft_lutpair146";
   attribute SOFT_HLUTNM of \spiMaster_clockDivider[0]_i_1\ : label is "soft_lutpair151";
@@ -54985,7 +55015,7 @@ SR1_carry_i_4: unisim.vcomponents.LUT6
       I3 => io_apb_PADDR(3),
       O => \io_apb_PRDATA[9]_INST_0_i_30_n_0\
     );
-\io_gpio_writeEnable[28]_INST_0_i_1\: unisim.vcomponents.LUT2
+\io_gpio_readEnable[28]_INST_0_i_1\: unisim.vcomponents.LUT2
     generic map(
       INIT => X"6"
     )
@@ -59536,6 +59566,8 @@ entity sys_Apb3Periph_0_0_Apb3TimArray is
     io_apb_PENABLE : in STD_LOGIC;
     io_apb_PWRITE : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of sys_Apb3Periph_0_0_Apb3TimArray : entity is "Apb3TimArray";
 end sys_Apb3Periph_0_0_Apb3TimArray;
 
 architecture STRUCTURE of sys_Apb3Periph_0_0_Apb3TimArray is
@@ -59727,6 +59759,8 @@ entity sys_Apb3Periph_0_0_Apb3Wdg is
     io_apb_PWRITE : in STD_LOGIC;
     io_apb_PENABLE : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of sys_Apb3Periph_0_0_Apb3Wdg : entity is "Apb3Wdg";
 end sys_Apb3Periph_0_0_Apb3Wdg;
 
 architecture STRUCTURE of sys_Apb3Periph_0_0_Apb3Wdg is
@@ -59868,6 +59902,8 @@ entity sys_Apb3Periph_0_0_uartCtrlRx is
     Q : in STD_LOGIC_VECTOR ( 2 downto 0 );
     \FSM_sequential_stateMachine_state[2]_i_3__2_0\ : in STD_LOGIC_VECTOR ( 0 to 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of sys_Apb3Periph_0_0_uartCtrlRx : entity is "uartCtrlRx";
 end sys_Apb3Periph_0_0_uartCtrlRx;
 
 architecture STRUCTURE of sys_Apb3Periph_0_0_uartCtrlRx is
@@ -61858,10 +61894,10 @@ entity sys_Apb3Periph_0_0_Apb3GpioArray is
   port (
     io_gpio_write : out STD_LOGIC_VECTOR ( 25 downto 0 );
     Q : out STD_LOGIC_VECTOR ( 5 downto 0 );
-    io_gpio_writeEnable : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    gpioCtrl_io_apb_PRDATA : out STD_LOGIC_VECTOR ( 15 downto 0 );
     \CRH_reg[23]\ : out STD_LOGIC_VECTOR ( 3 downto 0 );
     \CRL_reg[27]\ : out STD_LOGIC_VECTOR ( 1 downto 0 );
-    gpioCtrl_io_apb_PRDATA : out STD_LOGIC_VECTOR ( 15 downto 0 );
+    io_gpio_readEnable : out STD_LOGIC_VECTOR ( 31 downto 0 );
     \CRL_reg[16]\ : out STD_LOGIC;
     \CRL_reg[17]\ : out STD_LOGIC;
     \CRL_reg[18]\ : out STD_LOGIC;
@@ -61882,8 +61918,6 @@ entity sys_Apb3Periph_0_0_Apb3GpioArray is
     clk : in STD_LOGIC;
     reset : in STD_LOGIC;
     spiCtrl_io_spis_1_mosi : in STD_LOGIC;
-    \io_gpio_writeEnable[29]\ : in STD_LOGIC_VECTOR ( 3 downto 0 );
-    spiCtrl_io_spis_0_sclk : in STD_LOGIC;
     spiCtrl_io_spis_0_mosi : in STD_LOGIC;
     i2cCtrl_io_i2cs_1_scl : in STD_LOGIC;
     i2cCtrl_io_i2cs_0_scl : in STD_LOGIC;
@@ -61897,11 +61931,31 @@ entity sys_Apb3Periph_0_0_Apb3GpioArray is
     \io_apb_PRDATA[15]_INST_0_i_27\ : in STD_LOGIC;
     io_apb_PWDATA : in STD_LOGIC_VECTOR ( 31 downto 0 );
     io_apb_PSEL : in STD_LOGIC_VECTOR ( 0 to 0 );
+    \io_gpio_readEnable[29]\ : in STD_LOGIC_VECTOR ( 3 downto 0 );
+    spiCtrl_io_spis_0_sclk : in STD_LOGIC;
     \io_apb_PRDATA[31]\ : in STD_LOGIC_VECTOR ( 0 to 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of sys_Apb3Periph_0_0_Apb3GpioArray : entity is "Apb3GpioArray";
 end sys_Apb3Periph_0_0_Apb3GpioArray;
 
 architecture STRUCTURE of sys_Apb3Periph_0_0_Apb3GpioArray is
+  signal GPIO_0_n_16 : STD_LOGIC;
+  signal GPIO_0_n_17 : STD_LOGIC;
+  signal GPIO_0_n_18 : STD_LOGIC;
+  signal GPIO_0_n_19 : STD_LOGIC;
+  signal GPIO_0_n_20 : STD_LOGIC;
+  signal GPIO_0_n_21 : STD_LOGIC;
+  signal GPIO_0_n_22 : STD_LOGIC;
+  signal GPIO_0_n_23 : STD_LOGIC;
+  signal GPIO_0_n_24 : STD_LOGIC;
+  signal GPIO_0_n_25 : STD_LOGIC;
+  signal GPIO_0_n_26 : STD_LOGIC;
+  signal GPIO_0_n_27 : STD_LOGIC;
+  signal GPIO_0_n_28 : STD_LOGIC;
+  signal GPIO_0_n_29 : STD_LOGIC;
+  signal GPIO_0_n_30 : STD_LOGIC;
+  signal GPIO_0_n_31 : STD_LOGIC;
   signal GPIO_0_n_32 : STD_LOGIC;
   signal GPIO_0_n_33 : STD_LOGIC;
   signal GPIO_0_n_34 : STD_LOGIC;
@@ -61920,7 +61974,6 @@ architecture STRUCTURE of sys_Apb3Periph_0_0_Apb3GpioArray is
   signal GPIO_0_n_47 : STD_LOGIC;
   signal GPIO_0_n_48 : STD_LOGIC;
   signal GPIO_0_n_49 : STD_LOGIC;
-  signal GPIO_0_n_50 : STD_LOGIC;
   signal GPIO_0_n_51 : STD_LOGIC;
   signal GPIO_0_n_52 : STD_LOGIC;
   signal GPIO_0_n_53 : STD_LOGIC;
@@ -61929,29 +61982,28 @@ architecture STRUCTURE of sys_Apb3Periph_0_0_Apb3GpioArray is
   signal GPIO_0_n_56 : STD_LOGIC;
   signal GPIO_0_n_57 : STD_LOGIC;
   signal GPIO_0_n_58 : STD_LOGIC;
-  signal GPIO_0_n_59 : STD_LOGIC;
   signal GPIO_0_n_60 : STD_LOGIC;
   signal GPIO_0_n_61 : STD_LOGIC;
   signal GPIO_0_n_62 : STD_LOGIC;
   signal GPIO_0_n_63 : STD_LOGIC;
-  signal GPIO_0_n_64 : STD_LOGIC;
-  signal GPIO_0_n_65 : STD_LOGIC;
-  signal GPIO_0_n_67 : STD_LOGIC;
-  signal GPIO_0_n_68 : STD_LOGIC;
-  signal GPIO_0_n_69 : STD_LOGIC;
-  signal GPIO_0_n_70 : STD_LOGIC;
-  signal GPIO_0_n_71 : STD_LOGIC;
-  signal GPIO_0_n_72 : STD_LOGIC;
-  signal GPIO_0_n_73 : STD_LOGIC;
-  signal GPIO_0_n_74 : STD_LOGIC;
-  signal GPIO_0_n_76 : STD_LOGIC;
-  signal GPIO_0_n_77 : STD_LOGIC;
-  signal GPIO_0_n_78 : STD_LOGIC;
-  signal GPIO_0_n_79 : STD_LOGIC;
-  signal GPIO_1_n_36 : STD_LOGIC;
+  signal GPIO_1_n_10 : STD_LOGIC;
+  signal GPIO_1_n_11 : STD_LOGIC;
+  signal GPIO_1_n_12 : STD_LOGIC;
+  signal GPIO_1_n_13 : STD_LOGIC;
+  signal GPIO_1_n_18 : STD_LOGIC;
+  signal GPIO_1_n_25 : STD_LOGIC;
+  signal GPIO_1_n_26 : STD_LOGIC;
+  signal GPIO_1_n_27 : STD_LOGIC;
+  signal GPIO_1_n_28 : STD_LOGIC;
+  signal GPIO_1_n_29 : STD_LOGIC;
+  signal GPIO_1_n_30 : STD_LOGIC;
+  signal GPIO_1_n_31 : STD_LOGIC;
+  signal GPIO_1_n_32 : STD_LOGIC;
+  signal GPIO_1_n_33 : STD_LOGIC;
+  signal GPIO_1_n_34 : STD_LOGIC;
+  signal GPIO_1_n_35 : STD_LOGIC;
   signal GPIO_1_n_37 : STD_LOGIC;
   signal GPIO_1_n_38 : STD_LOGIC;
-  signal GPIO_1_n_39 : STD_LOGIC;
   signal GPIO_1_n_40 : STD_LOGIC;
   signal GPIO_1_n_41 : STD_LOGIC;
   signal GPIO_1_n_42 : STD_LOGIC;
@@ -61960,24 +62012,10 @@ architecture STRUCTURE of sys_Apb3Periph_0_0_Apb3GpioArray is
   signal GPIO_1_n_45 : STD_LOGIC;
   signal GPIO_1_n_46 : STD_LOGIC;
   signal GPIO_1_n_47 : STD_LOGIC;
-  signal GPIO_1_n_48 : STD_LOGIC;
   signal GPIO_1_n_49 : STD_LOGIC;
   signal GPIO_1_n_50 : STD_LOGIC;
   signal GPIO_1_n_51 : STD_LOGIC;
-  signal GPIO_1_n_53 : STD_LOGIC;
-  signal GPIO_1_n_54 : STD_LOGIC;
-  signal GPIO_1_n_56 : STD_LOGIC;
-  signal GPIO_1_n_57 : STD_LOGIC;
-  signal GPIO_1_n_58 : STD_LOGIC;
-  signal GPIO_1_n_59 : STD_LOGIC;
-  signal GPIO_1_n_60 : STD_LOGIC;
-  signal GPIO_1_n_61 : STD_LOGIC;
-  signal GPIO_1_n_62 : STD_LOGIC;
-  signal GPIO_1_n_63 : STD_LOGIC;
-  signal GPIO_1_n_65 : STD_LOGIC;
-  signal GPIO_1_n_66 : STD_LOGIC;
-  signal GPIO_1_n_67 : STD_LOGIC;
-  signal GPIO_1_n_68 : STD_LOGIC;
+  signal GPIO_1_n_52 : STD_LOGIC;
   signal \_zz__zz_CRH\ : STD_LOGIC;
   signal \_zz__zz_CRH_1\ : STD_LOGIC;
   signal \_zz__zz_CRL\ : STD_LOGIC;
@@ -61988,54 +62026,54 @@ architecture STRUCTURE of sys_Apb3Periph_0_0_Apb3GpioArray is
 begin
 GPIO_0: entity work.sys_Apb3Periph_0_0_Apb3Gpio
      port map (
-      \CRH_reg[0]_0\ => GPIO_0_n_48,
-      \CRH_reg[10]_0\ => GPIO_0_n_58,
-      \CRH_reg[11]_0\ => GPIO_0_n_59,
-      \CRH_reg[12]_0\ => GPIO_0_n_60,
-      \CRH_reg[13]_0\ => GPIO_0_n_61,
-      \CRH_reg[14]_0\ => GPIO_0_n_62,
-      \CRH_reg[15]_0\ => GPIO_0_n_63,
-      \CRH_reg[1]_0\ => GPIO_0_n_49,
-      \CRH_reg[2]_0\ => GPIO_0_n_50,
-      \CRH_reg[3]_0\ => GPIO_0_n_51,
-      \CRH_reg[4]_0\ => GPIO_0_n_52,
-      \CRH_reg[5]_0\ => GPIO_0_n_53,
-      \CRH_reg[6]_0\ => GPIO_0_n_54,
-      \CRH_reg[7]_0\ => GPIO_0_n_55,
-      \CRH_reg[8]_0\ => GPIO_0_n_56,
-      \CRH_reg[9]_0\ => GPIO_0_n_57,
-      \CRL_reg[16]_0\ => GPIO_0_n_32,
-      \CRL_reg[17]_0\ => GPIO_0_n_33,
-      \CRL_reg[18]_0\ => GPIO_0_n_34,
-      \CRL_reg[19]_0\ => GPIO_0_n_35,
-      \CRL_reg[20]_0\ => GPIO_0_n_36,
-      \CRL_reg[21]_0\ => GPIO_0_n_37,
-      \CRL_reg[22]_0\ => GPIO_0_n_38,
-      \CRL_reg[23]_0\ => GPIO_0_n_39,
-      \CRL_reg[24]_0\ => GPIO_0_n_40,
-      \CRL_reg[25]_0\ => GPIO_0_n_41,
-      \CRL_reg[26]_0\ => GPIO_0_n_42,
-      \CRL_reg[27]_0\ => GPIO_0_n_43,
-      \CRL_reg[28]_0\ => GPIO_0_n_44,
-      \CRL_reg[29]_0\ => GPIO_0_n_45,
-      \CRL_reg[30]_0\ => GPIO_0_n_46,
-      \CRL_reg[31]_0\ => GPIO_0_n_47,
-      Q(15) => GPIO_0_n_64,
-      Q(14) => GPIO_0_n_65,
+      \CRH_reg[0]_0\ => GPIO_0_n_32,
+      \CRH_reg[10]_0\ => GPIO_0_n_42,
+      \CRH_reg[11]_0\ => GPIO_0_n_43,
+      \CRH_reg[12]_0\ => GPIO_0_n_44,
+      \CRH_reg[13]_0\ => GPIO_0_n_45,
+      \CRH_reg[14]_0\ => GPIO_0_n_46,
+      \CRH_reg[15]_0\ => GPIO_0_n_47,
+      \CRH_reg[1]_0\ => GPIO_0_n_33,
+      \CRH_reg[2]_0\ => GPIO_0_n_34,
+      \CRH_reg[3]_0\ => GPIO_0_n_35,
+      \CRH_reg[4]_0\ => GPIO_0_n_36,
+      \CRH_reg[5]_0\ => GPIO_0_n_37,
+      \CRH_reg[6]_0\ => GPIO_0_n_38,
+      \CRH_reg[7]_0\ => GPIO_0_n_39,
+      \CRH_reg[8]_0\ => GPIO_0_n_40,
+      \CRH_reg[9]_0\ => GPIO_0_n_41,
+      \CRL_reg[16]_0\ => GPIO_0_n_16,
+      \CRL_reg[17]_0\ => GPIO_0_n_17,
+      \CRL_reg[18]_0\ => GPIO_0_n_18,
+      \CRL_reg[19]_0\ => GPIO_0_n_19,
+      \CRL_reg[20]_0\ => GPIO_0_n_20,
+      \CRL_reg[21]_0\ => GPIO_0_n_21,
+      \CRL_reg[22]_0\ => GPIO_0_n_22,
+      \CRL_reg[23]_0\ => GPIO_0_n_23,
+      \CRL_reg[24]_0\ => GPIO_0_n_24,
+      \CRL_reg[25]_0\ => GPIO_0_n_25,
+      \CRL_reg[26]_0\ => GPIO_0_n_26,
+      \CRL_reg[27]_0\ => GPIO_0_n_27,
+      \CRL_reg[28]_0\ => GPIO_0_n_28,
+      \CRL_reg[29]_0\ => GPIO_0_n_29,
+      \CRL_reg[30]_0\ => GPIO_0_n_30,
+      \CRL_reg[31]_0\ => GPIO_0_n_31,
+      Q(15) => GPIO_0_n_48,
+      Q(14) => GPIO_0_n_49,
       Q(13) => \_zz__zz_CRH\,
-      Q(12) => GPIO_0_n_67,
-      Q(11) => GPIO_0_n_68,
-      Q(10) => GPIO_0_n_69,
-      Q(9) => GPIO_0_n_70,
-      Q(8) => GPIO_0_n_71,
-      Q(7) => GPIO_0_n_72,
-      Q(6) => GPIO_0_n_73,
-      Q(5) => GPIO_0_n_74,
+      Q(12) => GPIO_0_n_51,
+      Q(11) => GPIO_0_n_52,
+      Q(10) => GPIO_0_n_53,
+      Q(9) => GPIO_0_n_54,
+      Q(8) => GPIO_0_n_55,
+      Q(7) => GPIO_0_n_56,
+      Q(6) => GPIO_0_n_57,
+      Q(5) => GPIO_0_n_58,
       Q(4) => \_zz__zz_CRL\,
-      Q(3) => GPIO_0_n_76,
-      Q(2) => GPIO_0_n_77,
-      Q(1) => GPIO_0_n_78,
-      Q(0) => GPIO_0_n_79,
+      Q(3) => GPIO_0_n_60,
+      Q(2) => GPIO_0_n_61,
+      Q(1) => GPIO_0_n_62,
+      Q(0) => GPIO_0_n_63,
       clk => clk,
       io_apb_PADDR(5 downto 0) => io_apb_PADDR(5 downto 0),
       io_apb_PENABLE => io_apb_PENABLE,
@@ -62047,28 +62085,28 @@ GPIO_0: entity work.sys_Apb3Periph_0_0_Apb3Gpio
       io_apb_decoder_io_output_PSEL(0) => io_apb_decoder_io_output_PSEL(0),
       io_ch(7 downto 0) => io_ch(7 downto 0),
       io_gpio_read(15 downto 0) => io_gpio_read(15 downto 0),
+      io_gpio_readEnable(15 downto 0) => io_gpio_readEnable(15 downto 0),
       io_gpio_write(15 downto 0) => io_gpio_write(15 downto 0),
-      io_gpio_writeEnable(15 downto 0) => io_gpio_writeEnable(15 downto 0),
       reset => reset
     );
 GPIO_1: entity work.sys_Apb3Periph_0_0_Apb3Gpio_21
      port map (
-      \CRH_reg[0]_0\ => GPIO_1_n_36,
-      \CRH_reg[10]_0\ => GPIO_1_n_46,
-      \CRH_reg[11]_0\ => GPIO_1_n_47,
-      \CRH_reg[12]_0\ => GPIO_1_n_48,
-      \CRH_reg[13]_0\ => GPIO_1_n_49,
-      \CRH_reg[14]_0\ => GPIO_1_n_50,
-      \CRH_reg[15]_0\ => GPIO_1_n_51,
-      \CRH_reg[1]_0\ => GPIO_1_n_37,
-      \CRH_reg[2]_0\ => GPIO_1_n_38,
-      \CRH_reg[3]_0\ => GPIO_1_n_39,
-      \CRH_reg[4]_0\ => GPIO_1_n_40,
-      \CRH_reg[5]_0\ => GPIO_1_n_41,
-      \CRH_reg[6]_0\ => GPIO_1_n_42,
-      \CRH_reg[7]_0\ => GPIO_1_n_43,
-      \CRH_reg[8]_0\ => GPIO_1_n_44,
-      \CRH_reg[9]_0\ => GPIO_1_n_45,
+      \CRH_reg[0]_0\ => GPIO_1_n_10,
+      \CRH_reg[10]_0\ => GPIO_1_n_30,
+      \CRH_reg[11]_0\ => GPIO_1_n_31,
+      \CRH_reg[12]_0\ => GPIO_1_n_32,
+      \CRH_reg[13]_0\ => GPIO_1_n_33,
+      \CRH_reg[14]_0\ => GPIO_1_n_34,
+      \CRH_reg[15]_0\ => GPIO_1_n_35,
+      \CRH_reg[1]_0\ => GPIO_1_n_11,
+      \CRH_reg[2]_0\ => GPIO_1_n_12,
+      \CRH_reg[3]_0\ => GPIO_1_n_13,
+      \CRH_reg[4]_0\ => GPIO_1_n_18,
+      \CRH_reg[5]_0\ => GPIO_1_n_25,
+      \CRH_reg[6]_0\ => GPIO_1_n_26,
+      \CRH_reg[7]_0\ => GPIO_1_n_27,
+      \CRH_reg[8]_0\ => GPIO_1_n_28,
+      \CRH_reg[9]_0\ => GPIO_1_n_29,
       \CRL_reg[16]_0\ => \CRL_reg[16]\,
       \CRL_reg[17]_0\ => \CRL_reg[17]\,
       \CRL_reg[18]_0\ => \CRL_reg[18]\,
@@ -62086,22 +62124,22 @@ GPIO_1: entity work.sys_Apb3Periph_0_0_Apb3Gpio_21
       \CRL_reg[29]_0\ => \CRL_reg[29]\,
       \CRL_reg[30]_0\ => \CRL_reg[30]\,
       \CRL_reg[31]_0\ => \CRL_reg[31]\,
-      \LCKR_reg[15]_0\(15) => GPIO_1_n_53,
-      \LCKR_reg[15]_0\(14) => GPIO_1_n_54,
+      \LCKR_reg[15]_0\(15) => GPIO_1_n_37,
+      \LCKR_reg[15]_0\(14) => GPIO_1_n_38,
       \LCKR_reg[15]_0\(13) => \_zz__zz_CRH_1\,
-      \LCKR_reg[15]_0\(12) => GPIO_1_n_56,
-      \LCKR_reg[15]_0\(11) => GPIO_1_n_57,
-      \LCKR_reg[15]_0\(10) => GPIO_1_n_58,
-      \LCKR_reg[15]_0\(9) => GPIO_1_n_59,
-      \LCKR_reg[15]_0\(8) => GPIO_1_n_60,
-      \LCKR_reg[15]_0\(7) => GPIO_1_n_61,
-      \LCKR_reg[15]_0\(6) => GPIO_1_n_62,
-      \LCKR_reg[15]_0\(5) => GPIO_1_n_63,
+      \LCKR_reg[15]_0\(12) => GPIO_1_n_40,
+      \LCKR_reg[15]_0\(11) => GPIO_1_n_41,
+      \LCKR_reg[15]_0\(10) => GPIO_1_n_42,
+      \LCKR_reg[15]_0\(9) => GPIO_1_n_43,
+      \LCKR_reg[15]_0\(8) => GPIO_1_n_44,
+      \LCKR_reg[15]_0\(7) => GPIO_1_n_45,
+      \LCKR_reg[15]_0\(6) => GPIO_1_n_46,
+      \LCKR_reg[15]_0\(5) => GPIO_1_n_47,
       \LCKR_reg[15]_0\(4) => \_zz__zz_CRL_0\,
-      \LCKR_reg[15]_0\(3) => GPIO_1_n_65,
-      \LCKR_reg[15]_0\(2) => GPIO_1_n_66,
-      \LCKR_reg[15]_0\(1) => GPIO_1_n_67,
-      \LCKR_reg[15]_0\(0) => GPIO_1_n_68,
+      \LCKR_reg[15]_0\(3) => GPIO_1_n_49,
+      \LCKR_reg[15]_0\(2) => GPIO_1_n_50,
+      \LCKR_reg[15]_0\(1) => GPIO_1_n_51,
+      \LCKR_reg[15]_0\(0) => GPIO_1_n_52,
       \ODR_reg[13]_0\(5 downto 0) => Q(5 downto 0),
       Q(3 downto 0) => \CRH_reg[23]\(3 downto 0),
       clk => clk,
@@ -62111,32 +62149,32 @@ GPIO_1: entity work.sys_Apb3Periph_0_0_Apb3Gpio_21
       io_apb_PENABLE => io_apb_PENABLE,
       \io_apb_PRDATA[15]_INST_0_i_27\ => \io_apb_PRDATA[15]_INST_0_i_27\,
       \io_apb_PRDATA[16]\ => \io_apb_PRDATA[16]\,
-      \io_apb_PRDATA[16]_0\ => GPIO_0_n_32,
+      \io_apb_PRDATA[16]_0\ => GPIO_0_n_16,
       \io_apb_PRDATA[16]_1\ => apb3Router_7_n_16,
-      \io_apb_PRDATA[17]\ => GPIO_0_n_33,
-      \io_apb_PRDATA[18]\ => GPIO_0_n_34,
-      \io_apb_PRDATA[19]\ => GPIO_0_n_35,
-      \io_apb_PRDATA[20]\ => GPIO_0_n_36,
-      \io_apb_PRDATA[21]\ => GPIO_0_n_37,
-      \io_apb_PRDATA[22]\ => GPIO_0_n_38,
-      \io_apb_PRDATA[23]\ => GPIO_0_n_39,
-      \io_apb_PRDATA[24]\ => GPIO_0_n_40,
-      \io_apb_PRDATA[25]\ => GPIO_0_n_41,
-      \io_apb_PRDATA[26]\ => GPIO_0_n_42,
-      \io_apb_PRDATA[27]\ => GPIO_0_n_43,
-      \io_apb_PRDATA[28]\ => GPIO_0_n_44,
-      \io_apb_PRDATA[29]\ => GPIO_0_n_45,
-      \io_apb_PRDATA[30]\ => GPIO_0_n_46,
+      \io_apb_PRDATA[17]\ => GPIO_0_n_17,
+      \io_apb_PRDATA[18]\ => GPIO_0_n_18,
+      \io_apb_PRDATA[19]\ => GPIO_0_n_19,
+      \io_apb_PRDATA[20]\ => GPIO_0_n_20,
+      \io_apb_PRDATA[21]\ => GPIO_0_n_21,
+      \io_apb_PRDATA[22]\ => GPIO_0_n_22,
+      \io_apb_PRDATA[23]\ => GPIO_0_n_23,
+      \io_apb_PRDATA[24]\ => GPIO_0_n_24,
+      \io_apb_PRDATA[25]\ => GPIO_0_n_25,
+      \io_apb_PRDATA[26]\ => GPIO_0_n_26,
+      \io_apb_PRDATA[27]\ => GPIO_0_n_27,
+      \io_apb_PRDATA[28]\ => GPIO_0_n_28,
+      \io_apb_PRDATA[29]\ => GPIO_0_n_29,
+      \io_apb_PRDATA[30]\ => GPIO_0_n_30,
       \io_apb_PRDATA[31]\(0) => \io_apb_PRDATA[31]\(0),
-      \io_apb_PRDATA[31]_0\ => GPIO_0_n_47,
+      \io_apb_PRDATA[31]_0\ => GPIO_0_n_31,
       io_apb_PSEL(0) => io_apb_PSEL(0),
       io_apb_PWDATA(31 downto 0) => io_apb_PWDATA(31 downto 0),
       io_apb_PWRITE => io_apb_PWRITE,
       io_apb_decoder_io_output_PSEL(0) => io_apb_decoder_io_output_PSEL(0),
       io_gpio_read(15 downto 0) => io_gpio_read(31 downto 16),
+      io_gpio_readEnable(15 downto 0) => io_gpio_readEnable(31 downto 16),
+      \io_gpio_readEnable[29]\(3 downto 0) => \io_gpio_readEnable[29]\(3 downto 0),
       io_gpio_write(9 downto 0) => io_gpio_write(25 downto 16),
-      io_gpio_writeEnable(15 downto 0) => io_gpio_writeEnable(31 downto 16),
-      \io_gpio_writeEnable[29]\(3 downto 0) => \io_gpio_writeEnable[29]\(3 downto 0),
       reset => reset,
       spiCtrl_io_spis_0_mosi => spiCtrl_io_spis_0_mosi,
       spiCtrl_io_spis_0_sclk => spiCtrl_io_spis_0_sclk,
@@ -62146,75 +62184,75 @@ GPIO_1: entity work.sys_Apb3Periph_0_0_Apb3Gpio_21
     );
 apb3Router_7: entity work.sys_Apb3Periph_0_0_Apb3Router_22
      port map (
-      Q(15) => GPIO_0_n_64,
-      Q(14) => GPIO_0_n_65,
+      Q(15) => GPIO_0_n_48,
+      Q(14) => GPIO_0_n_49,
       Q(13) => \_zz__zz_CRH\,
-      Q(12) => GPIO_0_n_67,
-      Q(11) => GPIO_0_n_68,
-      Q(10) => GPIO_0_n_69,
-      Q(9) => GPIO_0_n_70,
-      Q(8) => GPIO_0_n_71,
-      Q(7) => GPIO_0_n_72,
-      Q(6) => GPIO_0_n_73,
-      Q(5) => GPIO_0_n_74,
+      Q(12) => GPIO_0_n_51,
+      Q(11) => GPIO_0_n_52,
+      Q(10) => GPIO_0_n_53,
+      Q(9) => GPIO_0_n_54,
+      Q(8) => GPIO_0_n_55,
+      Q(7) => GPIO_0_n_56,
+      Q(6) => GPIO_0_n_57,
+      Q(5) => GPIO_0_n_58,
       Q(4) => \_zz__zz_CRL\,
-      Q(3) => GPIO_0_n_76,
-      Q(2) => GPIO_0_n_77,
-      Q(1) => GPIO_0_n_78,
-      Q(0) => GPIO_0_n_79,
+      Q(3) => GPIO_0_n_60,
+      Q(2) => GPIO_0_n_61,
+      Q(1) => GPIO_0_n_62,
+      Q(0) => GPIO_0_n_63,
       clk => clk,
       gpioCtrl_io_apb_PRDATA(15 downto 0) => gpioCtrl_io_apb_PRDATA(15 downto 0),
       io_apb_PADDR(9 downto 0) => io_apb_PADDR(9 downto 0),
       \io_apb_PADDR[4]_0\ => apb3Router_7_n_17,
       io_apb_PADDR_4_sp_1 => apb3Router_7_n_16,
-      \io_apb_PRDATA[0]_INST_0_i_3\ => GPIO_0_n_48,
-      \io_apb_PRDATA[0]_INST_0_i_3_0\ => GPIO_1_n_36,
-      \io_apb_PRDATA[10]_INST_0_i_10\ => GPIO_0_n_58,
-      \io_apb_PRDATA[10]_INST_0_i_10_0\ => GPIO_1_n_46,
-      \io_apb_PRDATA[11]_INST_0_i_10\ => GPIO_0_n_59,
-      \io_apb_PRDATA[11]_INST_0_i_10_0\ => GPIO_1_n_47,
-      \io_apb_PRDATA[12]_INST_0_i_10\ => GPIO_0_n_60,
-      \io_apb_PRDATA[12]_INST_0_i_10_0\ => GPIO_1_n_48,
-      \io_apb_PRDATA[13]_INST_0_i_10\ => GPIO_0_n_61,
-      \io_apb_PRDATA[13]_INST_0_i_10_0\ => GPIO_1_n_49,
-      \io_apb_PRDATA[14]_INST_0_i_10\ => GPIO_0_n_62,
-      \io_apb_PRDATA[14]_INST_0_i_10_0\ => GPIO_1_n_50,
-      \io_apb_PRDATA[15]_INST_0_i_13\ => GPIO_0_n_63,
-      \io_apb_PRDATA[15]_INST_0_i_13_0\ => GPIO_1_n_51,
-      \io_apb_PRDATA[15]_INST_0_i_27_0\(15) => GPIO_1_n_53,
-      \io_apb_PRDATA[15]_INST_0_i_27_0\(14) => GPIO_1_n_54,
+      \io_apb_PRDATA[0]_INST_0_i_3\ => GPIO_0_n_32,
+      \io_apb_PRDATA[0]_INST_0_i_3_0\ => GPIO_1_n_10,
+      \io_apb_PRDATA[10]_INST_0_i_10\ => GPIO_0_n_42,
+      \io_apb_PRDATA[10]_INST_0_i_10_0\ => GPIO_1_n_30,
+      \io_apb_PRDATA[11]_INST_0_i_10\ => GPIO_0_n_43,
+      \io_apb_PRDATA[11]_INST_0_i_10_0\ => GPIO_1_n_31,
+      \io_apb_PRDATA[12]_INST_0_i_10\ => GPIO_0_n_44,
+      \io_apb_PRDATA[12]_INST_0_i_10_0\ => GPIO_1_n_32,
+      \io_apb_PRDATA[13]_INST_0_i_10\ => GPIO_0_n_45,
+      \io_apb_PRDATA[13]_INST_0_i_10_0\ => GPIO_1_n_33,
+      \io_apb_PRDATA[14]_INST_0_i_10\ => GPIO_0_n_46,
+      \io_apb_PRDATA[14]_INST_0_i_10_0\ => GPIO_1_n_34,
+      \io_apb_PRDATA[15]_INST_0_i_13\ => GPIO_0_n_47,
+      \io_apb_PRDATA[15]_INST_0_i_13_0\ => GPIO_1_n_35,
+      \io_apb_PRDATA[15]_INST_0_i_27_0\(15) => GPIO_1_n_37,
+      \io_apb_PRDATA[15]_INST_0_i_27_0\(14) => GPIO_1_n_38,
       \io_apb_PRDATA[15]_INST_0_i_27_0\(13) => \_zz__zz_CRH_1\,
-      \io_apb_PRDATA[15]_INST_0_i_27_0\(12) => GPIO_1_n_56,
-      \io_apb_PRDATA[15]_INST_0_i_27_0\(11) => GPIO_1_n_57,
-      \io_apb_PRDATA[15]_INST_0_i_27_0\(10) => GPIO_1_n_58,
-      \io_apb_PRDATA[15]_INST_0_i_27_0\(9) => GPIO_1_n_59,
-      \io_apb_PRDATA[15]_INST_0_i_27_0\(8) => GPIO_1_n_60,
-      \io_apb_PRDATA[15]_INST_0_i_27_0\(7) => GPIO_1_n_61,
-      \io_apb_PRDATA[15]_INST_0_i_27_0\(6) => GPIO_1_n_62,
-      \io_apb_PRDATA[15]_INST_0_i_27_0\(5) => GPIO_1_n_63,
+      \io_apb_PRDATA[15]_INST_0_i_27_0\(12) => GPIO_1_n_40,
+      \io_apb_PRDATA[15]_INST_0_i_27_0\(11) => GPIO_1_n_41,
+      \io_apb_PRDATA[15]_INST_0_i_27_0\(10) => GPIO_1_n_42,
+      \io_apb_PRDATA[15]_INST_0_i_27_0\(9) => GPIO_1_n_43,
+      \io_apb_PRDATA[15]_INST_0_i_27_0\(8) => GPIO_1_n_44,
+      \io_apb_PRDATA[15]_INST_0_i_27_0\(7) => GPIO_1_n_45,
+      \io_apb_PRDATA[15]_INST_0_i_27_0\(6) => GPIO_1_n_46,
+      \io_apb_PRDATA[15]_INST_0_i_27_0\(5) => GPIO_1_n_47,
       \io_apb_PRDATA[15]_INST_0_i_27_0\(4) => \_zz__zz_CRL_0\,
-      \io_apb_PRDATA[15]_INST_0_i_27_0\(3) => GPIO_1_n_65,
-      \io_apb_PRDATA[15]_INST_0_i_27_0\(2) => GPIO_1_n_66,
-      \io_apb_PRDATA[15]_INST_0_i_27_0\(1) => GPIO_1_n_67,
-      \io_apb_PRDATA[15]_INST_0_i_27_0\(0) => GPIO_1_n_68,
-      \io_apb_PRDATA[1]_INST_0_i_3\ => GPIO_0_n_49,
-      \io_apb_PRDATA[1]_INST_0_i_3_0\ => GPIO_1_n_37,
-      \io_apb_PRDATA[2]_INST_0_i_3\ => GPIO_0_n_50,
-      \io_apb_PRDATA[2]_INST_0_i_3_0\ => GPIO_1_n_38,
-      \io_apb_PRDATA[3]_INST_0_i_3\ => GPIO_0_n_51,
-      \io_apb_PRDATA[3]_INST_0_i_3_0\ => GPIO_1_n_39,
-      \io_apb_PRDATA[4]_INST_0_i_3\ => GPIO_0_n_52,
-      \io_apb_PRDATA[4]_INST_0_i_3_0\ => GPIO_1_n_40,
-      \io_apb_PRDATA[5]_INST_0_i_3\ => GPIO_0_n_53,
-      \io_apb_PRDATA[5]_INST_0_i_3_0\ => GPIO_1_n_41,
-      \io_apb_PRDATA[6]_INST_0_i_3\ => GPIO_0_n_54,
-      \io_apb_PRDATA[6]_INST_0_i_3_0\ => GPIO_1_n_42,
-      \io_apb_PRDATA[7]_INST_0_i_3\ => GPIO_0_n_55,
-      \io_apb_PRDATA[7]_INST_0_i_3_0\ => GPIO_1_n_43,
-      \io_apb_PRDATA[8]_INST_0_i_3\ => GPIO_0_n_56,
-      \io_apb_PRDATA[8]_INST_0_i_3_0\ => GPIO_1_n_44,
-      \io_apb_PRDATA[9]_INST_0_i_10\ => GPIO_0_n_57,
-      \io_apb_PRDATA[9]_INST_0_i_10_0\ => GPIO_1_n_45,
+      \io_apb_PRDATA[15]_INST_0_i_27_0\(3) => GPIO_1_n_49,
+      \io_apb_PRDATA[15]_INST_0_i_27_0\(2) => GPIO_1_n_50,
+      \io_apb_PRDATA[15]_INST_0_i_27_0\(1) => GPIO_1_n_51,
+      \io_apb_PRDATA[15]_INST_0_i_27_0\(0) => GPIO_1_n_52,
+      \io_apb_PRDATA[1]_INST_0_i_3\ => GPIO_0_n_33,
+      \io_apb_PRDATA[1]_INST_0_i_3_0\ => GPIO_1_n_11,
+      \io_apb_PRDATA[2]_INST_0_i_3\ => GPIO_0_n_34,
+      \io_apb_PRDATA[2]_INST_0_i_3_0\ => GPIO_1_n_12,
+      \io_apb_PRDATA[3]_INST_0_i_3\ => GPIO_0_n_35,
+      \io_apb_PRDATA[3]_INST_0_i_3_0\ => GPIO_1_n_13,
+      \io_apb_PRDATA[4]_INST_0_i_3\ => GPIO_0_n_36,
+      \io_apb_PRDATA[4]_INST_0_i_3_0\ => GPIO_1_n_18,
+      \io_apb_PRDATA[5]_INST_0_i_3\ => GPIO_0_n_37,
+      \io_apb_PRDATA[5]_INST_0_i_3_0\ => GPIO_1_n_25,
+      \io_apb_PRDATA[6]_INST_0_i_3\ => GPIO_0_n_38,
+      \io_apb_PRDATA[6]_INST_0_i_3_0\ => GPIO_1_n_26,
+      \io_apb_PRDATA[7]_INST_0_i_3\ => GPIO_0_n_39,
+      \io_apb_PRDATA[7]_INST_0_i_3_0\ => GPIO_1_n_27,
+      \io_apb_PRDATA[8]_INST_0_i_3\ => GPIO_0_n_40,
+      \io_apb_PRDATA[8]_INST_0_i_3_0\ => GPIO_1_n_28,
+      \io_apb_PRDATA[9]_INST_0_i_10\ => GPIO_0_n_41,
+      \io_apb_PRDATA[9]_INST_0_i_10_0\ => GPIO_1_n_29,
       io_apb_PSEL(0) => io_apb_PSEL(0)
     );
 end STRUCTURE;
@@ -62265,6 +62303,8 @@ entity sys_Apb3Periph_0_0_Apb3I2cArray is
     io_apb_PSEL : in STD_LOGIC_VECTOR ( 0 to 0 );
     \io_apb_PRDATA[0]_INST_0_i_22\ : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of sys_Apb3Periph_0_0_Apb3I2cArray : entity is "Apb3I2cArray";
 end sys_Apb3Periph_0_0_Apb3I2cArray;
 
 architecture STRUCTURE of sys_Apb3Periph_0_0_Apb3I2cArray is
@@ -62450,6 +62490,8 @@ entity sys_Apb3Periph_0_0_Apb3SpiArray is
     \CRCPR_reg[0]\ : in STD_LOGIC;
     io_gpio_read : in STD_LOGIC_VECTOR ( 1 downto 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of sys_Apb3Periph_0_0_Apb3SpiArray : entity is "Apb3SpiArray";
 end sys_Apb3Periph_0_0_Apb3SpiArray;
 
 architecture STRUCTURE of sys_Apb3Periph_0_0_Apb3SpiArray is
@@ -62649,6 +62691,8 @@ entity sys_Apb3Periph_0_0_Apb3Uart is
     uartCtrl_io_interrupt : in STD_LOGIC_VECTOR ( 0 to 0 );
     io_apb_PWDATA : in STD_LOGIC_VECTOR ( 15 downto 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of sys_Apb3Periph_0_0_Apb3Uart : entity is "Apb3Uart";
 end sys_Apb3Periph_0_0_Apb3Uart;
 
 architecture STRUCTURE of sys_Apb3Periph_0_0_Apb3Uart is
@@ -67057,6 +67101,8 @@ entity sys_Apb3Periph_0_0_Apb3UartArray is
     \io_apb_PRDATA[15]_INST_0_i_28_4\ : in STD_LOGIC;
     io_apb_PWDATA : in STD_LOGIC_VECTOR ( 15 downto 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of sys_Apb3Periph_0_0_Apb3UartArray : entity is "Apb3UartArray";
 end sys_Apb3Periph_0_0_Apb3UartArray;
 
 architecture STRUCTURE of sys_Apb3Periph_0_0_Apb3UartArray is
@@ -67230,8 +67276,8 @@ use UNISIM.VCOMPONENTS.ALL;
 entity sys_Apb3Periph_0_0_Apb3Periph is
   port (
     io_gpio_write : out STD_LOGIC_VECTOR ( 31 downto 0 );
-    io_gpio_writeEnable : out STD_LOGIC_VECTOR ( 31 downto 0 );
     io_apb_PRDATA : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    io_gpio_readEnable : out STD_LOGIC_VECTOR ( 31 downto 0 );
     io_interrupt : out STD_LOGIC_VECTOR ( 5 downto 0 );
     io_gpio_read : in STD_LOGIC_VECTOR ( 31 downto 0 );
     clk : in STD_LOGIC;
@@ -67261,6 +67307,8 @@ entity sys_Apb3Periph_0_0_Apb3Periph is
     \io_apb_PRDATA[16]_1\ : in STD_LOGIC;
     \io_apb_PRDATA[0]_INST_0_i_7\ : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of sys_Apb3Periph_0_0_Apb3Periph : entity is "Apb3Periph";
 end sys_Apb3Periph_0_0_Apb3Periph;
 
 architecture STRUCTURE of sys_Apb3Periph_0_0_Apb3Periph is
@@ -67688,16 +67736,16 @@ gpioCtrl: entity work.sys_Apb3Periph_0_0_Apb3GpioArray
       io_apb_PWRITE => io_apb_PWRITE,
       io_ch(7 downto 0) => timCtrl_io_ch(7 downto 0),
       io_gpio_read(31 downto 0) => io_gpio_read(31 downto 0),
+      io_gpio_readEnable(31 downto 0) => io_gpio_readEnable(31 downto 0),
+      \io_gpio_readEnable[29]\(3) => \^io_gpio_write\(29),
+      \io_gpio_readEnable[29]\(2) => \^io_gpio_write\(25),
+      \io_gpio_readEnable[29]\(1) => \^io_gpio_write\(22),
+      \io_gpio_readEnable[29]\(0) => \^io_gpio_write\(20),
       io_gpio_write(25 downto 24) => \^io_gpio_write\(31 downto 30),
       io_gpio_write(23 downto 22) => \^io_gpio_write\(27 downto 26),
       io_gpio_write(21) => \^io_gpio_write\(23),
       io_gpio_write(20) => \^io_gpio_write\(21),
       io_gpio_write(19 downto 0) => \^io_gpio_write\(19 downto 0),
-      io_gpio_writeEnable(31 downto 0) => io_gpio_writeEnable(31 downto 0),
-      \io_gpio_writeEnable[29]\(3) => \^io_gpio_write\(29),
-      \io_gpio_writeEnable[29]\(2) => \^io_gpio_write\(25),
-      \io_gpio_writeEnable[29]\(1) => \^io_gpio_write\(22),
-      \io_gpio_writeEnable[29]\(0) => \^io_gpio_write\(20),
       reset => reset,
       spiCtrl_io_spis_0_mosi => spiCtrl_io_spis_0_mosi,
       spiCtrl_io_spis_0_sclk => spiCtrl_io_spis_0_sclk,
@@ -68036,7 +68084,7 @@ entity sys_Apb3Periph_0_0 is
     io_apb_PSLVERROR : out STD_LOGIC;
     io_gpio_read : in STD_LOGIC_VECTOR ( 31 downto 0 );
     io_gpio_write : out STD_LOGIC_VECTOR ( 31 downto 0 );
-    io_gpio_writeEnable : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    io_gpio_readEnable : out STD_LOGIC_VECTOR ( 31 downto 0 );
     io_interrupt : out STD_LOGIC_VECTOR ( 15 downto 0 );
     clk : in STD_LOGIC;
     reset : in STD_LOGIC
@@ -68109,10 +68157,10 @@ architecture STRUCTURE of sys_Apb3Periph_0_0 is
   attribute X_INTERFACE_INFO of io_apb_PSEL : signal is "xilinx.com:interface:apb:1.0 SAPB_PERIPH PSEL";
   attribute X_INTERFACE_INFO of io_apb_PWDATA : signal is "xilinx.com:interface:apb:1.0 SAPB_PERIPH PWDATA";
   attribute X_INTERFACE_INFO of io_gpio_read : signal is "xilinx.com:interface:gpio:1.0 GPIO TRI_I";
+  attribute X_INTERFACE_INFO of io_gpio_readEnable : signal is "xilinx.com:interface:gpio:1.0 GPIO TRI_T";
   attribute X_INTERFACE_INFO of io_gpio_write : signal is "xilinx.com:interface:gpio:1.0 GPIO TRI_O";
-  attribute X_INTERFACE_INFO of io_gpio_writeEnable : signal is "xilinx.com:interface:gpio:1.0 GPIO TRI_T";
   attribute X_INTERFACE_INFO of io_interrupt : signal is "xilinx.com:signal:interrupt:1.0 io_interrupt INTERRUPT";
-  attribute X_INTERFACE_PARAMETER of io_interrupt : signal is "XIL_INTERFACENAME io_interrupt, SENSITIVITY LEVEL_HIGH, PortWidth 1";
+  attribute X_INTERFACE_PARAMETER of io_interrupt : signal is "XIL_INTERFACENAME io_interrupt, SENSITIVITY LEVEL_HIGH, PortWidth 16";
 begin
   io_apb_PREADY <= \<const1>\;
   io_interrupt(15) <= \^io_interrupt\(15);
@@ -68166,8 +68214,8 @@ inst: entity work.sys_Apb3Periph_0_0_Apb3Periph
       io_apb_PWDATA(31 downto 0) => io_apb_PWDATA(31 downto 0),
       io_apb_PWRITE => io_apb_PWRITE,
       io_gpio_read(31 downto 0) => io_gpio_read(31 downto 0),
+      io_gpio_readEnable(31 downto 0) => io_gpio_readEnable(31 downto 0),
       io_gpio_write(31 downto 0) => io_gpio_write(31 downto 0),
-      io_gpio_writeEnable(31 downto 0) => io_gpio_writeEnable(31 downto 0),
       io_interrupt(5) => \^io_interrupt\(15),
       io_interrupt(4 downto 0) => \^io_interrupt\(4 downto 0),
       reset => reset

@@ -1,14 +1,14 @@
 // Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
-// Date        : Sun Oct 12 15:04:37 2025
+// Date        : Sun Oct 12 22:20:30 2025
 // Host        : DESKTOP-MOONGRT running 64-bit major release  (build 9200)
 // Command     : write_verilog -force -mode funcsim -rename_top sys_auto_pc_0 -prefix
 //               sys_auto_pc_0_ sys_auto_pc_0_sim_netlist.v
 // Design      : sys_auto_pc_0
 // Purpose     : This verilog netlist is a functional simulation representation of the design and should not be modified
 //               or synthesized. This netlist cannot be used for SDF annotated simulation.
-// Device      : xc7z010iclg225-1L
+// Device      : xc7z020clg400-1
 // --------------------------------------------------------------------------------
 `timescale 1 ps / 1 ps
 

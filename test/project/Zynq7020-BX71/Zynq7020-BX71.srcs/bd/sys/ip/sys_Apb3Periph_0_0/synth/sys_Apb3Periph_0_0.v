@@ -48,11 +48,11 @@
 
 
 // IP VLNV: xilinx.com:user:Apb3Periph:1.0
-// IP Revision: 2
+// IP Revision: 8
 
 (* X_CORE_INFO = "Apb3Periph,Vivado 2018.3" *)
 (* CHECK_LICENSE_TYPE = "sys_Apb3Periph_0_0,Apb3Periph,{}" *)
-(* CORE_GENERATION_INFO = "sys_Apb3Periph_0_0,Apb3Periph,{x_ipProduct=Vivado 2018.3,x_ipVendor=xilinx.com,x_ipLibrary=user,x_ipName=Apb3Periph,x_ipVersion=1.0,x_ipCoreRevision=2,x_ipLanguage=VERILOG,x_ipSimLanguage=MIXED}" *)
+(* CORE_GENERATION_INFO = "sys_Apb3Periph_0_0,Apb3Periph,{x_ipProduct=Vivado 2018.3,x_ipVendor=xilinx.com,x_ipLibrary=user,x_ipName=Apb3Periph,x_ipVersion=1.0,x_ipCoreRevision=8,x_ipLanguage=VERILOG,x_ipSimLanguage=MIXED}" *)
 (* IP_DEFINITION_SOURCE = "package_project" *)
 (* DowngradeIPIdentifiedWarnings = "yes" *)
 module sys_Apb3Periph_0_0 (
@@ -66,7 +66,7 @@ module sys_Apb3Periph_0_0 (
   io_apb_PSLVERROR,
   io_gpio_read,
   io_gpio_write,
-  io_gpio_writeEnable,
+  io_gpio_readEnable,
   io_interrupt,
   clk,
   reset
@@ -94,8 +94,8 @@ input wire [31 : 0] io_gpio_read;
 (* X_INTERFACE_INFO = "xilinx.com:interface:gpio:1.0 GPIO TRI_O" *)
 output wire [31 : 0] io_gpio_write;
 (* X_INTERFACE_INFO = "xilinx.com:interface:gpio:1.0 GPIO TRI_T" *)
-output wire [31 : 0] io_gpio_writeEnable;
-(* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME io_interrupt, SENSITIVITY LEVEL_HIGH, PortWidth 1" *)
+output wire [31 : 0] io_gpio_readEnable;
+(* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME io_interrupt, SENSITIVITY LEVEL_HIGH, PortWidth 16" *)
 (* X_INTERFACE_INFO = "xilinx.com:signal:interrupt:1.0 io_interrupt INTERRUPT" *)
 output wire [15 : 0] io_interrupt;
 (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME clk, ASSOCIATED_RESET reset, ASSOCIATED_BUSIF SAPB_PERIPH, FREQ_HZ 50000000, PHASE 0.000, CLK_DOMAIN sys_processing_system7_0_0_FCLK_CLK0, INSERT_VIP 0" *)
@@ -116,7 +116,7 @@ input wire reset;
     .io_apb_PSLVERROR(io_apb_PSLVERROR),
     .io_gpio_read(io_gpio_read),
     .io_gpio_write(io_gpio_write),
-    .io_gpio_writeEnable(io_gpio_writeEnable),
+    .io_gpio_readEnable(io_gpio_readEnable),
     .io_interrupt(io_interrupt),
     .clk(clk),
     .reset(reset)

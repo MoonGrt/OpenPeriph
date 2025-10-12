@@ -1,13 +1,13 @@
 // Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
-// Date        : Sun Oct 12 15:04:05 2025
+// Date        : Sun Oct 12 22:16:14 2025
 // Host        : DESKTOP-MOONGRT running 64-bit major release  (build 9200)
-// Command     : write_verilog -force -mode synth_stub -rename_top sys_axi_apb_bridge_0_0 -prefix
-//               sys_axi_apb_bridge_0_0_ sys_axi_apb_bridge_0_0_stub.v
+// Command     : write_verilog -force -mode synth_stub
+//               G:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/Zynq7020-BX71.srcs/bd/sys/ip/sys_axi_apb_bridge_0_0/sys_axi_apb_bridge_0_0_stub.v
 // Design      : sys_axi_apb_bridge_0_0
 // Purpose     : Stub declaration of top-level module interface
-// Device      : xc7z010iclg225-1L
+// Device      : xc7z020clg400-1
 // --------------------------------------------------------------------------------
 
 // This empty module with port declaration file causes synthesis tools to infer a black box for IP.

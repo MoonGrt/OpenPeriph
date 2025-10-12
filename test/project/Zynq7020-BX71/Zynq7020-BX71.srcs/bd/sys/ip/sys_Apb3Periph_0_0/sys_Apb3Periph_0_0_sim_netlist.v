@@ -1,17 +1,314 @@
 // Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
-// Date        : Sun Oct 12 15:04:30 2025
+// Date        : Sun Oct 12 22:49:14 2025
 // Host        : DESKTOP-MOONGRT running 64-bit major release  (build 9200)
-// Command     : write_verilog -force -mode funcsim -rename_top sys_Apb3Periph_0_0 -prefix
-//               sys_Apb3Periph_0_0_ sys_Apb3Periph_0_0_sim_netlist.v
+// Command     : write_verilog -force -mode funcsim
+//               G:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/Zynq7020-BX71.srcs/bd/sys/ip/sys_Apb3Periph_0_0/sys_Apb3Periph_0_0_sim_netlist.v
 // Design      : sys_Apb3Periph_0_0
 // Purpose     : This verilog netlist is a functional simulation representation of the design and should not be modified
 //               or synthesized. This netlist cannot be used for SDF annotated simulation.
-// Device      : xc7z010iclg225-1L
+// Device      : xc7z020clg400-1
 // --------------------------------------------------------------------------------
 `timescale 1 ps / 1 ps
 
+(* CHECK_LICENSE_TYPE = "sys_Apb3Periph_0_0,Apb3Periph,{}" *) (* DowngradeIPIdentifiedWarnings = "yes" *) (* IP_DEFINITION_SOURCE = "package_project" *) 
+(* X_CORE_INFO = "Apb3Periph,Vivado 2018.3" *) 
+(* NotValidForBitStream *)
+module sys_Apb3Periph_0_0
+   (io_apb_PADDR,
+    io_apb_PSEL,
+    io_apb_PENABLE,
+    io_apb_PREADY,
+    io_apb_PWRITE,
+    io_apb_PWDATA,
+    io_apb_PRDATA,
+    io_apb_PSLVERROR,
+    io_gpio_read,
+    io_gpio_write,
+    io_gpio_readEnable,
+    io_interrupt,
+    clk,
+    reset);
+  (* X_INTERFACE_INFO = "xilinx.com:interface:apb:1.0 SAPB_PERIPH PADDR" *) input [19:0]io_apb_PADDR;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:apb:1.0 SAPB_PERIPH PSEL" *) input [0:0]io_apb_PSEL;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:apb:1.0 SAPB_PERIPH PENABLE" *) input io_apb_PENABLE;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:apb:1.0 SAPB_PERIPH PREADY" *) output io_apb_PREADY;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:apb:1.0 SAPB_PERIPH PWRITE" *) input io_apb_PWRITE;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:apb:1.0 SAPB_PERIPH PWDATA" *) input [31:0]io_apb_PWDATA;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:apb:1.0 SAPB_PERIPH PRDATA" *) output [31:0]io_apb_PRDATA;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:apb:1.0 SAPB_PERIPH PSLVERR" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME SAPB_PERIPH, ASSOCIATED_BUSIF SAPB_PERIPH" *) output io_apb_PSLVERROR;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:gpio:1.0 GPIO TRI_I" *) input [31:0]io_gpio_read;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:gpio:1.0 GPIO TRI_O" *) output [31:0]io_gpio_write;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:gpio:1.0 GPIO TRI_T" *) output [31:0]io_gpio_readEnable;
+  (* X_INTERFACE_INFO = "xilinx.com:signal:interrupt:1.0 io_interrupt INTERRUPT" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME io_interrupt, SENSITIVITY LEVEL_HIGH, PortWidth 16" *) output [15:0]io_interrupt;
+  (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 clk CLK" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME clk, ASSOCIATED_RESET reset, ASSOCIATED_BUSIF SAPB_PERIPH, FREQ_HZ 50000000, PHASE 0.000, CLK_DOMAIN sys_processing_system7_0_0_FCLK_CLK0, INSERT_VIP 0" *) input clk;
+  (* X_INTERFACE_INFO = "xilinx.com:signal:reset:1.0 reset RST" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME reset, POLARITY ACTIVE_HIGH, INSERT_VIP 0" *) input reset;
+
+  wire \<const0> ;
+  wire \<const1> ;
+  wire clk;
+  wire [0:0]\i2cCtrl/io_apb_decoder_io_output_PSEL ;
+  wire [19:0]io_apb_PADDR;
+  wire io_apb_PENABLE;
+  wire [31:0]io_apb_PRDATA;
+  wire \io_apb_PRDATA[15]_INST_0_i_23_n_0 ;
+  wire \io_apb_PRDATA[15]_INST_0_i_24_n_0 ;
+  wire \io_apb_PRDATA[15]_INST_0_i_31_n_0 ;
+  wire \io_apb_PRDATA[15]_INST_0_i_38_n_0 ;
+  wire \io_apb_PRDATA[15]_INST_0_i_4_n_0 ;
+  wire \io_apb_PRDATA[15]_INST_0_i_56_n_0 ;
+  wire \io_apb_PRDATA[15]_INST_0_i_7_n_0 ;
+  wire \io_apb_PRDATA[31]_INST_0_i_10_n_0 ;
+  wire \io_apb_PRDATA[31]_INST_0_i_14_n_0 ;
+  wire \io_apb_PRDATA[31]_INST_0_i_15_n_0 ;
+  wire \io_apb_PRDATA[31]_INST_0_i_6_n_0 ;
+  wire \io_apb_PRDATA[31]_INST_0_i_7_n_0 ;
+  wire \io_apb_PRDATA[8]_INST_0_i_25_n_0 ;
+  wire \io_apb_PRDATA[8]_INST_0_i_42_n_0 ;
+  wire \io_apb_PRDATA[8]_INST_0_i_43_n_0 ;
+  wire \io_apb_PRDATA[8]_INST_0_i_44_n_0 ;
+  wire \io_apb_PRDATA[8]_INST_0_i_46_n_0 ;
+  wire \io_apb_PRDATA[8]_INST_0_i_48_n_0 ;
+  wire [0:0]io_apb_PSEL;
+  wire io_apb_PSLVERROR;
+  wire [31:0]io_apb_PWDATA;
+  wire io_apb_PWRITE;
+  wire [31:0]io_gpio_read;
+  wire [31:0]io_gpio_readEnable;
+  wire [31:0]io_gpio_write;
+  wire [15:0]\^io_interrupt ;
+  wire reset;
+
+  assign io_apb_PREADY = \<const1> ;
+  assign io_interrupt[15] = \^io_interrupt [15];
+  assign io_interrupt[14] = \<const0> ;
+  assign io_interrupt[13] = \<const0> ;
+  assign io_interrupt[12] = \<const0> ;
+  assign io_interrupt[11] = \<const0> ;
+  assign io_interrupt[10] = \<const0> ;
+  assign io_interrupt[9] = \<const0> ;
+  assign io_interrupt[8] = \<const0> ;
+  assign io_interrupt[7] = \<const0> ;
+  assign io_interrupt[6] = \<const0> ;
+  assign io_interrupt[5] = \<const0> ;
+  assign io_interrupt[4:0] = \^io_interrupt [4:0];
+  GND GND
+       (.G(\<const0> ));
+  VCC VCC
+       (.P(\<const1> ));
+  sys_Apb3Periph_0_0_Apb3Periph inst
+       (.clk(clk),
+        .io_apb_PADDR({io_apb_PADDR[19:16],io_apb_PADDR[12],io_apb_PADDR[6:0]}),
+        .io_apb_PENABLE(io_apb_PENABLE),
+        .io_apb_PRDATA(io_apb_PRDATA),
+        .\io_apb_PRDATA[0]_INST_0_i_22 (\io_apb_PRDATA[15]_INST_0_i_24_n_0 ),
+        .\io_apb_PRDATA[0]_INST_0_i_7 (\io_apb_PRDATA[15]_INST_0_i_31_n_0 ),
+        .\io_apb_PRDATA[15]_0 (\io_apb_PRDATA[15]_INST_0_i_7_n_0 ),
+        .\io_apb_PRDATA[15]_INST_0_i_26 (\io_apb_PRDATA[15]_INST_0_i_38_n_0 ),
+        .\io_apb_PRDATA[15]_INST_0_i_26_0 (\i2cCtrl/io_apb_decoder_io_output_PSEL ),
+        .\io_apb_PRDATA[15]_INST_0_i_27 (\io_apb_PRDATA[8]_INST_0_i_48_n_0 ),
+        .\io_apb_PRDATA[15]_INST_0_i_28 (\io_apb_PRDATA[8]_INST_0_i_25_n_0 ),
+        .\io_apb_PRDATA[15]_INST_0_i_28_0 (\io_apb_PRDATA[8]_INST_0_i_43_n_0 ),
+        .\io_apb_PRDATA[15]_INST_0_i_28_1 (\io_apb_PRDATA[8]_INST_0_i_42_n_0 ),
+        .\io_apb_PRDATA[15]_INST_0_i_28_2 (\io_apb_PRDATA[15]_INST_0_i_56_n_0 ),
+        .\io_apb_PRDATA[15]_INST_0_i_28_3 (\io_apb_PRDATA[8]_INST_0_i_44_n_0 ),
+        .\io_apb_PRDATA[16]_0 (\io_apb_PRDATA[31]_INST_0_i_7_n_0 ),
+        .\io_apb_PRDATA[16]_1 (\io_apb_PRDATA[31]_INST_0_i_10_n_0 ),
+        .\io_apb_PRDATA[31]_INST_0_i_3 (\io_apb_PRDATA[31]_INST_0_i_14_n_0 ),
+        .\io_apb_PRDATA[31]_INST_0_i_3_0 (\io_apb_PRDATA[31]_INST_0_i_15_n_0 ),
+        .\io_apb_PRDATA[6]_INST_0_i_8 (\io_apb_PRDATA[15]_INST_0_i_23_n_0 ),
+        .\io_apb_PRDATA[7]_INST_0_i_25 (\io_apb_PRDATA[8]_INST_0_i_46_n_0 ),
+        .io_apb_PRDATA_15_sp_1(\io_apb_PRDATA[15]_INST_0_i_4_n_0 ),
+        .io_apb_PRDATA_16_sp_1(\io_apb_PRDATA[31]_INST_0_i_6_n_0 ),
+        .io_apb_PSEL(io_apb_PSEL),
+        .io_apb_PWDATA(io_apb_PWDATA),
+        .io_apb_PWRITE(io_apb_PWRITE),
+        .io_gpio_read(io_gpio_read),
+        .io_gpio_readEnable(io_gpio_readEnable),
+        .io_gpio_write(io_gpio_write),
+        .io_interrupt({\^io_interrupt [15],\^io_interrupt [4:0]}),
+        .reset(reset));
+  (* SOFT_HLUTNM = "soft_lutpair282" *) 
+  LUT3 #(
+    .INIT(8'h02)) 
+    \io_apb_PRDATA[15]_INST_0_i_23 
+       (.I0(io_apb_PADDR[4]),
+        .I1(io_apb_PADDR[5]),
+        .I2(io_apb_PADDR[0]),
+        .O(\io_apb_PRDATA[15]_INST_0_i_23_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair282" *) 
+  LUT5 #(
+    .INIT(32'h00000002)) 
+    \io_apb_PRDATA[15]_INST_0_i_24 
+       (.I0(io_apb_PADDR[5]),
+        .I1(io_apb_PADDR[4]),
+        .I2(io_apb_PADDR[0]),
+        .I3(io_apb_PADDR[2]),
+        .I4(io_apb_PADDR[3]),
+        .O(\io_apb_PRDATA[15]_INST_0_i_24_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair288" *) 
+  LUT3 #(
+    .INIT(8'h01)) 
+    \io_apb_PRDATA[15]_INST_0_i_31 
+       (.I0(io_apb_PADDR[4]),
+        .I1(io_apb_PADDR[5]),
+        .I2(io_apb_PADDR[0]),
+        .O(\io_apb_PRDATA[15]_INST_0_i_31_n_0 ));
+  LUT3 #(
+    .INIT(8'hF4)) 
+    \io_apb_PRDATA[15]_INST_0_i_38 
+       (.I0(io_apb_PADDR[5]),
+        .I1(io_apb_PADDR[4]),
+        .I2(io_apb_PADDR[0]),
+        .O(\io_apb_PRDATA[15]_INST_0_i_38_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair281" *) 
+  LUT5 #(
+    .INIT(32'h00000010)) 
+    \io_apb_PRDATA[15]_INST_0_i_4 
+       (.I0(io_apb_PADDR[3]),
+        .I1(io_apb_PADDR[2]),
+        .I2(io_apb_PADDR[4]),
+        .I3(io_apb_PADDR[0]),
+        .I4(io_apb_PADDR[1]),
+        .O(\io_apb_PRDATA[15]_INST_0_i_4_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000000000000200)) 
+    \io_apb_PRDATA[15]_INST_0_i_55 
+       (.I0(io_apb_PSEL),
+        .I1(io_apb_PADDR[19]),
+        .I2(io_apb_PADDR[18]),
+        .I3(io_apb_PADDR[17]),
+        .I4(io_apb_PADDR[16]),
+        .I5(io_apb_PADDR[12]),
+        .O(\i2cCtrl/io_apb_decoder_io_output_PSEL ));
+  (* SOFT_HLUTNM = "soft_lutpair284" *) 
+  LUT5 #(
+    .INIT(32'hFFFFFFE1)) 
+    \io_apb_PRDATA[15]_INST_0_i_56 
+       (.I0(io_apb_PADDR[3]),
+        .I1(io_apb_PADDR[4]),
+        .I2(io_apb_PADDR[2]),
+        .I3(io_apb_PADDR[0]),
+        .I4(io_apb_PADDR[1]),
+        .O(\io_apb_PRDATA[15]_INST_0_i_56_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair285" *) 
+  LUT3 #(
+    .INIT(8'h01)) 
+    \io_apb_PRDATA[15]_INST_0_i_7 
+       (.I0(io_apb_PADDR[4]),
+        .I1(io_apb_PADDR[1]),
+        .I2(io_apb_PADDR[0]),
+        .O(\io_apb_PRDATA[15]_INST_0_i_7_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair287" *) 
+  LUT3 #(
+    .INIT(8'hFE)) 
+    \io_apb_PRDATA[31]_INST_0_i_10 
+       (.I0(io_apb_PADDR[1]),
+        .I1(io_apb_PADDR[4]),
+        .I2(io_apb_PADDR[0]),
+        .O(\io_apb_PRDATA[31]_INST_0_i_10_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair288" *) 
+  LUT3 #(
+    .INIT(8'hFE)) 
+    \io_apb_PRDATA[31]_INST_0_i_14 
+       (.I0(io_apb_PADDR[1]),
+        .I1(io_apb_PADDR[0]),
+        .I2(io_apb_PADDR[3]),
+        .O(\io_apb_PRDATA[31]_INST_0_i_14_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair281" *) 
+  LUT5 #(
+    .INIT(32'hEFFFFEEE)) 
+    \io_apb_PRDATA[31]_INST_0_i_15 
+       (.I0(io_apb_PADDR[0]),
+        .I1(io_apb_PADDR[1]),
+        .I2(io_apb_PADDR[3]),
+        .I3(io_apb_PADDR[4]),
+        .I4(io_apb_PADDR[2]),
+        .O(\io_apb_PRDATA[31]_INST_0_i_15_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair283" *) 
+  LUT5 #(
+    .INIT(32'hFFFFFFF4)) 
+    \io_apb_PRDATA[31]_INST_0_i_6 
+       (.I0(io_apb_PADDR[3]),
+        .I1(io_apb_PADDR[4]),
+        .I2(io_apb_PADDR[2]),
+        .I3(io_apb_PADDR[1]),
+        .I4(io_apb_PADDR[0]),
+        .O(\io_apb_PRDATA[31]_INST_0_i_6_n_0 ));
+  LUT2 #(
+    .INIT(4'h2)) 
+    \io_apb_PRDATA[31]_INST_0_i_7 
+       (.I0(io_apb_PADDR[3]),
+        .I1(io_apb_PADDR[2]),
+        .O(\io_apb_PRDATA[31]_INST_0_i_7_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair287" *) 
+  LUT3 #(
+    .INIT(8'hFE)) 
+    \io_apb_PRDATA[8]_INST_0_i_25 
+       (.I0(io_apb_PADDR[0]),
+        .I1(io_apb_PADDR[1]),
+        .I2(io_apb_PADDR[4]),
+        .O(\io_apb_PRDATA[8]_INST_0_i_25_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair283" *) 
+  LUT5 #(
+    .INIT(32'h00000110)) 
+    \io_apb_PRDATA[8]_INST_0_i_42 
+       (.I0(io_apb_PADDR[1]),
+        .I1(io_apb_PADDR[0]),
+        .I2(io_apb_PADDR[2]),
+        .I3(io_apb_PADDR[4]),
+        .I4(io_apb_PADDR[3]),
+        .O(\io_apb_PRDATA[8]_INST_0_i_42_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair286" *) 
+  LUT4 #(
+    .INIT(16'h0100)) 
+    \io_apb_PRDATA[8]_INST_0_i_43 
+       (.I0(io_apb_PADDR[1]),
+        .I1(io_apb_PADDR[0]),
+        .I2(io_apb_PADDR[2]),
+        .I3(io_apb_PADDR[3]),
+        .O(\io_apb_PRDATA[8]_INST_0_i_43_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair284" *) 
+  LUT5 #(
+    .INIT(32'h00000009)) 
+    \io_apb_PRDATA[8]_INST_0_i_44 
+       (.I0(io_apb_PADDR[2]),
+        .I1(io_apb_PADDR[4]),
+        .I2(io_apb_PADDR[3]),
+        .I3(io_apb_PADDR[0]),
+        .I4(io_apb_PADDR[1]),
+        .O(\io_apb_PRDATA[8]_INST_0_i_44_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair286" *) 
+  LUT4 #(
+    .INIT(16'hFEEE)) 
+    \io_apb_PRDATA[8]_INST_0_i_46 
+       (.I0(io_apb_PADDR[1]),
+        .I1(io_apb_PADDR[0]),
+        .I2(io_apb_PADDR[2]),
+        .I3(io_apb_PADDR[3]),
+        .O(\io_apb_PRDATA[8]_INST_0_i_46_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair285" *) 
+  LUT4 #(
+    .INIT(16'h0004)) 
+    \io_apb_PRDATA[8]_INST_0_i_48 
+       (.I0(io_apb_PADDR[4]),
+        .I1(io_apb_PADDR[3]),
+        .I2(io_apb_PADDR[0]),
+        .I3(io_apb_PADDR[1]),
+        .O(\io_apb_PRDATA[8]_INST_0_i_48_n_0 ));
+  LUT5 #(
+    .INIT(32'h9F800000)) 
+    io_apb_PSLVERROR_INST_0
+       (.I0(io_apb_PADDR[17]),
+        .I1(io_apb_PADDR[16]),
+        .I2(io_apb_PADDR[18]),
+        .I3(io_apb_PADDR[19]),
+        .I4(io_apb_PSEL),
+        .O(io_apb_PSLVERROR));
+endmodule
+
+(* ORIG_REF_NAME = "Apb3Afio" *) 
 module sys_Apb3Periph_0_0_Apb3Afio
    (D,
     \selIndex_reg[0] ,
@@ -2912,6 +3209,7 @@ module sys_Apb3Periph_0_0_Apb3Afio
         .O(\selIndex_reg[0]_21 ));
 endmodule
 
+(* ORIG_REF_NAME = "Apb3Exti" *) 
 module sys_Apb3Periph_0_0_Apb3Exti
    (Q,
     extiCtrl_io_apb_PRDATA,
@@ -4437,9 +4735,9 @@ module sys_Apb3Periph_0_0_Apb3Exti
         .O(io_apb_decoder_io_output_PSEL));
 endmodule
 
+(* ORIG_REF_NAME = "Apb3Gpio" *) 
 module sys_Apb3Periph_0_0_Apb3Gpio
-   (io_gpio_writeEnable,
-    io_gpio_write,
+   (io_gpio_write,
     \CRL_reg[16]_0 ,
     \CRL_reg[17]_0 ,
     \CRL_reg[18]_0 ,
@@ -4473,6 +4771,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
     \CRH_reg[14]_0 ,
     \CRH_reg[15]_0 ,
     Q,
+    io_gpio_readEnable,
     io_gpio_read,
     clk,
     reset,
@@ -4485,7 +4784,6 @@ module sys_Apb3Periph_0_0_Apb3Gpio
     io_apb_decoder_io_output_PSEL,
     \io_apb_PRDATA[15]_INST_0_i_27_0 ,
     io_apb_PWDATA);
-  output [15:0]io_gpio_writeEnable;
   output [15:0]io_gpio_write;
   output \CRL_reg[16]_0 ;
   output \CRL_reg[17]_0 ;
@@ -4520,6 +4818,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
   output \CRH_reg[14]_0 ;
   output \CRH_reg[15]_0 ;
   output [15:0]Q;
+  output [15:0]io_gpio_readEnable;
   input [15:0]io_gpio_read;
   input clk;
   input reset;
@@ -4634,9 +4933,9 @@ module sys_Apb3Periph_0_0_Apb3Gpio
   wire [0:0]io_apb_decoder_io_output_PSEL;
   wire [7:0]io_ch;
   wire [15:0]io_gpio_read;
+  wire [15:0]io_gpio_readEnable;
   wire [15:0]io_gpio_read_buffercc_io_dataOut;
   wire [15:0]io_gpio_write;
-  wire [15:0]io_gpio_writeEnable;
   wire [15:0]p_1_in;
   wire reset;
 
@@ -4655,7 +4954,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[10]),
         .I2(io_apb_PWDATA[10]),
         .O(CRH0[10]));
-  (* SOFT_HLUTNM = "soft_lutpair14" *) 
+  (* SOFT_HLUTNM = "soft_lutpair36" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[11]_i_1 
@@ -4670,7 +4969,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[11]),
         .I2(io_apb_PWDATA[12]),
         .O(CRH0[12]));
-  (* SOFT_HLUTNM = "soft_lutpair39" *) 
+  (* SOFT_HLUTNM = "soft_lutpair35" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[13]_i_1 
@@ -4678,7 +4977,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[11]),
         .I2(io_apb_PWDATA[13]),
         .O(CRH0[13]));
-  (* SOFT_HLUTNM = "soft_lutpair39" *) 
+  (* SOFT_HLUTNM = "soft_lutpair35" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[14]_i_1 
@@ -4686,7 +4985,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[11]),
         .I2(io_apb_PWDATA[14]),
         .O(CRH0[14]));
-  (* SOFT_HLUTNM = "soft_lutpair13" *) 
+  (* SOFT_HLUTNM = "soft_lutpair34" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[15]_i_1 
@@ -4701,7 +5000,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[12]),
         .I2(io_apb_PWDATA[16]),
         .O(CRH0[16]));
-  (* SOFT_HLUTNM = "soft_lutpair38" *) 
+  (* SOFT_HLUTNM = "soft_lutpair33" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[17]_i_1 
@@ -4709,7 +5008,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[12]),
         .I2(io_apb_PWDATA[17]),
         .O(CRH0[17]));
-  (* SOFT_HLUTNM = "soft_lutpair38" *) 
+  (* SOFT_HLUTNM = "soft_lutpair33" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[18]_i_1 
@@ -4717,7 +5016,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[12]),
         .I2(io_apb_PWDATA[18]),
         .O(CRH0[18]));
-  (* SOFT_HLUTNM = "soft_lutpair12" *) 
+  (* SOFT_HLUTNM = "soft_lutpair21" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[19]_i_1 
@@ -4725,7 +5024,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[12]),
         .I2(io_apb_PWDATA[19]),
         .O(CRH0[19]));
-  (* SOFT_HLUTNM = "soft_lutpair40" *) 
+  (* SOFT_HLUTNM = "soft_lutpair41" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[1]_i_1 
@@ -4740,7 +5039,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[13]),
         .I2(io_apb_PWDATA[20]),
         .O(CRH0[20]));
-  (* SOFT_HLUTNM = "soft_lutpair36" *) 
+  (* SOFT_HLUTNM = "soft_lutpair32" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[21]_i_1 
@@ -4748,7 +5047,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[13]),
         .I2(io_apb_PWDATA[21]),
         .O(CRH0[21]));
-  (* SOFT_HLUTNM = "soft_lutpair36" *) 
+  (* SOFT_HLUTNM = "soft_lutpair32" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[22]_i_1 
@@ -4756,7 +5055,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[13]),
         .I2(io_apb_PWDATA[22]),
         .O(CRH0[22]));
-  (* SOFT_HLUTNM = "soft_lutpair11" *) 
+  (* SOFT_HLUTNM = "soft_lutpair19" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[23]_i_1 
@@ -4771,7 +5070,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[14]),
         .I2(io_apb_PWDATA[24]),
         .O(CRH0[24]));
-  (* SOFT_HLUTNM = "soft_lutpair35" *) 
+  (* SOFT_HLUTNM = "soft_lutpair31" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[25]_i_1 
@@ -4779,7 +5078,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[14]),
         .I2(io_apb_PWDATA[25]),
         .O(CRH0[25]));
-  (* SOFT_HLUTNM = "soft_lutpair35" *) 
+  (* SOFT_HLUTNM = "soft_lutpair31" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[26]_i_1 
@@ -4787,7 +5086,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[14]),
         .I2(io_apb_PWDATA[26]),
         .O(CRH0[26]));
-  (* SOFT_HLUTNM = "soft_lutpair10" *) 
+  (* SOFT_HLUTNM = "soft_lutpair12" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[27]_i_1 
@@ -4802,7 +5101,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[15]),
         .I2(io_apb_PWDATA[28]),
         .O(CRH0[28]));
-  (* SOFT_HLUTNM = "soft_lutpair34" *) 
+  (* SOFT_HLUTNM = "soft_lutpair30" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[29]_i_1 
@@ -4810,7 +5109,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[15]),
         .I2(io_apb_PWDATA[29]),
         .O(CRH0[29]));
-  (* SOFT_HLUTNM = "soft_lutpair40" *) 
+  (* SOFT_HLUTNM = "soft_lutpair41" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[2]_i_1 
@@ -4818,7 +5117,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[8]),
         .I2(io_apb_PWDATA[2]),
         .O(CRH0[2]));
-  (* SOFT_HLUTNM = "soft_lutpair34" *) 
+  (* SOFT_HLUTNM = "soft_lutpair30" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[30]_i_1 
@@ -4836,7 +5135,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I4(io_apb_PADDR[2]),
         .I5(ctrl_doWrite__0),
         .O(\CRH[31]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair22" *) 
+  (* SOFT_HLUTNM = "soft_lutpair29" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[31]_i_2 
@@ -4844,7 +5143,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[15]),
         .I2(io_apb_PWDATA[31]),
         .O(CRH0[31]));
-  (* SOFT_HLUTNM = "soft_lutpair16" *) 
+  (* SOFT_HLUTNM = "soft_lutpair40" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[3]_i_1 
@@ -4859,7 +5158,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[9]),
         .I2(io_apb_PWDATA[4]),
         .O(CRH0[4]));
-  (* SOFT_HLUTNM = "soft_lutpair41" *) 
+  (* SOFT_HLUTNM = "soft_lutpair39" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[5]_i_1 
@@ -4867,7 +5166,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[9]),
         .I2(io_apb_PWDATA[5]),
         .O(CRH0[5]));
-  (* SOFT_HLUTNM = "soft_lutpair41" *) 
+  (* SOFT_HLUTNM = "soft_lutpair39" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[6]_i_1 
@@ -4875,7 +5174,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[9]),
         .I2(io_apb_PWDATA[6]),
         .O(CRH0[6]));
-  (* SOFT_HLUTNM = "soft_lutpair15" *) 
+  (* SOFT_HLUTNM = "soft_lutpair38" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[7]_i_1 
@@ -5090,7 +5389,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .CLR(reset),
         .D(CRH0[9]),
         .Q(\CRH_reg_n_0_[9] ));
-  (* SOFT_HLUTNM = "soft_lutpair33" *) 
+  (* SOFT_HLUTNM = "soft_lutpair28" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[0]_i_1 
@@ -5098,7 +5397,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[0]),
         .I2(io_apb_PWDATA[0]),
         .O(CRL0[0]));
-  (* SOFT_HLUTNM = "soft_lutpair17" *) 
+  (* SOFT_HLUTNM = "soft_lutpair23" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[10]_i_1 
@@ -5106,7 +5405,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[2]),
         .I2(io_apb_PWDATA[10]),
         .O(CRL0[10]));
-  (* SOFT_HLUTNM = "soft_lutpair17" *) 
+  (* SOFT_HLUTNM = "soft_lutpair23" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[11]_i_1 
@@ -5114,7 +5413,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[2]),
         .I2(io_apb_PWDATA[11]),
         .O(CRL0[11]));
-  (* SOFT_HLUTNM = "soft_lutpair28" *) 
+  (* SOFT_HLUTNM = "soft_lutpair22" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[12]_i_1 
@@ -5122,7 +5421,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[3]),
         .I2(io_apb_PWDATA[12]),
         .O(CRL0[12]));
-  (* SOFT_HLUTNM = "soft_lutpair28" *) 
+  (* SOFT_HLUTNM = "soft_lutpair22" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[13]_i_1 
@@ -5130,7 +5429,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[3]),
         .I2(io_apb_PWDATA[13]),
         .O(CRL0[13]));
-  (* SOFT_HLUTNM = "soft_lutpair27" *) 
+  (* SOFT_HLUTNM = "soft_lutpair20" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[14]_i_1 
@@ -5138,7 +5437,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[3]),
         .I2(io_apb_PWDATA[14]),
         .O(CRL0[14]));
-  (* SOFT_HLUTNM = "soft_lutpair27" *) 
+  (* SOFT_HLUTNM = "soft_lutpair20" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[15]_i_1 
@@ -5146,7 +5445,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[3]),
         .I2(io_apb_PWDATA[15]),
         .O(CRL0[15]));
-  (* SOFT_HLUTNM = "soft_lutpair26" *) 
+  (* SOFT_HLUTNM = "soft_lutpair18" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[16]_i_1 
@@ -5154,7 +5453,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[4]),
         .I2(io_apb_PWDATA[16]),
         .O(CRL0[16]));
-  (* SOFT_HLUTNM = "soft_lutpair26" *) 
+  (* SOFT_HLUTNM = "soft_lutpair18" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[17]_i_1 
@@ -5162,7 +5461,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[4]),
         .I2(io_apb_PWDATA[17]),
         .O(CRL0[17]));
-  (* SOFT_HLUTNM = "soft_lutpair25" *) 
+  (* SOFT_HLUTNM = "soft_lutpair17" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[18]_i_1 
@@ -5170,7 +5469,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[4]),
         .I2(io_apb_PWDATA[18]),
         .O(CRL0[18]));
-  (* SOFT_HLUTNM = "soft_lutpair25" *) 
+  (* SOFT_HLUTNM = "soft_lutpair17" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[19]_i_1 
@@ -5178,7 +5477,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[4]),
         .I2(io_apb_PWDATA[19]),
         .O(CRL0[19]));
-  (* SOFT_HLUTNM = "soft_lutpair33" *) 
+  (* SOFT_HLUTNM = "soft_lutpair28" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[1]_i_1 
@@ -5186,7 +5485,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[0]),
         .I2(io_apb_PWDATA[1]),
         .O(CRL0[1]));
-  (* SOFT_HLUTNM = "soft_lutpair24" *) 
+  (* SOFT_HLUTNM = "soft_lutpair16" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[20]_i_1 
@@ -5194,7 +5493,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[5]),
         .I2(io_apb_PWDATA[20]),
         .O(CRL0[20]));
-  (* SOFT_HLUTNM = "soft_lutpair24" *) 
+  (* SOFT_HLUTNM = "soft_lutpair16" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[21]_i_1 
@@ -5202,7 +5501,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[5]),
         .I2(io_apb_PWDATA[21]),
         .O(CRL0[21]));
-  (* SOFT_HLUTNM = "soft_lutpair23" *) 
+  (* SOFT_HLUTNM = "soft_lutpair15" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[22]_i_1 
@@ -5210,7 +5509,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[5]),
         .I2(io_apb_PWDATA[22]),
         .O(CRL0[22]));
-  (* SOFT_HLUTNM = "soft_lutpair23" *) 
+  (* SOFT_HLUTNM = "soft_lutpair15" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[23]_i_1 
@@ -5218,7 +5517,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[5]),
         .I2(io_apb_PWDATA[23]),
         .O(CRL0[23]));
-  (* SOFT_HLUTNM = "soft_lutpair21" *) 
+  (* SOFT_HLUTNM = "soft_lutpair14" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[24]_i_1 
@@ -5226,7 +5525,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[6]),
         .I2(io_apb_PWDATA[24]),
         .O(CRL0[24]));
-  (* SOFT_HLUTNM = "soft_lutpair21" *) 
+  (* SOFT_HLUTNM = "soft_lutpair14" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[25]_i_1 
@@ -5234,7 +5533,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[6]),
         .I2(io_apb_PWDATA[25]),
         .O(CRL0[25]));
-  (* SOFT_HLUTNM = "soft_lutpair20" *) 
+  (* SOFT_HLUTNM = "soft_lutpair13" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[26]_i_1 
@@ -5242,7 +5541,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[6]),
         .I2(io_apb_PWDATA[26]),
         .O(CRL0[26]));
-  (* SOFT_HLUTNM = "soft_lutpair20" *) 
+  (* SOFT_HLUTNM = "soft_lutpair13" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[27]_i_1 
@@ -5250,7 +5549,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[6]),
         .I2(io_apb_PWDATA[27]),
         .O(CRL0[27]));
-  (* SOFT_HLUTNM = "soft_lutpair19" *) 
+  (* SOFT_HLUTNM = "soft_lutpair11" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[28]_i_1 
@@ -5258,7 +5557,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[7]),
         .I2(io_apb_PWDATA[28]),
         .O(CRL0[28]));
-  (* SOFT_HLUTNM = "soft_lutpair19" *) 
+  (* SOFT_HLUTNM = "soft_lutpair11" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[29]_i_1 
@@ -5266,7 +5565,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[7]),
         .I2(io_apb_PWDATA[29]),
         .O(CRL0[29]));
-  (* SOFT_HLUTNM = "soft_lutpair32" *) 
+  (* SOFT_HLUTNM = "soft_lutpair27" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[2]_i_1 
@@ -5274,7 +5573,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[0]),
         .I2(io_apb_PWDATA[2]),
         .O(CRL0[2]));
-  (* SOFT_HLUTNM = "soft_lutpair18" *) 
+  (* SOFT_HLUTNM = "soft_lutpair10" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[30]_i_1 
@@ -5292,7 +5591,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I4(io_apb_PADDR[4]),
         .I5(io_apb_PADDR[0]),
         .O(\CRL[31]_i_1__0_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair18" *) 
+  (* SOFT_HLUTNM = "soft_lutpair10" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[31]_i_2 
@@ -5300,7 +5599,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[7]),
         .I2(io_apb_PWDATA[31]),
         .O(CRL0[31]));
-  (* SOFT_HLUTNM = "soft_lutpair32" *) 
+  (* SOFT_HLUTNM = "soft_lutpair27" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[3]_i_1 
@@ -5308,7 +5607,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[0]),
         .I2(io_apb_PWDATA[3]),
         .O(CRL0[3]));
-  (* SOFT_HLUTNM = "soft_lutpair31" *) 
+  (* SOFT_HLUTNM = "soft_lutpair26" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[4]_i_1 
@@ -5316,7 +5615,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[1]),
         .I2(io_apb_PWDATA[4]),
         .O(CRL0[4]));
-  (* SOFT_HLUTNM = "soft_lutpair31" *) 
+  (* SOFT_HLUTNM = "soft_lutpair26" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[5]_i_1 
@@ -5324,7 +5623,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[1]),
         .I2(io_apb_PWDATA[5]),
         .O(CRL0[5]));
-  (* SOFT_HLUTNM = "soft_lutpair30" *) 
+  (* SOFT_HLUTNM = "soft_lutpair25" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[6]_i_1 
@@ -5332,7 +5631,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[1]),
         .I2(io_apb_PWDATA[6]),
         .O(CRL0[6]));
-  (* SOFT_HLUTNM = "soft_lutpair30" *) 
+  (* SOFT_HLUTNM = "soft_lutpair25" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[7]_i_1 
@@ -5340,7 +5639,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[1]),
         .I2(io_apb_PWDATA[7]),
         .O(CRL0[7]));
-  (* SOFT_HLUTNM = "soft_lutpair29" *) 
+  (* SOFT_HLUTNM = "soft_lutpair24" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[8]_i_1 
@@ -5348,7 +5647,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(Q[2]),
         .I2(io_apb_PWDATA[8]),
         .O(CRL0[8]));
-  (* SOFT_HLUTNM = "soft_lutpair29" *) 
+  (* SOFT_HLUTNM = "soft_lutpair24" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[9]_i_1 
@@ -6296,179 +6595,179 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I4(\CRL_reg_n_0_[9] ),
         .I5(io_gpio_read_buffercc_io_dataOut[9]),
         .O(\CRH_reg[9]_0 ));
-  sys_Apb3Periph_0_0_BufferCC__1 io_gpio_read_buffercc
-       (.clk(clk),
-        .io_dataIn(io_gpio_read),
-        .io_dataOut(io_gpio_read_buffercc_io_dataOut),
-        .reset(reset));
-  (* SOFT_HLUTNM = "soft_lutpair2" *) 
+  (* SOFT_HLUTNM = "soft_lutpair4" *) 
   LUT5 #(
-    .INIT(32'hEE0EEEEE)) 
-    \io_gpio_writeEnable[0]_INST_0 
+    .INIT(32'h11F11111)) 
+    \io_gpio_readEnable[0]_INST_0 
        (.I0(\CRL_reg_n_0_[0] ),
         .I1(\CRL_reg_n_0_[1] ),
         .I2(gpioCfg_0_cnf[0]),
         .I3(gpioCfg_0_cnf[1]),
         .I4(p_1_in[0]),
-        .O(io_gpio_writeEnable[0]));
+        .O(io_gpio_readEnable[0]));
   LUT6 #(
-    .INIT(64'h47FF47FF47FF0000)) 
-    \io_gpio_writeEnable[10]_INST_0 
+    .INIT(64'hB800B800B800FFFF)) 
+    \io_gpio_readEnable[10]_INST_0 
        (.I0(io_ch[2]),
         .I1(gpioCfg_10_cnf[1]),
         .I2(p_1_in[10]),
         .I3(gpioCfg_10_cnf[0]),
         .I4(\CRH_reg_n_0_[8] ),
         .I5(\CRH_reg_n_0_[9] ),
-        .O(io_gpio_writeEnable[10]));
+        .O(io_gpio_readEnable[10]));
   LUT6 #(
-    .INIT(64'h47FF47FF47FF0000)) 
-    \io_gpio_writeEnable[11]_INST_0 
+    .INIT(64'hB800B800B800FFFF)) 
+    \io_gpio_readEnable[11]_INST_0 
        (.I0(io_ch[3]),
         .I1(gpioCfg_11_cnf[1]),
         .I2(p_1_in[11]),
         .I3(gpioCfg_11_cnf[0]),
         .I4(\CRH_reg_n_0_[12] ),
         .I5(\CRH_reg_n_0_[13] ),
-        .O(io_gpio_writeEnable[11]));
+        .O(io_gpio_readEnable[11]));
   LUT6 #(
-    .INIT(64'h47FF47FF47FF0000)) 
-    \io_gpio_writeEnable[12]_INST_0 
+    .INIT(64'hB800B800B800FFFF)) 
+    \io_gpio_readEnable[12]_INST_0 
        (.I0(io_ch[4]),
         .I1(gpioCfg_12_cnf[1]),
         .I2(p_1_in[12]),
         .I3(gpioCfg_12_cnf[0]),
         .I4(\CRH_reg_n_0_[16] ),
         .I5(\CRH_reg_n_0_[17] ),
-        .O(io_gpio_writeEnable[12]));
+        .O(io_gpio_readEnable[12]));
   LUT6 #(
-    .INIT(64'h47FF47FF47FF0000)) 
-    \io_gpio_writeEnable[13]_INST_0 
+    .INIT(64'hB800B800B800FFFF)) 
+    \io_gpio_readEnable[13]_INST_0 
        (.I0(io_ch[5]),
         .I1(gpioCfg_13_cnf[1]),
         .I2(p_1_in[13]),
         .I3(gpioCfg_13_cnf[0]),
         .I4(\CRH_reg_n_0_[20] ),
         .I5(\CRH_reg_n_0_[21] ),
-        .O(io_gpio_writeEnable[13]));
+        .O(io_gpio_readEnable[13]));
   LUT6 #(
-    .INIT(64'h47FF47FF47FF0000)) 
-    \io_gpio_writeEnable[14]_INST_0 
+    .INIT(64'hB800B800B800FFFF)) 
+    \io_gpio_readEnable[14]_INST_0 
        (.I0(io_ch[6]),
         .I1(gpioCfg_14_cnf[1]),
         .I2(p_1_in[14]),
         .I3(gpioCfg_14_cnf[0]),
         .I4(\CRH_reg_n_0_[24] ),
         .I5(\CRH_reg_n_0_[25] ),
-        .O(io_gpio_writeEnable[14]));
+        .O(io_gpio_readEnable[14]));
   LUT6 #(
-    .INIT(64'h47FF47FF47FF0000)) 
-    \io_gpio_writeEnable[15]_INST_0 
+    .INIT(64'hB800B800B800FFFF)) 
+    \io_gpio_readEnable[15]_INST_0 
        (.I0(io_ch[7]),
         .I1(gpioCfg_15_cnf[1]),
         .I2(p_1_in[15]),
         .I3(gpioCfg_15_cnf[0]),
         .I4(\CRH_reg_n_0_[28] ),
         .I5(\CRH_reg_n_0_[29] ),
-        .O(io_gpio_writeEnable[15]));
+        .O(io_gpio_readEnable[15]));
   (* SOFT_HLUTNM = "soft_lutpair3" *) 
   LUT5 #(
-    .INIT(32'hEE0EEEEE)) 
-    \io_gpio_writeEnable[1]_INST_0 
+    .INIT(32'h11F11111)) 
+    \io_gpio_readEnable[1]_INST_0 
        (.I0(\CRL_reg_n_0_[4] ),
         .I1(\CRL_reg_n_0_[5] ),
         .I2(gpioCfg_1_cnf[0]),
         .I3(gpioCfg_1_cnf[1]),
         .I4(p_1_in[1]),
-        .O(io_gpio_writeEnable[1]));
-  (* SOFT_HLUTNM = "soft_lutpair4" *) 
+        .O(io_gpio_readEnable[1]));
+  (* SOFT_HLUTNM = "soft_lutpair2" *) 
   LUT5 #(
-    .INIT(32'hEE0EEEEE)) 
-    \io_gpio_writeEnable[2]_INST_0 
+    .INIT(32'h11F11111)) 
+    \io_gpio_readEnable[2]_INST_0 
        (.I0(\CRL_reg_n_0_[8] ),
         .I1(\CRL_reg_n_0_[9] ),
         .I2(gpioCfg_2_cnf[0]),
         .I3(gpioCfg_2_cnf[1]),
         .I4(p_1_in[2]),
-        .O(io_gpio_writeEnable[2]));
-  (* SOFT_HLUTNM = "soft_lutpair5" *) 
+        .O(io_gpio_readEnable[2]));
+  (* SOFT_HLUTNM = "soft_lutpair9" *) 
   LUT5 #(
-    .INIT(32'hEE0EEEEE)) 
-    \io_gpio_writeEnable[3]_INST_0 
+    .INIT(32'h11F11111)) 
+    \io_gpio_readEnable[3]_INST_0 
        (.I0(\CRL_reg_n_0_[12] ),
         .I1(\CRL_reg_n_0_[13] ),
         .I2(gpioCfg_3_cnf[0]),
         .I3(gpioCfg_3_cnf[1]),
         .I4(p_1_in[3]),
-        .O(io_gpio_writeEnable[3]));
-  (* SOFT_HLUTNM = "soft_lutpair6" *) 
+        .O(io_gpio_readEnable[3]));
+  (* SOFT_HLUTNM = "soft_lutpair8" *) 
   LUT5 #(
-    .INIT(32'hEE0EEEEE)) 
-    \io_gpio_writeEnable[4]_INST_0 
+    .INIT(32'h11F11111)) 
+    \io_gpio_readEnable[4]_INST_0 
        (.I0(\CRL_reg_n_0_[16] ),
         .I1(\CRL_reg_n_0_[17] ),
         .I2(gpioCfg_4_cnf[0]),
         .I3(gpioCfg_4_cnf[1]),
         .I4(p_1_in[4]),
-        .O(io_gpio_writeEnable[4]));
+        .O(io_gpio_readEnable[4]));
   (* SOFT_HLUTNM = "soft_lutpair7" *) 
   LUT5 #(
-    .INIT(32'hEE0EEEEE)) 
-    \io_gpio_writeEnable[5]_INST_0 
+    .INIT(32'h11F11111)) 
+    \io_gpio_readEnable[5]_INST_0 
        (.I0(\CRL_reg_n_0_[20] ),
         .I1(\CRL_reg_n_0_[21] ),
         .I2(gpioCfg_5_cnf[0]),
         .I3(gpioCfg_5_cnf[1]),
         .I4(p_1_in[5]),
-        .O(io_gpio_writeEnable[5]));
-  (* SOFT_HLUTNM = "soft_lutpair8" *) 
+        .O(io_gpio_readEnable[5]));
+  (* SOFT_HLUTNM = "soft_lutpair6" *) 
   LUT5 #(
-    .INIT(32'hEE0EEEEE)) 
-    \io_gpio_writeEnable[6]_INST_0 
+    .INIT(32'h11F11111)) 
+    \io_gpio_readEnable[6]_INST_0 
        (.I0(\CRL_reg_n_0_[24] ),
         .I1(\CRL_reg_n_0_[25] ),
         .I2(gpioCfg_6_cnf[0]),
         .I3(gpioCfg_6_cnf[1]),
         .I4(p_1_in[6]),
-        .O(io_gpio_writeEnable[6]));
-  (* SOFT_HLUTNM = "soft_lutpair9" *) 
+        .O(io_gpio_readEnable[6]));
+  (* SOFT_HLUTNM = "soft_lutpair5" *) 
   LUT5 #(
-    .INIT(32'hEE0EEEEE)) 
-    \io_gpio_writeEnable[7]_INST_0 
+    .INIT(32'h11F11111)) 
+    \io_gpio_readEnable[7]_INST_0 
        (.I0(\CRL_reg_n_0_[28] ),
         .I1(\CRL_reg_n_0_[29] ),
         .I2(gpioCfg_7_cnf[0]),
         .I3(gpioCfg_7_cnf[1]),
         .I4(p_1_in[7]),
-        .O(io_gpio_writeEnable[7]));
+        .O(io_gpio_readEnable[7]));
   LUT6 #(
-    .INIT(64'h47FF47FF47FF0000)) 
-    \io_gpio_writeEnable[8]_INST_0 
+    .INIT(64'hB800B800B800FFFF)) 
+    \io_gpio_readEnable[8]_INST_0 
        (.I0(io_ch[0]),
         .I1(gpioCfg_8_cnf[1]),
         .I2(p_1_in[8]),
         .I3(gpioCfg_8_cnf[0]),
         .I4(\CRH_reg_n_0_[0] ),
         .I5(\CRH_reg_n_0_[1] ),
-        .O(io_gpio_writeEnable[8]));
+        .O(io_gpio_readEnable[8]));
   LUT6 #(
-    .INIT(64'h47FF47FF47FF0000)) 
-    \io_gpio_writeEnable[9]_INST_0 
+    .INIT(64'hB800B800B800FFFF)) 
+    \io_gpio_readEnable[9]_INST_0 
        (.I0(io_ch[1]),
         .I1(gpioCfg_9_cnf[1]),
         .I2(p_1_in[9]),
         .I3(gpioCfg_9_cnf[0]),
         .I4(\CRH_reg_n_0_[4] ),
         .I5(\CRH_reg_n_0_[5] ),
-        .O(io_gpio_writeEnable[9]));
-  (* SOFT_HLUTNM = "soft_lutpair2" *) 
+        .O(io_gpio_readEnable[9]));
+  sys_Apb3Periph_0_0_BufferCC__1 io_gpio_read_buffercc
+       (.clk(clk),
+        .io_dataIn(io_gpio_read),
+        .io_dataOut(io_gpio_read_buffercc_io_dataOut),
+        .reset(reset));
+  (* SOFT_HLUTNM = "soft_lutpair4" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \io_gpio_write[0]_INST_0 
        (.I0(p_1_in[0]),
         .I1(gpioCfg_0_cnf[1]),
         .O(io_gpio_write[0]));
-  (* SOFT_HLUTNM = "soft_lutpair14" *) 
+  (* SOFT_HLUTNM = "soft_lutpair36" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \io_gpio_write[10]_INST_0 
@@ -6476,7 +6775,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(gpioCfg_10_cnf[1]),
         .I2(p_1_in[10]),
         .O(io_gpio_write[10]));
-  (* SOFT_HLUTNM = "soft_lutpair13" *) 
+  (* SOFT_HLUTNM = "soft_lutpair34" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \io_gpio_write[11]_INST_0 
@@ -6484,7 +6783,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(gpioCfg_11_cnf[1]),
         .I2(p_1_in[11]),
         .O(io_gpio_write[11]));
-  (* SOFT_HLUTNM = "soft_lutpair12" *) 
+  (* SOFT_HLUTNM = "soft_lutpair21" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \io_gpio_write[12]_INST_0 
@@ -6492,7 +6791,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(gpioCfg_12_cnf[1]),
         .I2(p_1_in[12]),
         .O(io_gpio_write[12]));
-  (* SOFT_HLUTNM = "soft_lutpair11" *) 
+  (* SOFT_HLUTNM = "soft_lutpair19" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \io_gpio_write[13]_INST_0 
@@ -6500,7 +6799,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(gpioCfg_13_cnf[1]),
         .I2(p_1_in[13]),
         .O(io_gpio_write[13]));
-  (* SOFT_HLUTNM = "soft_lutpair10" *) 
+  (* SOFT_HLUTNM = "soft_lutpair12" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \io_gpio_write[14]_INST_0 
@@ -6508,7 +6807,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(gpioCfg_14_cnf[1]),
         .I2(p_1_in[14]),
         .O(io_gpio_write[14]));
-  (* SOFT_HLUTNM = "soft_lutpair22" *) 
+  (* SOFT_HLUTNM = "soft_lutpair29" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \io_gpio_write[15]_INST_0 
@@ -6523,21 +6822,21 @@ module sys_Apb3Periph_0_0_Apb3Gpio
        (.I0(p_1_in[1]),
         .I1(gpioCfg_1_cnf[1]),
         .O(io_gpio_write[1]));
-  (* SOFT_HLUTNM = "soft_lutpair4" *) 
+  (* SOFT_HLUTNM = "soft_lutpair2" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \io_gpio_write[2]_INST_0 
        (.I0(p_1_in[2]),
         .I1(gpioCfg_2_cnf[1]),
         .O(io_gpio_write[2]));
-  (* SOFT_HLUTNM = "soft_lutpair5" *) 
+  (* SOFT_HLUTNM = "soft_lutpair9" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \io_gpio_write[3]_INST_0 
        (.I0(p_1_in[3]),
         .I1(gpioCfg_3_cnf[1]),
         .O(io_gpio_write[3]));
-  (* SOFT_HLUTNM = "soft_lutpair6" *) 
+  (* SOFT_HLUTNM = "soft_lutpair8" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \io_gpio_write[4]_INST_0 
@@ -6551,21 +6850,21 @@ module sys_Apb3Periph_0_0_Apb3Gpio
        (.I0(p_1_in[5]),
         .I1(gpioCfg_5_cnf[1]),
         .O(io_gpio_write[5]));
-  (* SOFT_HLUTNM = "soft_lutpair8" *) 
+  (* SOFT_HLUTNM = "soft_lutpair6" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \io_gpio_write[6]_INST_0 
        (.I0(p_1_in[6]),
         .I1(gpioCfg_6_cnf[1]),
         .O(io_gpio_write[6]));
-  (* SOFT_HLUTNM = "soft_lutpair9" *) 
+  (* SOFT_HLUTNM = "soft_lutpair5" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \io_gpio_write[7]_INST_0 
        (.I0(p_1_in[7]),
         .I1(gpioCfg_7_cnf[1]),
         .O(io_gpio_write[7]));
-  (* SOFT_HLUTNM = "soft_lutpair16" *) 
+  (* SOFT_HLUTNM = "soft_lutpair40" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \io_gpio_write[8]_INST_0 
@@ -6573,7 +6872,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .I1(gpioCfg_8_cnf[1]),
         .I2(p_1_in[8]),
         .O(io_gpio_write[8]));
-  (* SOFT_HLUTNM = "soft_lutpair15" *) 
+  (* SOFT_HLUTNM = "soft_lutpair38" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \io_gpio_write[9]_INST_0 
@@ -6583,13 +6882,14 @@ module sys_Apb3Periph_0_0_Apb3Gpio
         .O(io_gpio_write[9]));
 endmodule
 
+(* ORIG_REF_NAME = "Apb3GpioArray" *) 
 module sys_Apb3Periph_0_0_Apb3GpioArray
    (io_gpio_write,
     Q,
-    io_gpio_writeEnable,
+    gpioCtrl_io_apb_PRDATA,
     \CRH_reg[23] ,
     \CRL_reg[27] ,
-    gpioCtrl_io_apb_PRDATA,
+    io_gpio_readEnable,
     \CRL_reg[16] ,
     \CRL_reg[17] ,
     \CRL_reg[18] ,
@@ -6610,8 +6910,6 @@ module sys_Apb3Periph_0_0_Apb3GpioArray
     clk,
     reset,
     spiCtrl_io_spis_1_mosi,
-    \io_gpio_writeEnable[29] ,
-    spiCtrl_io_spis_0_sclk,
     spiCtrl_io_spis_0_mosi,
     i2cCtrl_io_i2cs_1_scl,
     i2cCtrl_io_i2cs_0_scl,
@@ -6625,13 +6923,15 @@ module sys_Apb3Periph_0_0_Apb3GpioArray
     \io_apb_PRDATA[15]_INST_0_i_27 ,
     io_apb_PWDATA,
     io_apb_PSEL,
+    \io_gpio_readEnable[29] ,
+    spiCtrl_io_spis_0_sclk,
     \io_apb_PRDATA[31] );
   output [25:0]io_gpio_write;
   output [5:0]Q;
-  output [31:0]io_gpio_writeEnable;
+  output [15:0]gpioCtrl_io_apb_PRDATA;
   output [3:0]\CRH_reg[23] ;
   output [1:0]\CRL_reg[27] ;
-  output [15:0]gpioCtrl_io_apb_PRDATA;
+  output [31:0]io_gpio_readEnable;
   output \CRL_reg[16] ;
   output \CRL_reg[17] ;
   output \CRL_reg[18] ;
@@ -6652,8 +6952,6 @@ module sys_Apb3Periph_0_0_Apb3GpioArray
   input clk;
   input reset;
   input spiCtrl_io_spis_1_mosi;
-  input [3:0]\io_gpio_writeEnable[29] ;
-  input spiCtrl_io_spis_0_sclk;
   input spiCtrl_io_spis_0_mosi;
   input i2cCtrl_io_i2cs_1_scl;
   input i2cCtrl_io_i2cs_0_scl;
@@ -6667,6 +6965,8 @@ module sys_Apb3Periph_0_0_Apb3GpioArray
   input \io_apb_PRDATA[15]_INST_0_i_27 ;
   input [31:0]io_apb_PWDATA;
   input [0:0]io_apb_PSEL;
+  input [3:0]\io_gpio_readEnable[29] ;
+  input spiCtrl_io_spis_0_sclk;
   input [0:0]\io_apb_PRDATA[31] ;
 
   wire [3:0]\CRH_reg[23] ;
@@ -6687,6 +6987,22 @@ module sys_Apb3Periph_0_0_Apb3GpioArray
   wire \CRL_reg[29] ;
   wire \CRL_reg[30] ;
   wire \CRL_reg[31] ;
+  wire GPIO_0_n_16;
+  wire GPIO_0_n_17;
+  wire GPIO_0_n_18;
+  wire GPIO_0_n_19;
+  wire GPIO_0_n_20;
+  wire GPIO_0_n_21;
+  wire GPIO_0_n_22;
+  wire GPIO_0_n_23;
+  wire GPIO_0_n_24;
+  wire GPIO_0_n_25;
+  wire GPIO_0_n_26;
+  wire GPIO_0_n_27;
+  wire GPIO_0_n_28;
+  wire GPIO_0_n_29;
+  wire GPIO_0_n_30;
+  wire GPIO_0_n_31;
   wire GPIO_0_n_32;
   wire GPIO_0_n_33;
   wire GPIO_0_n_34;
@@ -6705,7 +7021,6 @@ module sys_Apb3Periph_0_0_Apb3GpioArray
   wire GPIO_0_n_47;
   wire GPIO_0_n_48;
   wire GPIO_0_n_49;
-  wire GPIO_0_n_50;
   wire GPIO_0_n_51;
   wire GPIO_0_n_52;
   wire GPIO_0_n_53;
@@ -6714,29 +7029,28 @@ module sys_Apb3Periph_0_0_Apb3GpioArray
   wire GPIO_0_n_56;
   wire GPIO_0_n_57;
   wire GPIO_0_n_58;
-  wire GPIO_0_n_59;
   wire GPIO_0_n_60;
   wire GPIO_0_n_61;
   wire GPIO_0_n_62;
   wire GPIO_0_n_63;
-  wire GPIO_0_n_64;
-  wire GPIO_0_n_65;
-  wire GPIO_0_n_67;
-  wire GPIO_0_n_68;
-  wire GPIO_0_n_69;
-  wire GPIO_0_n_70;
-  wire GPIO_0_n_71;
-  wire GPIO_0_n_72;
-  wire GPIO_0_n_73;
-  wire GPIO_0_n_74;
-  wire GPIO_0_n_76;
-  wire GPIO_0_n_77;
-  wire GPIO_0_n_78;
-  wire GPIO_0_n_79;
-  wire GPIO_1_n_36;
+  wire GPIO_1_n_10;
+  wire GPIO_1_n_11;
+  wire GPIO_1_n_12;
+  wire GPIO_1_n_13;
+  wire GPIO_1_n_18;
+  wire GPIO_1_n_25;
+  wire GPIO_1_n_26;
+  wire GPIO_1_n_27;
+  wire GPIO_1_n_28;
+  wire GPIO_1_n_29;
+  wire GPIO_1_n_30;
+  wire GPIO_1_n_31;
+  wire GPIO_1_n_32;
+  wire GPIO_1_n_33;
+  wire GPIO_1_n_34;
+  wire GPIO_1_n_35;
   wire GPIO_1_n_37;
   wire GPIO_1_n_38;
-  wire GPIO_1_n_39;
   wire GPIO_1_n_40;
   wire GPIO_1_n_41;
   wire GPIO_1_n_42;
@@ -6745,24 +7059,10 @@ module sys_Apb3Periph_0_0_Apb3GpioArray
   wire GPIO_1_n_45;
   wire GPIO_1_n_46;
   wire GPIO_1_n_47;
-  wire GPIO_1_n_48;
   wire GPIO_1_n_49;
   wire GPIO_1_n_50;
   wire GPIO_1_n_51;
-  wire GPIO_1_n_53;
-  wire GPIO_1_n_54;
-  wire GPIO_1_n_56;
-  wire GPIO_1_n_57;
-  wire GPIO_1_n_58;
-  wire GPIO_1_n_59;
-  wire GPIO_1_n_60;
-  wire GPIO_1_n_61;
-  wire GPIO_1_n_62;
-  wire GPIO_1_n_63;
-  wire GPIO_1_n_65;
-  wire GPIO_1_n_66;
-  wire GPIO_1_n_67;
-  wire GPIO_1_n_68;
+  wire GPIO_1_n_52;
   wire [5:0]Q;
   wire _zz__zz_CRH;
   wire _zz__zz_CRH_1;
@@ -6785,9 +7085,9 @@ module sys_Apb3Periph_0_0_Apb3GpioArray
   wire [0:0]io_apb_decoder_io_output_PSEL;
   wire [7:0]io_ch;
   wire [31:0]io_gpio_read;
+  wire [31:0]io_gpio_readEnable;
+  wire [3:0]\io_gpio_readEnable[29] ;
   wire [25:0]io_gpio_write;
-  wire [31:0]io_gpio_writeEnable;
-  wire [3:0]\io_gpio_writeEnable[29] ;
   wire reset;
   wire spiCtrl_io_spis_0_mosi;
   wire spiCtrl_io_spis_0_sclk;
@@ -6796,39 +7096,39 @@ module sys_Apb3Periph_0_0_Apb3GpioArray
   wire uartCtrl_io_uarts_1_txd;
 
   sys_Apb3Periph_0_0_Apb3Gpio GPIO_0
-       (.\CRH_reg[0]_0 (GPIO_0_n_48),
-        .\CRH_reg[10]_0 (GPIO_0_n_58),
-        .\CRH_reg[11]_0 (GPIO_0_n_59),
-        .\CRH_reg[12]_0 (GPIO_0_n_60),
-        .\CRH_reg[13]_0 (GPIO_0_n_61),
-        .\CRH_reg[14]_0 (GPIO_0_n_62),
-        .\CRH_reg[15]_0 (GPIO_0_n_63),
-        .\CRH_reg[1]_0 (GPIO_0_n_49),
-        .\CRH_reg[2]_0 (GPIO_0_n_50),
-        .\CRH_reg[3]_0 (GPIO_0_n_51),
-        .\CRH_reg[4]_0 (GPIO_0_n_52),
-        .\CRH_reg[5]_0 (GPIO_0_n_53),
-        .\CRH_reg[6]_0 (GPIO_0_n_54),
-        .\CRH_reg[7]_0 (GPIO_0_n_55),
-        .\CRH_reg[8]_0 (GPIO_0_n_56),
-        .\CRH_reg[9]_0 (GPIO_0_n_57),
-        .\CRL_reg[16]_0 (GPIO_0_n_32),
-        .\CRL_reg[17]_0 (GPIO_0_n_33),
-        .\CRL_reg[18]_0 (GPIO_0_n_34),
-        .\CRL_reg[19]_0 (GPIO_0_n_35),
-        .\CRL_reg[20]_0 (GPIO_0_n_36),
-        .\CRL_reg[21]_0 (GPIO_0_n_37),
-        .\CRL_reg[22]_0 (GPIO_0_n_38),
-        .\CRL_reg[23]_0 (GPIO_0_n_39),
-        .\CRL_reg[24]_0 (GPIO_0_n_40),
-        .\CRL_reg[25]_0 (GPIO_0_n_41),
-        .\CRL_reg[26]_0 (GPIO_0_n_42),
-        .\CRL_reg[27]_0 (GPIO_0_n_43),
-        .\CRL_reg[28]_0 (GPIO_0_n_44),
-        .\CRL_reg[29]_0 (GPIO_0_n_45),
-        .\CRL_reg[30]_0 (GPIO_0_n_46),
-        .\CRL_reg[31]_0 (GPIO_0_n_47),
-        .Q({GPIO_0_n_64,GPIO_0_n_65,_zz__zz_CRH,GPIO_0_n_67,GPIO_0_n_68,GPIO_0_n_69,GPIO_0_n_70,GPIO_0_n_71,GPIO_0_n_72,GPIO_0_n_73,GPIO_0_n_74,_zz__zz_CRL,GPIO_0_n_76,GPIO_0_n_77,GPIO_0_n_78,GPIO_0_n_79}),
+       (.\CRH_reg[0]_0 (GPIO_0_n_32),
+        .\CRH_reg[10]_0 (GPIO_0_n_42),
+        .\CRH_reg[11]_0 (GPIO_0_n_43),
+        .\CRH_reg[12]_0 (GPIO_0_n_44),
+        .\CRH_reg[13]_0 (GPIO_0_n_45),
+        .\CRH_reg[14]_0 (GPIO_0_n_46),
+        .\CRH_reg[15]_0 (GPIO_0_n_47),
+        .\CRH_reg[1]_0 (GPIO_0_n_33),
+        .\CRH_reg[2]_0 (GPIO_0_n_34),
+        .\CRH_reg[3]_0 (GPIO_0_n_35),
+        .\CRH_reg[4]_0 (GPIO_0_n_36),
+        .\CRH_reg[5]_0 (GPIO_0_n_37),
+        .\CRH_reg[6]_0 (GPIO_0_n_38),
+        .\CRH_reg[7]_0 (GPIO_0_n_39),
+        .\CRH_reg[8]_0 (GPIO_0_n_40),
+        .\CRH_reg[9]_0 (GPIO_0_n_41),
+        .\CRL_reg[16]_0 (GPIO_0_n_16),
+        .\CRL_reg[17]_0 (GPIO_0_n_17),
+        .\CRL_reg[18]_0 (GPIO_0_n_18),
+        .\CRL_reg[19]_0 (GPIO_0_n_19),
+        .\CRL_reg[20]_0 (GPIO_0_n_20),
+        .\CRL_reg[21]_0 (GPIO_0_n_21),
+        .\CRL_reg[22]_0 (GPIO_0_n_22),
+        .\CRL_reg[23]_0 (GPIO_0_n_23),
+        .\CRL_reg[24]_0 (GPIO_0_n_24),
+        .\CRL_reg[25]_0 (GPIO_0_n_25),
+        .\CRL_reg[26]_0 (GPIO_0_n_26),
+        .\CRL_reg[27]_0 (GPIO_0_n_27),
+        .\CRL_reg[28]_0 (GPIO_0_n_28),
+        .\CRL_reg[29]_0 (GPIO_0_n_29),
+        .\CRL_reg[30]_0 (GPIO_0_n_30),
+        .\CRL_reg[31]_0 (GPIO_0_n_31),
+        .Q({GPIO_0_n_48,GPIO_0_n_49,_zz__zz_CRH,GPIO_0_n_51,GPIO_0_n_52,GPIO_0_n_53,GPIO_0_n_54,GPIO_0_n_55,GPIO_0_n_56,GPIO_0_n_57,GPIO_0_n_58,_zz__zz_CRL,GPIO_0_n_60,GPIO_0_n_61,GPIO_0_n_62,GPIO_0_n_63}),
         .clk(clk),
         .io_apb_PADDR(io_apb_PADDR[5:0]),
         .io_apb_PENABLE(io_apb_PENABLE),
@@ -6840,26 +7140,26 @@ module sys_Apb3Periph_0_0_Apb3GpioArray
         .io_apb_decoder_io_output_PSEL(io_apb_decoder_io_output_PSEL),
         .io_ch(io_ch),
         .io_gpio_read(io_gpio_read[15:0]),
+        .io_gpio_readEnable(io_gpio_readEnable[15:0]),
         .io_gpio_write(io_gpio_write[15:0]),
-        .io_gpio_writeEnable(io_gpio_writeEnable[15:0]),
         .reset(reset));
   sys_Apb3Periph_0_0_Apb3Gpio_21 GPIO_1
-       (.\CRH_reg[0]_0 (GPIO_1_n_36),
-        .\CRH_reg[10]_0 (GPIO_1_n_46),
-        .\CRH_reg[11]_0 (GPIO_1_n_47),
-        .\CRH_reg[12]_0 (GPIO_1_n_48),
-        .\CRH_reg[13]_0 (GPIO_1_n_49),
-        .\CRH_reg[14]_0 (GPIO_1_n_50),
-        .\CRH_reg[15]_0 (GPIO_1_n_51),
-        .\CRH_reg[1]_0 (GPIO_1_n_37),
-        .\CRH_reg[2]_0 (GPIO_1_n_38),
-        .\CRH_reg[3]_0 (GPIO_1_n_39),
-        .\CRH_reg[4]_0 (GPIO_1_n_40),
-        .\CRH_reg[5]_0 (GPIO_1_n_41),
-        .\CRH_reg[6]_0 (GPIO_1_n_42),
-        .\CRH_reg[7]_0 (GPIO_1_n_43),
-        .\CRH_reg[8]_0 (GPIO_1_n_44),
-        .\CRH_reg[9]_0 (GPIO_1_n_45),
+       (.\CRH_reg[0]_0 (GPIO_1_n_10),
+        .\CRH_reg[10]_0 (GPIO_1_n_30),
+        .\CRH_reg[11]_0 (GPIO_1_n_31),
+        .\CRH_reg[12]_0 (GPIO_1_n_32),
+        .\CRH_reg[13]_0 (GPIO_1_n_33),
+        .\CRH_reg[14]_0 (GPIO_1_n_34),
+        .\CRH_reg[15]_0 (GPIO_1_n_35),
+        .\CRH_reg[1]_0 (GPIO_1_n_11),
+        .\CRH_reg[2]_0 (GPIO_1_n_12),
+        .\CRH_reg[3]_0 (GPIO_1_n_13),
+        .\CRH_reg[4]_0 (GPIO_1_n_18),
+        .\CRH_reg[5]_0 (GPIO_1_n_25),
+        .\CRH_reg[6]_0 (GPIO_1_n_26),
+        .\CRH_reg[7]_0 (GPIO_1_n_27),
+        .\CRH_reg[8]_0 (GPIO_1_n_28),
+        .\CRH_reg[9]_0 (GPIO_1_n_29),
         .\CRL_reg[16]_0 (\CRL_reg[16] ),
         .\CRL_reg[17]_0 (\CRL_reg[17] ),
         .\CRL_reg[18]_0 (\CRL_reg[18] ),
@@ -6877,7 +7177,7 @@ module sys_Apb3Periph_0_0_Apb3GpioArray
         .\CRL_reg[29]_0 (\CRL_reg[29] ),
         .\CRL_reg[30]_0 (\CRL_reg[30] ),
         .\CRL_reg[31]_0 (\CRL_reg[31] ),
-        .\LCKR_reg[15]_0 ({GPIO_1_n_53,GPIO_1_n_54,_zz__zz_CRH_1,GPIO_1_n_56,GPIO_1_n_57,GPIO_1_n_58,GPIO_1_n_59,GPIO_1_n_60,GPIO_1_n_61,GPIO_1_n_62,GPIO_1_n_63,_zz__zz_CRL_0,GPIO_1_n_65,GPIO_1_n_66,GPIO_1_n_67,GPIO_1_n_68}),
+        .\LCKR_reg[15]_0 ({GPIO_1_n_37,GPIO_1_n_38,_zz__zz_CRH_1,GPIO_1_n_40,GPIO_1_n_41,GPIO_1_n_42,GPIO_1_n_43,GPIO_1_n_44,GPIO_1_n_45,GPIO_1_n_46,GPIO_1_n_47,_zz__zz_CRL_0,GPIO_1_n_49,GPIO_1_n_50,GPIO_1_n_51,GPIO_1_n_52}),
         .\ODR_reg[13]_0 (Q),
         .Q(\CRH_reg[23] ),
         .clk(clk),
@@ -6887,32 +7187,32 @@ module sys_Apb3Periph_0_0_Apb3GpioArray
         .io_apb_PENABLE(io_apb_PENABLE),
         .\io_apb_PRDATA[15]_INST_0_i_27 (\io_apb_PRDATA[15]_INST_0_i_27 ),
         .\io_apb_PRDATA[16] (\io_apb_PRDATA[16] ),
-        .\io_apb_PRDATA[16]_0 (GPIO_0_n_32),
+        .\io_apb_PRDATA[16]_0 (GPIO_0_n_16),
         .\io_apb_PRDATA[16]_1 (apb3Router_7_n_16),
-        .\io_apb_PRDATA[17] (GPIO_0_n_33),
-        .\io_apb_PRDATA[18] (GPIO_0_n_34),
-        .\io_apb_PRDATA[19] (GPIO_0_n_35),
-        .\io_apb_PRDATA[20] (GPIO_0_n_36),
-        .\io_apb_PRDATA[21] (GPIO_0_n_37),
-        .\io_apb_PRDATA[22] (GPIO_0_n_38),
-        .\io_apb_PRDATA[23] (GPIO_0_n_39),
-        .\io_apb_PRDATA[24] (GPIO_0_n_40),
-        .\io_apb_PRDATA[25] (GPIO_0_n_41),
-        .\io_apb_PRDATA[26] (GPIO_0_n_42),
-        .\io_apb_PRDATA[27] (GPIO_0_n_43),
-        .\io_apb_PRDATA[28] (GPIO_0_n_44),
-        .\io_apb_PRDATA[29] (GPIO_0_n_45),
-        .\io_apb_PRDATA[30] (GPIO_0_n_46),
+        .\io_apb_PRDATA[17] (GPIO_0_n_17),
+        .\io_apb_PRDATA[18] (GPIO_0_n_18),
+        .\io_apb_PRDATA[19] (GPIO_0_n_19),
+        .\io_apb_PRDATA[20] (GPIO_0_n_20),
+        .\io_apb_PRDATA[21] (GPIO_0_n_21),
+        .\io_apb_PRDATA[22] (GPIO_0_n_22),
+        .\io_apb_PRDATA[23] (GPIO_0_n_23),
+        .\io_apb_PRDATA[24] (GPIO_0_n_24),
+        .\io_apb_PRDATA[25] (GPIO_0_n_25),
+        .\io_apb_PRDATA[26] (GPIO_0_n_26),
+        .\io_apb_PRDATA[27] (GPIO_0_n_27),
+        .\io_apb_PRDATA[28] (GPIO_0_n_28),
+        .\io_apb_PRDATA[29] (GPIO_0_n_29),
+        .\io_apb_PRDATA[30] (GPIO_0_n_30),
         .\io_apb_PRDATA[31] (\io_apb_PRDATA[31] ),
-        .\io_apb_PRDATA[31]_0 (GPIO_0_n_47),
+        .\io_apb_PRDATA[31]_0 (GPIO_0_n_31),
         .io_apb_PSEL(io_apb_PSEL),
         .io_apb_PWDATA(io_apb_PWDATA),
         .io_apb_PWRITE(io_apb_PWRITE),
         .io_apb_decoder_io_output_PSEL(io_apb_decoder_io_output_PSEL),
         .io_gpio_read(io_gpio_read[31:16]),
+        .io_gpio_readEnable(io_gpio_readEnable[31:16]),
+        .\io_gpio_readEnable[29] (\io_gpio_readEnable[29] ),
         .io_gpio_write(io_gpio_write[25:16]),
-        .io_gpio_writeEnable(io_gpio_writeEnable[31:16]),
-        .\io_gpio_writeEnable[29] (\io_gpio_writeEnable[29] ),
         .reset(reset),
         .spiCtrl_io_spis_0_mosi(spiCtrl_io_spis_0_mosi),
         .spiCtrl_io_spis_0_sclk(spiCtrl_io_spis_0_sclk),
@@ -6920,59 +7220,58 @@ module sys_Apb3Periph_0_0_Apb3GpioArray
         .uartCtrl_io_uarts_0_txd(uartCtrl_io_uarts_0_txd),
         .uartCtrl_io_uarts_1_txd(uartCtrl_io_uarts_1_txd));
   sys_Apb3Periph_0_0_Apb3Router_22 apb3Router_7
-       (.Q({GPIO_0_n_64,GPIO_0_n_65,_zz__zz_CRH,GPIO_0_n_67,GPIO_0_n_68,GPIO_0_n_69,GPIO_0_n_70,GPIO_0_n_71,GPIO_0_n_72,GPIO_0_n_73,GPIO_0_n_74,_zz__zz_CRL,GPIO_0_n_76,GPIO_0_n_77,GPIO_0_n_78,GPIO_0_n_79}),
+       (.Q({GPIO_0_n_48,GPIO_0_n_49,_zz__zz_CRH,GPIO_0_n_51,GPIO_0_n_52,GPIO_0_n_53,GPIO_0_n_54,GPIO_0_n_55,GPIO_0_n_56,GPIO_0_n_57,GPIO_0_n_58,_zz__zz_CRL,GPIO_0_n_60,GPIO_0_n_61,GPIO_0_n_62,GPIO_0_n_63}),
         .clk(clk),
         .gpioCtrl_io_apb_PRDATA(gpioCtrl_io_apb_PRDATA),
         .io_apb_PADDR(io_apb_PADDR),
         .\io_apb_PADDR[4]_0 (apb3Router_7_n_17),
         .io_apb_PADDR_4_sp_1(apb3Router_7_n_16),
-        .\io_apb_PRDATA[0]_INST_0_i_3 (GPIO_0_n_48),
-        .\io_apb_PRDATA[0]_INST_0_i_3_0 (GPIO_1_n_36),
-        .\io_apb_PRDATA[10]_INST_0_i_10 (GPIO_0_n_58),
-        .\io_apb_PRDATA[10]_INST_0_i_10_0 (GPIO_1_n_46),
-        .\io_apb_PRDATA[11]_INST_0_i_10 (GPIO_0_n_59),
-        .\io_apb_PRDATA[11]_INST_0_i_10_0 (GPIO_1_n_47),
-        .\io_apb_PRDATA[12]_INST_0_i_10 (GPIO_0_n_60),
-        .\io_apb_PRDATA[12]_INST_0_i_10_0 (GPIO_1_n_48),
-        .\io_apb_PRDATA[13]_INST_0_i_10 (GPIO_0_n_61),
-        .\io_apb_PRDATA[13]_INST_0_i_10_0 (GPIO_1_n_49),
-        .\io_apb_PRDATA[14]_INST_0_i_10 (GPIO_0_n_62),
-        .\io_apb_PRDATA[14]_INST_0_i_10_0 (GPIO_1_n_50),
-        .\io_apb_PRDATA[15]_INST_0_i_13 (GPIO_0_n_63),
-        .\io_apb_PRDATA[15]_INST_0_i_13_0 (GPIO_1_n_51),
-        .\io_apb_PRDATA[15]_INST_0_i_27_0 ({GPIO_1_n_53,GPIO_1_n_54,_zz__zz_CRH_1,GPIO_1_n_56,GPIO_1_n_57,GPIO_1_n_58,GPIO_1_n_59,GPIO_1_n_60,GPIO_1_n_61,GPIO_1_n_62,GPIO_1_n_63,_zz__zz_CRL_0,GPIO_1_n_65,GPIO_1_n_66,GPIO_1_n_67,GPIO_1_n_68}),
-        .\io_apb_PRDATA[1]_INST_0_i_3 (GPIO_0_n_49),
-        .\io_apb_PRDATA[1]_INST_0_i_3_0 (GPIO_1_n_37),
-        .\io_apb_PRDATA[2]_INST_0_i_3 (GPIO_0_n_50),
-        .\io_apb_PRDATA[2]_INST_0_i_3_0 (GPIO_1_n_38),
-        .\io_apb_PRDATA[3]_INST_0_i_3 (GPIO_0_n_51),
-        .\io_apb_PRDATA[3]_INST_0_i_3_0 (GPIO_1_n_39),
-        .\io_apb_PRDATA[4]_INST_0_i_3 (GPIO_0_n_52),
-        .\io_apb_PRDATA[4]_INST_0_i_3_0 (GPIO_1_n_40),
-        .\io_apb_PRDATA[5]_INST_0_i_3 (GPIO_0_n_53),
-        .\io_apb_PRDATA[5]_INST_0_i_3_0 (GPIO_1_n_41),
-        .\io_apb_PRDATA[6]_INST_0_i_3 (GPIO_0_n_54),
-        .\io_apb_PRDATA[6]_INST_0_i_3_0 (GPIO_1_n_42),
-        .\io_apb_PRDATA[7]_INST_0_i_3 (GPIO_0_n_55),
-        .\io_apb_PRDATA[7]_INST_0_i_3_0 (GPIO_1_n_43),
-        .\io_apb_PRDATA[8]_INST_0_i_3 (GPIO_0_n_56),
-        .\io_apb_PRDATA[8]_INST_0_i_3_0 (GPIO_1_n_44),
-        .\io_apb_PRDATA[9]_INST_0_i_10 (GPIO_0_n_57),
-        .\io_apb_PRDATA[9]_INST_0_i_10_0 (GPIO_1_n_45),
+        .\io_apb_PRDATA[0]_INST_0_i_3 (GPIO_0_n_32),
+        .\io_apb_PRDATA[0]_INST_0_i_3_0 (GPIO_1_n_10),
+        .\io_apb_PRDATA[10]_INST_0_i_10 (GPIO_0_n_42),
+        .\io_apb_PRDATA[10]_INST_0_i_10_0 (GPIO_1_n_30),
+        .\io_apb_PRDATA[11]_INST_0_i_10 (GPIO_0_n_43),
+        .\io_apb_PRDATA[11]_INST_0_i_10_0 (GPIO_1_n_31),
+        .\io_apb_PRDATA[12]_INST_0_i_10 (GPIO_0_n_44),
+        .\io_apb_PRDATA[12]_INST_0_i_10_0 (GPIO_1_n_32),
+        .\io_apb_PRDATA[13]_INST_0_i_10 (GPIO_0_n_45),
+        .\io_apb_PRDATA[13]_INST_0_i_10_0 (GPIO_1_n_33),
+        .\io_apb_PRDATA[14]_INST_0_i_10 (GPIO_0_n_46),
+        .\io_apb_PRDATA[14]_INST_0_i_10_0 (GPIO_1_n_34),
+        .\io_apb_PRDATA[15]_INST_0_i_13 (GPIO_0_n_47),
+        .\io_apb_PRDATA[15]_INST_0_i_13_0 (GPIO_1_n_35),
+        .\io_apb_PRDATA[15]_INST_0_i_27_0 ({GPIO_1_n_37,GPIO_1_n_38,_zz__zz_CRH_1,GPIO_1_n_40,GPIO_1_n_41,GPIO_1_n_42,GPIO_1_n_43,GPIO_1_n_44,GPIO_1_n_45,GPIO_1_n_46,GPIO_1_n_47,_zz__zz_CRL_0,GPIO_1_n_49,GPIO_1_n_50,GPIO_1_n_51,GPIO_1_n_52}),
+        .\io_apb_PRDATA[1]_INST_0_i_3 (GPIO_0_n_33),
+        .\io_apb_PRDATA[1]_INST_0_i_3_0 (GPIO_1_n_11),
+        .\io_apb_PRDATA[2]_INST_0_i_3 (GPIO_0_n_34),
+        .\io_apb_PRDATA[2]_INST_0_i_3_0 (GPIO_1_n_12),
+        .\io_apb_PRDATA[3]_INST_0_i_3 (GPIO_0_n_35),
+        .\io_apb_PRDATA[3]_INST_0_i_3_0 (GPIO_1_n_13),
+        .\io_apb_PRDATA[4]_INST_0_i_3 (GPIO_0_n_36),
+        .\io_apb_PRDATA[4]_INST_0_i_3_0 (GPIO_1_n_18),
+        .\io_apb_PRDATA[5]_INST_0_i_3 (GPIO_0_n_37),
+        .\io_apb_PRDATA[5]_INST_0_i_3_0 (GPIO_1_n_25),
+        .\io_apb_PRDATA[6]_INST_0_i_3 (GPIO_0_n_38),
+        .\io_apb_PRDATA[6]_INST_0_i_3_0 (GPIO_1_n_26),
+        .\io_apb_PRDATA[7]_INST_0_i_3 (GPIO_0_n_39),
+        .\io_apb_PRDATA[7]_INST_0_i_3_0 (GPIO_1_n_27),
+        .\io_apb_PRDATA[8]_INST_0_i_3 (GPIO_0_n_40),
+        .\io_apb_PRDATA[8]_INST_0_i_3_0 (GPIO_1_n_28),
+        .\io_apb_PRDATA[9]_INST_0_i_10 (GPIO_0_n_41),
+        .\io_apb_PRDATA[9]_INST_0_i_10_0 (GPIO_1_n_29),
         .io_apb_PSEL(io_apb_PSEL));
 endmodule
 
 (* ORIG_REF_NAME = "Apb3Gpio" *) 
 module sys_Apb3Periph_0_0_Apb3Gpio_21
    (io_gpio_write,
-    io_gpio_writeEnable,
-    Q,
-    \ODR_reg[13]_0 ,
     \CRH_reg[0]_0 ,
     \CRH_reg[1]_0 ,
     \CRH_reg[2]_0 ,
     \CRH_reg[3]_0 ,
+    Q,
     \CRH_reg[4]_0 ,
+    \ODR_reg[13]_0 ,
     \CRH_reg[5]_0 ,
     \CRH_reg[6]_0 ,
     \CRH_reg[7]_0 ,
@@ -6987,6 +7286,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
     io_apb_decoder_io_output_PSEL,
     \LCKR_reg[15]_0 ,
     \CRL_reg[27]_0 ,
+    io_gpio_readEnable,
     \CRL_reg[16]_0 ,
     \CRL_reg[17]_0 ,
     \CRL_reg[18]_0 ,
@@ -7007,8 +7307,6 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
     clk,
     reset,
     spiCtrl_io_spis_1_mosi,
-    \io_gpio_writeEnable[29] ,
-    spiCtrl_io_spis_0_sclk,
     spiCtrl_io_spis_0_mosi,
     i2cCtrl_io_i2cs_1_scl,
     i2cCtrl_io_i2cs_0_scl,
@@ -7021,6 +7319,8 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
     io_apb_PWRITE,
     io_apb_PWDATA,
     io_apb_PSEL,
+    \io_gpio_readEnable[29] ,
+    spiCtrl_io_spis_0_sclk,
     \io_apb_PRDATA[16]_0 ,
     \io_apb_PRDATA[16]_1 ,
     \io_apb_PRDATA[31] ,
@@ -7040,14 +7340,13 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
     \io_apb_PRDATA[30] ,
     \io_apb_PRDATA[31]_0 );
   output [9:0]io_gpio_write;
-  output [15:0]io_gpio_writeEnable;
-  output [3:0]Q;
-  output [5:0]\ODR_reg[13]_0 ;
   output \CRH_reg[0]_0 ;
   output \CRH_reg[1]_0 ;
   output \CRH_reg[2]_0 ;
   output \CRH_reg[3]_0 ;
+  output [3:0]Q;
   output \CRH_reg[4]_0 ;
+  output [5:0]\ODR_reg[13]_0 ;
   output \CRH_reg[5]_0 ;
   output \CRH_reg[6]_0 ;
   output \CRH_reg[7]_0 ;
@@ -7062,6 +7361,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
   output [0:0]io_apb_decoder_io_output_PSEL;
   output [15:0]\LCKR_reg[15]_0 ;
   output [1:0]\CRL_reg[27]_0 ;
+  output [15:0]io_gpio_readEnable;
   output \CRL_reg[16]_0 ;
   output \CRL_reg[17]_0 ;
   output \CRL_reg[18]_0 ;
@@ -7082,8 +7382,6 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
   input clk;
   input reset;
   input spiCtrl_io_spis_1_mosi;
-  input [3:0]\io_gpio_writeEnable[29] ;
-  input spiCtrl_io_spis_0_sclk;
   input spiCtrl_io_spis_0_mosi;
   input i2cCtrl_io_i2cs_1_scl;
   input i2cCtrl_io_i2cs_0_scl;
@@ -7096,6 +7394,8 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
   input io_apb_PWRITE;
   input [31:0]io_apb_PWDATA;
   input [0:0]io_apb_PSEL;
+  input [3:0]\io_gpio_readEnable[29] ;
+  input spiCtrl_io_spis_0_sclk;
   input \io_apb_PRDATA[16]_0 ;
   input \io_apb_PRDATA[16]_1 ;
   input [0:0]\io_apb_PRDATA[31] ;
@@ -7238,10 +7538,10 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
   wire io_apb_PWRITE;
   wire [0:0]io_apb_decoder_io_output_PSEL;
   wire [15:0]io_gpio_read;
+  wire [15:0]io_gpio_readEnable;
+  wire [3:0]\io_gpio_readEnable[29] ;
   wire [15:0]io_gpio_read_buffercc_io_dataOut;
   wire [9:0]io_gpio_write;
-  wire [15:0]io_gpio_writeEnable;
-  wire [3:0]\io_gpio_writeEnable[29] ;
   wire [15:0]p_1_in;
   wire reset;
   wire spiCtrl_io_spis_0_mosi;
@@ -7250,7 +7550,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
   wire uartCtrl_io_uarts_0_txd;
   wire uartCtrl_io_uarts_1_txd;
 
-  (* SOFT_HLUTNM = "soft_lutpair75" *) 
+  (* SOFT_HLUTNM = "soft_lutpair68" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[0]_i_1__0 
@@ -7258,7 +7558,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [8]),
         .I2(io_apb_PWDATA[0]),
         .O(CRH0[0]));
-  (* SOFT_HLUTNM = "soft_lutpair71" *) 
+  (* SOFT_HLUTNM = "soft_lutpair64" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[10]_i_1__0 
@@ -7266,7 +7566,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [10]),
         .I2(io_apb_PWDATA[10]),
         .O(CRH0[10]));
-  (* SOFT_HLUTNM = "soft_lutpair70" *) 
+  (* SOFT_HLUTNM = "soft_lutpair63" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[11]_i_1__0 
@@ -7274,7 +7574,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [10]),
         .I2(io_apb_PWDATA[11]),
         .O(CRH0[11]));
-  (* SOFT_HLUTNM = "soft_lutpair69" *) 
+  (* SOFT_HLUTNM = "soft_lutpair62" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[12]_i_1__0 
@@ -7282,7 +7582,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [11]),
         .I2(io_apb_PWDATA[12]),
         .O(CRH0[12]));
-  (* SOFT_HLUTNM = "soft_lutpair69" *) 
+  (* SOFT_HLUTNM = "soft_lutpair62" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[13]_i_1__0 
@@ -7290,7 +7590,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [11]),
         .I2(io_apb_PWDATA[13]),
         .O(CRH0[13]));
-  (* SOFT_HLUTNM = "soft_lutpair68" *) 
+  (* SOFT_HLUTNM = "soft_lutpair61" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[14]_i_1__0 
@@ -7298,7 +7598,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [11]),
         .I2(io_apb_PWDATA[14]),
         .O(CRH0[14]));
-  (* SOFT_HLUTNM = "soft_lutpair68" *) 
+  (* SOFT_HLUTNM = "soft_lutpair61" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[15]_i_1__0 
@@ -7306,7 +7606,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [11]),
         .I2(io_apb_PWDATA[15]),
         .O(CRH0[15]));
-  (* SOFT_HLUTNM = "soft_lutpair67" *) 
+  (* SOFT_HLUTNM = "soft_lutpair60" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[16]_i_1__0 
@@ -7314,7 +7614,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [12]),
         .I2(io_apb_PWDATA[16]),
         .O(CRH0[16]));
-  (* SOFT_HLUTNM = "soft_lutpair67" *) 
+  (* SOFT_HLUTNM = "soft_lutpair77" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[17]_i_1__0 
@@ -7322,7 +7622,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [12]),
         .I2(io_apb_PWDATA[17]),
         .O(CRH0[17]));
-  (* SOFT_HLUTNM = "soft_lutpair66" *) 
+  (* SOFT_HLUTNM = "soft_lutpair77" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[18]_i_1__0 
@@ -7330,7 +7630,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [12]),
         .I2(io_apb_PWDATA[18]),
         .O(CRH0[18]));
-  (* SOFT_HLUTNM = "soft_lutpair66" *) 
+  (* SOFT_HLUTNM = "soft_lutpair60" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[19]_i_1__0 
@@ -7338,7 +7638,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [12]),
         .I2(io_apb_PWDATA[19]),
         .O(CRH0[19]));
-  (* SOFT_HLUTNM = "soft_lutpair75" *) 
+  (* SOFT_HLUTNM = "soft_lutpair68" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[1]_i_1__0 
@@ -7346,7 +7646,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [8]),
         .I2(io_apb_PWDATA[1]),
         .O(CRH0[1]));
-  (* SOFT_HLUTNM = "soft_lutpair65" *) 
+  (* SOFT_HLUTNM = "soft_lutpair76" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[20]_i_1__0 
@@ -7354,7 +7654,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [13]),
         .I2(io_apb_PWDATA[20]),
         .O(CRH0[20]));
-  (* SOFT_HLUTNM = "soft_lutpair65" *) 
+  (* SOFT_HLUTNM = "soft_lutpair59" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[21]_i_1__0 
@@ -7362,7 +7662,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [13]),
         .I2(io_apb_PWDATA[21]),
         .O(CRH0[21]));
-  (* SOFT_HLUTNM = "soft_lutpair64" *) 
+  (* SOFT_HLUTNM = "soft_lutpair76" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[22]_i_1__0 
@@ -7370,7 +7670,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [13]),
         .I2(io_apb_PWDATA[22]),
         .O(CRH0[22]));
-  (* SOFT_HLUTNM = "soft_lutpair64" *) 
+  (* SOFT_HLUTNM = "soft_lutpair59" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[23]_i_1__0 
@@ -7385,7 +7685,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [14]),
         .I2(io_apb_PWDATA[24]),
         .O(CRH0[24]));
-  (* SOFT_HLUTNM = "soft_lutpair63" *) 
+  (* SOFT_HLUTNM = "soft_lutpair56" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[25]_i_1__0 
@@ -7393,7 +7693,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [14]),
         .I2(io_apb_PWDATA[25]),
         .O(CRH0[25]));
-  (* SOFT_HLUTNM = "soft_lutpair63" *) 
+  (* SOFT_HLUTNM = "soft_lutpair56" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[26]_i_1__0 
@@ -7401,7 +7701,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [14]),
         .I2(io_apb_PWDATA[26]),
         .O(CRH0[26]));
-  (* SOFT_HLUTNM = "soft_lutpair47" *) 
+  (* SOFT_HLUTNM = "soft_lutpair55" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[27]_i_1__0 
@@ -7409,7 +7709,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [14]),
         .I2(io_apb_PWDATA[27]),
         .O(CRH0[27]));
-  (* SOFT_HLUTNM = "soft_lutpair62" *) 
+  (* SOFT_HLUTNM = "soft_lutpair54" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[28]_i_1__0 
@@ -7417,7 +7717,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [15]),
         .I2(io_apb_PWDATA[28]),
         .O(CRH0[28]));
-  (* SOFT_HLUTNM = "soft_lutpair62" *) 
+  (* SOFT_HLUTNM = "soft_lutpair54" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[29]_i_1__0 
@@ -7425,7 +7725,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [15]),
         .I2(io_apb_PWDATA[29]),
         .O(CRH0[29]));
-  (* SOFT_HLUTNM = "soft_lutpair74" *) 
+  (* SOFT_HLUTNM = "soft_lutpair67" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[2]_i_1__0 
@@ -7433,7 +7733,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [8]),
         .I2(io_apb_PWDATA[2]),
         .O(CRH0[2]));
-  (* SOFT_HLUTNM = "soft_lutpair61" *) 
+  (* SOFT_HLUTNM = "soft_lutpair53" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[30]_i_1__0 
@@ -7451,7 +7751,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I4(io_apb_PADDR[2]),
         .I5(ctrl_doWrite__0),
         .O(\CRH[31]_i_1__0_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair61" *) 
+  (* SOFT_HLUTNM = "soft_lutpair53" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[31]_i_2__0 
@@ -7459,7 +7759,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [15]),
         .I2(io_apb_PWDATA[31]),
         .O(CRH0[31]));
-  (* SOFT_HLUTNM = "soft_lutpair74" *) 
+  (* SOFT_HLUTNM = "soft_lutpair67" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[3]_i_1__0 
@@ -7467,7 +7767,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [8]),
         .I2(io_apb_PWDATA[3]),
         .O(CRH0[3]));
-  (* SOFT_HLUTNM = "soft_lutpair73" *) 
+  (* SOFT_HLUTNM = "soft_lutpair66" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[4]_i_1__0 
@@ -7475,7 +7775,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [9]),
         .I2(io_apb_PWDATA[4]),
         .O(CRH0[4]));
-  (* SOFT_HLUTNM = "soft_lutpair73" *) 
+  (* SOFT_HLUTNM = "soft_lutpair66" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[5]_i_1__0 
@@ -7483,7 +7783,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [9]),
         .I2(io_apb_PWDATA[5]),
         .O(CRH0[5]));
-  (* SOFT_HLUTNM = "soft_lutpair72" *) 
+  (* SOFT_HLUTNM = "soft_lutpair65" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[6]_i_1__0 
@@ -7491,7 +7791,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [9]),
         .I2(io_apb_PWDATA[6]),
         .O(CRH0[6]));
-  (* SOFT_HLUTNM = "soft_lutpair72" *) 
+  (* SOFT_HLUTNM = "soft_lutpair65" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[7]_i_1__0 
@@ -7506,7 +7806,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [10]),
         .I2(io_apb_PWDATA[8]),
         .O(CRH0[8]));
-  (* SOFT_HLUTNM = "soft_lutpair71" *) 
+  (* SOFT_HLUTNM = "soft_lutpair64" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRH[9]_i_1__0 
@@ -7713,7 +8013,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [0]),
         .I2(io_apb_PWDATA[0]),
         .O(CRL0[0]));
-  (* SOFT_HLUTNM = "soft_lutpair56" *) 
+  (* SOFT_HLUTNM = "soft_lutpair47" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[10]_i_1__0 
@@ -7721,7 +8021,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [2]),
         .I2(io_apb_PWDATA[10]),
         .O(CRL0[10]));
-  (* SOFT_HLUTNM = "soft_lutpair55" *) 
+  (* SOFT_HLUTNM = "soft_lutpair46" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[11]_i_1__0 
@@ -7729,7 +8029,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [2]),
         .I2(io_apb_PWDATA[11]),
         .O(CRL0[11]));
-  (* SOFT_HLUTNM = "soft_lutpair53" *) 
+  (* SOFT_HLUTNM = "soft_lutpair58" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[12]_i_1__0 
@@ -7737,7 +8037,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [3]),
         .I2(io_apb_PWDATA[12]),
         .O(CRL0[12]));
-  (* SOFT_HLUTNM = "soft_lutpair53" *) 
+  (* SOFT_HLUTNM = "soft_lutpair57" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[13]_i_1__0 
@@ -7745,7 +8045,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [3]),
         .I2(io_apb_PWDATA[13]),
         .O(CRL0[13]));
-  (* SOFT_HLUTNM = "soft_lutpair52" *) 
+  (* SOFT_HLUTNM = "soft_lutpair58" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[14]_i_1__0 
@@ -7753,7 +8053,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [3]),
         .I2(io_apb_PWDATA[14]),
         .O(CRL0[14]));
-  (* SOFT_HLUTNM = "soft_lutpair52" *) 
+  (* SOFT_HLUTNM = "soft_lutpair57" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[15]_i_1__0 
@@ -7761,7 +8061,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [3]),
         .I2(io_apb_PWDATA[15]),
         .O(CRL0[15]));
-  (* SOFT_HLUTNM = "soft_lutpair51" *) 
+  (* SOFT_HLUTNM = "soft_lutpair69" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[16]_i_1__0 
@@ -7769,7 +8069,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [4]),
         .I2(io_apb_PWDATA[16]),
         .O(CRL0[16]));
-  (* SOFT_HLUTNM = "soft_lutpair51" *) 
+  (* SOFT_HLUTNM = "soft_lutpair70" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[17]_i_1__0 
@@ -7777,7 +8077,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [4]),
         .I2(io_apb_PWDATA[17]),
         .O(CRL0[17]));
-  (* SOFT_HLUTNM = "soft_lutpair50" *) 
+  (* SOFT_HLUTNM = "soft_lutpair70" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[18]_i_1__0 
@@ -7785,7 +8085,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [4]),
         .I2(io_apb_PWDATA[18]),
         .O(CRL0[18]));
-  (* SOFT_HLUTNM = "soft_lutpair50" *) 
+  (* SOFT_HLUTNM = "soft_lutpair69" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[19]_i_1__0 
@@ -7793,7 +8093,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [4]),
         .I2(io_apb_PWDATA[19]),
         .O(CRL0[19]));
-  (* SOFT_HLUTNM = "soft_lutpair60" *) 
+  (* SOFT_HLUTNM = "soft_lutpair52" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[1]_i_1__0 
@@ -7801,7 +8101,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [0]),
         .I2(io_apb_PWDATA[1]),
         .O(CRL0[1]));
-  (* SOFT_HLUTNM = "soft_lutpair49" *) 
+  (* SOFT_HLUTNM = "soft_lutpair71" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[20]_i_1__0 
@@ -7809,7 +8109,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [5]),
         .I2(io_apb_PWDATA[20]),
         .O(CRL0[20]));
-  (* SOFT_HLUTNM = "soft_lutpair49" *) 
+  (* SOFT_HLUTNM = "soft_lutpair72" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[21]_i_1__0 
@@ -7817,7 +8117,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [5]),
         .I2(io_apb_PWDATA[21]),
         .O(CRL0[21]));
-  (* SOFT_HLUTNM = "soft_lutpair48" *) 
+  (* SOFT_HLUTNM = "soft_lutpair72" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[22]_i_1__0 
@@ -7825,7 +8125,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [5]),
         .I2(io_apb_PWDATA[22]),
         .O(CRL0[22]));
-  (* SOFT_HLUTNM = "soft_lutpair48" *) 
+  (* SOFT_HLUTNM = "soft_lutpair71" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[23]_i_1__0 
@@ -7833,7 +8133,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [5]),
         .I2(io_apb_PWDATA[23]),
         .O(CRL0[23]));
-  (* SOFT_HLUTNM = "soft_lutpair46" *) 
+  (* SOFT_HLUTNM = "soft_lutpair73" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[24]_i_1__0 
@@ -7841,7 +8141,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [6]),
         .I2(io_apb_PWDATA[24]),
         .O(CRL0[24]));
-  (* SOFT_HLUTNM = "soft_lutpair54" *) 
+  (* SOFT_HLUTNM = "soft_lutpair74" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[25]_i_1__0 
@@ -7849,7 +8149,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [6]),
         .I2(io_apb_PWDATA[25]),
         .O(CRL0[25]));
-  (* SOFT_HLUTNM = "soft_lutpair54" *) 
+  (* SOFT_HLUTNM = "soft_lutpair74" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[26]_i_1__0 
@@ -7857,7 +8157,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [6]),
         .I2(io_apb_PWDATA[26]),
         .O(CRL0[26]));
-  (* SOFT_HLUTNM = "soft_lutpair46" *) 
+  (* SOFT_HLUTNM = "soft_lutpair73" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[27]_i_1__0 
@@ -7865,7 +8165,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [6]),
         .I2(io_apb_PWDATA[27]),
         .O(CRL0[27]));
-  (* SOFT_HLUTNM = "soft_lutpair76" *) 
+  (* SOFT_HLUTNM = "soft_lutpair75" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[28]_i_1__0 
@@ -7873,7 +8173,6 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [7]),
         .I2(io_apb_PWDATA[28]),
         .O(CRL0[28]));
-  (* SOFT_HLUTNM = "soft_lutpair77" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[29]_i_1__0 
@@ -7881,7 +8180,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [7]),
         .I2(io_apb_PWDATA[29]),
         .O(CRL0[29]));
-  (* SOFT_HLUTNM = "soft_lutpair60" *) 
+  (* SOFT_HLUTNM = "soft_lutpair52" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[2]_i_1__0 
@@ -7889,7 +8188,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [0]),
         .I2(io_apb_PWDATA[2]),
         .O(CRL0[2]));
-  (* SOFT_HLUTNM = "soft_lutpair77" *) 
+  (* SOFT_HLUTNM = "soft_lutpair75" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[30]_i_1__0 
@@ -7907,7 +8206,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I4(io_apb_PADDR[3]),
         .I5(ctrl_doWrite__0),
         .O(\CRL[31]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair76" *) 
+  (* SOFT_HLUTNM = "soft_lutpair49" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[31]_i_2__0 
@@ -7915,7 +8214,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [7]),
         .I2(io_apb_PWDATA[31]),
         .O(CRL0[31]));
-  (* SOFT_HLUTNM = "soft_lutpair59" *) 
+  (* SOFT_HLUTNM = "soft_lutpair50" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[3]_i_1__0 
@@ -7923,7 +8222,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [0]),
         .I2(io_apb_PWDATA[3]),
         .O(CRL0[3]));
-  (* SOFT_HLUTNM = "soft_lutpair58" *) 
+  (* SOFT_HLUTNM = "soft_lutpair51" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[4]_i_1__0 
@@ -7931,7 +8230,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [1]),
         .I2(io_apb_PWDATA[4]),
         .O(CRL0[4]));
-  (* SOFT_HLUTNM = "soft_lutpair58" *) 
+  (* SOFT_HLUTNM = "soft_lutpair48" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[5]_i_1__0 
@@ -7939,7 +8238,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [1]),
         .I2(io_apb_PWDATA[5]),
         .O(CRL0[5]));
-  (* SOFT_HLUTNM = "soft_lutpair57" *) 
+  (* SOFT_HLUTNM = "soft_lutpair51" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[6]_i_1__0 
@@ -7947,7 +8246,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [1]),
         .I2(io_apb_PWDATA[6]),
         .O(CRL0[6]));
-  (* SOFT_HLUTNM = "soft_lutpair57" *) 
+  (* SOFT_HLUTNM = "soft_lutpair48" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[7]_i_1__0 
@@ -7955,6 +8254,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [1]),
         .I2(io_apb_PWDATA[7]),
         .O(CRL0[7]));
+  (* SOFT_HLUTNM = "soft_lutpair47" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[8]_i_1__0 
@@ -7962,7 +8262,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(\LCKR_reg[15]_0 [2]),
         .I2(io_apb_PWDATA[8]),
         .O(CRL0[8]));
-  (* SOFT_HLUTNM = "soft_lutpair56" *) 
+  (* SOFT_HLUTNM = "soft_lutpair46" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \CRL[9]_i_1__0 
@@ -8951,164 +9251,164 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I4(\CRL_reg_n_0_[9] ),
         .I5(io_gpio_read_buffercc_io_dataOut[9]),
         .O(\CRH_reg[9]_0 ));
-  sys_Apb3Periph_0_0_BufferCC io_gpio_read_buffercc
-       (.clk(clk),
-        .io_dataIn(io_gpio_read),
-        .io_dataOut(io_gpio_read_buffercc_io_dataOut),
-        .reset(reset));
   LUT6 #(
-    .INIT(64'h47FF47FF47FF0000)) 
-    \io_gpio_writeEnable[16]_INST_0 
+    .INIT(64'hB800B800B800FFFF)) 
+    \io_gpio_readEnable[16]_INST_0 
        (.I0(uartCtrl_io_uarts_0_txd),
         .I1(gpioCfg_0_cnf[1]),
         .I2(p_1_in[0]),
         .I3(gpioCfg_0_cnf[0]),
         .I4(\CRL_reg_n_0_[0] ),
         .I5(\CRL_reg_n_0_[1] ),
-        .O(io_gpio_writeEnable[0]));
-  (* SOFT_HLUTNM = "soft_lutpair43" *) 
+        .O(io_gpio_readEnable[0]));
+  (* SOFT_HLUTNM = "soft_lutpair45" *) 
   LUT5 #(
-    .INIT(32'hEE0EEEEE)) 
-    \io_gpio_writeEnable[17]_INST_0 
+    .INIT(32'h11F11111)) 
+    \io_gpio_readEnable[17]_INST_0 
        (.I0(\CRL_reg_n_0_[4] ),
         .I1(\CRL_reg_n_0_[5] ),
         .I2(gpioCfg_1_cnf[0]),
         .I3(gpioCfg_1_cnf[1]),
         .I4(p_1_in[1]),
-        .O(io_gpio_writeEnable[1]));
+        .O(io_gpio_readEnable[1]));
   LUT6 #(
-    .INIT(64'h47FF47FF47FF0000)) 
-    \io_gpio_writeEnable[18]_INST_0 
+    .INIT(64'hB800B800B800FFFF)) 
+    \io_gpio_readEnable[18]_INST_0 
        (.I0(uartCtrl_io_uarts_1_txd),
         .I1(gpioCfg_2_cnf[1]),
         .I2(p_1_in[2]),
         .I3(gpioCfg_2_cnf[0]),
         .I4(\CRL_reg_n_0_[8] ),
         .I5(\CRL_reg_n_0_[9] ),
-        .O(io_gpio_writeEnable[2]));
+        .O(io_gpio_readEnable[2]));
   (* SOFT_HLUTNM = "soft_lutpair44" *) 
   LUT5 #(
-    .INIT(32'hEE0EEEEE)) 
-    \io_gpio_writeEnable[19]_INST_0 
+    .INIT(32'h11F11111)) 
+    \io_gpio_readEnable[19]_INST_0 
        (.I0(\CRL_reg_n_0_[12] ),
         .I1(\CRL_reg_n_0_[13] ),
         .I2(gpioCfg_3_cnf[0]),
         .I3(gpioCfg_3_cnf[1]),
         .I4(p_1_in[3]),
-        .O(io_gpio_writeEnable[3]));
+        .O(io_gpio_readEnable[3]));
   LUT4 #(
-    .INIT(16'h7770)) 
-    \io_gpio_writeEnable[20]_INST_0 
-       (.I0(\io_gpio_writeEnable[29] [0]),
+    .INIT(16'h888F)) 
+    \io_gpio_readEnable[20]_INST_0 
+       (.I0(\io_gpio_readEnable[29] [0]),
         .I1(gpioCfg_4_cnf),
         .I2(\CRL_reg_n_0_[16] ),
         .I3(\CRL_reg_n_0_[17] ),
-        .O(io_gpio_writeEnable[4]));
+        .O(io_gpio_readEnable[4]));
   LUT6 #(
-    .INIT(64'h47FF47FF47FF0000)) 
-    \io_gpio_writeEnable[21]_INST_0 
+    .INIT(64'hB800B800B800FFFF)) 
+    \io_gpio_readEnable[21]_INST_0 
        (.I0(i2cCtrl_io_i2cs_0_scl),
         .I1(gpioCfg_5_cnf[1]),
         .I2(p_1_in[5]),
         .I3(gpioCfg_5_cnf[0]),
         .I4(\CRL_reg_n_0_[20] ),
         .I5(\CRL_reg_n_0_[21] ),
-        .O(io_gpio_writeEnable[5]));
+        .O(io_gpio_readEnable[5]));
   LUT4 #(
-    .INIT(16'h7770)) 
-    \io_gpio_writeEnable[22]_INST_0 
-       (.I0(\io_gpio_writeEnable[29] [1]),
+    .INIT(16'h888F)) 
+    \io_gpio_readEnable[22]_INST_0 
+       (.I0(\io_gpio_readEnable[29] [1]),
         .I1(gpioCfg_6_cnf),
         .I2(\CRL_reg_n_0_[24] ),
         .I3(\CRL_reg_n_0_[25] ),
-        .O(io_gpio_writeEnable[6]));
+        .O(io_gpio_readEnable[6]));
   LUT6 #(
-    .INIT(64'h47FF47FF47FF0000)) 
-    \io_gpio_writeEnable[23]_INST_0 
+    .INIT(64'hB800B800B800FFFF)) 
+    \io_gpio_readEnable[23]_INST_0 
        (.I0(i2cCtrl_io_i2cs_1_scl),
         .I1(gpioCfg_7_cnf[1]),
         .I2(p_1_in[7]),
         .I3(gpioCfg_7_cnf[0]),
         .I4(\CRL_reg_n_0_[28] ),
         .I5(\CRL_reg_n_0_[29] ),
-        .O(io_gpio_writeEnable[7]));
+        .O(io_gpio_readEnable[7]));
   LUT6 #(
-    .INIT(64'h47FF47FF47FF0000)) 
-    \io_gpio_writeEnable[24]_INST_0 
+    .INIT(64'hB800B800B800FFFF)) 
+    \io_gpio_readEnable[24]_INST_0 
        (.I0(spiCtrl_io_spis_0_sclk),
         .I1(Q[0]),
         .I2(\ODR_reg[13]_0 [2]),
         .I3(gpioCfg_8_cnf),
         .I4(\CRH_reg_n_0_[0] ),
         .I5(\CRH_reg_n_0_[1] ),
-        .O(io_gpio_writeEnable[8]));
+        .O(io_gpio_readEnable[8]));
   LUT4 #(
-    .INIT(16'h7770)) 
-    \io_gpio_writeEnable[25]_INST_0 
-       (.I0(\io_gpio_writeEnable[29] [2]),
+    .INIT(16'h888F)) 
+    \io_gpio_readEnable[25]_INST_0 
+       (.I0(\io_gpio_readEnable[29] [2]),
         .I1(gpioCfg_9_cnf),
         .I2(\CRH_reg_n_0_[4] ),
         .I3(\CRH_reg_n_0_[5] ),
-        .O(io_gpio_writeEnable[9]));
+        .O(io_gpio_readEnable[9]));
   LUT6 #(
-    .INIT(64'h47FF47FF47FF0000)) 
-    \io_gpio_writeEnable[26]_INST_0 
+    .INIT(64'hB800B800B800FFFF)) 
+    \io_gpio_readEnable[26]_INST_0 
        (.I0(spiCtrl_io_spis_0_mosi),
         .I1(gpioCfg_10_cnf[1]),
         .I2(p_1_in[10]),
         .I3(gpioCfg_10_cnf[0]),
         .I4(\CRH_reg_n_0_[8] ),
         .I5(\CRH_reg_n_0_[9] ),
-        .O(io_gpio_writeEnable[10]));
-  (* SOFT_HLUTNM = "soft_lutpair42" *) 
+        .O(io_gpio_readEnable[10]));
+  (* SOFT_HLUTNM = "soft_lutpair43" *) 
   LUT5 #(
-    .INIT(32'hEE0EEEEE)) 
-    \io_gpio_writeEnable[27]_INST_0 
+    .INIT(32'h11F11111)) 
+    \io_gpio_readEnable[27]_INST_0 
        (.I0(\CRH_reg_n_0_[12] ),
         .I1(\CRH_reg_n_0_[13] ),
         .I2(gpioCfg_11_cnf[0]),
         .I3(gpioCfg_11_cnf[1]),
         .I4(p_1_in[11]),
-        .O(io_gpio_writeEnable[11]));
+        .O(io_gpio_readEnable[11]));
   LUT6 #(
-    .INIT(64'h47FF47FF47FF0000)) 
-    \io_gpio_writeEnable[28]_INST_0 
+    .INIT(64'hB800B800B800FFFF)) 
+    \io_gpio_readEnable[28]_INST_0 
        (.I0(spiCtrl_io_spis_0_sclk),
         .I1(Q[2]),
         .I2(\ODR_reg[13]_0 [4]),
         .I3(gpioCfg_12_cnf),
         .I4(\CRH_reg_n_0_[16] ),
         .I5(\CRH_reg_n_0_[17] ),
-        .O(io_gpio_writeEnable[12]));
+        .O(io_gpio_readEnable[12]));
   LUT4 #(
-    .INIT(16'h7770)) 
-    \io_gpio_writeEnable[29]_INST_0 
-       (.I0(\io_gpio_writeEnable[29] [3]),
+    .INIT(16'h888F)) 
+    \io_gpio_readEnable[29]_INST_0 
+       (.I0(\io_gpio_readEnable[29] [3]),
         .I1(gpioCfg_13_cnf),
         .I2(\CRH_reg_n_0_[20] ),
         .I3(\CRH_reg_n_0_[21] ),
-        .O(io_gpio_writeEnable[13]));
+        .O(io_gpio_readEnable[13]));
   LUT6 #(
-    .INIT(64'h47FF47FF47FF0000)) 
-    \io_gpio_writeEnable[30]_INST_0 
+    .INIT(64'hB800B800B800FFFF)) 
+    \io_gpio_readEnable[30]_INST_0 
        (.I0(spiCtrl_io_spis_1_mosi),
         .I1(gpioCfg_14_cnf[1]),
         .I2(p_1_in[14]),
         .I3(gpioCfg_14_cnf[0]),
         .I4(\CRH_reg_n_0_[24] ),
         .I5(\CRH_reg_n_0_[25] ),
-        .O(io_gpio_writeEnable[14]));
-  (* SOFT_HLUTNM = "soft_lutpair45" *) 
+        .O(io_gpio_readEnable[14]));
+  (* SOFT_HLUTNM = "soft_lutpair42" *) 
   LUT5 #(
-    .INIT(32'hEE0EEEEE)) 
-    \io_gpio_writeEnable[31]_INST_0 
+    .INIT(32'h11F11111)) 
+    \io_gpio_readEnable[31]_INST_0 
        (.I0(\CRH_reg_n_0_[28] ),
         .I1(\CRH_reg_n_0_[29] ),
         .I2(gpioCfg_15_cnf[0]),
         .I3(gpioCfg_15_cnf[1]),
         .I4(p_1_in[15]),
-        .O(io_gpio_writeEnable[15]));
-  (* SOFT_HLUTNM = "soft_lutpair59" *) 
+        .O(io_gpio_readEnable[15]));
+  sys_Apb3Periph_0_0_BufferCC io_gpio_read_buffercc
+       (.clk(clk),
+        .io_dataIn(io_gpio_read),
+        .io_dataOut(io_gpio_read_buffercc_io_dataOut),
+        .reset(reset));
+  (* SOFT_HLUTNM = "soft_lutpair50" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \io_gpio_write[16]_INST_0 
@@ -9116,14 +9416,13 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(gpioCfg_0_cnf[1]),
         .I2(p_1_in[0]),
         .O(io_gpio_write[0]));
-  (* SOFT_HLUTNM = "soft_lutpair43" *) 
+  (* SOFT_HLUTNM = "soft_lutpair45" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \io_gpio_write[17]_INST_0 
        (.I0(p_1_in[1]),
         .I1(gpioCfg_1_cnf[1]),
         .O(io_gpio_write[1]));
-  (* SOFT_HLUTNM = "soft_lutpair55" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \io_gpio_write[18]_INST_0 
@@ -9145,6 +9444,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(gpioCfg_5_cnf[1]),
         .I2(p_1_in[5]),
         .O(io_gpio_write[4]));
+  (* SOFT_HLUTNM = "soft_lutpair49" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \io_gpio_write[23]_INST_0 
@@ -9152,7 +9452,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(gpioCfg_7_cnf[1]),
         .I2(p_1_in[7]),
         .O(io_gpio_write[5]));
-  (* SOFT_HLUTNM = "soft_lutpair70" *) 
+  (* SOFT_HLUTNM = "soft_lutpair63" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \io_gpio_write[26]_INST_0 
@@ -9160,14 +9460,14 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(gpioCfg_10_cnf[1]),
         .I2(p_1_in[10]),
         .O(io_gpio_write[6]));
-  (* SOFT_HLUTNM = "soft_lutpair42" *) 
+  (* SOFT_HLUTNM = "soft_lutpair43" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \io_gpio_write[27]_INST_0 
        (.I0(p_1_in[11]),
         .I1(gpioCfg_11_cnf[1]),
         .O(io_gpio_write[7]));
-  (* SOFT_HLUTNM = "soft_lutpair47" *) 
+  (* SOFT_HLUTNM = "soft_lutpair55" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \io_gpio_write[30]_INST_0 
@@ -9175,7 +9475,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .I1(gpioCfg_14_cnf[1]),
         .I2(p_1_in[14]),
         .O(io_gpio_write[8]));
-  (* SOFT_HLUTNM = "soft_lutpair45" *) 
+  (* SOFT_HLUTNM = "soft_lutpair42" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \io_gpio_write[31]_INST_0 
@@ -9184,6 +9484,7 @@ module sys_Apb3Periph_0_0_Apb3Gpio_21
         .O(io_gpio_write[9]));
 endmodule
 
+(* ORIG_REF_NAME = "Apb3I2c" *) 
 module sys_Apb3Periph_0_0_Apb3I2c
    (io_gpio_write,
     \clockCounter_reg[11]_0 ,
@@ -11537,6 +11838,7 @@ module sys_Apb3Periph_0_0_Apb3I2c
         .Q(\txShiftReg_reg_n_0_[9] ));
 endmodule
 
+(* ORIG_REF_NAME = "Apb3I2cArray" *) 
 module sys_Apb3Periph_0_0_Apb3I2cArray
    (io_gpio_write,
     i2cCtrl_io_i2cs_0_scl,
@@ -14265,6 +14567,7 @@ module sys_Apb3Periph_0_0_Apb3I2c_15
         .Q(\txShiftReg_reg_n_0_[9] ));
 endmodule
 
+(* ORIG_REF_NAME = "Apb3Iwdg" *) 
 module sys_Apb3Periph_0_0_Apb3Iwdg
    (io_apb_PADDR_1_sp_1,
     \RLR_reg[0]_0 ,
@@ -14627,10 +14930,11 @@ module sys_Apb3Periph_0_0_Apb3Iwdg
         .O(io_apb_PADDR_1_sn_1));
 endmodule
 
+(* ORIG_REF_NAME = "Apb3Periph" *) 
 module sys_Apb3Periph_0_0_Apb3Periph
    (io_gpio_write,
-    io_gpio_writeEnable,
     io_apb_PRDATA,
+    io_gpio_readEnable,
     io_interrupt,
     io_gpio_read,
     clk,
@@ -14660,8 +14964,8 @@ module sys_Apb3Periph_0_0_Apb3Periph
     \io_apb_PRDATA[16]_1 ,
     \io_apb_PRDATA[0]_INST_0_i_7 );
   output [31:0]io_gpio_write;
-  output [31:0]io_gpio_writeEnable;
   output [31:0]io_apb_PRDATA;
+  output [31:0]io_gpio_readEnable;
   output [5:0]io_interrupt;
   input [31:0]io_gpio_read;
   input clk;
@@ -14794,8 +15098,8 @@ module sys_Apb3Periph_0_0_Apb3Periph
   wire io_apb_PWRITE;
   wire [8:8]io_apb_decoder_io_output_PSEL;
   wire [31:0]io_gpio_read;
+  wire [31:0]io_gpio_readEnable;
   wire [31:0]io_gpio_write;
-  wire [31:0]io_gpio_writeEnable;
   wire [5:0]io_interrupt;
   wire \io_interrupt[3]_INST_0_i_1_n_0 ;
   wire \io_interrupt[3]_INST_0_i_2_n_0 ;
@@ -15125,9 +15429,9 @@ module sys_Apb3Periph_0_0_Apb3Periph
         .io_apb_PWRITE(io_apb_PWRITE),
         .io_ch(timCtrl_io_ch),
         .io_gpio_read(io_gpio_read),
+        .io_gpio_readEnable(io_gpio_readEnable),
+        .\io_gpio_readEnable[29] ({io_gpio_write[29],io_gpio_write[25],io_gpio_write[22],io_gpio_write[20]}),
         .io_gpio_write({io_gpio_write[31:30],io_gpio_write[27:26],io_gpio_write[23],io_gpio_write[21],io_gpio_write[19:0]}),
-        .io_gpio_writeEnable(io_gpio_writeEnable),
-        .\io_gpio_writeEnable[29] ({io_gpio_write[29],io_gpio_write[25],io_gpio_write[22],io_gpio_write[20]}),
         .reset(reset),
         .spiCtrl_io_spis_0_mosi(spiCtrl_io_spis_0_mosi),
         .spiCtrl_io_spis_0_sclk(spiCtrl_io_spis_0_sclk),
@@ -15398,6 +15702,7 @@ module sys_Apb3Periph_0_0_Apb3Periph
         .wdgCtrl_io_apb_PRDATA(wdgCtrl_io_apb_PRDATA));
 endmodule
 
+(* ORIG_REF_NAME = "Apb3Router" *) 
 module sys_Apb3Periph_0_0_Apb3Router
    (selIndex,
     wdgCtrl_io_apb_PRDATA,
@@ -16179,6 +16484,7 @@ module sys_Apb3Periph_0_0_Apb3Router_22
         .R(1'b0));
 endmodule
 
+(* ORIG_REF_NAME = "Apb3Router_6" *) 
 module sys_Apb3Periph_0_0_Apb3Router_6
    (io_apb_PRDATA,
     Q,
@@ -17240,6 +17546,7 @@ module sys_Apb3Periph_0_0_Apb3Router_8
         .R(1'b0));
 endmodule
 
+(* ORIG_REF_NAME = "Apb3Spi" *) 
 module sys_Apb3Periph_0_0_Apb3Spi
    (spiMaster_mosiReg_reg_0,
     io_gpio_write,
@@ -18997,7 +19304,7 @@ module sys_Apb3Periph_0_0_Apb3Spi
   (* SOFT_HLUTNM = "soft_lutpair138" *) 
   LUT2 #(
     .INIT(4'h6)) 
-    \io_gpio_writeEnable[28]_INST_0_i_1 
+    \io_gpio_readEnable[28]_INST_0_i_1 
        (.I0(CPOL),
         .I1(spiMaster_sclkReg_reg_n_0),
         .O(spiCtrl_io_spis_0_sclk));
@@ -19852,6 +20159,7 @@ module sys_Apb3Periph_0_0_Apb3Spi
         .\spiMaster_txShiftReg_reg[8]_0 (\spiMaster_txShiftReg[14]_i_3_n_0 ));
 endmodule
 
+(* ORIG_REF_NAME = "Apb3SpiArray" *) 
 module sys_Apb3Periph_0_0_Apb3SpiArray
    (io_gpio_write,
     io_apb_PADDR_4_sp_1,
@@ -22697,6 +23005,7 @@ module sys_Apb3Periph_0_0_Apb3Spi_9
         .\spiMaster_txShiftReg_reg[8]_0 (\spiMaster_txShiftReg[14]_i_3__0_n_0 ));
 endmodule
 
+(* ORIG_REF_NAME = "Apb3SysTick" *) 
 module sys_Apb3Periph_0_0_Apb3SysTick
    (io_apb_PWRITE_0,
     io_apb_PADDR_0_sp_1,
@@ -24488,6 +24797,7 @@ module sys_Apb3Periph_0_0_Apb3SysTick
         .O(io_interrupt));
 endmodule
 
+(* ORIG_REF_NAME = "Apb3Tim" *) 
 module sys_Apb3Periph_0_0_Apb3Tim
    (io_ch,
     io_apb_PADDR_4_sp_1,
@@ -30356,6 +30666,7 @@ module sys_Apb3Periph_0_0_Apb3Tim
         .O(when_apb3tim_l93_carry_i_4_n_0));
 endmodule
 
+(* ORIG_REF_NAME = "Apb3TimArray" *) 
 module sys_Apb3Periph_0_0_Apb3TimArray
    (io_apb_PADDR_2_sp_1,
     io_interrupt,
@@ -36607,6 +36918,7 @@ module sys_Apb3Periph_0_0_Apb3Tim_7
         .O(when_apb3tim_l93_carry_i_4__0_n_0));
 endmodule
 
+(* ORIG_REF_NAME = "Apb3Uart" *) 
 module sys_Apb3Periph_0_0_Apb3Uart
    (uartCtrl_io_uarts_0_txd,
     uartCtrl_io_apb_PRDATA,
@@ -38322,6 +38634,7 @@ module sys_Apb3Periph_0_0_Apb3Uart
         .tx_io_write_ready(tx_io_write_ready));
 endmodule
 
+(* ORIG_REF_NAME = "Apb3UartArray" *) 
 module sys_Apb3Periph_0_0_Apb3UartArray
    (uartCtrl_io_uarts_0_txd,
     uartCtrl_io_uarts_1_txd,
@@ -40370,6 +40683,7 @@ module sys_Apb3Periph_0_0_Apb3Uart_0
         .tx_io_write_ready(tx_io_write_ready));
 endmodule
 
+(* ORIG_REF_NAME = "Apb3Wdg" *) 
 module sys_Apb3Periph_0_0_Apb3Wdg
    (io_apb_PADDR_1_sp_1,
     \SR_reg[15] ,
@@ -40561,6 +40875,7 @@ module sys_Apb3Periph_0_0_Apb3Wdg
         .timCtrl_io_apb_PRDATA(timCtrl_io_apb_PRDATA));
 endmodule
 
+(* ORIG_REF_NAME = "Apb3Wwdg" *) 
 module sys_Apb3Periph_0_0_Apb3Wwdg
    (io_apb_decoder_io_output_PSEL,
     \SR_reg[15]_0 ,
@@ -41551,6 +41866,7 @@ module sys_Apb3Periph_0_0_Apb3Wwdg
         .O(\selIndex_reg[0]_14 ));
 endmodule
 
+(* ORIG_REF_NAME = "BufferCC" *) 
 module sys_Apb3Periph_0_0_BufferCC
    (io_dataIn,
     io_dataOut,
@@ -41825,6 +42141,7 @@ module sys_Apb3Periph_0_0_BufferCC
         .R(1'b0));
 endmodule
 
+(* ORIG_REF_NAME = "BufferCC_2" *) 
 module sys_Apb3Periph_0_0_BufferCC_2
    (io_dataIn,
     io_dataOut,
@@ -42173,6 +42490,7 @@ module sys_Apb3Periph_0_0_BufferCC__1
         .R(1'b0));
 endmodule
 
+(* ORIG_REF_NAME = "StreamFifo" *) 
 module sys_Apb3Periph_0_0_StreamFifo
    (io_apb_PADDR_3_sp_1,
     io_apb_decoder_io_output_PSEL_0,
@@ -52693,302 +53011,7 @@ module sys_Apb3Periph_0_0_StreamFifo_6
         .R(1'b0));
 endmodule
 
-(* CHECK_LICENSE_TYPE = "sys_Apb3Periph_0_0,Apb3Periph,{}" *) (* DowngradeIPIdentifiedWarnings = "yes" *) (* IP_DEFINITION_SOURCE = "package_project" *) 
-(* X_CORE_INFO = "Apb3Periph,Vivado 2018.3" *) 
-(* NotValidForBitStream *)
-module sys_Apb3Periph_0_0
-   (io_apb_PADDR,
-    io_apb_PSEL,
-    io_apb_PENABLE,
-    io_apb_PREADY,
-    io_apb_PWRITE,
-    io_apb_PWDATA,
-    io_apb_PRDATA,
-    io_apb_PSLVERROR,
-    io_gpio_read,
-    io_gpio_write,
-    io_gpio_writeEnable,
-    io_interrupt,
-    clk,
-    reset);
-  (* X_INTERFACE_INFO = "xilinx.com:interface:apb:1.0 SAPB_PERIPH PADDR" *) input [19:0]io_apb_PADDR;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:apb:1.0 SAPB_PERIPH PSEL" *) input [0:0]io_apb_PSEL;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:apb:1.0 SAPB_PERIPH PENABLE" *) input io_apb_PENABLE;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:apb:1.0 SAPB_PERIPH PREADY" *) output io_apb_PREADY;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:apb:1.0 SAPB_PERIPH PWRITE" *) input io_apb_PWRITE;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:apb:1.0 SAPB_PERIPH PWDATA" *) input [31:0]io_apb_PWDATA;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:apb:1.0 SAPB_PERIPH PRDATA" *) output [31:0]io_apb_PRDATA;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:apb:1.0 SAPB_PERIPH PSLVERR" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME SAPB_PERIPH, ASSOCIATED_BUSIF SAPB_PERIPH" *) output io_apb_PSLVERROR;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:gpio:1.0 GPIO TRI_I" *) input [31:0]io_gpio_read;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:gpio:1.0 GPIO TRI_O" *) output [31:0]io_gpio_write;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:gpio:1.0 GPIO TRI_T" *) output [31:0]io_gpio_writeEnable;
-  (* X_INTERFACE_INFO = "xilinx.com:signal:interrupt:1.0 io_interrupt INTERRUPT" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME io_interrupt, SENSITIVITY LEVEL_HIGH, PortWidth 1" *) output [15:0]io_interrupt;
-  (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 clk CLK" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME clk, ASSOCIATED_RESET reset, ASSOCIATED_BUSIF SAPB_PERIPH, FREQ_HZ 50000000, PHASE 0.000, CLK_DOMAIN sys_processing_system7_0_0_FCLK_CLK0, INSERT_VIP 0" *) input clk;
-  (* X_INTERFACE_INFO = "xilinx.com:signal:reset:1.0 reset RST" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME reset, POLARITY ACTIVE_HIGH, INSERT_VIP 0" *) input reset;
-
-  wire \<const0> ;
-  wire \<const1> ;
-  wire clk;
-  wire [0:0]\i2cCtrl/io_apb_decoder_io_output_PSEL ;
-  wire [19:0]io_apb_PADDR;
-  wire io_apb_PENABLE;
-  wire [31:0]io_apb_PRDATA;
-  wire \io_apb_PRDATA[15]_INST_0_i_23_n_0 ;
-  wire \io_apb_PRDATA[15]_INST_0_i_24_n_0 ;
-  wire \io_apb_PRDATA[15]_INST_0_i_31_n_0 ;
-  wire \io_apb_PRDATA[15]_INST_0_i_38_n_0 ;
-  wire \io_apb_PRDATA[15]_INST_0_i_4_n_0 ;
-  wire \io_apb_PRDATA[15]_INST_0_i_56_n_0 ;
-  wire \io_apb_PRDATA[15]_INST_0_i_7_n_0 ;
-  wire \io_apb_PRDATA[31]_INST_0_i_10_n_0 ;
-  wire \io_apb_PRDATA[31]_INST_0_i_14_n_0 ;
-  wire \io_apb_PRDATA[31]_INST_0_i_15_n_0 ;
-  wire \io_apb_PRDATA[31]_INST_0_i_6_n_0 ;
-  wire \io_apb_PRDATA[31]_INST_0_i_7_n_0 ;
-  wire \io_apb_PRDATA[8]_INST_0_i_25_n_0 ;
-  wire \io_apb_PRDATA[8]_INST_0_i_42_n_0 ;
-  wire \io_apb_PRDATA[8]_INST_0_i_43_n_0 ;
-  wire \io_apb_PRDATA[8]_INST_0_i_44_n_0 ;
-  wire \io_apb_PRDATA[8]_INST_0_i_46_n_0 ;
-  wire \io_apb_PRDATA[8]_INST_0_i_48_n_0 ;
-  wire [0:0]io_apb_PSEL;
-  wire io_apb_PSLVERROR;
-  wire [31:0]io_apb_PWDATA;
-  wire io_apb_PWRITE;
-  wire [31:0]io_gpio_read;
-  wire [31:0]io_gpio_write;
-  wire [31:0]io_gpio_writeEnable;
-  wire [15:0]\^io_interrupt ;
-  wire reset;
-
-  assign io_apb_PREADY = \<const1> ;
-  assign io_interrupt[15] = \^io_interrupt [15];
-  assign io_interrupt[14] = \<const0> ;
-  assign io_interrupt[13] = \<const0> ;
-  assign io_interrupt[12] = \<const0> ;
-  assign io_interrupt[11] = \<const0> ;
-  assign io_interrupt[10] = \<const0> ;
-  assign io_interrupt[9] = \<const0> ;
-  assign io_interrupt[8] = \<const0> ;
-  assign io_interrupt[7] = \<const0> ;
-  assign io_interrupt[6] = \<const0> ;
-  assign io_interrupt[5] = \<const0> ;
-  assign io_interrupt[4:0] = \^io_interrupt [4:0];
-  GND GND
-       (.G(\<const0> ));
-  VCC VCC
-       (.P(\<const1> ));
-  sys_Apb3Periph_0_0_Apb3Periph inst
-       (.clk(clk),
-        .io_apb_PADDR({io_apb_PADDR[19:16],io_apb_PADDR[12],io_apb_PADDR[6:0]}),
-        .io_apb_PENABLE(io_apb_PENABLE),
-        .io_apb_PRDATA(io_apb_PRDATA),
-        .\io_apb_PRDATA[0]_INST_0_i_22 (\io_apb_PRDATA[15]_INST_0_i_24_n_0 ),
-        .\io_apb_PRDATA[0]_INST_0_i_7 (\io_apb_PRDATA[15]_INST_0_i_31_n_0 ),
-        .\io_apb_PRDATA[15]_0 (\io_apb_PRDATA[15]_INST_0_i_7_n_0 ),
-        .\io_apb_PRDATA[15]_INST_0_i_26 (\io_apb_PRDATA[15]_INST_0_i_38_n_0 ),
-        .\io_apb_PRDATA[15]_INST_0_i_26_0 (\i2cCtrl/io_apb_decoder_io_output_PSEL ),
-        .\io_apb_PRDATA[15]_INST_0_i_27 (\io_apb_PRDATA[8]_INST_0_i_48_n_0 ),
-        .\io_apb_PRDATA[15]_INST_0_i_28 (\io_apb_PRDATA[8]_INST_0_i_25_n_0 ),
-        .\io_apb_PRDATA[15]_INST_0_i_28_0 (\io_apb_PRDATA[8]_INST_0_i_43_n_0 ),
-        .\io_apb_PRDATA[15]_INST_0_i_28_1 (\io_apb_PRDATA[8]_INST_0_i_42_n_0 ),
-        .\io_apb_PRDATA[15]_INST_0_i_28_2 (\io_apb_PRDATA[15]_INST_0_i_56_n_0 ),
-        .\io_apb_PRDATA[15]_INST_0_i_28_3 (\io_apb_PRDATA[8]_INST_0_i_44_n_0 ),
-        .\io_apb_PRDATA[16]_0 (\io_apb_PRDATA[31]_INST_0_i_7_n_0 ),
-        .\io_apb_PRDATA[16]_1 (\io_apb_PRDATA[31]_INST_0_i_10_n_0 ),
-        .\io_apb_PRDATA[31]_INST_0_i_3 (\io_apb_PRDATA[31]_INST_0_i_14_n_0 ),
-        .\io_apb_PRDATA[31]_INST_0_i_3_0 (\io_apb_PRDATA[31]_INST_0_i_15_n_0 ),
-        .\io_apb_PRDATA[6]_INST_0_i_8 (\io_apb_PRDATA[15]_INST_0_i_23_n_0 ),
-        .\io_apb_PRDATA[7]_INST_0_i_25 (\io_apb_PRDATA[8]_INST_0_i_46_n_0 ),
-        .io_apb_PRDATA_15_sp_1(\io_apb_PRDATA[15]_INST_0_i_4_n_0 ),
-        .io_apb_PRDATA_16_sp_1(\io_apb_PRDATA[31]_INST_0_i_6_n_0 ),
-        .io_apb_PSEL(io_apb_PSEL),
-        .io_apb_PWDATA(io_apb_PWDATA),
-        .io_apb_PWRITE(io_apb_PWRITE),
-        .io_gpio_read(io_gpio_read),
-        .io_gpio_write(io_gpio_write),
-        .io_gpio_writeEnable(io_gpio_writeEnable),
-        .io_interrupt({\^io_interrupt [15],\^io_interrupt [4:0]}),
-        .reset(reset));
-  (* SOFT_HLUTNM = "soft_lutpair282" *) 
-  LUT3 #(
-    .INIT(8'h02)) 
-    \io_apb_PRDATA[15]_INST_0_i_23 
-       (.I0(io_apb_PADDR[4]),
-        .I1(io_apb_PADDR[5]),
-        .I2(io_apb_PADDR[0]),
-        .O(\io_apb_PRDATA[15]_INST_0_i_23_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair282" *) 
-  LUT5 #(
-    .INIT(32'h00000002)) 
-    \io_apb_PRDATA[15]_INST_0_i_24 
-       (.I0(io_apb_PADDR[5]),
-        .I1(io_apb_PADDR[4]),
-        .I2(io_apb_PADDR[0]),
-        .I3(io_apb_PADDR[2]),
-        .I4(io_apb_PADDR[3]),
-        .O(\io_apb_PRDATA[15]_INST_0_i_24_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair288" *) 
-  LUT3 #(
-    .INIT(8'h01)) 
-    \io_apb_PRDATA[15]_INST_0_i_31 
-       (.I0(io_apb_PADDR[4]),
-        .I1(io_apb_PADDR[5]),
-        .I2(io_apb_PADDR[0]),
-        .O(\io_apb_PRDATA[15]_INST_0_i_31_n_0 ));
-  LUT3 #(
-    .INIT(8'hF4)) 
-    \io_apb_PRDATA[15]_INST_0_i_38 
-       (.I0(io_apb_PADDR[5]),
-        .I1(io_apb_PADDR[4]),
-        .I2(io_apb_PADDR[0]),
-        .O(\io_apb_PRDATA[15]_INST_0_i_38_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair281" *) 
-  LUT5 #(
-    .INIT(32'h00000010)) 
-    \io_apb_PRDATA[15]_INST_0_i_4 
-       (.I0(io_apb_PADDR[3]),
-        .I1(io_apb_PADDR[2]),
-        .I2(io_apb_PADDR[4]),
-        .I3(io_apb_PADDR[0]),
-        .I4(io_apb_PADDR[1]),
-        .O(\io_apb_PRDATA[15]_INST_0_i_4_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000000000000200)) 
-    \io_apb_PRDATA[15]_INST_0_i_55 
-       (.I0(io_apb_PSEL),
-        .I1(io_apb_PADDR[19]),
-        .I2(io_apb_PADDR[18]),
-        .I3(io_apb_PADDR[17]),
-        .I4(io_apb_PADDR[16]),
-        .I5(io_apb_PADDR[12]),
-        .O(\i2cCtrl/io_apb_decoder_io_output_PSEL ));
-  (* SOFT_HLUTNM = "soft_lutpair284" *) 
-  LUT5 #(
-    .INIT(32'hFFFFFFE1)) 
-    \io_apb_PRDATA[15]_INST_0_i_56 
-       (.I0(io_apb_PADDR[3]),
-        .I1(io_apb_PADDR[4]),
-        .I2(io_apb_PADDR[2]),
-        .I3(io_apb_PADDR[0]),
-        .I4(io_apb_PADDR[1]),
-        .O(\io_apb_PRDATA[15]_INST_0_i_56_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair285" *) 
-  LUT3 #(
-    .INIT(8'h01)) 
-    \io_apb_PRDATA[15]_INST_0_i_7 
-       (.I0(io_apb_PADDR[4]),
-        .I1(io_apb_PADDR[1]),
-        .I2(io_apb_PADDR[0]),
-        .O(\io_apb_PRDATA[15]_INST_0_i_7_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair287" *) 
-  LUT3 #(
-    .INIT(8'hFE)) 
-    \io_apb_PRDATA[31]_INST_0_i_10 
-       (.I0(io_apb_PADDR[1]),
-        .I1(io_apb_PADDR[4]),
-        .I2(io_apb_PADDR[0]),
-        .O(\io_apb_PRDATA[31]_INST_0_i_10_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair288" *) 
-  LUT3 #(
-    .INIT(8'hFE)) 
-    \io_apb_PRDATA[31]_INST_0_i_14 
-       (.I0(io_apb_PADDR[1]),
-        .I1(io_apb_PADDR[0]),
-        .I2(io_apb_PADDR[3]),
-        .O(\io_apb_PRDATA[31]_INST_0_i_14_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair281" *) 
-  LUT5 #(
-    .INIT(32'hEFFFFEEE)) 
-    \io_apb_PRDATA[31]_INST_0_i_15 
-       (.I0(io_apb_PADDR[0]),
-        .I1(io_apb_PADDR[1]),
-        .I2(io_apb_PADDR[3]),
-        .I3(io_apb_PADDR[4]),
-        .I4(io_apb_PADDR[2]),
-        .O(\io_apb_PRDATA[31]_INST_0_i_15_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair283" *) 
-  LUT5 #(
-    .INIT(32'hFFFFFFF4)) 
-    \io_apb_PRDATA[31]_INST_0_i_6 
-       (.I0(io_apb_PADDR[3]),
-        .I1(io_apb_PADDR[4]),
-        .I2(io_apb_PADDR[2]),
-        .I3(io_apb_PADDR[1]),
-        .I4(io_apb_PADDR[0]),
-        .O(\io_apb_PRDATA[31]_INST_0_i_6_n_0 ));
-  LUT2 #(
-    .INIT(4'h2)) 
-    \io_apb_PRDATA[31]_INST_0_i_7 
-       (.I0(io_apb_PADDR[3]),
-        .I1(io_apb_PADDR[2]),
-        .O(\io_apb_PRDATA[31]_INST_0_i_7_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair287" *) 
-  LUT3 #(
-    .INIT(8'hFE)) 
-    \io_apb_PRDATA[8]_INST_0_i_25 
-       (.I0(io_apb_PADDR[0]),
-        .I1(io_apb_PADDR[1]),
-        .I2(io_apb_PADDR[4]),
-        .O(\io_apb_PRDATA[8]_INST_0_i_25_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair283" *) 
-  LUT5 #(
-    .INIT(32'h00000110)) 
-    \io_apb_PRDATA[8]_INST_0_i_42 
-       (.I0(io_apb_PADDR[1]),
-        .I1(io_apb_PADDR[0]),
-        .I2(io_apb_PADDR[2]),
-        .I3(io_apb_PADDR[4]),
-        .I4(io_apb_PADDR[3]),
-        .O(\io_apb_PRDATA[8]_INST_0_i_42_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair286" *) 
-  LUT4 #(
-    .INIT(16'h0100)) 
-    \io_apb_PRDATA[8]_INST_0_i_43 
-       (.I0(io_apb_PADDR[1]),
-        .I1(io_apb_PADDR[0]),
-        .I2(io_apb_PADDR[2]),
-        .I3(io_apb_PADDR[3]),
-        .O(\io_apb_PRDATA[8]_INST_0_i_43_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair284" *) 
-  LUT5 #(
-    .INIT(32'h00000009)) 
-    \io_apb_PRDATA[8]_INST_0_i_44 
-       (.I0(io_apb_PADDR[2]),
-        .I1(io_apb_PADDR[4]),
-        .I2(io_apb_PADDR[3]),
-        .I3(io_apb_PADDR[0]),
-        .I4(io_apb_PADDR[1]),
-        .O(\io_apb_PRDATA[8]_INST_0_i_44_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair286" *) 
-  LUT4 #(
-    .INIT(16'hFEEE)) 
-    \io_apb_PRDATA[8]_INST_0_i_46 
-       (.I0(io_apb_PADDR[1]),
-        .I1(io_apb_PADDR[0]),
-        .I2(io_apb_PADDR[2]),
-        .I3(io_apb_PADDR[3]),
-        .O(\io_apb_PRDATA[8]_INST_0_i_46_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair285" *) 
-  LUT4 #(
-    .INIT(16'h0004)) 
-    \io_apb_PRDATA[8]_INST_0_i_48 
-       (.I0(io_apb_PADDR[4]),
-        .I1(io_apb_PADDR[3]),
-        .I2(io_apb_PADDR[0]),
-        .I3(io_apb_PADDR[1]),
-        .O(\io_apb_PRDATA[8]_INST_0_i_48_n_0 ));
-  LUT5 #(
-    .INIT(32'h9F800000)) 
-    io_apb_PSLVERROR_INST_0
-       (.I0(io_apb_PADDR[17]),
-        .I1(io_apb_PADDR[16]),
-        .I2(io_apb_PADDR[18]),
-        .I3(io_apb_PADDR[19]),
-        .I4(io_apb_PSEL),
-        .O(io_apb_PSLVERROR));
-endmodule
-
+(* ORIG_REF_NAME = "uartCtrlRx" *) 
 module sys_Apb3Periph_0_0_uartCtrlRx
    (rx_io_read_valid,
     \CR1_reg[10] ,
@@ -54546,6 +54569,7 @@ module sys_Apb3Periph_0_0_uartCtrlRx_3
         .Q(rx_io_read_valid));
 endmodule
 
+(* ORIG_REF_NAME = "uartCtrlTx" *) 
 module sys_Apb3Periph_0_0_uartCtrlTx
    (uartCtrl_io_uarts_1_txd,
     tx_io_write_ready,

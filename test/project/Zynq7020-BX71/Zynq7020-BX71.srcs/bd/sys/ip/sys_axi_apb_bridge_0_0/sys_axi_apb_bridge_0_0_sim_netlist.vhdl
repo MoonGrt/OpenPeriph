@@ -1,14 +1,14 @@
 -- Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
--- Date        : Sun Oct 12 15:04:05 2025
+-- Date        : Sun Oct 12 22:16:14 2025
 -- Host        : DESKTOP-MOONGRT running 64-bit major release  (build 9200)
--- Command     : write_vhdl -force -mode funcsim -rename_top sys_axi_apb_bridge_0_0 -prefix
---               sys_axi_apb_bridge_0_0_ sys_axi_apb_bridge_0_0_sim_netlist.vhdl
+-- Command     : write_vhdl -force -mode funcsim
+--               G:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/Zynq7020-BX71.srcs/bd/sys/ip/sys_axi_apb_bridge_0_0/sys_axi_apb_bridge_0_0_sim_netlist.vhdl
 -- Design      : sys_axi_apb_bridge_0_0
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
--- Device      : xc7z010iclg225-1L
+-- Device      : xc7z020clg400-1
 -- --------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -33,6 +33,8 @@ entity sys_axi_apb_bridge_0_0_apb_mif is
     D : in STD_LOGIC_VECTOR ( 31 downto 0 );
     \PWDATA_i_reg[31]_0\ : in STD_LOGIC_VECTOR ( 31 downto 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of sys_axi_apb_bridge_0_0_apb_mif : entity is "apb_mif";
 end sys_axi_apb_bridge_0_0_apb_mif;
 
 architecture STRUCTURE of sys_axi_apb_bridge_0_0_apb_mif is
@@ -733,6 +735,8 @@ entity sys_axi_apb_bridge_0_0_axilite_sif is
     s_axi_aresetn : in STD_LOGIC;
     m_apb_pslverr : in STD_LOGIC_VECTOR ( 0 to 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of sys_axi_apb_bridge_0_0_axilite_sif : entity is "axilite_sif";
 end sys_axi_apb_bridge_0_0_axilite_sif;
 
 architecture STRUCTURE of sys_axi_apb_bridge_0_0_axilite_sif is
@@ -3174,6 +3178,8 @@ entity sys_axi_apb_bridge_0_0_multiplexor is
     PSEL_i : in STD_LOGIC;
     s_axi_aclk : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of sys_axi_apb_bridge_0_0_multiplexor : entity is "multiplexor";
 end sys_axi_apb_bridge_0_0_multiplexor;
 
 architecture STRUCTURE of sys_axi_apb_bridge_0_0_multiplexor is
@@ -3322,6 +3328,8 @@ entity sys_axi_apb_bridge_0_0_axi_apb_bridge is
   attribute C_S_AXI_RNG9_BASEADDR of sys_axi_apb_bridge_0_0_axi_apb_bridge : entity is "64'b0000000000000000000000000000000010000000000000000000000000000000";
   attribute C_S_AXI_RNG9_HIGHADDR : string;
   attribute C_S_AXI_RNG9_HIGHADDR of sys_axi_apb_bridge_0_0_axi_apb_bridge : entity is "64'b0000000000000000000000000000000010001111111111111111111111111111";
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of sys_axi_apb_bridge_0_0_axi_apb_bridge : entity is "axi_apb_bridge";
   attribute downgradeipidentifiedwarnings : string;
   attribute downgradeipidentifiedwarnings of sys_axi_apb_bridge_0_0_axi_apb_bridge : entity is "yes";
 end sys_axi_apb_bridge_0_0_axi_apb_bridge;
