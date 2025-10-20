@@ -18,7 +18,7 @@ typedef struct
   volatile uint32_t LOAD;                         /*!< Offset: 0x04  SysTick Reload Value Register       */
   volatile uint32_t VAL;                          /*!< Offset: 0x08  SysTick Current Value Register      */
   volatile uint32_t CALIB;                        /*!< Offset: 0x0C  SysTick Calibration Register        */
-} SysTick_Type;
+} SysTick_TypeDef;
 
 /* SysTick Control / Status Register Definitions */
 #define SysTick_CTRL_COUNTFLAG_Pos         16                                             /*!< SysTick CTRL: COUNTFLAG Position */

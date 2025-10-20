@@ -524,7 +524,7 @@
       <xilinx:displayName>Apb3Periph_v1_0</xilinx:displayName>
       <xilinx:definitionSource>package_project</xilinx:definitionSource>
       <xilinx:coreRevision>8</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2025-10-12T14:47:08Z</xilinx:coreCreationDateTime>
+      <xilinx:coreCreationDateTime>2025-10-19T11:40:33Z</xilinx:coreCreationDateTime>
       <xilinx:tags>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@ae4acb3_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periph/apb3periph.srcs</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@262c9361_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periph/apb3periph.srcs</xilinx:tag>
@@ -618,6 +618,16 @@
         <xilinx:tag xilinx:name="ui.data.coregen.dd@4eb28c24_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3Periph/Apb3Periph.srcs</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@57161f10_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3Periph/Apb3Periph.srcs</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@748a1f29_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3Periph/Apb3Periph.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5795cf03_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3Periph/Apb3Periph.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@b63e1a0_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3Periph/Apb3Periph.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5a4bf3f2_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3Periph/Apb3Periph.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@79a4d646_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3Periph/Apb3Periph.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2a2f0928_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3Periph/Apb3Periph.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3b358e03_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3Periph/Apb3Periph.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@a207651_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3Periph/Apb3Periph.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@31656d2_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3Periph/Apb3Periph.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@55f2303f_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3Periph/Apb3Periph.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4eef50e_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3Periph/Apb3Periph.srcs</xilinx:tag>
       </xilinx:tags>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>

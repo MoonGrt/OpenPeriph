@@ -1,7 +1,7 @@
 //Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 //--------------------------------------------------------------------------------
 //Tool Version: Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
-//Date        : Sun Oct 12 22:47:54 2025
+//Date        : Mon Oct 20 16:21:51 2025
 //Host        : DESKTOP-MOONGRT running 64-bit major release  (build 9200)
 //Command     : generate_target sys_wrapper.bd
 //Design      : sys_wrapper
@@ -31,7 +31,11 @@ module sys_wrapper
     FIXED_IO_ps_clk,
     FIXED_IO_ps_porb,
     FIXED_IO_ps_srstb,
-    GPIO_PL_tri_io);
+    GPIO_PL_tri_io,
+    TMDS_clk_n,
+    TMDS_clk_p,
+    TMDS_data_n,
+    TMDS_data_p);
   inout [14:0]DDR_addr;
   inout [2:0]DDR_ba;
   inout DDR_cas_n;
@@ -39,21 +43,25 @@ module sys_wrapper
   inout DDR_ck_p;
   inout DDR_cke;
   inout DDR_cs_n;
-  inout [1:0]DDR_dm;
-  inout [15:0]DDR_dq;
-  inout [1:0]DDR_dqs_n;
-  inout [1:0]DDR_dqs_p;
+  inout [3:0]DDR_dm;
+  inout [31:0]DDR_dq;
+  inout [3:0]DDR_dqs_n;
+  inout [3:0]DDR_dqs_p;
   inout DDR_odt;
   inout DDR_ras_n;
   inout DDR_reset_n;
   inout DDR_we_n;
   inout FIXED_IO_ddr_vrn;
   inout FIXED_IO_ddr_vrp;
-  inout [31:0]FIXED_IO_mio;
+  inout [53:0]FIXED_IO_mio;
   inout FIXED_IO_ps_clk;
   inout FIXED_IO_ps_porb;
   inout FIXED_IO_ps_srstb;
   inout [31:0]GPIO_PL_tri_io;
+  output TMDS_clk_n;
+  output TMDS_clk_p;
+  output [2:0]TMDS_data_n;
+  output [2:0]TMDS_data_p;
 
   wire [14:0]DDR_addr;
   wire [2:0]DDR_ba;
@@ -62,17 +70,17 @@ module sys_wrapper
   wire DDR_ck_p;
   wire DDR_cke;
   wire DDR_cs_n;
-  wire [1:0]DDR_dm;
-  wire [15:0]DDR_dq;
-  wire [1:0]DDR_dqs_n;
-  wire [1:0]DDR_dqs_p;
+  wire [3:0]DDR_dm;
+  wire [31:0]DDR_dq;
+  wire [3:0]DDR_dqs_n;
+  wire [3:0]DDR_dqs_p;
   wire DDR_odt;
   wire DDR_ras_n;
   wire DDR_reset_n;
   wire DDR_we_n;
   wire FIXED_IO_ddr_vrn;
   wire FIXED_IO_ddr_vrp;
-  wire [31:0]FIXED_IO_mio;
+  wire [53:0]FIXED_IO_mio;
   wire FIXED_IO_ps_clk;
   wire FIXED_IO_ps_porb;
   wire FIXED_IO_ps_srstb;
@@ -204,6 +212,10 @@ module sys_wrapper
   wire [7:7]GPIO_PL_tri_t_7;
   wire [8:8]GPIO_PL_tri_t_8;
   wire [9:9]GPIO_PL_tri_t_9;
+  wire TMDS_clk_n;
+  wire TMDS_clk_p;
+  wire [2:0]TMDS_data_n;
+  wire [2:0]TMDS_data_p;
 
   IOBUF GPIO_PL_tri_iobuf_0
        (.I(GPIO_PL_tri_o_0),
@@ -389,5 +401,9 @@ module sys_wrapper
         .FIXED_IO_ps_srstb(FIXED_IO_ps_srstb),
         .GPIO_PL_tri_i({GPIO_PL_tri_i_31,GPIO_PL_tri_i_30,GPIO_PL_tri_i_29,GPIO_PL_tri_i_28,GPIO_PL_tri_i_27,GPIO_PL_tri_i_26,GPIO_PL_tri_i_25,GPIO_PL_tri_i_24,GPIO_PL_tri_i_23,GPIO_PL_tri_i_22,GPIO_PL_tri_i_21,GPIO_PL_tri_i_20,GPIO_PL_tri_i_19,GPIO_PL_tri_i_18,GPIO_PL_tri_i_17,GPIO_PL_tri_i_16,GPIO_PL_tri_i_15,GPIO_PL_tri_i_14,GPIO_PL_tri_i_13,GPIO_PL_tri_i_12,GPIO_PL_tri_i_11,GPIO_PL_tri_i_10,GPIO_PL_tri_i_9,GPIO_PL_tri_i_8,GPIO_PL_tri_i_7,GPIO_PL_tri_i_6,GPIO_PL_tri_i_5,GPIO_PL_tri_i_4,GPIO_PL_tri_i_3,GPIO_PL_tri_i_2,GPIO_PL_tri_i_1,GPIO_PL_tri_i_0}),
         .GPIO_PL_tri_o({GPIO_PL_tri_o_31,GPIO_PL_tri_o_30,GPIO_PL_tri_o_29,GPIO_PL_tri_o_28,GPIO_PL_tri_o_27,GPIO_PL_tri_o_26,GPIO_PL_tri_o_25,GPIO_PL_tri_o_24,GPIO_PL_tri_o_23,GPIO_PL_tri_o_22,GPIO_PL_tri_o_21,GPIO_PL_tri_o_20,GPIO_PL_tri_o_19,GPIO_PL_tri_o_18,GPIO_PL_tri_o_17,GPIO_PL_tri_o_16,GPIO_PL_tri_o_15,GPIO_PL_tri_o_14,GPIO_PL_tri_o_13,GPIO_PL_tri_o_12,GPIO_PL_tri_o_11,GPIO_PL_tri_o_10,GPIO_PL_tri_o_9,GPIO_PL_tri_o_8,GPIO_PL_tri_o_7,GPIO_PL_tri_o_6,GPIO_PL_tri_o_5,GPIO_PL_tri_o_4,GPIO_PL_tri_o_3,GPIO_PL_tri_o_2,GPIO_PL_tri_o_1,GPIO_PL_tri_o_0}),
-        .GPIO_PL_tri_t({GPIO_PL_tri_t_31,GPIO_PL_tri_t_30,GPIO_PL_tri_t_29,GPIO_PL_tri_t_28,GPIO_PL_tri_t_27,GPIO_PL_tri_t_26,GPIO_PL_tri_t_25,GPIO_PL_tri_t_24,GPIO_PL_tri_t_23,GPIO_PL_tri_t_22,GPIO_PL_tri_t_21,GPIO_PL_tri_t_20,GPIO_PL_tri_t_19,GPIO_PL_tri_t_18,GPIO_PL_tri_t_17,GPIO_PL_tri_t_16,GPIO_PL_tri_t_15,GPIO_PL_tri_t_14,GPIO_PL_tri_t_13,GPIO_PL_tri_t_12,GPIO_PL_tri_t_11,GPIO_PL_tri_t_10,GPIO_PL_tri_t_9,GPIO_PL_tri_t_8,GPIO_PL_tri_t_7,GPIO_PL_tri_t_6,GPIO_PL_tri_t_5,GPIO_PL_tri_t_4,GPIO_PL_tri_t_3,GPIO_PL_tri_t_2,GPIO_PL_tri_t_1,GPIO_PL_tri_t_0}));
+        .GPIO_PL_tri_t({GPIO_PL_tri_t_31,GPIO_PL_tri_t_30,GPIO_PL_tri_t_29,GPIO_PL_tri_t_28,GPIO_PL_tri_t_27,GPIO_PL_tri_t_26,GPIO_PL_tri_t_25,GPIO_PL_tri_t_24,GPIO_PL_tri_t_23,GPIO_PL_tri_t_22,GPIO_PL_tri_t_21,GPIO_PL_tri_t_20,GPIO_PL_tri_t_19,GPIO_PL_tri_t_18,GPIO_PL_tri_t_17,GPIO_PL_tri_t_16,GPIO_PL_tri_t_15,GPIO_PL_tri_t_14,GPIO_PL_tri_t_13,GPIO_PL_tri_t_12,GPIO_PL_tri_t_11,GPIO_PL_tri_t_10,GPIO_PL_tri_t_9,GPIO_PL_tri_t_8,GPIO_PL_tri_t_7,GPIO_PL_tri_t_6,GPIO_PL_tri_t_5,GPIO_PL_tri_t_4,GPIO_PL_tri_t_3,GPIO_PL_tri_t_2,GPIO_PL_tri_t_1,GPIO_PL_tri_t_0}),
+        .TMDS_clk_n(TMDS_clk_n),
+        .TMDS_clk_p(TMDS_clk_p),
+        .TMDS_data_n(TMDS_data_n),
+        .TMDS_data_p(TMDS_data_p));
 endmodule

@@ -49,12 +49,14 @@ typedef __I uint8_t vuc8;   /*!< Read Only */
 typedef enum{RESET = 0, SET = !RESET} FlagStatus, ITStatus;
 typedef enum{DISABLE = 0, ENABLE = !DISABLE} FunctionalState;
 typedef enum{ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
-
+#ifndef FALSE
+typedef enum {FALSE = 0,TRUE = !FALSE} bool;
+#endif
 /** @defgroup Cyber Mem Map
  * @{
  */
 /*!< Base memory map */
-#define PERIPH_BASE XPAR_APB3PERIPH_0_BASEADDR /*!< Peripheral base address */
+#define PERIPH_BASE XPAR_APB3PERIPHWITHLCD_0_BASEADDR /*!< Peripheral base address */
 
 /*!< Peripheral memory map */
 #define APBPERIPH_BASE PERIPH_BASE
@@ -166,7 +168,18 @@ typedef enum{ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 /*!< SYSTICK */
 #include "systick.h"
 #define SysTick_BASE (APBPERIPH_BASE + 0x60000)
-#define SysTick ((SysTick_Type *)SysTick_BASE) // 0xF0060000
+#define SysTick ((SysTick_TypeDef *)SysTick_BASE) // 0xF0060000
+#endif
+
+#ifdef CYBER_DVTC
+/*!< DVTC */
+#include "dvtc.h"
+#define DVTC_BASE (APBPERIPH_BASE + 0x70000)
+#define DVTC_Layer1_BASE (DVTC_BASE + 0x84)
+#define DVTC_Layer2_BASE (DVTC_BASE + 0x104)
+#define DVTC ((DVTC_TypeDef *)DVTC_BASE) // 0xF0070000
+#define DVTC_Layer1 ((DVTC_Layer_TypeDef *)DVTC_Layer1_BASE)
+#define DVTC_Layer2 ((DVTC_Layer_TypeDef *)DVTC_Layer2_BASE)
 #endif
 
 /* Exported macro ------------------------------------------------------------*/

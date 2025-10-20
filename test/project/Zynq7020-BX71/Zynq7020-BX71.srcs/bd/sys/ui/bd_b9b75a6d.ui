@@ -1,29 +1,52 @@
 {
    "ExpandedHierarchyInLayout":"",
-   "guistr":"# # String gsaved with Nlview 6.8.11  2018-08-07 bk=1.4403 VDI=40 GEI=35 GUI=JA:9.0 non-TLS-threadsafe
+   "guistr":"# # String gsaved with Nlview 6.8.11  2018-08-07 bk=1.4403 VDI=40 GEI=35 GUI=JA:9.0 non-TLS
 #  -string -flagsOSRD
-preplace port DDR -pg 1 -y 260 -defaultsOSRD
-preplace port GPIO_PL -pg 1 -y 350 -defaultsOSRD
-preplace port FIXED_IO -pg 1 -y 280 -defaultsOSRD
-preplace inst rst_ps7_0_50M -pg 1 -lvl 1 -y 120 -defaultsOSRD
-preplace inst Apb3Periph_0 -pg 1 -lvl 4 -y 360 -defaultsOSRD
-preplace inst axi_interconnect_0 -pg 1 -lvl 2 -y 120 -defaultsOSRD
-preplace inst axi_apb_bridge_0 -pg 1 -lvl 3 -y 140 -defaultsOSRD
-preplace inst processing_system7_0 -pg 1 -lvl 1 -y 300 -defaultsOSRD
-preplace netloc processing_system7_0_DDR 1 1 4 NJ 260 NJ 260 NJ 260 NJ
-preplace netloc axi_apb_bridge_0_APB_M 1 3 1 980
-preplace netloc processing_system7_0_FCLK_RESET0_N 1 0 2 -30 400 380
-preplace netloc Apb3Periph_0_io_interrupt 1 0 5 -20 440 NJ 440 NJ 440 NJ 440 1290
-preplace netloc rst_ps7_0_50M_peripheral_reset 1 1 3 390 380 NJ 380 NJ
-preplace netloc S00_AXI_1 1 1 1 410
-preplace netloc Apb3Periph_0_GPIO 1 4 1 NJ
-preplace netloc processing_system7_0_FIXED_IO 1 1 4 NJ 280 NJ 280 NJ 280 NJ
-preplace netloc rst_ps7_0_50M_peripheral_aresetn 1 1 2 380 240 730J
-preplace netloc axi_interconnect_0_M00_AXI 1 2 1 N
-preplace netloc processing_system7_0_FCLK_CLK0 1 0 4 -40 20 400 250 720 250 970J
-levelinfo -pg 1 -60 180 570 850 1140 1310 -top 0 -bot 490
+preplace port DDR -pg 1 -y 700 -defaultsOSRD
+preplace port TMDS -pg 1 -y 210 -defaultsOSRD
+preplace port GPIO_PL -pg 1 -y 80 -defaultsOSRD
+preplace port FIXED_IO -pg 1 -y 720 -defaultsOSRD
+preplace inst smartconnect_0 -pg 1 -lvl 5 -y 450 -defaultsOSRD
+preplace inst rgb2dvi_0 -pg 1 -lvl 6 -y 210 -defaultsOSRD
+preplace inst Apb3PeriphWithLcd_0 -pg 1 -lvl 4 -y 130 -defaultsOSRD
+preplace inst axi_dynclk_0 -pg 1 -lvl 3 -y 280 -defaultsOSRD
+preplace inst ila_0 -pg 1 -lvl 6 -y 460 -defaultsOSRD
+preplace inst axi_interconnect_0 -pg 1 -lvl 2 -y 240 -defaultsOSRD
+preplace inst axi_apb_bridge_0 -pg 1 -lvl 3 -y 90 -defaultsOSRD
+preplace inst rst_ps7_0_100M -pg 1 -lvl 1 -y 400 -defaultsOSRD
+preplace inst processing_system7_0 -pg 1 -lvl 6 -y 740 -defaultsOSRD
+preplace netloc processing_system7_0_DDR 1 6 1 NJ
+preplace netloc processing_system7_0_S_AXI_HP0_ARREADY 1 5 1 1800
+preplace netloc axi_dynclk_0_PXL_CLK_O 1 3 3 1000 260 NJ 260 N
+preplace netloc axi_apb_bridge_0_APB_M 1 3 1 N
+preplace netloc rst_ps7_0_100M_peripheral_aresetn 1 1 4 370 90 690 470 NJ 470 NJ
+preplace netloc Apb3PeriphWithLcd_0_io_dvti_hs 1 4 2 NJ 180 N
+preplace netloc Apb3PeriphWithLcd_0_io_dvti_de 1 4 2 NJ 120 1790
+preplace netloc axi_dynclk_0_LOCKED_O 1 3 3 NJ 300 1360J 240 N
+preplace netloc Apb3PeriphWithLcd_0_GPIO 1 4 3 NJ 80 NJ 80 NJ
+preplace netloc processing_system7_0_FCLK_RESET0_N 1 0 7 20 600 NJ 600 NJ 600 NJ 600 NJ 600 NJ 600 2270
+preplace netloc smartconnect_0_M00_AXI_araddr 1 5 1 1750
+preplace netloc Apb3PeriphWithLcd_0_io_interrupt 1 4 2 NJ 200 1770
+preplace netloc processing_system7_0_S_AXI_HP0_RVALID 1 5 1 1790
+preplace netloc Apb3PeriphWithLcd_0_io_dvti_data 1 4 2 NJ 160 1800
+preplace netloc axi_dynclk_0_PXL_CLK_5X_O 1 3 3 NJ 280 NJ 280 N
+preplace netloc smartconnect_0_M00_AXI 1 5 1 1760
+preplace netloc rgb2dvi_0_TMDS 1 6 1 NJ
+preplace netloc rst_ps7_0_100M_peripheral_reset 1 1 3 380J 100 700J 170 1010
+preplace netloc smartconnect_0_M00_AXI_rready 1 5 1 N
+preplace netloc Apb3PeriphWithLcd_0_MAXI_DVTC 1 4 1 1370
+preplace netloc S00_AXI_1 1 1 6 390 380 NJ 380 NJ 380 1350J 70 NJ 70 2280
+preplace netloc processing_system7_0_FIXED_IO 1 6 1 NJ
+preplace netloc processing_system7_0_S_AXI_HP0_RLAST 1 5 1 1780
+preplace netloc axi_interconnect_0_M00_AXI 1 2 1 710
+preplace netloc smartconnect_0_M00_AXI_arvalid 1 5 1 1740
+preplace netloc axi_interconnect_0_M01_AXI 1 2 1 N
+preplace netloc processing_system7_0_FCLK_CLK0 1 0 7 20 300 360 80 720 180 1020 310 1340 360 1730 870 2260
+preplace netloc Apb3PeriphWithLcd_0_io_dvti_vs 1 4 2 NJ 140 1780
+levelinfo -pg 1 0 190 540 860 1180 1550 2030 2300 -top 0 -bot 880
 "
 }
 {
-   "da_clkrst_cnt":"4"
+   "da_axi4_cnt":"1",
+   "da_clkrst_cnt":"25"
 }

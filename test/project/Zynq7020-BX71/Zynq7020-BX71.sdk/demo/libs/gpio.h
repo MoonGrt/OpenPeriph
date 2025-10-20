@@ -13,22 +13,14 @@
  */
 typedef struct
 {
-    volatile uint32_t CRL;  // +0  0x00: Port configuration register low
-    volatile uint32_t CRH;  // +4  0x04: Port configuration register high
-    volatile uint32_t IDR;  // +8  0x08: Input data register
-    volatile uint32_t ODR;  // +12 0x0C: Output data register
-    volatile uint32_t BSR;  // +16 0x10: Bit set/reset register
-    volatile uint32_t BRR;  // +20 0x14: Bit reset register
-    volatile uint32_t LCKR; // +24 0x18: Configuration lock register
+    volatile uint32_t CRL;  // +0 0x00000
+    volatile uint32_t CRH;  // +4 0x00100
+    volatile uint32_t IDR;  // +8 0x01000
+    volatile uint32_t ODR;  // +12 0x01100
+    volatile uint32_t BSR;  // +16 0x10000
+    volatile uint32_t BRR;  // +20 0x10100
+    volatile uint32_t LCKR; // +24 0x11000
 } GPIO_TypeDef;
-// typedef struct
-// {
-//     volatile uint32_t EVCR;
-//     volatile uint32_t MAPR;
-//     volatile uint32_t EXTICR[4];
-//     uint32_t RESERVED0;
-//     volatile uint32_t MAPR2;
-// } AFIO_TypeDef;
 
 #define IS_GPIO_ALL_PERIPH(PERIPH) (((PERIPH) == GPIOA) || \
                                     ((PERIPH) == GPIOB) || \

@@ -1,0 +1,1590 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spirit:component xmlns:xilinx="http://www.xilinx.com" xmlns:spirit="http://www.spiritconsortium.org/XMLSchema/SPIRIT/1685-2009" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <spirit:vendor>xilinx.com</spirit:vendor>
+  <spirit:library>customized_ip</spirit:library>
+  <spirit:name>sys_Apb3PeriphWithLcd_0_0</spirit:name>
+  <spirit:version>1.0</spirit:version>
+  <spirit:busInterfaces>
+    <spirit:busInterface>
+      <spirit:name>dvt_reset</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="reset" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="reset_rtl" spirit:version="1.0"/>
+      <spirit:slave/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>RST</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>dvt_reset</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+      <spirit:parameters>
+        <spirit:parameter>
+          <spirit:name>POLARITY</spirit:name>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.DVT_RESET.POLARITY">ACTIVE_HIGH</spirit:value>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>INSERT_VIP</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="BUSIFPARAM_VALUE.DVT_RESET.INSERT_VIP">0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>simulation.rtl</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+      </spirit:parameters>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>reset</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="reset" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="reset_rtl" spirit:version="1.0"/>
+      <spirit:slave/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>RST</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>reset</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+      <spirit:parameters>
+        <spirit:parameter>
+          <spirit:name>POLARITY</spirit:name>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.RESET.POLARITY">ACTIVE_HIGH</spirit:value>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>INSERT_VIP</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="BUSIFPARAM_VALUE.RESET.INSERT_VIP">0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>simulation.rtl</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+      </spirit:parameters>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>clk</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="clock" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="clock_rtl" spirit:version="1.0"/>
+      <spirit:slave/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>CLK</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>clk</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+      <spirit:parameters>
+        <spirit:parameter>
+          <spirit:name>ASSOCIATED_RESET</spirit:name>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.CLK.ASSOCIATED_RESET">reset</spirit:value>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>ASSOCIATED_BUSIF</spirit:name>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.CLK.ASSOCIATED_BUSIF">MAXI_DVTC</spirit:value>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>FREQ_HZ</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.CLK.FREQ_HZ">100000000</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>PHASE</spirit:name>
+          <spirit:value spirit:format="float" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.CLK.PHASE">0.000</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>CLK_DOMAIN</spirit:name>
+          <spirit:value spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.CLK.CLK_DOMAIN">sys_processing_system7_0_0_FCLK_CLK0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>INSERT_VIP</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="BUSIFPARAM_VALUE.CLK.INSERT_VIP">0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>simulation.rtl</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+      </spirit:parameters>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>dvt_clk</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="clock" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="clock_rtl" spirit:version="1.0"/>
+      <spirit:slave/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>CLK</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>dvt_clk</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+      <spirit:parameters>
+        <spirit:parameter>
+          <spirit:name>ASSOCIATED_RESET</spirit:name>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.DVT_CLK.ASSOCIATED_RESET">dvt_reset</spirit:value>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>ASSOCIATED_BUSIF</spirit:name>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.DVT_CLK.ASSOCIATED_BUSIF">DVTI</spirit:value>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>FREQ_HZ</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.DVT_CLK.FREQ_HZ">100000000</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>PHASE</spirit:name>
+          <spirit:value spirit:format="float" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.DVT_CLK.PHASE">0.000</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>CLK_DOMAIN</spirit:name>
+          <spirit:value spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.DVT_CLK.CLK_DOMAIN">sys_axi_dynclk_0_0_PXL_CLK_O</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>INSERT_VIP</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="BUSIFPARAM_VALUE.DVT_CLK.INSERT_VIP">0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>simulation.rtl</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+      </spirit:parameters>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>io_interrupt</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="interrupt" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="interrupt_rtl" spirit:version="1.0"/>
+      <spirit:master/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>INTERRUPT</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>io_interrupt</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+      <spirit:parameters>
+        <spirit:parameter>
+          <spirit:name>SENSITIVITY</spirit:name>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.IO_INTERRUPT.SENSITIVITY" spirit:choiceRef="choice_list_99a1d2b9">LEVEL_HIGH</spirit:value>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>PortWidth</spirit:name>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.IO_INTERRUPT.PortWidth">16</spirit:value>
+        </spirit:parameter>
+      </spirit:parameters>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>SAPB_PERIPH</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="apb" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="apb_rtl" spirit:version="1.0"/>
+      <spirit:slave>
+        <spirit:memoryMapRef spirit:memoryMapRef="SAPB_PERIPH"/>
+      </spirit:slave>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>PSLVERR</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>io_apb_PSLVERROR</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>PADDR</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>io_apb_PADDR</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>PREADY</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>io_apb_PREADY</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>PENABLE</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>io_apb_PENABLE</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>PWRITE</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>io_apb_PWRITE</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>PRDATA</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>io_apb_PRDATA</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>PWDATA</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>io_apb_PWDATA</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>PSEL</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>io_apb_PSEL</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+      <spirit:parameters>
+        <spirit:parameter>
+          <spirit:name>ASSOCIATED_BUSIF</spirit:name>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.SAPB_PERIPH.ASSOCIATED_BUSIF">clk</spirit:value>
+        </spirit:parameter>
+      </spirit:parameters>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>MAXI_DVTC</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="aximm" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="aximm_rtl" spirit:version="1.0"/>
+      <spirit:master>
+        <spirit:addressSpaceRef spirit:addressSpaceRef="MAXI_DVTC"/>
+      </spirit:master>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>RREADY</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>io_axi_r_ready</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>ARREADY</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>io_axi_ar_ready</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>ARSIZE</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>io_axi_ar_payload_size</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>RVALID</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>io_axi_r_valid</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>ARLEN</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>io_axi_ar_payload_len</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>ARADDR</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>io_axi_ar_payload_addr</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>RDATA</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>io_axi_r_payload_data</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>RLAST</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>io_axi_r_payload_last</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>ARVALID</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>io_axi_ar_valid</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>ARCACHE</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>io_axi_ar_payload_cache</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>ARPROT</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>io_axi_ar_payload_prot</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+      <spirit:parameters>
+        <spirit:parameter>
+          <spirit:name>NUM_READ_OUTSTANDING</spirit:name>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.MAXI_DVTC.NUM_READ_OUTSTANDING">32</spirit:value>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>NUM_WRITE_OUTSTANDING</spirit:name>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.MAXI_DVTC.NUM_WRITE_OUTSTANDING">32</spirit:value>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>ASSOCIATED_BUSIF</spirit:name>
+          <spirit:value spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.MAXI_DVTC.ASSOCIATED_BUSIF">MAXI_DVTC</spirit:value>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>DATA_WIDTH</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.MAXI_DVTC.DATA_WIDTH">32</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>PROTOCOL</spirit:name>
+          <spirit:value spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.MAXI_DVTC.PROTOCOL">AXI4</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>FREQ_HZ</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.MAXI_DVTC.FREQ_HZ">100000000</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>ID_WIDTH</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.MAXI_DVTC.ID_WIDTH">0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>ADDR_WIDTH</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.MAXI_DVTC.ADDR_WIDTH">32</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>AWUSER_WIDTH</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.MAXI_DVTC.AWUSER_WIDTH">0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>ARUSER_WIDTH</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.MAXI_DVTC.ARUSER_WIDTH">0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>WUSER_WIDTH</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.MAXI_DVTC.WUSER_WIDTH">0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>RUSER_WIDTH</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.MAXI_DVTC.RUSER_WIDTH">0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>BUSER_WIDTH</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.MAXI_DVTC.BUSER_WIDTH">0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>READ_WRITE_MODE</spirit:name>
+          <spirit:value spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.MAXI_DVTC.READ_WRITE_MODE">READ_ONLY</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>HAS_BURST</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.MAXI_DVTC.HAS_BURST">0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>HAS_LOCK</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.MAXI_DVTC.HAS_LOCK">0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>HAS_PROT</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.MAXI_DVTC.HAS_PROT">0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>HAS_CACHE</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.MAXI_DVTC.HAS_CACHE">0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>HAS_QOS</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.MAXI_DVTC.HAS_QOS">0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>HAS_REGION</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.MAXI_DVTC.HAS_REGION">0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>HAS_WSTRB</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.MAXI_DVTC.HAS_WSTRB">0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>HAS_BRESP</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.MAXI_DVTC.HAS_BRESP">0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>HAS_RRESP</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.MAXI_DVTC.HAS_RRESP">0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>SUPPORTS_NARROW_BURST</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.MAXI_DVTC.SUPPORTS_NARROW_BURST">1</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>MAX_BURST_LENGTH</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.MAXI_DVTC.MAX_BURST_LENGTH">256</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>PHASE</spirit:name>
+          <spirit:value spirit:format="float" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.MAXI_DVTC.PHASE">0.000</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>CLK_DOMAIN</spirit:name>
+          <spirit:value spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.MAXI_DVTC.CLK_DOMAIN">sys_processing_system7_0_0_FCLK_CLK0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>NUM_READ_THREADS</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.MAXI_DVTC.NUM_READ_THREADS">1</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>NUM_WRITE_THREADS</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.MAXI_DVTC.NUM_WRITE_THREADS">1</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>RUSER_BITS_PER_BYTE</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.MAXI_DVTC.RUSER_BITS_PER_BYTE">0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>WUSER_BITS_PER_BYTE</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.MAXI_DVTC.WUSER_BITS_PER_BYTE">0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>INSERT_VIP</spirit:name>
+          <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="BUSIFPARAM_VALUE.MAXI_DVTC.INSERT_VIP">0</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>simulation.rtl</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+      </spirit:parameters>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>GPIO</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="gpio" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="gpio_rtl" spirit:version="1.0"/>
+      <spirit:master/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TRI_O</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>io_gpio_write</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TRI_T</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>io_gpio_readEnable</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TRI_I</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>io_gpio_read</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>DVTI</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="dvi" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="dvi_rtl" spirit:version="1.0"/>
+      <spirit:master/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>CLK_P</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>io_lcdclk</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>DE</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>io_dvti_de</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>VSYNC</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>io_dvti_vs</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>DATA</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>io_dvti_data</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>HSYNC</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>io_dvti_hs</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+      <spirit:parameters>
+        <spirit:parameter>
+          <spirit:name>CAN_DEBUG</spirit:name>
+          <spirit:value spirit:format="bool" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.DVTI.CAN_DEBUG">false</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+      </spirit:parameters>
+    </spirit:busInterface>
+  </spirit:busInterfaces>
+  <spirit:addressSpaces>
+    <spirit:addressSpace>
+      <spirit:name>MAXI_DVTC</spirit:name>
+      <spirit:range spirit:format="long" spirit:resolve="user" spirit:minimum="4096" spirit:rangeType="long">4294967296</spirit:range>
+      <spirit:width spirit:format="long" spirit:resolve="user">32</spirit:width>
+    </spirit:addressSpace>
+  </spirit:addressSpaces>
+  <spirit:memoryMaps>
+    <spirit:memoryMap>
+      <spirit:name>SAPB_PERIPH</spirit:name>
+      <spirit:addressBlock>
+        <spirit:name>REG</spirit:name>
+        <spirit:baseAddress spirit:format="long">0</spirit:baseAddress>
+        <spirit:range spirit:format="long">4096</spirit:range>
+        <spirit:width spirit:format="long">0</spirit:width>
+      </spirit:addressBlock>
+    </spirit:memoryMap>
+  </spirit:memoryMaps>
+  <spirit:model>
+    <spirit:views>
+      <spirit:view>
+        <spirit:name>xilinx_anylanguagesynthesis</spirit:name>
+        <spirit:displayName>Synthesis</spirit:displayName>
+        <spirit:envIdentifier>:vivado.xilinx.com:synthesis</spirit:envIdentifier>
+        <spirit:modelName>Apb3PeriphWithLcd</spirit:modelName>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_anylanguagesynthesis_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>GENtimestamp</spirit:name>
+            <spirit:value>Mon Oct 20 07:51:00 UTC 2025</spirit:value>
+          </spirit:parameter>
+          <spirit:parameter>
+            <spirit:name>outputProductCRC</spirit:name>
+            <spirit:value>9:c1fb9679</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+      <spirit:view>
+        <spirit:name>xilinx_verilogsynthesiswrapper</spirit:name>
+        <spirit:displayName>Verilog Synthesis Wrapper</spirit:displayName>
+        <spirit:envIdentifier>verilogSource:vivado.xilinx.com:synthesis.wrapper</spirit:envIdentifier>
+        <spirit:language>verilog</spirit:language>
+        <spirit:modelName>sys_Apb3PeriphWithLcd_0_0</spirit:modelName>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_verilogsynthesiswrapper_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>GENtimestamp</spirit:name>
+            <spirit:value>Mon Oct 20 07:51:00 UTC 2025</spirit:value>
+          </spirit:parameter>
+          <spirit:parameter>
+            <spirit:name>outputProductCRC</spirit:name>
+            <spirit:value>9:c1fb9679</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+      <spirit:view>
+        <spirit:name>xilinx_anylanguagebehavioralsimulation</spirit:name>
+        <spirit:displayName>Simulation</spirit:displayName>
+        <spirit:envIdentifier>:vivado.xilinx.com:simulation</spirit:envIdentifier>
+        <spirit:modelName>Apb3PeriphWithLcd</spirit:modelName>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_anylanguagebehavioralsimulation_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>GENtimestamp</spirit:name>
+            <spirit:value>Mon Oct 20 07:51:00 UTC 2025</spirit:value>
+          </spirit:parameter>
+          <spirit:parameter>
+            <spirit:name>outputProductCRC</spirit:name>
+            <spirit:value>9:272ef2b7</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+      <spirit:view>
+        <spirit:name>xilinx_verilogsimulationwrapper</spirit:name>
+        <spirit:displayName>Verilog Simulation Wrapper</spirit:displayName>
+        <spirit:envIdentifier>verilogSource:vivado.xilinx.com:simulation.wrapper</spirit:envIdentifier>
+        <spirit:language>verilog</spirit:language>
+        <spirit:modelName>sys_Apb3PeriphWithLcd_0_0</spirit:modelName>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_verilogsimulationwrapper_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>GENtimestamp</spirit:name>
+            <spirit:value>Mon Oct 20 07:51:00 UTC 2025</spirit:value>
+          </spirit:parameter>
+          <spirit:parameter>
+            <spirit:name>outputProductCRC</spirit:name>
+            <spirit:value>9:272ef2b7</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+      <spirit:view>
+        <spirit:name>xilinx_externalfiles</spirit:name>
+        <spirit:displayName>External Files</spirit:displayName>
+        <spirit:envIdentifier>:vivado.xilinx.com:external.files</spirit:envIdentifier>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_externalfiles_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>GENtimestamp</spirit:name>
+            <spirit:value>Mon Oct 20 07:52:28 UTC 2025</spirit:value>
+          </spirit:parameter>
+          <spirit:parameter>
+            <spirit:name>outputProductCRC</spirit:name>
+            <spirit:value>9:c1fb9679</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+    </spirit:views>
+    <spirit:ports>
+      <spirit:port>
+        <spirit:name>io_apb_PADDR</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">19</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>io_apb_PSEL</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">0</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>io_apb_PENABLE</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>io_apb_PREADY</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>io_apb_PWRITE</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>io_apb_PWDATA</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>io_apb_PRDATA</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>io_apb_PSLVERROR</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>io_axi_ar_valid</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>io_axi_ar_ready</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>io_axi_ar_payload_addr</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>io_axi_ar_payload_len</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">7</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>io_axi_ar_payload_size</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">2</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>io_axi_ar_payload_cache</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">3</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>io_axi_ar_payload_prot</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">2</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>io_axi_r_valid</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>io_axi_r_ready</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>io_axi_r_payload_data</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>io_axi_r_payload_last</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>io_gpio_read</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>io_gpio_write</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>io_gpio_readEnable</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>io_interrupt</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">15</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>reg</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>io_dvti_vs</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>io_dvti_hs</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>io_dvti_de</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>io_dvti_data</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">23</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>io_lcdclk</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>dvt_clk</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>clk</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>reset</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>dvt_reset</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>wire</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+    </spirit:ports>
+  </spirit:model>
+  <spirit:choices>
+    <spirit:choice>
+      <spirit:name>choice_list_99a1d2b9</spirit:name>
+      <spirit:enumeration>LEVEL_HIGH</spirit:enumeration>
+      <spirit:enumeration>LEVEL_LOW</spirit:enumeration>
+      <spirit:enumeration>EDGE_RISING</spirit:enumeration>
+      <spirit:enumeration>EDGE_FALLING</spirit:enumeration>
+    </spirit:choice>
+  </spirit:choices>
+  <spirit:fileSets>
+    <spirit:fileSet>
+      <spirit:name>xilinx_anylanguagesynthesis_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>../../ipshared/e26d/Apb3PeriphWithLcd.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+      </spirit:file>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_verilogsynthesiswrapper_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>synth/sys_Apb3PeriphWithLcd_0_0.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
+      </spirit:file>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_anylanguagebehavioralsimulation_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>../../ipshared/e26d/Apb3PeriphWithLcd.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+      </spirit:file>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_verilogsimulationwrapper_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>sim/sys_Apb3PeriphWithLcd_0_0.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
+      </spirit:file>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_externalfiles_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>sys_Apb3PeriphWithLcd_0_0.dcp</spirit:name>
+        <spirit:userFileType>dcp</spirit:userFileType>
+        <spirit:userFileType>USED_IN_implementation</spirit:userFileType>
+        <spirit:userFileType>USED_IN_synthesis</spirit:userFileType>
+        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>sys_Apb3PeriphWithLcd_0_0_stub.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_synth_blackbox_stub</spirit:userFileType>
+        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>sys_Apb3PeriphWithLcd_0_0_stub.vhdl</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_synth_blackbox_stub</spirit:userFileType>
+        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>sys_Apb3PeriphWithLcd_0_0_sim_netlist.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
+        <spirit:userFileType>USED_IN_single_language</spirit:userFileType>
+        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>sys_Apb3PeriphWithLcd_0_0_sim_netlist.vhdl</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
+        <spirit:userFileType>USED_IN_single_language</spirit:userFileType>
+        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
+      </spirit:file>
+    </spirit:fileSet>
+  </spirit:fileSets>
+  <spirit:description>Apb3PeriphWithLcd_v1_0</spirit:description>
+  <spirit:parameters>
+    <spirit:parameter>
+      <spirit:name>Component_Name</spirit:name>
+      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.Component_Name" spirit:order="1">sys_Apb3PeriphWithLcd_0_0</spirit:value>
+    </spirit:parameter>
+  </spirit:parameters>
+  <spirit:vendorExtensions>
+    <xilinx:coreExtensions>
+      <xilinx:displayName>Apb3PeriphWithLcd_v1_0</xilinx:displayName>
+      <xilinx:definitionSource>package_project</xilinx:definitionSource>
+      <xilinx:coreRevision>5</xilinx:coreRevision>
+      <xilinx:tags>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@714726df_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7378b0c4_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@177b5a70_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@9921d8a_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2253ce1_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5cf0a36_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2165a92b_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@27cf0626_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3c8ad900_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@171c1680_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@14f8826b_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6f56e8c_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@478ebd5_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3cafdb07_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@78f6c1bc_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@729c2d4e_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6405167c_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@435603fc_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1a06506_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@66d3f9ec_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3a8791a0_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@32f1595a_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@cabced8_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2efcc996_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1a806c7c_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@29634125_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@40f6f274_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@30a56ad9_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7d9cf30a_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@502fa485_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@54387311_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3fdc1140_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7dc9b0e0_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@39b50941_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@59db19df_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@53623072_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@17c5ced2_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@26fa5421_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@35dedf53_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3b38ea71_ARCHIVE_LOCATION">g:/vm/share/openperiph/test/project/zynq7020-bx71/packagedip/apb3periphwithlcd/apb3periphwithlcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4a1c222e_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4d269e1_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@53ee0a91_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@55ea1979_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@10f58b08_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@48d220f8_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@542c7063_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3ec39a63_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@60704b6f_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6007d01a_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2dd1c014_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7aff86c4_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@18ffe7a3_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6dd1152c_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@82e0c9e_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1ac09be0_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7c4f37fb_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@647b37c2_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4518ed6c_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6db4e131_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5bd07309_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@64b68690_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5f0210db_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6acb36ad_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@321882d5_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2c83bf9f_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2fb18049_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@48fd3ba7_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6eaae96a_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7a305427_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@dbfd57c_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@adfba9c_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@59626746_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1bff75cf_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7e1011d8_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5775b28e_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5605a81c_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3d35df9c_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@627ea331_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@8430de6_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@68753d5_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1633be4_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@31c1bc17_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2bbdfff3_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7094e205_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@43a6b669_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@566b10b8_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3e5eb2e2_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@495bd97_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@19c1832f_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3a37082a_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2cdb66cb_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@74f5e5d5_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7210ecc3_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@79bc202d_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6b843df3_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@34ecaf8b_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@13f393c2_ARCHIVE_LOCATION">g:/VM/share/OpenPeriph/test/project/Zynq7020-BX71/PackagedIP/Apb3PeriphWithLcd/Apb3PeriphWithLcd.srcs</xilinx:tag>
+      </xilinx:tags>
+      <xilinx:configElementInfos>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.CLK.CLK_DOMAIN" xilinx:valueSource="default_prop" xilinx:valuePermission="bd_and_user"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.CLK.FREQ_HZ" xilinx:valueSource="user_prop" xilinx:valuePermission="bd_and_user"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.DVT_CLK.CLK_DOMAIN" xilinx:valueSource="default_prop" xilinx:valuePermission="bd_and_user"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.MAXI_DVTC.ADDR_WIDTH" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.MAXI_DVTC.ARUSER_WIDTH" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.MAXI_DVTC.ASSOCIATED_BUSIF" xilinx:valueSource="constant" xilinx:valuePermission="bd_and_user"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.MAXI_DVTC.AWUSER_WIDTH" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.MAXI_DVTC.BUSER_WIDTH" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.MAXI_DVTC.CLK_DOMAIN" xilinx:valueSource="default_prop" xilinx:valuePermission="bd_and_user"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.MAXI_DVTC.DATA_WIDTH" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.MAXI_DVTC.FREQ_HZ" xilinx:valueSource="user_prop" xilinx:valuePermission="bd_and_user"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.MAXI_DVTC.HAS_BRESP" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.MAXI_DVTC.HAS_BURST" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.MAXI_DVTC.HAS_CACHE" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.MAXI_DVTC.HAS_LOCK" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.MAXI_DVTC.HAS_PROT" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.MAXI_DVTC.HAS_QOS" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.MAXI_DVTC.HAS_REGION" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.MAXI_DVTC.HAS_RRESP" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.MAXI_DVTC.HAS_WSTRB" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.MAXI_DVTC.ID_WIDTH" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.MAXI_DVTC.MAX_BURST_LENGTH" xilinx:valueSource="auto" xilinx:valuePermission="bd_and_user"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.MAXI_DVTC.PROTOCOL" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.MAXI_DVTC.READ_WRITE_MODE" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.MAXI_DVTC.RUSER_WIDTH" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.MAXI_DVTC.SUPPORTS_NARROW_BURST" xilinx:valueSource="auto" xilinx:valuePermission="bd_and_user"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.MAXI_DVTC.WUSER_WIDTH" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
+      </xilinx:configElementInfos>
+    </xilinx:coreExtensions>
+    <xilinx:packagingInfo>
+      <xilinx:xilinxVersion>2018.3</xilinx:xilinxVersion>
+      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="0144b1b5"/>
+      <xilinx:checksum xilinx:scope="addressSpaces" xilinx:value="3ab7047b"/>
+      <xilinx:checksum xilinx:scope="memoryMaps" xilinx:value="7a6dfa9a"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="4f36800c"/>
+      <xilinx:checksum xilinx:scope="ports" xilinx:value="3ae8ea99"/>
+      <xilinx:checksum xilinx:scope="parameters" xilinx:value="c86c9617"/>
+    </xilinx:packagingInfo>
+  </spirit:vendorExtensions>
+</spirit:component>

@@ -2,8 +2,12 @@
 #include "platform.h"
 #include "xil_printf.h"
 #include "xgpiops.h"
+#include "xdebug.h"
+#include "xil_cache.h"
 
-#include "../libs/cyber.h"
+#include "cyber.h"
+#include "lcd.h"
+#include "dynclk.h"
 
 #define INPUT  1
 #define OUTPUT 0
@@ -98,6 +102,49 @@ int main()
     GPIO_Init(GPIOA, &GPIO_InitStructure);
     xil_printf("GPIOA->CRL: 0x%08X\r\n", GPIOA->CRL);
     xil_printf("GPIOA->CRH: 0x%08X\r\n", GPIOA->CRH);
+
+    // Dynclk Config
+	ClkConfig clkReg;
+	ClkMode clkMode;
+	ClkFindParams(33.0, &clkMode);
+	/*
+	 * Write to the PLL dynamic configuration registers to configure it with the calculated
+	 * parameters.
+	 */
+	if (!ClkFindReg(&clkReg, &clkMode))
+	{
+		xdbg_printf(XDBG_DEBUG_GENERAL, "Error calculating CLK register values\n\r");
+		return XST_FAILURE;
+	}
+	ClkWriteReg(&clkReg, XPAR_AXI_DYNCLK_0_BASEADDR);
+
+	/*
+	 * Enable the dynamically generated clock
+    */
+	ClkStop(XPAR_AXI_DYNCLK_0_BASEADDR);
+	ClkStart(XPAR_AXI_DYNCLK_0_BASEADDR);
+	print("DVT Clk start\r\n");
+
+    /* DVTC - 仅使用一个图层 */
+    LCD_DVTC_Init();
+    /* 使能DVTC */
+    xil_printf("DVTC->GCR: 0x%08X\r\n", DVTC->GCR);
+    DVTC_Cmd(ENABLE);
+    xil_printf("DVTC->GCR: 0x%08X\r\n", DVTC->GCR);
+
+	// ColorBar
+    const uint16_t colors[8] = {
+        0xFFFF, 0xFFE0, 0x07FF, 0x07E0,
+        0xF81F, 0xF800, 0x001F, 0x0000
+    };
+    uint16_t *ptr = &Framebuffer[0][0];
+    xil_printf("Framebuffer address: 0x%p\r\n", (void*)ptr);
+    for (uint32_t y = 0; y < DISPY; y++)
+        for (uint32_t x = 0; x < DISPX; x++)
+            *ptr++ = colors[(x * 8) / DISPX];
+    Xil_DCacheFlush();
+    xil_printf("First color value: 0x%04X\n", Framebuffer[0][0]);
+    print("Color Bar\r\n");
 
     while(1)
     {

@@ -96,3 +96,8 @@ set_property PACKAGE_PIN K19 [get_ports {GPIO_PL_tri_io[29]}]
 
 set_property PACKAGE_PIN K18 [get_ports {GPIO_PL_tri_io[30]}]
 set_property PACKAGE_PIN K17 [get_ports {GPIO_PL_tri_io[31]}]
+
+set_property PACKAGE_PIN N20 [get_ports {TMDS_data_p[2]}]
+set_property PACKAGE_PIN T20 [get_ports {TMDS_data_p[1]}]
+set_property PACKAGE_PIN V20 [get_ports {TMDS_data_p[0]}]
+set_property PACKAGE_PIN N18 [get_ports TMDS_clk_p]

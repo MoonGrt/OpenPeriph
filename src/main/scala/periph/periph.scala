@@ -1,8 +1,12 @@
 package periph
 
+import graphic.base._
+import graphic.lcd._
+import spinal.lib.graphic.{VideoDmaGeneric}
 import spinal.core._
 import spinal.lib._
 import spinal.lib.bus.amba3.apb._
+import spinal.lib.bus.amba4.axi._
 import spinal.lib.com.uart.{UartCtrlGenerics}
 import spinal.lib.com.jtag.Jtag
 import spinal.lib.io.{TriStateArray, InOutWrapper}
@@ -130,17 +134,196 @@ class Apb3Periph(
 }
 
 
+case class Apb3PeriphWithLcdConfig(
+  apbAddressWidth: Int = 32,
+  apbDataWidth: Int = 32,
+  axiAddressWidth: Int = 32,
+  axiDataWidth: Int = 32,
+  gpioCount: Int = 32,
+  interruptCount: Int = 16,
+
+  burstLength: Int,
+  frameSizeMax: Int,
+  fifoSize: Int,
+  dvtClock: ClockDomain,
+  colorCfg: ColorCfg = RGBCfg(5, 6, 5)
+) {
+  def apb3Config = Apb3Config(
+    addressWidth = apbAddressWidth,
+    dataWidth = apbDataWidth
+  )
+
+  def dvtcGenerics = DvtcGenerics(
+      axiAddressWidth = 32,
+      axiDataWidth = 32,
+      burstLength = burstLength,
+      frameSizeMax = frameSizeMax,
+      fifoSize = fifoSize,
+      colorCfg = colorCfg,
+      dvtClock = dvtClock
+  )
+}
+
+class Apb3PeriphWithLcd(config: Apb3PeriphWithLcdConfig) extends Component {
+  import config._
+  val io = new Bundle {
+    // APB3 总线主控接口
+    val apb = slave(Apb3(apb3Config))
+    // AXI 总线接口
+    val axi = master(Axi4ReadOnly(dvtcGenerics.axi4Config))
+    // GPIO 直接外露
+    val gpio = master(TriStateArray(gpioCount bits))
+    // 中断输出
+    val interrupt = out Bits(interruptCount bits)
+    // Graphics IO
+    val dvti = master(DVTI(colorCfg.getWidth))
+    val lcdclk = out Bool ()
+  }
+
+  io.lcdclk := dvtClock.readClockWire
+
+  /* ------------------------ 外设实例化 ------------------------ */
+  val afioCtrl = Apb3Afio(
+    gpioWidth = 16,
+    gpioGroupCnt = 2,
+    addressWidth = 5,
+    dataWidth = 32
+  )
+  val extiCtrl = Apb3Exti(extiWidth = 16)
+  val extiInterrupt = extiCtrl.io.interrupt.asBits.orR
+  extiCtrl.io.exti := afioCtrl.io.afioExti
+
+  val gpioCtrl = Apb3GpioArray(
+    gpioWidth = 16,
+    gpioGroupCnt = 2,
+    groupSpace = 0x1000,
+    withReadSync = true
+  )
+  gpioCtrl.io.afio := afioCtrl.io.afio.write
+  afioCtrl.io.afio.read := gpioCtrl.io.gpio.read
+  val timCtrl = Apb3TimArray(timCnt = 2, timSpace = 0x1000)
+  val timInterrupt = timCtrl.io.interrupt.asBits.orR
+  val wdgCtrl = Apb3Wdg(memSize = 0x1000)
+  val systickCtrl = Apb3SysTick()
+  val systickInterrupt = systickCtrl.io.interrupt.asBits.orR
+
+  val uartCtrl = Apb3UartArray(
+    uartCnt = 2,
+    uartSpace = 0x1000,
+    uartConfig = Apb3UartCtrlConfig(
+      uartCtrlGenerics = UartCtrlGenerics(
+        dataWidthMax = 9,
+        clockDividerWidth = 20,
+        preSamplingSize = 1,
+        samplingSize = 3,
+        postSamplingSize = 1
+      ),
+      txFifoDepth = 16,
+      rxFifoDepth = 16
+    )
+  )
+  val uartInterrupt = uartCtrl.io.interrupt.asBits.orR
+  val i2cCtrl = Apb3I2cArray(i2cCnt = 2, i2cSpace = 0x1000)
+  val i2cInterrupt = i2cCtrl.io.interrupt.asBits.orR
+  val spiCtrl = Apb3SpiArray(spiCnt = 2, spiSpace = 0x1000)
+  val spiInterrupt = spiCtrl.io.interrupt.asBits.orR
+
+  val lcdCtrl = Axi4Lcd(dvtcGenerics)
+
+  /* ------------------------ 设备引脚 AFIO ------------------------ */
+  afioCtrl.io.device.read :=
+    False ## // 31
+    spiCtrl.io.spis(1).mosi ## // 30
+    spiCtrl.io.spis(1).ss ## // 29
+    spiCtrl.io.spis(0).sclk ## // 28
+    False ## // 27
+    spiCtrl.io.spis(0).mosi ## // 26
+    spiCtrl.io.spis(0).ss ## // 25
+    spiCtrl.io.spis(0).sclk ## // 24
+    i2cCtrl.io.i2cs(1).scl ## // 23
+    i2cCtrl.io.i2cs(1).sda.write ## // 22
+    i2cCtrl.io.i2cs(0).scl ## // 21
+    i2cCtrl.io.i2cs(0).sda.write ## // 20
+    False ## // 19
+    uartCtrl.io.uarts(1).txd ## // 18
+    False ## // 17
+    uartCtrl.io.uarts(0).txd ## // 16
+    timCtrl.io.ch ## // 8 - 15
+    B(0, 8 bits) // 0 - 7
+
+  uartCtrl.io.uarts(0).rxd := afioCtrl.io.device.write(17)
+  uartCtrl.io.uarts(1).rxd := afioCtrl.io.device.write(19)
+  spiCtrl.io.spis(0).miso := afioCtrl.io.device.write(27)
+  spiCtrl.io.spis(1).miso := afioCtrl.io.device.write(31)
+  i2cCtrl.io.i2cs(0).sda.read := afioCtrl.io.device.write(20).asBits
+  i2cCtrl.io.i2cs(1).sda.read := afioCtrl.io.device.write(22).asBits
+
+  /* ------------------------ APB Decoder ------------------------ */
+  val apbDecoder = Apb3Decoder(
+    master = io.apb,
+    slaves = List(
+      gpioCtrl.io.apb -> (0x00000, 64 KiB),
+      uartCtrl.io.apb -> (0x10000, 64 KiB),
+      i2cCtrl.io.apb -> (0x20000, 64 KiB),
+      spiCtrl.io.apb -> (0x30000, 64 KiB),
+      timCtrl.io.apb -> (0x40000, 64 KiB),
+      wdgCtrl.io.apb -> (0x50000, 64 KiB),
+      systickCtrl.io.apb -> (0x60000, 64 KiB),
+      lcdCtrl.io.apb -> (0x70000, 64 KiB),
+      afioCtrl.io.apb -> (0xd0000, 64 KiB),
+      extiCtrl.io.apb -> (0xe0000, 64 KiB)
+    )
+  )
+
+  /* ------------------------ Interrupt ------------------------ */
+  io.interrupt := B(interruptCount bits, default -> False)
+  if (interruptCount > 0) {
+    io.interrupt(0) := uartInterrupt
+    io.interrupt(1) := timInterrupt
+    io.interrupt(2) := systickInterrupt
+    io.interrupt(3) := extiInterrupt
+    io.interrupt(4) := i2cInterrupt
+    io.interrupt(15) := spiInterrupt
+  }
+
+  /* ------------------------ IO ------------------------ */
+  io.gpio <> gpioCtrl.io.gpio
+  io.dvti <> lcdCtrl.io.dvti
+  io.axi <> lcdCtrl.io.axi
+}
+
 /* ----------------------------------------------------------------------------- */
 /* ---------------------------------- Demo Gen --------------------------------- */
 /* ----------------------------------------------------------------------------- */
-object Apb3PeriphGen {
+// object Apb3PeriphGen {
+//   def main(args: Array[String]): Unit = {
+//     SpinalConfig(targetDirectory = "rtl").generateVerilog(
+//       new Apb3Periph(
+//         addressWidth = 20,
+//         dataWidth = 32,
+//         gpioCount = 32,
+//         interruptCount = 16
+//       )
+//     )
+//   }
+// }
+
+object Apb3PeripWithLcdhGen {
   def main(args: Array[String]): Unit = {
     SpinalConfig(targetDirectory = "rtl").generateVerilog(
-      InOutWrapper(new Apb3Periph(
-        addressWidth = 20,
-        dataWidth = 32,
+      new Apb3PeriphWithLcd(Apb3PeriphWithLcdConfig(
+        apbAddressWidth = 20,
+        apbDataWidth = 32,
+        axiAddressWidth = 32,
+        axiDataWidth = 32,
         gpioCount = 32,
-        interruptCount = 16
+        interruptCount = 16,
+
+        burstLength = 8,
+        frameSizeMax = 2048*1512,
+        fifoSize = 512,
+        colorCfg = RGBCfg(5, 6, 5),
+        dvtClock = ClockDomain.external("dvt")
       ))
     )
   }
