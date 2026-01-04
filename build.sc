@@ -10,6 +10,7 @@ object ivys {
   val scalatest = ivy"org.scalatest::scalatest:3.2.5"
   val macroParadise = ivy"org.scalamacros:::paradise:2.1.1"
   val yaml = ivy"org.yaml:snakeyaml:1.8"
+  val vexriscv = ivy"com.github.spinalhdl::vexriscv:1.9.3"
 }
 
 trait Common extends ScalaModule  {
@@ -22,6 +23,5 @@ trait Common extends ScalaModule  {
 object OpenPeriph extends Common with SbtModule{
   override def millSourcePath = os.pwd
   override def moduleDeps: Seq[JavaModule] = super.moduleDeps
-
   object test extends SbtModuleTests with TestModule.ScalaTest
 }

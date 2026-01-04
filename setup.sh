@@ -100,6 +100,12 @@ install_iverilog(){
   cd .. && rm -rf iverilog-10_3
 }
 
+install_mill(){
+  curl --fail -L -o mill https://github.com/com-lihaoyi/mill/releases/download/0.11.6/0.11.6-assembly
+  chmod +x mill
+  sudo mv mill /usr/local/bin
+}
+
 if [ -z "$1" ]; then
   set -- all
 fi
@@ -130,6 +136,9 @@ case $1 in
     ;;
   iverilog)
     install_iverilog
+    ;;
+  mill)
+    install_mill
     ;;
   all)
     setenv

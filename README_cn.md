@@ -112,8 +112,11 @@ cd OpenPeriph
 # Run the automated setup script
 bash setup.sh
 
-# 3. Build the Project
+# 3.1. Build with sbt
 sbt run
+
+# 3.2. Build with mill (optional) (Currently, there are issues with building the vexriscv kernel.)
+mill
 
 # 4. Software Development
 # Open the relevant project file in test/software
@@ -195,18 +198,19 @@ bash setup.sh
   cd .. && rm -rf openocd_riscv
 ```
 
-5. **克隆和编译**
+6. **mill** (optional)
 ```bash
-  git clone https://github.com/MoonGrt/OpenPeriph.git
-  cd OpenPeriph
-  sbt run
+  curl --fail -L -o mill https://github.com/com-lihaoyi/mill/releases/download/0.11.6/0.11.6-assembly
+  chmod +x mill
+  sudo mv mill /usr/local/bin
+  mill OpenPeriph.runMain soc.Cyber
 ```
 
-6. ***VexRiscv** (可选)
+7. ***VexRiscv** (optional)
 ```bash
-  $ git clone https://github.com/SpinalHDL/VexRiscv.git
-  $ cd VexRiscv
-  $ sbt publishLocal
+  git clone https://github.com/SpinalHDL/VexRiscv.git
+  cd VexRiscv
+  sbt publishLocal
 ```
 
 

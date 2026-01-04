@@ -109,11 +109,15 @@ git clone https://github.com/MoonGrt/OpenPeriph.git
 cd OpenPeriph
 
 # 2. Setup Development Environment
-# Run the automated setup script
-bash setup.sh
+# Run the automated setup script 
 
-# 3. Build the Project
+bash setup.sh # Highly recommended to setup environment manually for better control.
+
+# 3.1. Build with sbt
 sbt run
+
+# 3.2. Build with mill (optional) (Currently, there are issues with building the vexriscv kernel.)
+mill
 
 # 4. Software Development
 # Open the relevant project file in test/software
@@ -202,11 +206,17 @@ If you prefer manual installation, follow these steps:
   sbt run
 ```
 
-6. ***VexRiscv** (optional)
+6. **mill** (optional)
 ```bash
-  $ git clone https://github.com/SpinalHDL/VexRiscv.git
-  $ cd VexRiscv
-  $ sbt publishLocal
+  sudo sh -c "curl -L https://github.com/com-lihaoyi/mill/releases/download/0.11.12/0.11.12 > /usr/local/bin/mill && chmod +x /usr/local/bin/mill"
+  mill OpenPeriph.runMain soc.Cyber
+```
+
+7. ***VexRiscv** (optional)
+```bash
+  git clone https://github.com/SpinalHDL/VexRiscv.git
+  cd VexRiscv
+  sbt publishLocal
 ```
 
 
@@ -508,7 +518,7 @@ int main() {
 
 
 <!-- DEVELOPMENT WORKFLOW -->
-## D#evelopment Workflow
+## Development Workflow
 
 #### 1. Hardware Development
 ```bash

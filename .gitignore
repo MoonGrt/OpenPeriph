@@ -30,8 +30,9 @@ bin/
 .cache-main
 
 #User
-.vscode/*
-.metals/*
+.vscode/
+.metals/
+.bsp/
 /*.vhd
 /*.v
 *.cf
