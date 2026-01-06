@@ -1,10 +1,11 @@
-// VexRiscv CyberPlusWithDdrLcd demo
-package soc.gowin
+// VexRiscv CyberNvboard
+package soc
 
 import periph._
 import soc.gowin.tangprimer._
 import graphic.base._
 import graphic.lcd._
+import graphic.algorithm.Converter
 import vexriscv.plugin._
 import vexriscv._
 import vexriscv.ip.{DataCacheConfig, InstructionCacheConfig}
@@ -24,8 +25,11 @@ import spinal.lib.system.debugger.{
 }
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.Seq
+import _root_.graphic.algorithm.ColorConvert.colorConfigOf
+import _root_.graphic.algorithm.ConvertConfig
+import _root_.graphic.algorithm.Converter
 
-case class CyberPlusWithDdrLcdConfig(
+case class CyberNvboardConfig(
     axiFrequency: HertzNumber,
     memFrequency: HertzNumber,
     memSize: BigInt,
@@ -34,12 +38,12 @@ case class CyberPlusWithDdrLcdConfig(
     cpuPlugins: ArrayBuffer[Plugin[VexRiscv]]
 )
 
-object CyberPlusWithDdrLcdConfig {
+object CyberNvboardConfig {
   def default = {
-    val config = CyberPlusWithDdrLcdConfig(
+    val config = CyberNvboardConfig(
       axiFrequency = 100 MHz,
       memFrequency = 400 MHz,
-      memSize = 64 KiB,
+      memSize = 1 MiB,
       memFile = null,
       memFileType = "rawhex",
       cpuPlugins = ArrayBuffer(
@@ -129,17 +133,17 @@ object CyberPlusWithDdrLcdConfig {
             uinstretAccess = CsrAccess.NONE
           )
         ),
-        new YamlPlugin("rtl/CyberPlusWithDdrLcd.yaml")
+        new YamlPlugin("rtl/CyberNvboard.yaml")
       )
     )
     config
   }
 }
 
-class CyberPlusWithDdrLcd(config: CyberPlusWithDdrLcdConfig) extends Component {
+class CyberNvboard(config: CyberNvboardConfig) extends Component {
   // Legacy constructor
   def this(axiFrequency: HertzNumber) {
-    this(CyberPlusWithDdrLcdConfig.default.copy(axiFrequency = axiFrequency))
+    this(CyberNvboardConfig.default.copy(axiFrequency = axiFrequency))
   }
 
   import config._
@@ -149,38 +153,26 @@ class CyberPlusWithDdrLcd(config: CyberPlusWithDdrLcdConfig) extends Component {
 
   val io = new Bundle {
     // Clocks / reset
-    val rstn = in Bool ()
+    val rst = in Bool ()
     val clk = in Bool ()
     // Main components IO
-    val jtag = slave(Jtag())
-    val sdram = master(DDR3_Interface())
     // Peripherals IO
-    // val gpio = master(TriStateArray(32 bits)) // Tang Primer has limited IOBUF(s)
     val uart_tx = out(Bool)
     val uart_rx = in(Bool)
+    val seg = out(Bits(8 bits))
+    val led = out(Bits(8 bits))
+    val rgbled = out(Bits(6 bits))
+    val sw = in(Bits(8 bits))
     // Graphics IO
-    val dvti = master(DVTI(colorCfg.getWidth))
+    val vga = master(DVTI(RGBCfg(8,8,8).getWidth))
     val lcdclk = out Bool ()
   }
 
-  val sysclk = new syspll
-  sysclk.clkin := io.clk
-  // sysclk.reset := ~io.rstn
-  sysclk.reset := False
-
-  val memclk = new mempll
-  memclk.clkin := sysclk.clkout
-  // memclk.reset := ~io.rstn
-  memclk.reset := False
-
-  val lcdclk = new lcdpll
-  lcdclk.clkin := io.clk
-  // lcdclk.reset := ~io.rstn
-  lcdclk.reset := False
-  io.lcdclk := lcdclk.clkout
+  noIoPrefix()
+  io.lcdclk := io.clk
 
   val resetCtrlClockDomain = ClockDomain(
-    clock = sysclk.clkout,
+    clock = io.clk,
     config = ClockDomainConfig( resetKind = BOOT )
   )
 
@@ -194,7 +186,7 @@ class CyberPlusWithDdrLcd(config: CyberPlusWithDdrLcdConfig) extends Component {
       axiResetCounter := axiResetCounter + 1
       axiResetUnbuffered := True
     }
-    when(BufferCC(~io.rstn)) { axiResetCounter := 0 }
+    when(BufferCC(io.rst)) { axiResetCounter := 0 }
     // When an axiResetOrder happen, the core reset will as well
     when(axiResetUnbuffered) { coreResetUnbuffered := True }
     // Create all reset used later in the design
@@ -203,31 +195,19 @@ class CyberPlusWithDdrLcd(config: CyberPlusWithDdrLcdConfig) extends Component {
   }
 
   val axiClockDomain = ClockDomain(
-    clock = sysclk.clkout,
+    clock = io.clk,
     reset = resetCtrl.axiReset,
     frequency = FixedFrequency(axiFrequency)
   )
 
   val coreClockDomain = ClockDomain(
-    clock = sysclk.clkout,
+    clock = io.clk,
     reset = resetCtrl.coreReset
   )
 
-  val memClockDomain = ClockDomain(
-    clock = memclk.clkout,
-    reset = resetCtrl.axiReset,
-    frequency = FixedFrequency(memFrequency)
-  )
-
   val lcdClockDomain = ClockDomain(
-    clock = lcdclk.clkout,
+    clock = io.clk,
     reset = resetCtrl.axiReset
-  )
-
-  val jtagClockDomain = ClockDomain(
-    clock = sysclk.clkout,
-    reset = resetCtrl.coreReset,
-    frequency = FixedFrequency(axiFrequency)
   )
 
   val axi = new ClockingArea(axiClockDomain) {
@@ -236,12 +216,8 @@ class CyberPlusWithDdrLcd(config: CyberPlusWithDdrLcdConfig) extends Component {
       byteCount = memSize,
       idWidth = 4,
       memFile = memFile,
-      memFileType = memFileType,
-      memOffset = 0x80000000L
+      memFileType = memFileType
     )
-
-    val sdramCtrl = Axi4Ddr(axiClockDomain, memClockDomain)
-    sdramCtrl.io.pll_lock := memclk.lock && sysclk.lock
 
     /* ------------------------ APB BUS ------------------------ */
     val apbBridge = Axi4SharedToApb3Bridge(
@@ -367,7 +343,7 @@ class CyberPlusWithDdrLcd(config: CyberPlusWithDdrLcdConfig) extends Component {
 
     /* ------------------------ Vexriscv ------------------------ */
     val core = new Area {
-      val config = VexRiscvConfig(plugins = cpuPlugins += new DebugPlugin(jtagClockDomain))
+      val config = VexRiscvConfig(plugins = cpuPlugins)
       val cpu = new VexRiscv(config)
       var iBus: Axi4ReadOnly = null
       var dBus: Axi4Shared = null
@@ -380,11 +356,6 @@ class CyberPlusWithDdrLcd(config: CyberPlusWithDdrLcdConfig) extends Component {
           plugin.externalInterrupt := externalInterrupt
           plugin.timerInterrupt := timerInterrupt | systickInterrupt
         }
-        case plugin: DebugPlugin =>
-          jtagClockDomain {
-            resetCtrl.axiReset setWhen (RegNext(plugin.io.resetOut))
-            io.jtag <> plugin.io.bus.fromJtag()
-          }
         case _ =>
       }
     }
@@ -394,14 +365,13 @@ class CyberPlusWithDdrLcd(config: CyberPlusWithDdrLcdConfig) extends Component {
 
     axiCrossbar.addSlaves(
       ram.io.axi -> (0x80000000L, memSize),
-      sdramCtrl.io.axi -> (0x40000000L, 128 MiB),
       apbBridge.io.axi -> (0xf0000000L, 1 MiB)
     )
 
     axiCrossbar.addConnections(
-      core.iBus -> List(ram.io.axi, sdramCtrl.io.axi), 
-      core.dBus -> List(ram.io.axi, sdramCtrl.io.axi, apbBridge.io.axi),
-      lcdCtrl.io.axi -> List(sdramCtrl.io.axi)
+      core.iBus -> List(ram.io.axi), 
+      core.dBus -> List(ram.io.axi, apbBridge.io.axi),
+      lcdCtrl.io.axi -> List(ram.io.axi)
     )
 
     axiCrossbar.addPipelining(apbBridge.io.axi)((crossbar, bridge) => {
@@ -425,41 +395,44 @@ class CyberPlusWithDdrLcd(config: CyberPlusWithDdrLcdConfig) extends Component {
       cpu.readRsp <-< crossbar.readRsp
     })
 
-    axiCrossbar.addPipelining(sdramCtrl.io.axi)((crossbar, ctrl) => {
-      crossbar.sharedCmd.halfPipe() >> ctrl.sharedCmd
-      crossbar.writeData >/-> ctrl.writeData
-      crossbar.writeRsp << ctrl.writeRsp
-      crossbar.readRsp << ctrl.readRsp
-    })
-
     axiCrossbar.build()
   }
+  // peripherals
   val gpioRead = B(0, 32 bits)
   gpioRead(17) := io.uart_rx
+  gpioRead(15 downto 8) := io.sw
   axi.gpioCtrl.io.gpio.read := gpioRead
+
+  io.seg := axi.gpioCtrl.io.gpio.read(31 downto 24)
+  io.rgbled := axi.gpioCtrl.io.gpio.read(23 downto 18)
+  io.led := axi.gpioCtrl.io.gpio.read(7 downto 0)
   io.uart_tx <> axi.uartCtrl.io.uarts(0).txd
-  io.sdram <> axi.sdramCtrl.io.ddr_iface
-  io.dvti <> axi.lcdCtrl.io.dvti
+
+  // VGA
+  io.vga.vs := axi.lcdCtrl.io.dvti.vs
+  io.vga.hs := axi.lcdCtrl.io.dvti.hs
+  io.vga.de := axi.lcdCtrl.io.dvti.de
+  io.vga.data := Converter(axi.lcdCtrl.io.dvti.data)(ConvertConfig(RGBCfg(5,6,5), RGBCfg(8,8,8)))
 }
 
 
 /* ----------------------------------------------------------------------------- */
 /* ---------------------------------- Demo Gen --------------------------------- */
 /* ----------------------------------------------------------------------------- */
-// CyberPlusWithDdrLcd-SoC with memory init
-object CyberPlusWithDdrLcd {
+// CyberNvboard-SoC with memory init
+object CyberNvboard {
   def main(args: Array[String]) {
     val config =
       SpinalConfig(verbose = true, targetDirectory = "rtl").dumpWave()
     val report = config.generateVerilog(
       InOutWrapper(
-        new CyberPlusWithDdrLcd(
-          CyberPlusWithDdrLcdConfig.default.copy(
-            // memFile = "test/software/bare/cyberpluswithddr/build/demo.hex",
-            // memFileType = "rawhex"
-            // memFile = "test/software/bare/cyberpluswithddr/build/mem/demo.bin",
+        new CyberNvboard(
+          CyberNvboardConfig.default.copy(
+            memFile = "test/software/bare/cyber/build/demo.hex",
+            memFileType = "rawhex"
+            // memFile = "test/software/bare/cyber/build/mem/demo.bin",
             // memFileType = "bin"
-            // memFile = "test/software/bare/cyberpluswithddr/build/mem/demo.hex",
+            // memFile = "test/software/bare/cyber/build/mem/demo.hex",
             // memFileType = "hex"
           )
         )

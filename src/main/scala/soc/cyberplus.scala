@@ -124,7 +124,7 @@ object CyberPlusConfig {
             uinstretAccess = CsrAccess.NONE
           )
         ),
-        new YamlPlugin("cpu0.yaml")
+        new YamlPlugin("rtl/CyberPlus.yaml")
       )
     )
     config
@@ -387,8 +387,8 @@ object CyberPlus {
       InOutWrapper(
         new CyberPlus(
           CyberPlusConfig.default.copy(
-            memFile = "test/software/rt-thread/cyberplus/build/demo.hex",
-            memFileType = "rawhex"
+            // memFile = "test/software/rt-thread/cyberplus/build/demo.hex",
+            // memFileType = "rawhex"
             // memFile = "test/software/bare/cyberplus/build/demo.hex",
             // memFileType = "rawhex"
             // memFile = "test/software/bare/cyberplus/build/mem/demo.bin",

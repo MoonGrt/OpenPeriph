@@ -554,6 +554,25 @@ int main() {
 <p align="right">(<a href="#top">top</a>)</p>
 
 
+<!-- ROADMAP -->
+## Roadmap
+
+- [ ] 1. Basic
+  - GPIO; AFIO; EXIT; UART; SPI; I2C; TIM; WDG; SysTick;
+- [ ] 2.Advanced
+  - DDR; CRC
+  - TODO: DMA; DMA2D; SDIO; CAN;
+  - TODO: DDR; ctrl brust support;
+- [ ] 3. Graphic
+  - DVTC; HDMI; VGA; LCD;
+  - Algorithm: Convolution; Filtering; Edge Detection; Color Conversion;
+  - TODO: DVTP Algorithm(Color Blending; Image Scaling;)
+
+See the [open issues](https://github.com/MoonGrt/OpenPeriph/issues) for a full list of proposed features (and known issues).
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
 
 <!-- CONTRIBUTING -->
 ### Contributing

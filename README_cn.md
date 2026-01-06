@@ -571,6 +571,26 @@ verilator --lint-only --top-module cyber
 
 
 
+<!-- 路线图 -->
+## 路线图
+
+- [ ] 1. 基础外设
+  - GPIO; AFIO; EXIT; UART; SPI; I2C; TIM; WDG; SysTick;
+- [ ] 2. 进阶外设
+  - DDR; CRC
+  - TODO: DMA; DMA2D; SDIO; CAN;
+  - TODO: DDR; ctrl brust support;
+- [ ] 3. 图形处理
+  - DVTC; HDMI; VGA; LCD;
+  - Algorithm: Convolution; Filtering; Edge Detection; Color Conversion;
+  - TODO: DVTP Algorithm(Color Blending; Image Scaling;)
+
+到 [open issues](https://github.com/MoonGrt/OpenPeriph/issues) 页查看所有请求的功能 （以及已知的问题）。
+
+<p align="right">(<a href="#top">顶部</a>)</p>
+
+
+
 <!-- 贡献 -->
 ### 贡献
 
