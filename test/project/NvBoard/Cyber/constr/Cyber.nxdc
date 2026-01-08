@@ -1,0 +1,8 @@
+top=Cyber
+
+io_seg (SEG0A, SEG0B, SEG0C, SEG0D, SEG0E, SEG0F, SEG0G, DEC0P)
+io_rgbled (R16, G16, B16, R17, G17, B17)
+io_uart_rx (UART_RX)
+io_uart_tx (UART_TX)
+io_sw (SW7, SW6, SW5, SW4, SW3, SW2, SW1, SW0)
+io_led (LD7, LD6, LD5, LD4, LD3, LD2, LD1, LD0)
