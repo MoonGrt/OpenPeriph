@@ -121,7 +121,7 @@ object CyberPlusWithDdrLcdConfig {
             mscratchGen = false,
             mcauseAccess = CsrAccess.READ_ONLY,
             mbadaddrAccess = CsrAccess.READ_ONLY,
-            mcycleAccess = CsrAccess.NONE,
+            mcycleAccess = CsrAccess.READ_ONLY,
             minstretAccess = CsrAccess.NONE,
             ecallGen = true,
             wfiGenAsWait = false,
