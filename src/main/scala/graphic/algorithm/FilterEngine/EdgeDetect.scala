@@ -1,6 +1,7 @@
 package graphic.algorithm
 
 import graphic.base._
+import graphic.dvt._
 import spinal.core._
 import spinal.lib._
 

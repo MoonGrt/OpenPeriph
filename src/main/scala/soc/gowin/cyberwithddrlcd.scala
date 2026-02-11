@@ -3,6 +3,7 @@ package soc.gowin
 import periph._
 import soc.gowin.tangprimer._
 import graphic.base._
+import graphic.dvt._
 import graphic.lcd._
 
 import spinal.core._

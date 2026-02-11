@@ -1,6 +1,7 @@
 package periph
 
 import graphic.base._
+import graphic.dvt._
 import graphic.lcd._
 import spinal.lib.graphic.{VideoDmaGeneric}
 import spinal.core._

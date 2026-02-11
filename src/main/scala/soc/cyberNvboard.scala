@@ -4,11 +4,14 @@ package soc
 import periph._
 import soc.gowin.tangprimer._
 import graphic.base._
+import graphic.dvt._
 import graphic.lcd._
 import graphic.algorithm.Converter
+
 import vexriscv.plugin._
 import vexriscv._
 import vexriscv.ip.{DataCacheConfig, InstructionCacheConfig}
+
 import spinal.core._
 import spinal.lib._
 import spinal.lib.bus.amba3.apb._

@@ -1,4 +1,5 @@
 #include "cyber.h"
+#include "std.h"
 #include "delay.h"
 
 void demo_SysTick(void);
@@ -63,11 +64,15 @@ void irqCallback()
     }
 #endif
 
-#ifdef CYBER_SPI
-    /*!< SPI */
-    if (SPI_I2S_GetITStatus(SPI1, SPI_I2S_IT_RXNE) == SET) // 判断是否是SPI1的接收事件触发的中断
+#ifdef CYBER_EXTI
+    if (EXTI_GetITStatus(EXTI_Line0) == SET) // 判断是否是外部中断14号线触发的中断
     {
-        Serial_RxData = SPI_I2S_ReceiveData(SPI1); // 读取数据寄存器，存放在接收的数据变量
+        /*如果出现数据乱跳的现象，可再次判断引脚电平，以避免抖动*/
+        if (GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_0) == 0)
+            GPIO_SetBits(GPIOA, GPIO_Pin_0);
+        EXTI_ClearITPendingBit(EXTI_Line0); // 清除外部中断0号线的中断标志位
+                                            // 中断标志位必须清除
+                                            // 否则中断将连续不断地触发，导致主程序卡死
     }
 #endif
 
@@ -82,15 +87,11 @@ void irqCallback()
     }
 #endif
 
-#ifdef CYBER_EXTI
-    if (EXTI_GetITStatus(EXTI_Line0) == SET) // 判断是否是外部中断14号线触发的中断
+#ifdef CYBER_SPI
+    /*!< SPI */
+    if (SPI_I2S_GetITStatus(SPI1, SPI_I2S_IT_RXNE) == SET) // 判断是否是SPI1的接收事件触发的中断
     {
-        /*如果出现数据乱跳的现象，可再次判断引脚电平，以避免抖动*/
-        if (GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_0) == 0)
-            GPIO_SetBits(GPIOA, GPIO_Pin_0);
-        EXTI_ClearITPendingBit(EXTI_Line0); // 清除外部中断0号线的中断标志位
-                                            // 中断标志位必须清除
-                                            // 否则中断将连续不断地触发，导致主程序卡死
+        Serial_RxData = SPI_I2S_ReceiveData(SPI1); // 读取数据寄存器，存放在接收的数据变量
     }
 #endif
 }

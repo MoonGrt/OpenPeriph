@@ -1,140 +1,85 @@
 # make clean && make -j $(nproc) && make mem
 
-DDREN = yes
-DDR_TEST = no
-PROJ_NAME = demo
-DEBUG = yes
-BENCH = no
-FUNC_OPT = yes
-MULDIV = yes
+######################################
+# Project config
+######################################
 
+PROJNAME := demo
+OBJDIR   := build
+MEMSIZE  := 8192
+
+DEBUG    ?= yes
+BENCH    ?= no
+FUNCOPT  ?= yes
+MULDIV   ?= yes
+STDLIB   ?= no
+MATHLIB  ?= no
+
+DDREN    ?= yes
+DDRTEST  ?= no
+
+######################################
+# Directory layout
+######################################
+
+# SDK directory
+SDK := ../../sdk
+# Linker path
 ifeq ($(DDREN),yes)
-    LDSCRIPT = linkerddr.ld
+    LINKER = linkerddr.ld
 else
-	LDSCRIPT = linker.ld
+    LINKER = linker.ld
 endif
 
-ifeq ($(DDR_TEST),yes)
-    SRCS = $(wildcard src/ddr_test.S)
+######################################
+# Source files
+######################################
+
+# Public library source code
+LIB_DIR := $(SDK)/lib
+LIB_SRCS := $(notdir $(wildcard $(LIB_DIR)/*.c))
+# Standard library source code
+STD_DIR := $(SDK)/std
+STD_SRCS := $(notdir $(wildcard $(STD_DIR)/*.c))
+
+# Project source code
+SRC_DIR := ./src
+ifeq ($(DDRTEST),yes)
+    SRC_SRCS = $(wildcard $(SRC_DIR)/ddrtest.S)
 else
-    INC += -I./libs -I./src -I./src/ov5640 -I./src/lcd
-    SRCS = $(wildcard libs/*.c) \
-           $(wildcard libs/*.S) \
-           $(wildcard src/*.c) \
-           $(wildcard src/*.S) \
-           $(wildcard src/ov5640/*.c) \
-		   $(wildcard src/lcd/*.c)
+    SRC_CPP_SRCS := $(shell find $(SRC_DIR) -name '*.cpp')
+    SRC_C_SRCS := $(shell find $(SRC_DIR) -name '*.c')
+    SRC_S_SRCS := $(shell find $(SRC_DIR) -name '*.S')
+    SRC_SRCS := $(SRC_CPP_SRCS) $(SRC_C_SRCS) $(SRC_S_SRCS)
 endif
 
-# Set it to yes if you are using the sifive precompiled GCC pack
-SIFIVE_GCC_PACK ?= yes
+######################################
+# Object files layout
+######################################
 
-ifeq ($(SIFIVE_GCC_PACK),yes)
-    RISCV_NAME ?= riscv64-unknown-elf
-    RISCV_PATH ?= /opt/riscv
-else
-    RISCV_NAME ?= riscv32-unknown-elf
-    ifeq ($(MULDIV),yes)
-        RISCV_PATH ?= /opt/riscv32im
-    else
-        RISCV_PATH ?= /opt/riscv32i
-    endif
-endif
+LIB_OBJS := $(addprefix $(OBJDIR)/lib/, $(LIB_SRCS:.c=.o))
+STD_OBJS := $(addprefix $(OBJDIR)/lib/, $(STD_SRCS:.c=.o))
 
-MABI=ilp32
-MARCH := rv32i
-ifeq ($(MULDIV),yes)
-    MARCH := $(MARCH)m
-endif
-ifeq ($(COMPRESSED),yes)
-    MARCH := $(MARCH)ac
-endif
+SRC_OBJS := $(addprefix $(OBJDIR)/, $(SRC_SRCS))
+SRC_OBJS := $(SRC_OBJS:.cpp=.o)
+SRC_OBJS := $(SRC_OBJS:.c=.o)
+SRC_OBJS := $(SRC_OBJS:.S=.o)
 
-CFLAGS += -march=$(MARCH) -mabi=$(MABI)
-# LDFLAGS += -march=$(MARCH) -mabi=$(MABI)
+OBJS := $(LIB_OBJS) $(STD_OBJS) $(SRC_OBJS)
+DIRS := $(sort $(dir $(OBJS)))
 
+######################################
+# Include paths & Search paths
+######################################
 
-ifeq ($(DEBUG), yes)
-	CFLAGS += -g3 -O0
-else
-	CFLAGS += -g -O3
-endif
+# Include paths
+INC += -I$(LIB_DIR) -I$(STD_DIR)
+INC += $(addprefix -I, $(shell find $(SRC_DIR) -type d))
+# Search paths
+VPATH += $(LIB_DIR) $(STD_DIR) $(SRC_DIR)
 
-ifeq ($(BENCH), yes)
-	CFLAGS += -fno-inline
-endif
+######################################
+# build.mk
+######################################
 
-# 控制函数优化的选项
-ifeq ($(FUNC_OPT), yes)
-	CFLAGS += -ffunction-sections -fdata-sections
-	LDFLAGS += -Wl,--gc-sections
-else
-	CFLAGS += -fno-function-sections -fno-data-sections
-endif
-
-ifeq ($(SIFIVE_GCC_PACK), yes)
-	RISCV_CLIB=$(RISCV_PATH)/$(RISCV_NAME)/lib/$(MARCH)/$(MABI)/
-else
-	RISCV_CLIB=$(RISCV_PATH)/$(RISCV_NAME)/lib/
-endif
-
-
-RISCV_OBJCOPY = $(RISCV_PATH)/bin/$(RISCV_NAME)-objcopy
-RISCV_OBJDUMP = $(RISCV_PATH)/bin/$(RISCV_NAME)-objdump
-RISCV_CC=$(RISCV_PATH)/bin/$(RISCV_NAME)-gcc
-
-CFLAGS += -MD -fstrict-volatile-bitfields
-LDFLAGS += -nostdlib -lgcc -mcmodel=medany -nostartfiles -ffreestanding -Wl,-Bstatic,-T,$(LDSCRIPT),-Map,$(OBJDIR)/$(PROJ_NAME).map,--print-memory-usage
-
-OBJDIR = build
-OBJS := $(SRCS)
-OBJS := $(OBJS:.c=.o)
-OBJS := $(OBJS:.cpp=.o)
-OBJS := $(OBJS:.S=.o)
-OBJS := $(addprefix $(OBJDIR)/,$(OBJS))
-
-all: $(OBJDIR)/$(PROJ_NAME).elf $(OBJDIR)/$(PROJ_NAME).hex $(OBJDIR)/$(PROJ_NAME).asm $(OBJDIR)/$(PROJ_NAME).v
-	@echo "\nBuild successful for project: $(PROJ_NAME)\n"  # Add success message
-	@echo "Output: $(shell pwd)/$(OBJDIR)/$(PROJ_NAME).elf"
-
-%.bin: %.elf
-	$(RISCV_OBJCOPY) -O binary $^ $@
-
-%.hex: %.elf
-	$(RISCV_OBJCOPY) -O ihex $^ $@
-
-%.v: %.elf
-	$(RISCV_OBJCOPY) -O verilog $^ $@
-
-%.asm: %.elf
-	$(RISCV_OBJDUMP) -S -d $^ > $@
-
-$(OBJDIR):
-	mkdir -p $@
-
-$(OBJDIR)/%.o: %.c
-	mkdir -p $(dir $@)
-	$(RISCV_CC) -c $(CFLAGS) $(INC) -o $@ $^
-
-$(OBJDIR)/%.o: %.cpp
-	mkdir -p $(dir $@)
-	$(RISCV_CC) -c $(CFLAGS) $(INC) -o $@ $^
-
-$(OBJDIR)/%.o: %.S
-	mkdir -p $(dir $@)
-	$(RISCV_CC) -c $(CFLAGS) -o $@ $^ -D__ASSEMBLY__=1
-
-$(OBJDIR)/%.elf: $(OBJS) | $(OBJDIR)
-	@echo "\n--------- Linking ---------\n"
-	$(RISCV_CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
-	@echo "\n---------------------------\n"
-
-
-clean:
-	rm -rf $(OBJDIR)/*
-
-mem: $(OBJDIR)/$(PROJ_NAME).hex
-	@echo "\nGenerating .mem from .hex..."
-	@../../../../scripts/InstExtractor.sh $< $(OBJDIR)/$(PROJ_NAME) 8192
-
-.SECONDARY: $(OBJS)
+include $(SDK)/build.mk

@@ -40,6 +40,7 @@ void rt_thread_idle_init(void)
                    sizeof(rt_thread_stack),
                    RT_THREAD_PRIORITY_MAX - 1,
                    32); /* 时间片 */
+    
     /* 启动线程 */
     rt_thread_startup(&idle);
 }

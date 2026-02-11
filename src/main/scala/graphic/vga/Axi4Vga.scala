@@ -1,6 +1,7 @@
 package graphic.vga
 
 import graphic.base._
+import graphic.dvt._
 import spinal.core._
 import spinal.lib._
 import spinal.lib.bus.amba3.apb._
@@ -19,7 +20,7 @@ case class Axi4Vga(config: DvtcGenerics) extends Component{
     val interrupt = out(Bool())
   }
 
-  val dvtc = new Apb3Dvtc(config)
+  val dvtc = new Apb3DvtT(config)
   io.apb <> dvtc.io.apb
   io.axi <> dvtc.io.axi
   io.dvti <> dvtc.io.dvti

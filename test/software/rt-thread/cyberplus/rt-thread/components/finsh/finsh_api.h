@@ -2,6 +2,7 @@
 #define FINSH_API_H__
 
 #include "finsh_config.h"
+#include "std.h"
 
 typedef long (*syscall_func)(void);
 

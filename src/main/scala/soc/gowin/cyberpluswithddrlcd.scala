@@ -4,10 +4,13 @@ package soc.gowin
 import periph._
 import soc.gowin.tangprimer._
 import graphic.base._
+import graphic.dvt._
 import graphic.lcd._
+
 import vexriscv.plugin._
 import vexriscv._
 import vexriscv.ip.{DataCacheConfig, InstructionCacheConfig}
+
 import spinal.core._
 import spinal.lib._
 import spinal.lib.bus.amba3.apb._
@@ -447,23 +450,23 @@ class CyberPlusWithDdrLcd(config: CyberPlusWithDdrLcdConfig) extends Component {
 /* ---------------------------------- Demo Gen --------------------------------- */
 /* ----------------------------------------------------------------------------- */
 // CyberPlusWithDdrLcd-SoC with memory init
-object CyberPlusWithDdrLcd {
-  def main(args: Array[String]) {
-    val config =
-      SpinalConfig(verbose = true, targetDirectory = "rtl").dumpWave()
-    val report = config.generateVerilog(
-      InOutWrapper(
-        new CyberPlusWithDdrLcd(
-          CyberPlusWithDdrLcdConfig.default.copy(
-            // memFile = "test/software/bare/cyberpluswithddr/build/demo.hex",
-            // memFileType = "rawhex"
-            // memFile = "test/software/bare/cyberpluswithddr/build/mem/demo.bin",
-            // memFileType = "bin"
-            // memFile = "test/software/bare/cyberpluswithddr/build/mem/demo.hex",
-            // memFileType = "hex"
-          )
-        )
-      )
-    )
-  }
-}
+// object CyberPlusWithDdrLcd {
+//   def main(args: Array[String]) {
+//     val config =
+//       SpinalConfig(verbose = true, targetDirectory = "rtl").dumpWave()
+//     val report = config.generateVerilog(
+//       InOutWrapper(
+//         new CyberPlusWithDdrLcd(
+//           CyberPlusWithDdrLcdConfig.default.copy(
+//             memFile = "test/software/bare/cyberpluswithddr/build/demo.hex",
+//             memFileType = "rawhex"
+//             // memFile = "test/software/bare/cyberpluswithddr/build/mem/demo.bin",
+//             // memFileType = "bin"
+//             // memFile = "test/software/bare/cyberpluswithddr/build/mem/demo.hex",
+//             // memFileType = "hex"
+//           )
+//         )
+//       )
+//     )
+//   }
+// }

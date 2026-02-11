@@ -2,8 +2,10 @@
 #include <rtthread.h>
 #include <rthw.h>
 #include <shell.h>
+#include <dfs.h>
 #include "rtconfig.h"
 #include "cyber.h"
+#include "std.h"
 #include "hw_timer.h"
 
 extern void trap_entry(void) __attribute__((weak));
