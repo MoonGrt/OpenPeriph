@@ -309,23 +309,23 @@ class CyberWithDdr(config: CyberWithDdrConfig) extends Component {
 /* ----------------------------------------------------------------------------- */
 /* ---------------------------------- Demo Gen --------------------------------- */
 /* ----------------------------------------------------------------------------- */
-object CyberWithDdr {
-  def main(args: Array[String]) {
-    val config =
-      SpinalConfig(verbose = true, targetDirectory = "rtl").dumpWave()
-    val report = config.generateVerilog(
-      InOutWrapper(
-        new CyberWithDdr(
-          CyberWithDdrConfig.default.copy(
-            memFile = "test/software/bare/cyberwithddr/build/demo.hex",
-            memFileType = "rawhex"
-            // memFile = "test/software/bare/cyberwithddr/build/mem/demo.bin",
-            // memFileType = "bin"
-            // memFile = "test/software/bare/cyberwithddr/build/mem/demo.hex",
-            // memFileType = "hex"
-          )
-        )
-      )
-    )
-  }
-}
+// object CyberWithDdr {
+//   def main(args: Array[String]) {
+//     val config =
+//       SpinalConfig(verbose = true, targetDirectory = "rtl").dumpWave()
+//     val report = config.generateVerilog(
+//       InOutWrapper(
+//         new CyberWithDdr(
+//           CyberWithDdrConfig.default.copy(
+//             memFile = "test/software/bare/cyberwithddr/build/demo.hex",
+//             memFileType = "rawhex"
+//             // memFile = "test/software/bare/cyberwithddr/build/mem/demo.bin",
+//             // memFileType = "bin"
+//             // memFile = "test/software/bare/cyberwithddr/build/mem/demo.hex",
+//             // memFileType = "hex"
+//           )
+//         )
+//       )
+//     )
+//   }
+// }

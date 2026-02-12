@@ -351,23 +351,23 @@ class CyberWithDdrHdmi(config: CyberWithDdrHdmiConfig) extends Component {
 /* ----------------------------------------------------------------------------- */
 /* ---------------------------------- Demo Gen --------------------------------- */
 /* ----------------------------------------------------------------------------- */
-object CyberWithDdrHdmi {
-  def main(args: Array[String]) {
-    val config =
-      SpinalConfig(verbose = true, targetDirectory = "rtl").dumpWave()
-    val report = config.generateVerilog(
-      InOutWrapper(
-        new CyberWithDdrHdmi(
-          CyberWithDdrHdmiConfig.default.copy(
-            memFile = "test/software/bare/cyberwithddr/build/demo.hex",
-            memFileType = "rawhex"
-            // memFile = "test/software/bare/cyberwithddr/build/mem/demo.bin",
-            // memFileType = "bin"
-            // memFile = "test/software/bare/cyberwithddr/build/mem/demo.hex",
-            // memFileType = "hex"
-          )
-        )
-      )
-    )
-  }
-}
+// object CyberWithDdrHdmi {
+//   def main(args: Array[String]) {
+//     val config =
+//       SpinalConfig(verbose = true, targetDirectory = "rtl").dumpWave()
+//     val report = config.generateVerilog(
+//       InOutWrapper(
+//         new CyberWithDdrHdmi(
+//           CyberWithDdrHdmiConfig.default.copy(
+//             memFile = "test/software/bare/cyberwithddr/build/demo.hex",
+//             memFileType = "rawhex"
+//             // memFile = "test/software/bare/cyberwithddr/build/mem/demo.bin",
+//             // memFileType = "bin"
+//             // memFile = "test/software/bare/cyberwithddr/build/mem/demo.hex",
+//             // memFileType = "hex"
+//           )
+//         )
+//       )
+//     )
+//   }
+// }
