@@ -1,14 +1,14 @@
-#include "types.h"
 #include "hw_timer.h"
+#include "std.h"
 
 #define IRQ_M_TIMER 7
-#define IRQ_M_UART 11
+#define IRQ_M_UART  11
 #define CAUSE_MACHINE_IRQ_REASON_MASK 0xFFFF
 
-reg_t trap_handler(reg_t mcause, reg_t mepc)
+uint32_t trap_handler(uint32_t mcause, uint32_t mepc)
 {
-    reg_t epc = mepc;
-    reg_t cause = mcause & CAUSE_MACHINE_IRQ_REASON_MASK;
+    uint32_t epc = mepc;
+    uint32_t cause = mcause & CAUSE_MACHINE_IRQ_REASON_MASK;
 
     if (mcause & 0x80000000) 
     {
@@ -17,7 +17,6 @@ reg_t trap_handler(reg_t mcause, reg_t mepc)
         {
             case IRQ_M_TIMER: /* 定时器中断 */
                 hw_timer_irq_handler();
-                // printf("time interrupt!\r\n");
                 break;
             case IRQ_M_UART:
                 printf("uart interrupt!\r\n");

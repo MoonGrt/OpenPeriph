@@ -173,7 +173,7 @@ typedef enum{FALSE = 0, TRUE = !FALSE} bool;
 
 #ifdef CYBER_DVTC
 /*!< DVTC */
-#include "dvtc.h"
+#include "dvtt.h"
 #define DVTC_BASE (APBPERIPH_BASE + 0x70000)
 #define DVTC_Layer1_BASE (DVTC_BASE + 0x84)
 #define DVTC_Layer2_BASE (DVTC_BASE + 0x104)

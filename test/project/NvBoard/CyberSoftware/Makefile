@@ -1,138 +1,86 @@
 # make clean && make -j $(nproc) && make mem
 
-DDREN = no
-PROJ_NAME = demo
-DEBUG = yes
-BENCH = no
-FUNC_OPT = yes
-MULDIV = yes
+######################################
+# Project config
+######################################
 
-# ifeq ($(DDREN),yes)
-#     LDSCRIPT = linkerddr.ld
-# else
-#     LDSCRIPT = link.lds
-# endif
+PROJNAME := demo
+OBJDIR   := build
+MEMSIZE  := 16384
 
-SRCS = $(wildcard libs/*.c) \
-       $(wildcard user/*.c) \
-       $(wildcard user/*.S) \
-       $(wildcard user/lcd/*.c) \
-       $(wildcard rt-thread/libcpu/*.c) \
-       $(wildcard rt-thread/libcpu/*.S) \
-       $(wildcard rt-thread/src/*.c) \
-       $(wildcard rt-thread/components/finsh/*.c) \
-       $(wildcard rt-thread/components/dfs/*.c) \
+DEBUG    ?= yes
+BENCH    ?= no
+FUNCOPT  ?= yes
+MULDIV   ?= yes
+STDLIB   ?= yes
+MATHLIB  ?= yes
 
-INC += -I./libs -I./rt-thread/include -I./rt-thread/libcpu -I./user -I./user/lcd -I./rt-thread/components/finsh -I./user/ov5640 -I./rt-thread/components/dfs
-LDSCRIPT = link.lds
+######################################
+# Directory layout
+######################################
 
-# Set it to yes if you are using the sifive precompiled GCC pack
-SIFIVE_GCC_PACK ?= yes
+# SDK directory
+SDK := ../../../software/sdk
+# Linker path
+LINKER := ./linker.ld
 
-ifeq ($(SIFIVE_GCC_PACK),yes)
-    RISCV_NAME ?= riscv64-unknown-elf
-    RISCV_PATH ?= /opt/riscv
-else
-    RISCV_NAME ?= riscv32-unknown-elf
-    ifeq ($(MULDIV),yes)
-        RISCV_PATH ?= /opt/riscv32im
-    else
-        RISCV_PATH ?= /opt/riscv32i
-    endif
-endif
+######################################
+# Source files
+######################################
 
-MABI=ilp32
-MARCH := rv32i
-ifeq ($(MULDIV),yes)
-    MARCH := $(MARCH)m
-endif
-ifeq ($(COMPRESSED),yes)
-    MARCH := $(MARCH)ac
-endif
+# Public library source code
+LIB_DIR := $(SDK)/lib
+LIB_SRCS := $(notdir $(wildcard $(LIB_DIR)/*.c))
+# Standard library source code
+STD_DIR := $(SDK)/std
+STD_SRCS := $(notdir $(wildcard $(STD_DIR)/*.c))
 
-CFLAGS += -march=$(MARCH) -mabi=$(MABI)
-# LDFLAGS += -march=$(MARCH) -mabi=$(MABI)
+# RT-Thread source code
+RTTHREAD_DIR := ./rt-thread
+RTTHREAD_C_SRCS := \
+    $(shell find $(RTTHREAD_DIR)/src -name '*.c') \
+    $(shell find $(RTTHREAD_DIR)/libcpu -name '*.c') \
+    $(shell find $(RTTHREAD_DIR)/components/finsh -name '*.c') \
+    $(shell find $(RTTHREAD_DIR)/components/dfs -name '*.c')
+RTTHREAD_S_SRCS := \
+	$(shell find $(RTTHREAD_DIR)/libcpu -name '*.S')
 
-ifeq ($(DEBUG), yes)
-	CFLAGS += -g3 -O0
-else
-	CFLAGS += -g -O3
-endif
+# User source code
+USER_DIR := ./user
+USER_CPP_SRCS := $(shell find $(USER_DIR) -name '*.cpp')
+USER_C_SRCS := $(shell find $(USER_DIR) -name '*.c')
+USER_S_SRCS := $(shell find $(USER_DIR) -name '*.S')
 
-ifeq ($(BENCH), yes)
-	CFLAGS += -fno-inline
-endif
+SRC_SRCS := $(USER_CPP_SRCS) $(USER_C_SRCS) $(USER_S_SRCS) $(RTTHREAD_C_SRCS) $(RTTHREAD_S_SRCS)
 
-ifeq ($(FUNC_OPT), yes)
-	CFLAGS += -ffunction-sections -fdata-sections
-	LDFLAGS += -Wl,--gc-sections
-else
-	CFLAGS += -fno-function-sections -fno-data-sections
-endif
+######################################
+# Object files layout
+######################################
 
-ifeq ($(SIFIVE_GCC_PACK), yes)
-	RISCV_CLIB=$(RISCV_PATH)/$(RISCV_NAME)/lib/$(MARCH)/$(MABI)/
-else
-	RISCV_CLIB=$(RISCV_PATH)/$(RISCV_NAME)/lib/
-endif
+LIB_OBJS := $(addprefix $(OBJDIR)/lib/, $(LIB_SRCS:.c=.o))
+STD_OBJS := $(addprefix $(OBJDIR)/lib/, $(STD_SRCS:.c=.o))
 
-RISCV_OBJCOPY = $(RISCV_PATH)/bin/$(RISCV_NAME)-objcopy
-RISCV_OBJDUMP = $(RISCV_PATH)/bin/$(RISCV_NAME)-objdump
-RISCV_CC=$(RISCV_PATH)/bin/$(RISCV_NAME)-gcc
+SRC_OBJS := $(addprefix $(OBJDIR)/, $(SRC_SRCS))
+SRC_OBJS := $(SRC_OBJS:.cpp=.o)
+SRC_OBJS := $(SRC_OBJS:.c=.o)
+SRC_OBJS := $(SRC_OBJS:.S=.o)
 
-CFLAGS += -MD -fstrict-volatile-bitfields
-LDFLAGS += -nostdlib -lgcc -mcmodel=medany -nostartfiles -ffreestanding -Wl,-Bstatic,-T,$(LDSCRIPT),-Map,$(OBJDIR)/$(PROJ_NAME).map,--print-memory-usage
+OBJS := $(LIB_OBJS) $(STD_OBJS) $(SRC_OBJS)
+DIRS := $(sort $(dir $(OBJS)))
 
-OBJDIR = build
-OBJS := $(SRCS)
-OBJS := $(OBJS:.c=.o)
-OBJS := $(OBJS:.cpp=.o)
-OBJS := $(OBJS:.S=.o)
-OBJS := $(addprefix $(OBJDIR)/,$(OBJS))
+######################################
+# Include paths & Search paths
+######################################
 
-all: $(OBJDIR)/$(PROJ_NAME).elf $(OBJDIR)/$(PROJ_NAME).hex $(OBJDIR)/$(PROJ_NAME).asm $(OBJDIR)/$(PROJ_NAME).v
-	@echo "\nBuild successful for project: $(PROJ_NAME)\n"  # Add success message
-	@echo "Output: $(shell pwd)/$(OBJDIR)/$(PROJ_NAME).elf"
+# Include paths
+INC += -I$(LIB_DIR) -I$(STD_DIR)
+INC += $(addprefix -I, $(shell find $(RTTHREAD_DIR) -type d))
+INC += $(addprefix -I, $(shell find $(USER_DIR) -type d))
+# Search paths
+VPATH += $(LIB_DIR) $(STD_DIR) $(RTTHREAD_DIR) $(USER_DIR)
 
-%.bin: %.elf
-	$(RISCV_OBJCOPY) -O binary $^ $@
+######################################
+# build.mk
+######################################
 
-%.hex: %.elf
-	$(RISCV_OBJCOPY) -O ihex $^ $@
-
-%.v: %.elf
-	$(RISCV_OBJCOPY) -O verilog $^ $@
-
-%.asm: %.elf
-	$(RISCV_OBJDUMP) -S -d $^ > $@
-
-$(OBJDIR):
-	mkdir -p $@
-
-$(OBJDIR)/%.elf: $(OBJS) | $(OBJDIR)
-	@echo "\n---------\n"
-	$(RISCV_CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(LIBS)
-	@echo "\n---------\n"
-
-$(OBJDIR)/%.o: %.c
-	mkdir -p $(dir $@)
-	$(RISCV_CC) -c $(CFLAGS) $(INC) -o $@ $^
-
-$(OBJDIR)/%.o: %.cpp
-	mkdir -p $(dir $@)
-	$(RISCV_CC) -c $(CFLAGS) $(INC) -o $@ $^
-
-$(OBJDIR)/%.o: %.S
-	mkdir -p $(dir $@)
-	$(RISCV_CC) -c $(CFLAGS) -o $@ $^ -D__ASSEMBLY__=1
-
-clean:
-	rm -rf $(OBJDIR)/*
-
-.SECONDARY: $(OBJS)
-
-mem: $(OBJDIR)/$(PROJ_NAME).hex
-	@echo "\nGenerating .mem from .hex..."
-	@./InstExtractor.sh $< $(OBJDIR)/$(PROJ_NAME) 16384
-
-.SECONDARY: $(OBJS)
+include $(SDK)/build.mk

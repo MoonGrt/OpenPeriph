@@ -302,7 +302,7 @@ OpenPeriph/
 
 * 驱动层：`HDMI`、`VGA`、`LCD`
 * 算法层：`卷积`、`滤波`、`边缘检测`、`颜色转换`、`颜色混合` 等
-* DVTC 等模块设计参考 STM32 的 `LTDC + DMA2D` 架构，并扩展视频流处理功能
+* DVTT 等模块设计参考 STM32 的 `LTDC + DMA2D` 架构，并扩展视频流处理功能
 * 可用于图像显示、视频渲染、嵌入式视觉处理等场景
 
 ##### 3. SoC（集成与平台适配）
@@ -461,7 +461,7 @@ int main() {
 | **HDMI** | ✅ 完整 | TMDS编码器、时钟域转换 |
 | **VGA** | ✅ 完整 | RGB输出、时序生成 |
 | **LCD** | ✅ 完整 | 并行LCD接口 |
-| **DVTC** | ✅ 完整 | 数字视频时序控制器 |
+| **DVTT** | ✅ 完整 | 数字视频时序控制器 |
 
 
 
@@ -581,7 +581,7 @@ verilator --lint-only --top-module cyber
   - TODO: DMA; DMA2D; SDIO; CAN;
   - TODO: DDR; ctrl brust support;
 - [ ] 3. 图形处理
-  - DVTC; HDMI; VGA; LCD;
+  - DVTT; HDMI; VGA; LCD;
   - Algorithm: Convolution; Filtering; Edge Detection; Color Conversion;
   - TODO: DVTP Algorithm(Color Blending; Image Scaling;)
 

@@ -310,7 +310,7 @@ The hardware part was written using **SpinalHDL** and is divided into three majo
 
 * Driver layer: `HDMI`, `VGA`, `LCD`
 * Algorithm layer: `convolution`, `filtering`, `edge detection`, `color conversion`, `color blending`, etc.
-* DVTC and other modules are designed based on the STM32 `LTDC + DMA2D` architecture and extended with video stream processing functionality
+* DVTT and other modules are designed based on the STM32 `LTDC + DMA2D` architecture and extended with video stream processing functionality
 * Suitable for image display, video rendering, embedded vision processing, and other scenarios
 
 ##### 3. SoC (Integration and Platform Adaptation)
@@ -471,7 +471,7 @@ int main() {
 | **HDMI** | ✅ Complete | TMDS encoder, clock domain crossing |
 | **VGA** | ✅ Complete | RGB output with timing generation |
 | **LCD** | ✅ Complete | Parallel LCD interface |
-| **DVTC** | ✅ Complete | Digital video timing controller |
+| **DVTT** | ✅ Complete | Digital video timing controller |
 
 
 
@@ -564,7 +564,7 @@ int main() {
   - TODO: DMA; DMA2D; SDIO; CAN;
   - TODO: DDR; ctrl brust support;
 - [ ] 3. Graphic
-  - DVTC; HDMI; VGA; LCD;
+  - DVTT; HDMI; VGA; LCD;
   - Algorithm: Convolution; Filtering; Edge Detection; Color Conversion;
   - TODO: DVTP Algorithm(Color Blending; Image Scaling;)
 

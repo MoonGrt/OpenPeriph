@@ -4,6 +4,7 @@
 #include <shell.h>
 #include "rtconfig.h"
 #include "cyber.h"
+#include "std.h"
 #include "hw_timer.h"
 
 extern void trap_entry(void) __attribute__((weak));
@@ -48,17 +49,17 @@ void USART_init(void)
 }
 
 #include "lcd.h"
-#include "dvtc.h"
+#include "dvtt.h"
 
 void demo_lcd(void)
 {
-    /* DVTC
-       DVTC仅使用一个图层，如果要使用双图层则需使用DMA2D的前景和背景来实现
+    /* DVTT
+       DVTT仅使用一个图层，如果要使用双图层则需使用DMA2D的前景和背景来实现
        仅存储的有1帧图像
     */
-    LCD_DVTC_Init();
-    /* 使能DVTC */
-    DVTC_Cmd(ENABLE);
+    LCD_DVTT_Init();
+    /* 使能DVTT */
+    DVTT_Cmd(ENABLE);
 }
 
 /* main 函数 */
@@ -68,7 +69,7 @@ int main(void)
     rt_hw_interrupt_disable(); /* 关中断 */
     USART_init();              /* 初始化串口 */
     hw_timer_init();           /* 初始化硬件定时器 */
-    demo_lcd();                /* LCD */
+    // demo_lcd();                /* LCD */
 
     /* 调度器初始化 */
     rt_system_scheduler_init();

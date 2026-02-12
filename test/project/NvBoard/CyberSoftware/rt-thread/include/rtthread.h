@@ -4,6 +4,7 @@
 #include <rtdef.h>
 #include <rtservice.h>
 #include <rtconfig.h>
+#include "std.h"
 
 /*
  * kernel object interface

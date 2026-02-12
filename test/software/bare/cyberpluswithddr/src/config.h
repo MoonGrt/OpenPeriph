@@ -17,6 +17,7 @@
 #define CYBER_IWDG
 #define CYBER_WDG
 // #define CYBER_DVP
-#define CYBER_DVTC
+#define CYBER_DVTT
+#define CYBER_DVTR
 
 #endif /* __CONFIG_H_ */

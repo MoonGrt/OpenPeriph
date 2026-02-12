@@ -29,7 +29,7 @@ case class Apb3DvtT(config: DvtcGenerics) extends Component {
   val ctrl = Apb3SlaveFactory(io.apb)
 
   /* ---------------------------------------------------------------------------- */
-  /* ----------------------------------- DVTC ----------------------------------- */
+  /* ----------------------------------- DVTT ----------------------------------- */
   /* ---------------------------------------------------------------------------- */
   // 定义寄存器
   val SSCR  = Reg(UInt(32 bits)) init(0) // 0x08 // Synchronization Size Configuration Register
@@ -62,7 +62,7 @@ case class Apb3DvtT(config: DvtcGenerics) extends Component {
   ctrl.read(CDSR,          0x48)
 
   // 控制位定义
-  val GCR_DVTCEN = 0
+  val GCR_DVTTEN = 0
   val GCR_PCPOL  = 28
   val GCR_DEPOL  = 29
   val GCR_VSPOL  = 30
@@ -75,7 +75,7 @@ case class Apb3DvtT(config: DvtcGenerics) extends Component {
   val INT_RRIF = 3
 
   /* ---------------------------------------------------------------------------- */
-  /* -------------------------------- DVTC Layer -------------------------------- */
+  /* -------------------------------- DVTT Layer -------------------------------- */
   /* ---------------------------------------------------------------------------- */
   // 定义寄存器
   val CR     = Reg(UInt(32 bits)) init(0) // 0x84 // Control Register
@@ -113,7 +113,7 @@ case class Apb3DvtT(config: DvtcGenerics) extends Component {
   // 连接 DVTimingDyn 控制器
   val dvtArea = new ClockingArea(dvtClock) {
     // 连接 DVTimingDyn 控制器的配置寄存器
-    dvt.io.en        := BufferCC(GCR(GCR_DVTCEN))
+    dvt.io.en        := BufferCC(GCR(GCR_DVTTEN))
     dvt.io.cfg.pcpol := BufferCC(GCR(GCR_PCPOL))
     dvt.io.cfg.depol := BufferCC(GCR(GCR_DEPOL))
 

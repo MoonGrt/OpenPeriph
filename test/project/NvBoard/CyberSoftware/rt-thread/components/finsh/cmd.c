@@ -1,7 +1,7 @@
 #include <rthw.h>
 #include <rtthread.h>
 #include "finsh_config.h"
-#include "led.h"
+
 #ifdef RT_USING_FINSH
 
 #include "finsh.h"
@@ -40,15 +40,12 @@ long hello(void)
 }
 MSH_CMD_EXPORT(hello, say hello world);
 
-long clear(void)
+static long clear(void)
 {
-    // ANSI 转义序列清屏
-    printf("\033[2J");       // 清空屏幕
-    printf("\033[H");        // 将光标移动到屏幕顶部左上角
-
+    printf("\x1b[2J\x1b[H");
     return 0;
 }
-MSH_CMD_EXPORT(clear, clear the screen);
+MSH_CMD_EXPORT(clear, clear the terminal screen);
 
 /* 列出所有命令 */
 long help(void)
@@ -65,7 +62,6 @@ long help(void)
     return 0;
 }
 MSH_CMD_EXPORT(help, list all command);
-
 
 /* 列出所有线程信息 */
 long list_thread(void)
@@ -107,7 +103,7 @@ long list_thread(void)
                 thread->stack_size,
                 (thread->stack_size - ((rt_ubase_t) ptr - (rt_ubase_t) thread->stack_addr)),
                 thread->remaining_tick,
-                0);  // thread->error
+                thread->error);
     }
     
     return 0;

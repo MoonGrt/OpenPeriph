@@ -12,7 +12,7 @@ void demo_SPI(void);
 void demo_TIM(void);
 void demo_PWM(void);
 void demo_DVP(void);
-void demo_DVTC(void);
+void demo_DVTT(void);
 
 void led_flow(void);
 void led_breathe(void);
@@ -33,7 +33,7 @@ void main()
     // demo_PWM();
     // demo_WDG();
     // demo_DVP();
-    demo_DVTC();
+    demo_DVTT();
 
     // led_flow();
     // led_breathe();
@@ -636,7 +636,7 @@ void demo_DVP(void)
 }
 #endif
 
-#ifdef CYBER_DVTC
+#ifdef CYBER_DVTT
 
 #define DEMO_LCD
 
@@ -651,17 +651,17 @@ void demo_hdmi(void)
 #ifdef DEMO_LCD
 
 #include "lcd.h"
-#include "dvtc.h"
+#include "dvtt.h"
 
 void demo_lcd(void)
 {
-    /* DVTC
-       DVTC仅使用一个图层，如果要使用双图层则需使用DMA2D的前景和背景来实现
+    /* DVTT
+       DVTT仅使用一个图层，如果要使用双图层则需使用DMA2D的前景和背景来实现
        仅存储的有1帧图像
     */
-    LCD_DVTC_Init();
-    /* 使能DVTC */
-    DVTC_Cmd(ENABLE);
+    LCD_DVTT_Init();
+    /* 使能DVTT */
+    DVTT_Cmd(ENABLE);
 
     // uint16_t offset = 0;
     // while (1)
@@ -690,7 +690,7 @@ void demo_lcd(void)
 }
 #endif // DEMO_LCD
 
-void demo_DVTC(void)
+void demo_DVTT(void)
 {
 #ifdef DEMO_HDMI
     demo_hdmi();

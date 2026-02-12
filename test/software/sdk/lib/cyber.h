@@ -169,15 +169,26 @@ typedef enum{ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 #define SysTick ((SysTick_TypeDef *)SysTick_BASE) // 0xF0060000
 #endif
 
-#ifdef CYBER_DVTC
-/*!< DVTC */
-#include "dvtc.h"
-#define DVTC_BASE (APBPERIPH_BASE + 0x70000)
-#define DVTC_Layer1_BASE (DVTC_BASE + 0x84)
-#define DVTC_Layer2_BASE (DVTC_BASE + 0x104)
-#define DVTC ((DVTC_TypeDef *)DVTC_BASE) // 0xF0070000
-#define DVTC_Layer1 ((DVTC_Layer_TypeDef *)DVTC_Layer1_BASE)
-#define DVTC_Layer2 ((DVTC_Layer_TypeDef *)DVTC_Layer2_BASE)
+#ifdef CYBER_DVTT
+/*!< DVTT */
+#include "dvtt.h"
+#define DVTT_BASE (APBPERIPH_BASE + 0x70000)
+#define DVTT_Layer1_BASE (DVTT_BASE + 0x84)
+#define DVTT_Layer2_BASE (DVTT_BASE + 0x104)
+#define DVTT ((DVTT_TypeDef *)DVTT_BASE) // 0xF0070000
+#define DVTT_Layer1 ((DVTT_Layer_TypeDef *)DVTT_Layer1_BASE)
+#define DVTT_Layer2 ((DVTT_Layer_TypeDef *)DVTT_Layer2_BASE)
+#endif
+
+#ifdef CYBER_DVTR
+/*!< DVTR */
+#include "dvtr.h"
+#define DVTR_BASE (APBPERIPH_BASE + 0x70000)
+#define DVTR_Layer1_BASE (DVTR_BASE + 0x84)
+#define DVTR_Layer2_BASE (DVTR_BASE + 0x104)
+#define DVTR ((DVTR_TypeDef *)DVTR_BASE) // 0xF0070000
+#define DVTR_Layer1 ((DVTR_Layer_TypeDef *)DVTR_Layer1_BASE)
+#define DVTR_Layer2 ((DVTR_Layer_TypeDef *)DVTR_Layer2_BASE)
 #endif
 
 /* Exported macro ------------------------------------------------------------*/
