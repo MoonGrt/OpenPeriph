@@ -183,12 +183,8 @@ typedef enum{ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 #ifdef CYBER_DVTR
 /*!< DVTR */
 #include "dvtr.h"
-#define DVTR_BASE (APBPERIPH_BASE + 0x70000)
-#define DVTR_Layer1_BASE (DVTR_BASE + 0x84)
-#define DVTR_Layer2_BASE (DVTR_BASE + 0x104)
+#define DVTR_BASE (APBPERIPH_BASE + 0x80000)
 #define DVTR ((DVTR_TypeDef *)DVTR_BASE) // 0xF0070000
-#define DVTR_Layer1 ((DVTR_Layer_TypeDef *)DVTR_Layer1_BASE)
-#define DVTR_Layer2 ((DVTR_Layer_TypeDef *)DVTR_Layer2_BASE)
 #endif
 
 /* Exported macro ------------------------------------------------------------*/

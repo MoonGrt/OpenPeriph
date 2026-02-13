@@ -30,6 +30,8 @@ extern "C"
 #include "ov5640_reg.h"
 #include <stddef.h>
 
+#ifdef OV5640
+
     /** @addtogroup BSP
      * @{
      */
@@ -46,8 +48,8 @@ extern "C"
      * @{
      */
 
-    typedef int32_t (*OV5640_Init_Func)(void);
-    typedef int32_t (*OV5640_DeInit_Func)(void);
+    typedef void (*OV5640_Init_Func)(void);
+    typedef void (*OV5640_DeInit_Func)(void);
     typedef int32_t (*OV5640_GetTick_Func)(void);
     typedef int32_t (*OV5640_Delay_Func)(uint32_t);
     typedef int32_t (*OV5640_WriteReg_Func)(uint16_t, uint16_t, uint8_t *, uint16_t);
@@ -78,7 +80,6 @@ extern "C"
         uint8_t LineStartCode;  /*!< Specifies the code of the line start delimiter.  */
         uint8_t LineEndCode;    /*!< Specifies the code of the line end delimiter.    */
         uint8_t FrameEndCode;   /*!< Specifies the code of the frame end delimiter.   */
-
     } OV5640_SyncCodes_t;
 
     typedef struct
@@ -246,7 +247,10 @@ extern "C"
 }
 #endif
 
+#endif /* OV5640 */
+
 #endif /* OV5640_H */
+
 /**
  * @}
  */

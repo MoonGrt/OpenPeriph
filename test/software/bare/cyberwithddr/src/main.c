@@ -565,20 +565,22 @@ void led_breathe()
 
 #ifdef CYBER_DVP
 #include "ov5640.h"
+#include "sccb.h"
 
 void Camera_Init(void)
 {
     OV5640_IO_t ov5640_io = {
-        .Init = OV5640_Init,
-        .DeInit = OV5640_DeInit,
-        .ReadReg = ov5640_read_reg,
-        .WriteReg = ov5640_write_reg,
+        .Init = SCCB_Init,
+        .DeInit = SCCB_DeInit,
+        .Address = 0x68,
+        .ReadReg = OV5640_SCCB_ReadReg,
+        .WriteReg = OV5640_SCCB_WriteReg,
     };
     OV5640_Object_t ov5640;
 
     if (OV5640_RegisterBusIO(&ov5640, &ov5640_io) != 0)
     {
-        // printf("Bus IO registration failed\n");
+        printf("Bus IO registration failed\n");
         return;
     }
 

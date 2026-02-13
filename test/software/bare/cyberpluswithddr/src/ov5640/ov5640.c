@@ -19,6 +19,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "ov5640.h"
 
+#ifdef OV5640
+
 /** @addtogroup BSP
  * @{
  */
@@ -62,7 +64,8 @@ OV5640_CAMERA_Drv_t OV5640_CAMERA_Driver =
         OV5640_GetResolution,
         OV5640_SetPixelFormat,
         OV5640_GetPixelFormat,
-        OV5640_NightModeConfig};
+        OV5640_NightModeConfig
+    };
 
 /**
  * @}
@@ -109,14 +112,8 @@ int32_t OV5640_RegisterBusIO(OV5640_Object_t *pObj, OV5640_IO_t *pIO)
         pObj->Ctx.WriteReg = OV5640_WriteRegWrap;
         pObj->Ctx.handle = pObj;
 
-        if (pObj->IO.Init != NULL)
-        {
-            ret = pObj->IO.Init();
-        }
-        else
-        {
-            ret = OV5640_ERROR;
-        }
+        /* Initialize SCCB */
+        pObj->IO.Init();
     }
 
     return ret;
@@ -1001,9 +998,6 @@ int32_t OV5640_ReadID(OV5640_Object_t *pObj, uint32_t *Id)
 {
     int32_t ret;
     uint8_t tmp;
-
-    /* Initialize I2C */
-    pObj->IO.Init();
 
     /* Prepare the camera to be configured */
     tmp = 0x80;
@@ -2184,9 +2178,7 @@ static int32_t OV5640_Delay(OV5640_Object_t *pObj, uint32_t Delay)
 {
     uint32_t tickstart;
     tickstart = pObj->IO.GetTick();
-    while ((pObj->IO.GetTick() - tickstart) < Delay)
-    {
-    }
+    while ((pObj->IO.GetTick() - tickstart) < Delay);
     return OV5640_OK;
 }
 
@@ -2201,7 +2193,6 @@ static int32_t OV5640_Delay(OV5640_Object_t *pObj, uint32_t Delay)
 static int32_t OV5640_ReadRegWrap(void *handle, uint16_t Reg, uint8_t *pData, uint16_t Length)
 {
     OV5640_Object_t *pObj = (OV5640_Object_t *)handle;
-
     return pObj->IO.ReadReg(pObj->IO.Address, Reg, pData, Length);
 }
 
@@ -2216,9 +2207,10 @@ static int32_t OV5640_ReadRegWrap(void *handle, uint16_t Reg, uint8_t *pData, ui
 static int32_t OV5640_WriteRegWrap(void *handle, uint16_t Reg, uint8_t *pData, uint16_t Length)
 {
     OV5640_Object_t *pObj = (OV5640_Object_t *)handle;
-
     return pObj->IO.WriteReg(pObj->IO.Address, Reg, pData, Length);
 }
+
+#endif /* OV5640 */
 
 /**
  * @}

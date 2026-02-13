@@ -20,4 +20,6 @@
 #define CYBER_DVTT
 #define CYBER_DVTR
 
+#define OV5640
+
 #endif /* __CONFIG_H_ */
