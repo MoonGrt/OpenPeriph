@@ -4,17 +4,23 @@ SUBDIRS := $(wildcard */.)
 
 all:
 	for dir in $(SUBDIRS); do \
-		(cd $$dir; ${MAKE} all); \
+		if [ -f "$$dir/makefile" ]; then \
+			(cd $$dir; $(MAKE) all); \
+		fi \
 	done
 
 mem:
 	for dir in $(SUBDIRS); do \
-		(cd $$dir; ${MAKE} mem); \
+		if [ -f "$$dir/makefile" ]; then \
+			(cd $$dir; $(MAKE) mem); \
+		fi \
 	done
 
 clean:
 	for dir in $(SUBDIRS); do \
-		(cd $$dir; ${MAKE} clean); \
+		if [ -f "$$dir/makefile" ]; then \
+			(cd $$dir; $(MAKE) clean); \
+		fi \
 	done
 
 .PHONY: all $(SUBDIRS)
