@@ -26,8 +26,8 @@ void demo_ST7789_HARD(void);
 
 void main()
 {
-    // delay_init();
-    // demo_USART();
+    delay_init();
+    demo_USART();
     // for (uint16_t i = 0;; printf("time: %us\r\n", i++), delay_ms(1000));
     // demo_GPIO();
     // demo_EXTI();
@@ -43,7 +43,7 @@ void main()
     // led_breathe();
 
     // demo_ST7789_SOFT();
-    demo_ST7789_HARD();
+    // demo_ST7789_HARD();
 }
 
 uint8_t Serial_RxData; // 定义串口接收的数据变量
