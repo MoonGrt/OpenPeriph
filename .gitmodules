@@ -1,3 +1,9 @@
-[submodule "VexRiscv"]
-	path = VexRiscv
+[submodule "thirdpartys/vexriscv"]
+	path = thirdpartys/vexriscv
 	url = https://github.com/SpinalHDL/VexRiscv.git
+[submodule "thirdpartys/rocket-chip"]
+	path = thirdpartys/rocket-chip
+	url = https://github.com/chipsalliance/rocket-chip.git
+[submodule "thirdpartys/nvboard"]
+	path = thirdpartys/nvboard
+	url = https://github.com/NJU-ProjectN/nvboard.git

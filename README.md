@@ -111,7 +111,7 @@ cd OpenPeriph
 # 2. Setup Development Environment
 # Run the automated setup script 
 
-bash setup.sh # Highly recommended to setup environment manually for better control.
+bash spinal/setup.sh # Highly recommended to setup environment manually for better control.
 
 # 3.1. Build with sbt
 sbt run
@@ -120,10 +120,10 @@ sbt run
 mill
 
 # 4. Software Development
-# Open the relevant project file in test/software
+# Open the relevant project file in software
 
 # 5. FPGA Synthesis (optional)
-# Open the relevant project file in test/project
+# Open the relevant project file in project
 
 ```
 
@@ -136,7 +136,7 @@ mill
 The project includes an automated setup script that installs all required tools: (It is recommended to build the required tools step by step.)
 
 ```bash
-bash setup.sh
+bash spinal/setup.sh
 ```
 
 This script will install:
@@ -165,7 +165,7 @@ If you prefer manual installation, follow these steps:
   # Download and install the Sifive GCC toolchain
   sudo apt install -y libncurses5
   version=riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14
-  wget -O riscv64-unknown-elf-gcc.tar.gz riscv https://static.dev.sifive.com/dev-tools/$version.tar.gz
+  wget -O riscv64-unknown-elf-gcc.tar.gz https://static.dev.sifive.com/dev-tools/$version.tar.gz
   tar -xzvf riscv64-unknown-elf-gcc.tar.gz
   sudo mv $version /opt/riscv
   echo 'export PATH=/opt/riscv/bin:$PATH' >> ~/.bashrc
@@ -214,8 +214,8 @@ If you prefer manual installation, follow these steps:
 
 7. ***VexRiscv** (optional)
 ```bash
-  git clone https://github.com/SpinalHDL/VexRiscv.git
-  cd VexRiscv
+  git submodule update --init --recursive
+  cd thirdpartys/vexriscv
   sbt publishLocal
 ```
 
@@ -229,7 +229,7 @@ OpenPeriph/
   ├─ /docs/
   │ ├─ Openocd.md        # OpenOCD configuration
   │ └─ SpinalHDL.md      # SpinalHDL usage guide
-  ├─ src/main/scala/     # Source code
+  ├─ spinal/src/main/scala/ # SpinalHDL source code
   │ ├─ graphic/          # Graphics and video processing
   │ │ ├─ algorithm/      # Video processing algorithms
   │ │ ├─ base/           # Base graphics components
@@ -257,15 +257,14 @@ OpenPeriph/
   │   ├─ /bare/          # Bare-metal software package
   │   │ ├─ /cyber/
   │   │ ├─ /cyberwithddr/
-  │   │ └─ /pinsec/
   │   └─ /rt-thread/     # RT-Thread RTOS support
   │     └─ /cyberplus/
   ├─ scripts/            # Development and build scripts
   │ ├─ jtag/             # JTAG tools
   │ ├─ InstExtractor.py  # Instruction extraction tool
   │ └─ InstExtractor.sh  # Shell wrapper for extraction
-  ├─ build.sbt           # SBT build configuration
-  └─ setup.sh            # Environment setup script
+  ├─ spinal/build.sbt    # SBT build configuration
+  └─ spinal/setup.sh     # Environment setup script
 ```
 
 
@@ -327,8 +326,6 @@ The hardware part was written using **SpinalHDL** and is divided into three majo
 
 The software component supports the STM32 compatibility features of the hardware and has ported the **STM32 Standard Peripheral Library**, providing multiple runtime environments:
 
-* **pinsec**  
-  * Software support package for SpinalHDL native SoCs
 * **cyber**  
   * SoC project using STM32 peripherals from this project  
   * Includes a complete development environment:
@@ -342,7 +339,7 @@ The software component supports the STM32 compatibility features of the hardware
 
 #### Script Tools
 
-* **Environment Initialization** — `setup.sh`
+* **Environment Initialization** — `spinal/setup.sh`
   * Automatically installs tools such as `sbt`, `verilator`, and `riscv-gnu-toolchain`
   * Downloads necessary dependencies and library files
 * **Instruction Extraction Tool** — `scripts/InstExtractor.py`
@@ -357,7 +354,7 @@ The software component supports the STM32 compatibility features of the hardware
 
 #### Gowin FPGA Project
 
-The directory `test/project/` contains the complete Gowin FPGA project files:
+The directory `project/` contains the complete FPGA project files:
 
 * All hardware design and SoC integration code
 * Gowin official IP core files
@@ -523,7 +520,7 @@ int main() {
 #### 1. Hardware Development
 ```bash
   # Edit SpinalHDL source files
-  vim src/main/scala/periph/gpio/apb3gpio.scala
+  vim spinal/src/main/scala/periph/gpio/apb3gpio.scala
   # Compile and generate Verilog
   sbt compile
   # Run simulation (if available)
@@ -533,7 +530,7 @@ int main() {
 #### 2. Software Development
 ```bash
   # Navigate to test project
-  cd test/software/cyber
+  cd software/bare
   # Edit source files
   vim src/main.c
   # Build firmware
@@ -636,4 +633,3 @@ Use this space to list resources you find helpful and would like to give credit 
 [issues-url]: https://github.com/MoonGrt/OpenPeriph/issues
 [license-shield]: https://img.shields.io/github/license/MoonGrt/OpenPeriph.svg?style=for-the-badge
 [license-url]: https://github.com/MoonGrt/OpenPeriph/blob/master/LICENSE
-

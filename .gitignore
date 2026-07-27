@@ -59,3 +59,7 @@ project/target/
 tmp/
 /archive.tar.gz
 *.out32
+
+# SpinalHDL build outputs and generated SBT meta-project link
+/spinal/build/
+/spinal/project/project

@@ -1,0 +1,43 @@
+//| mill-version: 1.1.2
+package build
+
+import mill._
+import mill.scalalib._
+
+object chisel extends SbtModule {
+  def scalaVersion = "2.13.12"
+  def chiselVersion = "6.7.0"
+
+  override def moduleDir = super.moduleDir / os.up
+  override def scalacOptions = Seq(
+    "-language:reflectiveCalls",
+    "-deprecation",
+    "-feature",
+    "-Xcheckinit",
+    "-Ymacro-annotations",
+  )
+  override def mvnDeps = Seq(
+    mvn"org.chipsalliance::chisel:$chiselVersion",
+  )
+  override def scalacPluginMvnDeps = Seq(
+    mvn"org.chipsalliance:::chisel-plugin:$chiselVersion",
+  )
+
+  def rocketChipAssembly = Task {
+    val rocketChipDir = moduleDir / os.up / "thirdpartys" / "rocket-chip"
+    os.proc("mill", "--no-server", "rocketchip[6.7.0].assembly")
+      .call(cwd = rocketChipDir, env = Map("MILL_VERSION" -> "0.11.6"))
+    val source = rocketChipDir / "out" / "rocketchip" / "6.7.0" / "assembly.dest" / "out.jar"
+    val destination = Task.dest / "rocket-chip.jar"
+    os.proc("cp", source, destination).call()
+    PathRef(destination)
+  }
+  override def unmanagedClasspath = Task {
+    super.unmanagedClasspath() ++ Seq(rocketChipAssembly())
+  }
+  override def forkWorkingDir = Task { moduleDir / "build" }
+
+  object test extends SbtTests with TestModule.ScalaTest {
+    override def mvnDeps = Seq(mvn"org.scalatest::scalatest::3.2.19")
+  }
+}

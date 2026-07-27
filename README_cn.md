@@ -110,7 +110,7 @@ cd OpenPeriph
 
 # 2. Setup Development Environment
 # Run the automated setup script
-bash setup.sh
+bash spinal/setup.sh
 
 # 3.1. Build with sbt
 sbt run
@@ -119,10 +119,10 @@ sbt run
 mill
 
 # 4. Software Development
-# Open the relevant project file in test/software
+# 打开 software 中对应的软件工程
 
 # 5. FPGA Synthesis (optional)
-# Open the relevant project file in test/project
+# 打开 project 中对应的硬件工程
 
 ```
 
@@ -135,7 +135,7 @@ mill
 项目包含自动化设置脚本，可安装所有必需工具：（建议还是一步步构建所需工具）
 
 ```bash
-bash setup.sh
+bash spinal/setup.sh
 ```
 
 此脚本将安装：
@@ -164,7 +164,7 @@ bash setup.sh
   # Download and install the Sifive GCC toolchain
   sudo apt install -y libncurses5
   version=riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14
-  wget -O riscv64-unknown-elf-gcc.tar.gz riscv https://static.dev.sifive.com/dev-tools/$version.tar.gz
+  wget -O riscv64-unknown-elf-gcc.tar.gz https://static.dev.sifive.com/dev-tools/$version.tar.gz
   tar -xzvf riscv64-unknown-elf-gcc.tar.gz
   sudo mv $version /opt/riscv
   echo 'export PATH=/opt/riscv/bin:$PATH' >> ~/.bashrc
@@ -208,8 +208,8 @@ bash setup.sh
 
 7. ***VexRiscv** (optional)
 ```bash
-  git clone https://github.com/SpinalHDL/VexRiscv.git
-  cd VexRiscv
+  git submodule update --init --recursive
+  cd thirdpartys/vexriscv
   sbt publishLocal
 ```
 
@@ -223,7 +223,7 @@ OpenPeriph/
   ├─ /docs/
   │ ├─ Openocd.md        # OpenOCD configuration
   │ └─ SpinalHDL.md      # SpinalHDL usage guide
-  ├─ src/main/scala/     # Source code
+  ├─ spinal/src/main/scala/ # SpinalHDL 源码
   │ ├─ graphic/          # Graphics and video processing
   │ │ ├─ algorithm/      # Video processing algorithms
   │ │ ├─ base/           # Base graphics components
@@ -251,15 +251,14 @@ OpenPeriph/
   │   ├─ /bare/          # Bare-metal software package
   │   │ ├─ /cyber/
   │   │ ├─ /cyberwithddr/
-  │   │ └─ /pinsec/
   │   └─ /rt-thread/     # RT-Thread RTOS support
   │     └─ /cyberplus/
   ├─ scripts/            # Development and build scripts
   │ ├─ jtag/             # JTAG tools
   │ ├─ InstExtractor.py  # Instruction extraction tool
   │ └─ InstExtractor.sh  # Shell wrapper for extraction
-  ├─ build.sbt           # SBT build configuration
-  └─ setup.sh            # Environment setup script
+  ├─ spinal/build.sbt    # SBT 构建配置
+  └─ spinal/setup.sh     # 环境初始化脚本
 ```
 
 
@@ -319,8 +318,6 @@ OpenPeriph/
 
 软件部分针对硬件的 STM32 兼容特性，移植了 **STM32 标准外设库**，并提供多种运行环境：
 
-* **pinsec**
-  * SpinalHDL 原生 SoC 的软件支持包
 * **cyber**
   * 使用本项目类 STM32 外设的 SoC 工程
   * 包含完整开发环境：
@@ -338,7 +335,7 @@ OpenPeriph/
 
 #### 脚本工具
 
-* **环境初始化** — `scripts/setup.sh`
+* **环境初始化** — `spinal/setup.sh`
   * 自动安装 `sbt`、`verilator`、`riscv-gnu-toolchain` 等工具
   * 下载必要的依赖与库文件
 * **指令提取工具** — `scripts/InstExtractor.py`
@@ -521,7 +518,7 @@ int main() {
 #### 1. 硬件开发
 ```bash
 # 编辑SpinalHDL源文件
-vim src/main/scala/periph/gpio/apb3gpio.scala
+vim spinal/src/main/scala/periph/gpio/apb3gpio.scala
 
 # 编译并生成Verilog
 sbt compile

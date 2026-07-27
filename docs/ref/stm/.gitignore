@@ -1,0 +1,17 @@
+*.o
+*.elf
+*.hex
+*.bin
+*.asm
+*.map
+*.v
+*~
+
+.cproject
+.project
+*.xml
+*.d
+
+*.pyc
+Workspace/*
+.vscode/

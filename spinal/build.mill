@@ -1,0 +1,39 @@
+//| mill-version: 1.1.2
+package build
+
+import mill._
+import mill.scalalib._
+
+val spinalVersion = "1.12.0"
+
+trait SpinalModule extends ScalaModule {
+  override def scalaVersion = "2.12.18"
+  override def scalacOptions = Seq("-Xsource:2.11")
+  override def mvnDeps = Seq(
+    mvn"com.github.spinalhdl::spinalhdl-core:$spinalVersion",
+    mvn"com.github.spinalhdl::spinalhdl-lib:$spinalVersion",
+    mvn"org.yaml:snakeyaml:1.8",
+  )
+  override def scalacPluginMvnDeps = Seq(
+    mvn"org.scalamacros:::paradise:2.1.1",
+    mvn"com.github.spinalhdl::spinalhdl-idsl-plugin:$spinalVersion",
+  )
+}
+
+object VexRiscv extends SpinalModule with SbtModule {
+  override def moduleDir = super.moduleDir / os.up / os.up / "thirdpartys" / "vexriscv"
+
+  object test extends SbtTests with TestModule.ScalaTest {
+    override def mvnDeps = Seq(mvn"org.scalatest::scalatest:3.2.17")
+  }
+}
+
+object OpenPeriph extends SpinalModule with SbtModule {
+  override def moduleDir = super.moduleDir / os.up
+  override def moduleDeps = Seq(VexRiscv)
+  override def forkWorkingDir = Task { moduleDir / "build" }
+
+  object test extends SbtTests with TestModule.ScalaTest {
+    override def mvnDeps = Seq(mvn"org.scalatest::scalatest::3.2.17")
+  }
+}
